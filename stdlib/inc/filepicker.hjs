@@ -1,0 +1,21 @@
+#ifndef filepicker_hjs___
+#define filepicker_hjs___
+
+#define FP_modeOpen         0
+#define FP_modeSave         1
+#define FP_modeGetFolder    2
+#define FP_modeOpenMultiple 3
+
+#define FP_returnOK      0
+#define FP_returnCancel  1
+#define FP_returnReplace 2
+
+#define FP_filterAll     1
+#define FP_filterHTML    2
+#define FP_filterText    4
+#define FP_filterImages  8
+#define FP_filterXML    16
+#define FP_filterXUL    32
+#define FP_filterApps   64
+
+#endif
