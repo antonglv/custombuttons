@@ -1,0 +1,146 @@
+#ifndef __STD_COMPONENTS_HEADER_JS__
+#define __STD_COMPONENTS_HEADER_JS__
+
+#define CC Components. classes
+#define CI Components. interfaces
+
+#if defined(USE_COMPONENTS_WRAPPERS) && !defined (USE_GLOBAL_COMPONENTS_VARIABLES)
+#define USE_GLOBAL_COMPONENTS_VARIABLES
+#endif
+
+#define APP_SHELL_SERVICE_CID "@mozilla.org/appshell/appShellService;1"
+#define CATEGORY_MANAGER_SERVICE_CID "@mozilla.org/categorymanager;1"
+#define CLIPBOARD_HELPER_SERVICE_CID "@mozilla.org/widget/clipboardhelper;1"
+#define CLIPBOARD_SERVICE_CID "@mozilla.org/widget/clipboard;1"
+#define CONSOLE_SERVICE_CID "@mozilla.org/consoleservice;1"
+#define EXTENSION_MANAGER_SERVICE_CID "@mozilla.org/extensions/manager;1"
+#define EXTERNAL_PROTOCOL_SERVICE_CID "@mozilla.org/uriloader/external-protocol-service;1"
+#define FORM_HISTORY_SERVICE_CID "@mozilla.org/satchel/form-history;1"
+#define FORM_HISTORY2_SERVICE_CID "@mozilla.org/satchel/form-history;1"
+#define INTERNET_SEARCH_SERVICE_CID "@mozilla.org/rdf/datasource;1?name=internetsearch"
+#define IO_SERVICE_CID "@mozilla.org/network/io-service;1"
+#define JS_SUBSCRIPT_LOADER_SERVICE_CID "@mozilla.org/moz/jssubscript-loader;1"
+#define OBSERVER_SERVICE_CID "@mozilla.org/observer-service;1"
+#define PREF_SERVICE_CID "@mozilla.org/preferences-service;1"
+#define PROMPT_SERVICE_CID "@mozilla.org/embedcomp/prompt-service;1"
+#define PROPERTIES_SERVICE_CID "@mozilla.org/file/directory_service;1"
+#define RDF_SERVICE_CID "@mozilla.org/rdf/rdf-service;1"
+#define STRING_BUNDLE_SERVICE_CID "@mozilla.org/intl/stringbundle;1"
+#define XUL_APP_INFO_SERVICE_CID "@mozilla.org/xre/app-info;1"
+#define WINDOW_SERVICE_CID "@mozilla.org/appshell/window-mediator;1"
+#define WINDOW_WATCHER_SERVICE_CID "@mozilla.org/embedcomp/window-watcher;1"
+
+#define ALERT_SERVICE_COMPONENT_CID "@mozilla.org/alerts-service;1"
+#define BINARY_INPUT_STREAM_COMPONENT_CID "@mozilla.org/binaryinputstream;1"
+#define CONTAINER_UTILS_COMPONENT_CID "@mozilla.org/rdf/container-utils;1"
+#define CONVERTER_INPUT_STREAM_COMPONENT_CID "@mozilla.org/network/converter-input-stream;1"
+#define DOM_DOCUMENT_COMPONENT_CID "@mozilla.org/xul/xul-document;1"
+#define DOM_PARSER_COMPONENT_CID "@mozilla.org/xmlextras/domparser;1"
+#define DOM_XML_DOCUMENT_COMPONENT_CID "@mozilla.org/xml/xml-document;1"
+#define EXTERNAL_APP_LAUNCHER_COMPONENT_CID "@mozilla.org/uriloader/external-helper-app-service;1"
+#define FILE_INPUT_STREAM_COMPONENT_CID "@mozilla.org/network/file-input-stream;1"
+#define FILE_OUTPUT_STREAM_COMPONENT_CID "@mozilla.org/network/file-output-stream;1"
+#define FILE_PICKER_COMPONENT_CID "@mozilla.org/filepicker;1"
+#define LOCAL_FILE_COMPONENT_CID "@mozilla.org/file/local;1"
+#define PREF_COMPONENT_CID "@mozilla.org/preferences;1"
+#define SCRIPTABLE_INPUT_STREAM_COMPONENT_CID "@mozilla.org/scriptableinputstream;1"
+#define SCRIPTABLE_UNICODE_CONVERTER_COMPONENT_CID "@mozilla.org/intl/scriptableunicodeconverter"
+#define SCRIPT_ERROR_COMPONENT_CID "@mozilla.org/scripterror;1"
+#define SIMPLE_URI_COMPONENT_CID "@mozilla.org/network/simple-uri;1"
+#define SUPPORTS_ARRAY_COMPONENT_CID "@mozilla.org/supports-array;1"
+#define STRING_INPUT_STREAM_COMPONENT_CID "@mozilla.org/io/string-input-stream;1"
+#define SUPPORTS_STRING_COMPONENT_CID "@mozilla.org/supports-string;1"
+#define TEXT_TO_SUB_URI_COMPONENT_CID "@mozilla.org/intl/texttosuburi;1"
+#define TIMER_COMPONENT_CID "@mozilla.org/timer;1"
+#define TRANSFERABLE_COMPONENT_CID "@mozilla.org/widget/transferable;1"
+#define VERSION_COMPARATOR_COMPONENT_CID "@mozilla.org/xpcom/version-comparator;1"
+#define XML_HTTP_REQUEST_COMPONENT_CID "@mozilla.org/xmlextras/xmlhttprequest;1"
+
+#define APP_SHELL_SERVICE_IID nsIAppShellService
+#define CATEGORY_MANAGER_SERVICE_IID nsICategoryManager
+#define CLIPBOARD_HELPER_SERVICE_IID nsIClipboardHelper
+#define CLIPBOARD_SERVICE_IID nsIClipboard
+#define CONSOLE_SERVICE_IID nsIConsoleService
+#define EXTENSION_MANAGER_SERVICE_IID nsIExtensionManager
+#define EXTERNAL_PROTOCOL_SERVICE_IID nsIExternalProtocolService
+#define FORM_HISTORY_SERVICE_IID nsIFormHistory
+#define FORM_HISTORY2_SERVICE_IID nsIFormHistory2
+#define INTERNET_SEARCH_SERVICE_IID nsIInternetSearchService
+#define IO_SERVICE_IID nsIIOService
+#define JS_SUBSCRIPT_LOADER_SERVICE_IID mozIJSSubScriptLoader
+#define OBSERVER_SERVICE_IID nsIObserverService
+#define PREF_SERVICE_IID nsIPrefService
+#define PROMPT_SERVICE_IID nsIPromptService
+#define PROPERTIES_SERVICE_IID nsIProperties
+#define RDF_SERVICE_IID nsIRDFService
+#define STRING_BUNDLE_SERVICE_IID nsIStringBundleService
+#define XUL_APP_INFO_SERVICE_IID nsIXULAppInfo
+#define WINDOW_SERVICE_IID nsIWindowMediator
+#define WINDOW_WATCHER_SERVICE_IID nsIWindowWatcher
+
+#define ALERT_SERVICE_COMPONENT_IID nsIAlertsService
+#define BINARY_INPUT_STREAM_COMPONENT_IID nsIBinaryInputStream
+#define CONTAINER_UTILS_COMPONENT_IID nsIRDFContainerUtils
+#define CONVERTER_INPUT_STREAM_COMPONENT_IID nsIConverterInputStream
+#define DOM_DOCUMENT_COMPONENT_IID nsIDOMDocument
+#define DOM_PARSER_COMPONENT_IID nsIDOMParser
+#define DOM_XML_DOCUMENT_COMPONENT_IID nsIDOMXMLDocument
+#define EXTERNAL_APP_LAUNCHER_COMPONENT_IID nsPIExternalAppLauncher
+#define FILE_INPUT_STREAM_COMPONENT_IID nsIFileInputStream
+#define FILE_OUTPUT_STREAM_COMPONENT_IID nsIFileOutputStream
+#define FILE_PICKER_COMPONENT_IID nsIFilePicker
+#define LOCAL_FILE_COMPONENT_IID nsILocalFile
+#define PREF_COMPONENT_IID nsIPref
+#define SCRIPTABLE_INPUT_STREAM_COMPONENT_IID nsIScriptableInputStream
+#define SCRIPTABLE_UNICODE_CONVERTER_COMPONENT_IID nsIScriptableUnicodeConverter
+#define SCRIPT_ERROR_COMPONENT_IID nsIScriptError
+#define SIMPLE_URI_COMPONENT_IID nsIURI
+#define STRING_INPUT_STREAM_COMPONENT_IID nsIStringInputStream
+#define SUPPORTS_ARRAY_COMPONENT_IID nsISupportsArray
+#define SUPPORTS_STRING_COMPONENT_IID nsISupportsString
+#define TEXT_TO_SUB_URI_COMPONENT_IID nsITextToSubURI
+#define TIMER_COMPONENT_IID nsITimer
+#define TRANSFERABLE_COMPONENT_IID nsITransferable
+#define VERSION_COMPARATOR_COMPONENT_IID nsIVersionComparator
+#define XML_HTTP_REQUEST_COMPONENT_IID nsIXMLHttpRequest
+
+#ifdef USE_GLOBAL_COMPONENTS_VARIABLES
+var Cc = CC;
+var Ci = CI;
+	#define S_CLASS(NAME) Cc [NAME##_SERVICE_CID]
+	#define CLASS(NAME) Cc [NAME##_COMPONENT_CID]
+	#define S_INTERFACE(NAME) Ci. NAME##_SERVICE_IID
+	#define INTERFACE(NAME) Ci. NAME##_COMPONENT_IID
+#else
+	#define S_CLASS(NAME) CC [NAME##_SERVICE_CID]
+	#define CLASS(NAME) CC [NAME##_COMPONENT_CID]
+	#define S_INTERFACE(NAME) CI. NAME##_SERVICE_IID
+	#define INTERFACE(NAME) CI. NAME##_COMPONENT_IID
+#endif
+
+#ifdef USE_COMPONENTS_WRAPPERS
+	// Dark-Demon's Components wrappers
+	function _s (cid, iid)
+	{
+		return Cc [cid]. getService (eval ("Ci. " + iid));
+	}
+	function _i (cid, iid)
+	{
+		return Cc [cid]. createInstance (eval ("Ci. " + iid));
+	}
+	#define QUOTED2(x) #x
+	#define QUOTED(x) QUOTED2(x)
+	#define SERVICE(NAME) _s (NAME##_SERVICE_CID, QUOTED (NAME##_SERVICE_IID))
+	#define COMPONENT(NAME) _i (NAME##_COMPONENT_CID, QUOTED (NAME##_COMPONENT_IID))
+#else
+	#define SERVICE(NAME) S_CLASS(NAME). getService (S_INTERFACE (NAME))
+	#define COMPONENT(NAME) CLASS(NAME). createInstance (INTERFACE (NAME))
+#endif
+
+#define QI(INTERFACE_ID) QueryInterface (CI. INTERFACE_ID)
+#define CID(UUID) Components. ID (UUID)
+
+#define ERROR(err_name) Components. results. err_name
+#define NS_ERROR(err_name) ERROR (NS_ERROR_##err_name)
+
+#endif
