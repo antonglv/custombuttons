@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+
+<!DOCTYPE dialog SYSTEM "chrome://custombuttons/locale/custombuttons.dtd">
+
+<dialog id="custombuttonsSettingsDialog"
+        xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+        buttons="accept, cancel"
+        onload="cbPrefs.onLoad();"
+        ondialogaccept="return cbPrefs.onAccept();"
+        ondialogcancel="return cbPrefs.onCancel();"
+        title="&custombuttons_prefsDialog.title;"
+		persist="screenX screenY width height">
+
+	<script type="application/x-javascript" src="chrome://custombuttons/content/cbfactory.js"/>
+    <script type="application/x-javascript" src="chrome://custombuttons/content/prefs.js"/>
+
+    <vbox flex="1">
+        <groupbox flex="1">
+            <checkbox id="modebit0" label="&custombuttons.prefs.use_xml_button_format;"/>
+            <checkbox id="modebit1" label="&custombuttons.prefs.show_apply_button;"/>
+            <checkbox id="modebit2" label="&custombuttons.prefs.disable_init_in_customize_toolbar;"/>
+            <checkbox id="cbEnableCBProtocol"
+					  label="&custombuttons.prefs.enable_custombutton_protocol;"
+					  hidden="true"/>
+        </groupbox>
+	</vbox>
+
+</dialog>
