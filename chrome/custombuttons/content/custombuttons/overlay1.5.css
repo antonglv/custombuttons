@@ -1,0 +1,5 @@
+toolbarbutton[id^="custombuttons-button"][orient]
+{
+  -moz-binding: url("toolbarbutton.xml#menu-orient");
+}
+
