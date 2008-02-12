@@ -1,0 +1,291 @@
+[Config]
+Relative path=1
+Compilator.SaveAll=0
+Compilator.Capture=0
+Compilator.HideOutput=0
+Compilator.LogType=0
+DefaultCPIndex=0
+LogtoEnd=1
+DontOpen=0
+FileFormat=0
+[Project tree]
+custom_buttons-0-0-2
+	+cb2
+		+extension
+			-skin
+				-classic
+					..\..\cb2\custom_buttons__-2.0.5.15b13-fx+tb+fl\chrome\custombuttons2\custombuttons\skin\classic\editor.css
+					..\..\cb2\custom_buttons__-2.0.5.15b13-fx+tb+fl\chrome\custombuttons2\custombuttons\skin\classic\custombuttons.css
+			-locale
+				-sv-SE
+					..\..\cb2\custom_buttons__-2.0.5.15b13-fx+tb+fl\chrome\custombuttons2\custombuttons\locale\sv-SE\custombuttons\options.dtd
+					..\..\cb2\custom_buttons__-2.0.5.15b13-fx+tb+fl\chrome\custombuttons2\custombuttons\locale\sv-SE\custombuttons\editor.dtd
+					..\..\cb2\custom_buttons__-2.0.5.15b13-fx+tb+fl\chrome\custombuttons2\custombuttons\locale\sv-SE\custombuttons\description.properties
+					..\..\cb2\custom_buttons__-2.0.5.15b13-fx+tb+fl\chrome\custombuttons2\custombuttons\locale\sv-SE\custombuttons\custombuttons.properties
+					..\..\cb2\custom_buttons__-2.0.5.15b13-fx+tb+fl\chrome\custombuttons2\custombuttons\locale\sv-SE\custombuttons\custombuttons.dtd
+				-sk-SK
+					..\..\cb2\custom_buttons__-2.0.5.15b13-fx+tb+fl\chrome\custombuttons2\custombuttons\locale\sk-SK\custombuttons\options.dtd
+					..\..\cb2\custom_buttons__-2.0.5.15b13-fx+tb+fl\chrome\custombuttons2\custombuttons\locale\sk-SK\custombuttons\editor.dtd
+					..\..\cb2\custom_buttons__-2.0.5.15b13-fx+tb+fl\chrome\custombuttons2\custombuttons\locale\sk-SK\custombuttons\description.properties
+					..\..\cb2\custom_buttons__-2.0.5.15b13-fx+tb+fl\chrome\custombuttons2\custombuttons\locale\sk-SK\custombuttons\custombuttons.properties
+					..\..\cb2\custom_buttons__-2.0.5.15b13-fx+tb+fl\chrome\custombuttons2\custombuttons\locale\sk-SK\custombuttons\custombuttons.dtd
+				-pl-PL
+					..\..\cb2\custom_buttons__-2.0.5.15b13-fx+tb+fl\chrome\custombuttons2\custombuttons\locale\pl-PL\custombuttons\options.dtd
+					..\..\cb2\custom_buttons__-2.0.5.15b13-fx+tb+fl\chrome\custombuttons2\custombuttons\locale\pl-PL\custombuttons\editor.dtd
+					..\..\cb2\custom_buttons__-2.0.5.15b13-fx+tb+fl\chrome\custombuttons2\custombuttons\locale\pl-PL\custombuttons\description.properties
+					..\..\cb2\custom_buttons__-2.0.5.15b13-fx+tb+fl\chrome\custombuttons2\custombuttons\locale\pl-PL\custombuttons\custombuttons.properties
+					..\..\cb2\custom_buttons__-2.0.5.15b13-fx+tb+fl\chrome\custombuttons2\custombuttons\locale\pl-PL\custombuttons\custombuttons.dtd
+				-nl-NL
+					..\..\cb2\custom_buttons__-2.0.5.15b13-fx+tb+fl\chrome\custombuttons2\custombuttons\locale\nl-NL\custombuttons\options.dtd
+					..\..\cb2\custom_buttons__-2.0.5.15b13-fx+tb+fl\chrome\custombuttons2\custombuttons\locale\nl-NL\custombuttons\editor.dtd
+					..\..\cb2\custom_buttons__-2.0.5.15b13-fx+tb+fl\chrome\custombuttons2\custombuttons\locale\nl-NL\custombuttons\description.properties
+					..\..\cb2\custom_buttons__-2.0.5.15b13-fx+tb+fl\chrome\custombuttons2\custombuttons\locale\nl-NL\custombuttons\custombuttons.properties
+					..\..\cb2\custom_buttons__-2.0.5.15b13-fx+tb+fl\chrome\custombuttons2\custombuttons\locale\nl-NL\custombuttons\custombuttons.dtd
+				-it-IT
+					..\..\cb2\custom_buttons__-2.0.5.15b13-fx+tb+fl\chrome\custombuttons2\custombuttons\locale\it-IT\custombuttons\options.dtd
+					..\..\cb2\custom_buttons__-2.0.5.15b13-fx+tb+fl\chrome\custombuttons2\custombuttons\locale\it-IT\custombuttons\editor.dtd
+					..\..\cb2\custom_buttons__-2.0.5.15b13-fx+tb+fl\chrome\custombuttons2\custombuttons\locale\it-IT\custombuttons\description.properties
+					..\..\cb2\custom_buttons__-2.0.5.15b13-fx+tb+fl\chrome\custombuttons2\custombuttons\locale\it-IT\custombuttons\custombuttons.properties
+					..\..\cb2\custom_buttons__-2.0.5.15b13-fx+tb+fl\chrome\custombuttons2\custombuttons\locale\it-IT\custombuttons\custombuttons.dtd
+				-fr-FR
+					..\..\cb2\custom_buttons__-2.0.5.15b13-fx+tb+fl\chrome\custombuttons2\custombuttons\locale\fr-FR\custombuttons\options.dtd
+					..\..\cb2\custom_buttons__-2.0.5.15b13-fx+tb+fl\chrome\custombuttons2\custombuttons\locale\fr-FR\custombuttons\editor.dtd
+					..\..\cb2\custom_buttons__-2.0.5.15b13-fx+tb+fl\chrome\custombuttons2\custombuttons\locale\fr-FR\custombuttons\description.properties
+					..\..\cb2\custom_buttons__-2.0.5.15b13-fx+tb+fl\chrome\custombuttons2\custombuttons\locale\fr-FR\custombuttons\custombuttons.properties
+					..\..\cb2\custom_buttons__-2.0.5.15b13-fx+tb+fl\chrome\custombuttons2\custombuttons\locale\fr-FR\custombuttons\custombuttons.dtd
+				-en-US
+					..\..\cb2\custom_buttons__-2.0.5.15b13-fx+tb+fl\chrome\custombuttons2\custombuttons\locale\en-US\custombuttons\options.dtd
+					..\..\cb2\custom_buttons__-2.0.5.15b13-fx+tb+fl\chrome\custombuttons2\custombuttons\locale\en-US\custombuttons\editor.dtd
+					..\..\cb2\custom_buttons__-2.0.5.15b13-fx+tb+fl\chrome\custombuttons2\custombuttons\locale\en-US\custombuttons\description.properties
+					..\..\cb2\custom_buttons__-2.0.5.15b13-fx+tb+fl\chrome\custombuttons2\custombuttons\locale\en-US\custombuttons\custombuttons.properties
+					..\..\cb2\custom_buttons__-2.0.5.15b13-fx+tb+fl\chrome\custombuttons2\custombuttons\locale\en-US\custombuttons\custombuttons.dtd
+				-de-DE
+					..\..\cb2\custom_buttons__-2.0.5.15b13-fx+tb+fl\chrome\custombuttons2\custombuttons\locale\de-DE\custombuttons\options.dtd
+					..\..\cb2\custom_buttons__-2.0.5.15b13-fx+tb+fl\chrome\custombuttons2\custombuttons\locale\de-DE\custombuttons\editor.dtd
+					..\..\cb2\custom_buttons__-2.0.5.15b13-fx+tb+fl\chrome\custombuttons2\custombuttons\locale\de-DE\custombuttons\description.properties
+					..\..\cb2\custom_buttons__-2.0.5.15b13-fx+tb+fl\chrome\custombuttons2\custombuttons\locale\de-DE\custombuttons\custombuttons.properties
+					..\..\cb2\custom_buttons__-2.0.5.15b13-fx+tb+fl\chrome\custombuttons2\custombuttons\locale\de-DE\custombuttons\custombuttons.dtd
+			-components
+				-idl
+				-sjs
+				-js
+					..\..\cb2\custom_buttons__-2.0.5.15b13-fx+tb+fl\components\CustomButtonProtocol.js
+			+content
+				-xml
+					..\..\cb2\custom_buttons__-2.0.5.15b13-fx+tb+fl\chrome\custombuttons2\custombuttons\content\custombuttons\Cb2XMLtemplate.xml
+				-css
+					..\..\cb2\custom_buttons__-2.0.5.15b13-fx+tb+fl\chrome\custombuttons2\custombuttons\content\custombuttons\overlay1.5.css
+					..\..\cb2\custom_buttons__-2.0.5.15b13-fx+tb+fl\chrome\custombuttons2\custombuttons\content\custombuttons\overlay.css
+				-sjs
+				+js
+					..\..\cb2\custom_buttons__-2.0.5.15b13-fx+tb+fl\chrome\custombuttons2\custombuttons\content\custombuttons\editor.js
+					..\..\cb2\custom_buttons__-2.0.5.15b13-fx+tb+fl\chrome\custombuttons2\custombuttons\content\custombuttons\Cb2_overlay2.js
+					..\..\cb2\custom_buttons__-2.0.5.15b13-fx+tb+fl\chrome\custombuttons2\custombuttons\content\custombuttons\Cb2_overlay1.js
+					..\..\cb2\custom_buttons__-2.0.5.15b13-fx+tb+fl\chrome\custombuttons2\custombuttons\content\custombuttons\Cb2_overlay.js
+				+xul
+					..\..\cb2\custom_buttons__-2.0.5.15b13-fx+tb+fl\chrome\custombuttons2\custombuttons\content\custombuttons\ThunderbirdOverlay.xul
+					..\..\cb2\custom_buttons__-2.0.5.15b13-fx+tb+fl\chrome\custombuttons2\custombuttons\content\custombuttons\options.xul
+					..\..\cb2\custom_buttons__-2.0.5.15b13-fx+tb+fl\chrome\custombuttons2\custombuttons\content\custombuttons\edit.xul
+					..\..\cb2\custom_buttons__-2.0.5.15b13-fx+tb+fl\chrome\custombuttons2\custombuttons\content\custombuttons\compose_buttonsoverlay.xul
+					..\..\cb2\custom_buttons__-2.0.5.15b13-fx+tb+fl\chrome\custombuttons2\custombuttons\content\custombuttons\buttonsoverlay.xul
+					..\..\cb2\custom_buttons__-2.0.5.15b13-fx+tb+fl\chrome\custombuttons2\custombuttons\content\custombuttons\overlay.xul
+				+bindings
+					+xml
+						..\..\cb2\custom_buttons__-2.0.5.15b13-fx+tb+fl\chrome\custombuttons2\custombuttons\content\custombuttons\toolbarbutton.xml
+						..\..\cb2\custom_buttons__-2.0.5.15b13-fx+tb+fl\chrome\custombuttons2\custombuttons\content\custombuttons\toolbarBindings.xml
+						..\..\cb2\custom_buttons__-2.0.5.15b13-fx+tb+fl\chrome\custombuttons2\custombuttons\content\custombuttons\codeeditor.xml
+						..\..\cb2\custom_buttons__-2.0.5.15b13-fx+tb+fl\chrome\custombuttons2\custombuttons\content\custombuttons\codeeditor.css
+					-sxml
+			-defaults
+				-preferences
+					..\..\cb2\custom_buttons__-2.0.5.15b13-fx+tb+fl\defaults\preferences\prefs.js
+			..\..\cb2\custom_buttons__-2.0.5.15b13-fx+tb+fl\install.rdf
+			..\..\cb2\custom_buttons__-2.0.5.15b13-fx+tb+fl\license.txt
+			..\..\cb2\custom_buttons__-2.0.5.15b13-fx+tb+fl\chrome.manifest
+			..\..\cb2\custom_buttons__-2.0.5.15b13-fx+tb+fl\change.log
+		+project
+			..\..\cb2\custom_buttons__-2.0.5.15b13-fx+tb+fl\build.xml
+	+custom_buttons-0.0.2
+		+aux
+			..\custom_buttons-0-0-1\chrome\custombuttons\content\custombuttons\cbbutton.xml
+			..\custom_buttons-0-0-1\chrome\custombuttons\content\custombuttons\editor.sjs
+			..\custom_buttons-0-0-1\buttonscodes.txt
+			..\..\pastebin\pastebin_panel-0-4-0-0\chrome\pastebin\content\pastebin\common.sjs
+			H:\Documents and Settings\MozillaTB\Profiles\Anton\extensions\{BDCF6A1A-49A7-4c3f-A442-781454C779F8}\chrome\proxybutton\content\proxybutton\proxybutton_tb.xul
+			n:\yanclock.js
+			chrome\custombuttons\content\custombuttons\cbfactory.sjs
+		-skin
+			-classic
+				chrome\custombuttons\skin\classic\editor.css
+				chrome\custombuttons\skin\classic\custombuttons.css
+		-locale
+			-zh-CN
+				chrome\custombuttons\locale\zh-CN\custombuttons\editor.dtd
+				chrome\custombuttons\locale\zh-CN\custombuttons\custombuttons.properties
+				chrome\custombuttons\locale\zh-CN\custombuttons\custombuttons.dtd
+			-sk-SK
+				chrome\custombuttons\locale\sk-SK\custombuttons\editor.dtd
+				chrome\custombuttons\locale\sk-SK\custombuttons\custombuttons.properties
+				chrome\custombuttons\locale\sk-SK\custombuttons\custombuttons.dtd
+			-pt-BR
+				chrome\custombuttons\locale\pt-BR\custombuttons\editor.dtd
+				chrome\custombuttons\locale\pt-BR\custombuttons\custombuttons.properties
+				chrome\custombuttons\locale\pt-BR\custombuttons\custombuttons.dtd
+			-pl-PL
+				chrome\custombuttons\locale\pl-PL\custombuttons\editor.dtd
+				chrome\custombuttons\locale\pl-PL\custombuttons\custombuttons.properties
+				chrome\custombuttons\locale\pl-PL\custombuttons\custombuttons.dtd
+			-en-US
+				chrome\custombuttons\locale\en-US\custombuttons\editor.dtd
+				chrome\custombuttons\locale\en-US\custombuttons\custombuttons.properties
+				chrome\custombuttons\locale\en-US\custombuttons\custombuttons.dtd
+			-ru-RU
+				chrome\custombuttons\locale\ru-RU\custombuttons\editor.dtd
+				chrome\custombuttons\locale\ru-RU\custombuttons\custombuttons.properties
+				chrome\custombuttons\locale\ru-RU\custombuttons\custombuttons.dtd
+		-components
+			-idl
+				components\CBKeyMapComponent.idl
+			-sjs
+				components\CustomButtonProtocol.sjs
+				components\CBKeyMapComponent.sjs
+				components\CBContentPolicy.sjs
+			-js
+				components\CustomButtonProtocol.js
+				components\CBKeyMapComponent.js
+				components\CBContentPolicy.js
+		-content
+			-xml
+				chrome\custombuttons\content\custombuttons\nbftemplate.xml
+			-css
+				chrome\custombuttons\content\custombuttons\overlay1.5.css
+				chrome\custombuttons\content\custombuttons\overlay.css
+			-sjs
+				chrome\custombuttons\content\custombuttons\overlay.sjs
+				chrome\custombuttons\content\custombuttons\buttonsoverlay.sjs
+				chrome\custombuttons\content\custombuttons\editor.sjs
+				chrome\custombuttons\content\custombuttons\customizeToolbars.sjs
+				chrome\custombuttons\content\custombuttons\prefs.sjs
+				chrome\custombuttons\content\custombuttons\loader.sjs
+				chrome\custombuttons\content\custombuttons\cbfactory.sjs
+			-js
+				chrome\custombuttons\content\custombuttons\overlay.js
+				chrome\custombuttons\content\custombuttons\editor.js
+				chrome\custombuttons\content\custombuttons\buttonsoverlay.js
+				chrome\custombuttons\content\custombuttons\customizeToolbars.js
+				chrome\custombuttons\content\custombuttons\prefs.js
+				chrome\custombuttons\content\custombuttons\loader.js
+				chrome\custombuttons\content\custombuttons\cbfactory.js
+			-xul
+				chrome\custombuttons\content\custombuttons\ThunderbirdOverlay.xul
+				chrome\custombuttons\content\custombuttons\overlay.xul
+				chrome\custombuttons\content\custombuttons\overlay3b2.xul
+				chrome\custombuttons\content\custombuttons\edit.xul
+				chrome\custombuttons\content\custombuttons\buttonsoverlay.xul
+				chrome\custombuttons\content\custombuttons\customizeToolbars.xul
+				chrome\custombuttons\content\custombuttons\prefs.xul
+			-bindings
+				-xml
+					chrome\custombuttons\content\custombuttons\toolbarbutton.xml
+					chrome\custombuttons\content\custombuttons\toolbarBindings.xml
+					chrome\custombuttons\content\custombuttons\codeeditor.xml
+					chrome\custombuttons\content\custombuttons\codeeditor.css
+				-sxml
+					chrome\custombuttons\content\custombuttons\toolbarbutton.sxml
+		-defaults
+			-preferences
+				defaults\preferences\prefs.js
+		license.txt
+		install.rdf
+		chrome.manifest
+		changelog.txt
+	+project
+		-inc
+			-stdlib
+				..\..\stdlib\inc\debug.hjs
+				..\..\stdlib\inc\prio.hjs
+				G:\firefox-1.5-source\mozilla\nsprpub\pr\include\prio.h
+				..\..\stdlib\inc\node.hjs
+				..\..\stdlib\inc\filepicker.hjs
+				G:\firefox-1.5-source\mozilla\xpcom\io\nsAppDirectoryServiceDefs.h
+				..\..\stdlib\inc\protocolhandler.hjs
+				..\..\stdlib\inc\stdcomps.hjs
+				..\..\stdlib\inc\contentpolicy.hjs
+			inc\project.hjs
+			inc\toolbarbutton.ixml
+		todo.txt
+		pack.bat
+		noinclude.txt
+		jsl.conf
+		jpp.bat
+		..\..\..\fordiff3\dependencies.txt
+		build.xml
+[Open project files]
+0=pack.bat
+1=chrome\custombuttons\content\custombuttons\overlay.sjs
+2=install.rdf
+3=..\..\cb2\cb2\chrome\custombuttons\content\custombuttons\edit.xul
+4=build.xml
+5=..\..\cb2\custom_buttons__-2.0.5.15b13-fx+tb+fl\build.xml
+6=..\..\cb2\custom_buttons__-2.0.5.15b13-fx+tb+fl\chrome\custombuttons2\custombuttons\content\custombuttons\Cb2_overlay.js
+7=..\..\cb2\custom_buttons__-2.0.5.15b13-fx+tb+fl\chrome\custombuttons2\custombuttons\content\custombuttons\overlay.xul
+8=..\..\..\..\html\cbcodestest.html
+9=..\..\cb2\custom_buttons__-2.0.5.15b13-fx+tb+fl\chrome.manifest
+10=..\..\cb2\custom_buttons__-2.0.5.15b13-fx+tb+fl\chrome\custombuttons2\custombuttons\content\custombuttons\Cb2_overlay1.js
+11=H:\ffdownloads\custom_buttons__-2.0.5.15b20-fx+tb+fl\install.rdf
+12=H:\Program Files\Firefox2\chrome\toolkit\content\global\customizeToolbar.js
+13=H:\Program Files\Firefox2\chrome\toolkit\content\global\bindings\toolbar.xml
+[Selected Project Files]
+Main=
+Selected=install.rdf
+[pack.bat]
+TopLine=1
+Caret=17,29
+[chrome\custombuttons\content\custombuttons\overlay.sjs]
+TopLine=47
+Caret=19,566
+Mark1=21,133
+Mark2=26,229
+Mark3=21,418
+Mark4=26,220
+Mark5=21,409
+Mark6=16,199
+Mark7=19,447
+Mark8=36,77
+[install.rdf]
+TopLine=7
+Caret=25,31
+[..\..\cb2\cb2\chrome\custombuttons\content\custombuttons\edit.xul]
+TopLine=1
+Caret=1,1
+[build.xml]
+TopLine=181
+Caret=1,230
+[..\..\cb2\custom_buttons__-2.0.5.15b13-fx+tb+fl\build.xml]
+TopLine=119
+Caret=30,128
+[..\..\cb2\custom_buttons__-2.0.5.15b13-fx+tb+fl\chrome\custombuttons2\custombuttons\content\custombuttons\Cb2_overlay.js]
+TopLine=1075
+Caret=22,1100
+[..\..\cb2\custom_buttons__-2.0.5.15b13-fx+tb+fl\chrome\custombuttons2\custombuttons\content\custombuttons\overlay.xul]
+TopLine=47
+Caret=1573,88
+[..\..\..\..\html\cbcodestest.html]
+TopLine=1
+Caret=1,18
+[..\..\cb2\custom_buttons__-2.0.5.15b13-fx+tb+fl\chrome.manifest]
+TopLine=1
+Caret=1,1
+[..\..\cb2\custom_buttons__-2.0.5.15b13-fx+tb+fl\chrome\custombuttons2\custombuttons\content\custombuttons\Cb2_overlay1.js]
+TopLine=1384
+Caret=95,369
+[H:\ffdownloads\custom_buttons__-2.0.5.15b20-fx+tb+fl\install.rdf]
+TopLine=1
+Caret=1,1
+[H:\Program Files\Firefox2\chrome\toolkit\content\global\customizeToolbar.js]
+TopLine=428
+Caret=1,452
+Mark1=45,936
+[H:\Program Files\Firefox2\chrome\toolkit\content\global\bindings\toolbar.xml]
+TopLine=36
+Caret=31,107
