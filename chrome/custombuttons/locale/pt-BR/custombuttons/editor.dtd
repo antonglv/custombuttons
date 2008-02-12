@@ -1,0 +1,22 @@
+<!ENTITY editor.dialog.title "Editar botão">
+<!ENTITY editor.name "Nome:">
+<!ENTITY editor.name.tooltiptext "Define o local e o texto de poupup do botão">
+<!ENTITY editor.image "Imagem:">
+<!ENTITY editor.select "Procurar...">
+<!ENTITY editor.base64 "&#8658; base64">
+<!ENTITY editor.base64.tooltiptext "Converte a imagem para o formato base64 (data:image/png;base64,...)">
+<!ENTITY editor.code "Código">
+<!ENTITY editor.code.tooltiptext "Executa ao pressionar o botão">
+<!ENTITY editor.initCode "Código de inicialização">
+<!ENTITY editor.initCode.tooltiptext "Executa quando o navegar inicia">
+<!ENTITY editor.code.defaultValue "/*CÓDIGO*/">
+<!ENTITY editor.initCode.defaultValue "/*Código de inicialização*/">
+<!ENTITY editor.Apply "Apply">
+<!ENTITY editor.urlfield "Code:">
+<!ENTITY editor.buttonSettings "Button settings">
+<!ENTITY editor.buttonSettings.tooltiptext "Button settings panel">
+<!ENTITY editor.buttonSettings.hotKeyGroupbox "&quot;Hot&quot; key">
+<!ENTITY editor.buttonSettings.accelkey "Hotkey:">
+<!ENTITY editor.buttonSettings.disableDefaultKeyBehavior "Disable default action for specified hotkey">
+<!ENTITY editor.buttonSettings.initializationGroupbox "Initialization">
+<!ENTITY editor.buttonSettings.initInCustomizeToolbarDialog "Enable initialization in &quot;Customize Toolbar&quot; dialog">

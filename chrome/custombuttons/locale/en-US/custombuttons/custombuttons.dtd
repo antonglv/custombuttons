@@ -1,0 +1,11 @@
+<!ENTITY custombuttons.viewMenu_Item "Add new button...">
+<!ENTITY custombuttons.buttonPopup.edit "Edit button...">
+<!ENTITY custombuttons.buttonPopup.remove "Delete button">
+<!ENTITY custombuttons.buttonPopup.clone "Clone button">
+<!ENTITY custombuttons.buttonPopup.copyURI "Copy to clipboard">
+
+<!ENTITY custombuttons_prefsDialog.title "Custombuttons: settings">
+<!ENTITY custombuttons.prefs.use_xml_button_format "Use new button format">
+<!ENTITY custombuttons.prefs.show_apply_button "Show &quot;Apply&quot; button in code editor">
+<!ENTITY custombuttons.prefs.disable_init_in_customize_toolbar "Disable initialization id &quot;Customize Toolbar&quot; dialog">
+<!ENTITY custombuttons.prefs.enable_custombutton_protocol "Enable install buttons from mail messages">
