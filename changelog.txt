@@ -1,0 +1,43 @@
+Changelog
+==============
+0.0.2.5
+* Security fix to prevent local disk access (security issues created by Firefox bug #413250)
+0.0.2.4
+* Code reorganizing
+0.0.2.3.6
+* Added capability to assign hot keys for custom buttons
+0.0.2.3.5
+* Flock support added
+0.0.2.3.4
+* Code experiments
+0.0.2.3.2
+* Added custombutton protocol support in mail messages
+* Small code refactoring
+0.0.2.3
+* Now custom buttons available in Thunderbird message and compose message windows.
+0.0.2.2
+* Fixed a bug with some nonoperating buttons.
+* Fixed a bug with buttons which hasn't 'cb-init' attribute.
+* Fixed 'settings.editor.showApplyButton' and 'mode' preferences conflict.
+0.0.2.1
+* Small code refactoring
+* Firefox 3b2, Thunderbird 2.0.0.9 support
+0.0.2
+* The code has rather strongly changed.
+  No new functionality added, but the principle of work was changed.
+* Buttons are storing now in the profile folder instead of prefs.js
+0.0.1.2
+* Fixed a bug when incorrect initialization code caused button's position reset after browser restart.
+* Thunderbird support
+* Flock support
+* Some enhances to code editor:
+  - Apply Button (hidden by default - set custombuttons.settings.editor.showApplyButton=true to enable it) 
+  - F9 hot key executes oncommand code (not initialization code)
+* Added some localizations
+* Minor changes and bug fixes
+* Added compatibility for Toolbar Enhancements extension
+
+0.0.1
+* First release
+
+
