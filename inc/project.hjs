@@ -1,0 +1,182 @@
+#ifndef PROJECT_HEADER_JS
+#define PROJECT_HEADER_JS
+
+#define NODEBUG
+
+#include <debug.hjs>
+#include <stdcomps.hjs>
+
+#define XULNS "http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+#define CUSTOMBUTTONS_OVERLAY_SCRIPT_URI "chrome://custombuttons/content/buttonsoverlay.js"
+
+#define CB_MODE_USE_XML_BUTTON_FORMAT 1
+#define CB_MODE_SHOW_APPLY_BUTTON 2
+#define CB_MODE_ENABLE_INIT_IN_CTDIALOG 1
+#define CB_MODE_DISABLE_DEFAULT_KEY_BEHAVIOR 2
+
+#define CB_KEYMAP_SERVICE_CID "@xsms.nm.ru/custombuttons/cbkeymap;1"
+#define CB_KEYMAP_SERVICE_IID cbIKeyMapService
+
+#define CB_CONTENT_POLICY_COMPONENT_CID "@xsms.nm.ru/custombuttons/cbcontentpolicy;1"
+#define CB_CONTENT_POLICY_COMPONENT_IID cbIContentPolicyComponent
+
+#define BT(X,Y) (((X) & (Y)) == Y)
+#define SET(X,Y) if (!X) X = Y
+
+#define DEFINE_ATTRIBUTE_GETTER(ATTR_NAME,PROP_NAME,DEFAULT_VALUE,EXPRESSION)	\
+PROP_NAME: DEFAULT_VALUE,														\
+get ATTR_NAME ()																\
+{																				\
+	SET (this. PROP_NAME, EXPRESSION);											\
+	return this. PROP_NAME;														\
+}
+
+#define DEFINE_GETTER_TRANSLATE(ATTR_NAME,DEST)									\
+get ATTR_NAME ()																\
+{																				\
+	return DEST. ATTR_NAME;														\
+}
+
+#define DEFINE_SETTER_TRANSLATE(ATTR_NAME,DEST)									\
+set ATTR_NAME (value)															\
+{																				\
+	DEST. ATTR_NAME = value;													\
+}
+
+#define DEFINE_FUNCTION_TRANSLATE(METHOD_NAME,DEST,ARGS...)						\
+METHOD_NAME: function (ARGS)													\
+{																				\
+	return DEST. METHOD_NAME (ARGS);											\
+}
+
+#define DEFINE_PROCEDURE_TRANSLATE(METHOD_NAME,DEST,ARGS...)					\
+METHOD_NAME: function (ARGS)													\
+{																				\
+	DEST. METHOD_NAME (ARGS);													\
+}
+
+#define DEFINE_STD_CAN_UNLOAD canUnload: function (componentManager) { return true; }
+
+#define DEFINE_STD_GET_CLASS_OBJECT												\
+getClassObject: function (componentManager, cid, iid)							\
+{																				\
+    if (!cid. equals (this. CLSID))												\
+        throw NS_ERROR (NO_INTERFACE);											\
+    if (!iid. equals (CI. nsIFactory))											\
+        throw NS_ERROR (NOT_IMPLEMENTED);										\
+    return this. CLASS_FACTORY;													\
+}
+
+#define DEFINE_STD_REGISTER_SELF												\
+FIRST_TIME: true,																\
+registerSelf: function (componentManager, fileSpec, location, type)				\
+{																				\
+	if (this. FIRST_TIME)														\
+        this. FIRST_TIME = false;												\
+    else																		\
+        throw NS_ERROR (FACTORY_REGISTER_AGAIN);								\
+    componentManager = componentManager. QI (nsIComponentRegistrar);			\
+    componentManager. registerFactoryLocation									\
+    (																			\
+        this. CLSID, this. ComponentName,										\
+        this. ContractID, fileSpec,												\
+        location, type															\
+    );																			\
+}
+
+#define DEFINE_STD_UNREGISTER_SELF												\
+unregisterSelf: function (componentManager, location, loaderStr) {}
+
+#define DEFINE_STD_MODULE_INTERFACE												\
+DEFINE_STD_CAN_UNLOAD,															\
+DEFINE_STD_GET_CLASS_OBJECT,													\
+DEFINE_STD_REGISTER_SELF,														\
+DEFINE_STD_UNREGISTER_SELF
+
+#define DEFINE_STD_CLASS_FACTORY(c)												\
+CLASS_FACTORY:																	\
+{																				\
+	QueryInterface: function (iid)												\
+	{																			\
+		if (iid. equals (CI. nsIFactory) || iid. equals (CI. nsISupports))		\
+			return this;														\
+		throw NS_ERROR (NO_INTERFACE);											\
+	},																			\
+    createInstance: function (outer, iid)										\
+    {																			\
+        if (outer != null)														\
+            throw NS_ERROR (NO_AGGREGATION);									\
+        return (new c ()). QueryInterface (iid);								\
+    }																			\
+}
+
+#define DEFINE_STD_NS_GET_MODULE(module)										\
+function NSGetModule (componentManager, fileSpec)								\
+{																				\
+	return module;																\
+}
+
+#define DEFINE_STD_QI(IID)														\
+QueryInterface: function (iid)													\
+{																				\
+	if (!iid. equals (CI. IID) &&												\
+		!iid. equals (CI. nsISupports))											\
+		throw NS_ERROR (NO_INTERFACE);											\
+	return this;																\
+}
+
+#define GET_ELEMENT(id) document. getElementById (id)
+#define ELEMENT(id) GET_ELEMENT (id)
+#define SET_ATTRIBUTE(elementId,attributeName,attributeValue)					\
+ELEMENT (elementId). setAttribute (attributeName, attributeValue)
+#define GET_STRING(stringBundleId,stringId)										\
+GET_ELEMENT (stringBundleId). getString (stringId)
+#define GET_FORMATTED_STRING(stringBundleId,stringId,args...)					\
+GET_ELEMENT (stringBundleId). getFormattedString (stringId, [args])
+
+#define CB_STRING(stringBundleId,stringId,argument)								\
+GET_STRING (stringBundleId, stringId). replace (/%s/gi, argument)
+
+#define THROW(message) throw new Error (message);
+
+#define ADD_BUBBLING_EVENT_HANDLER(eventName,action...)							\
+window. addEventListener														\
+(																				\
+	eventName,																	\
+	function (event)															\
+	{																			\
+		action;																	\
+	},																			\
+	false																		\
+)
+
+#define ADD_CAPTURING_EVENT_HANDLER(eventName,action...)							\
+window. addEventListener														\
+(																				\
+	eventName,																	\
+	function (event)															\
+	{																			\
+		action;																	\
+	},																			\
+	true																		\
+)
+
+#define _SUPER(arguments...)													\
+this. __super. call (this, arguments)
+
+#define SUPER(method,arguments...)												\
+this. __super. prototype. method. apply (this, [arguments])
+
+#define EXTEND(child,parent)													\
+child. prototype. __proto__ = parent. prototype
+
+#define EXTENDS(child,parent)													\
+EXTEND (child, parent);															\
+child. prototype. __super = parent
+
+#define DEFINE_GETTER(PROP_NAME,CLASS_NAME)										\
+get PROP_NAME ()																\
+{																				\
+	return new CLASS_NAME ();													\
+}
+#endif
