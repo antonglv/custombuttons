@@ -1,0 +1,8 @@
+.custombuttons-editor-codeBox
+{
+    -moz-binding: url("chrome://custombuttons/content/codeeditor.xml#code_editor_binding");
+}
+#accelkey
+{
+	-moz-binding: url("chrome://custombuttons/content/codeeditor.xml#accelkeytextboxbinding");
+}

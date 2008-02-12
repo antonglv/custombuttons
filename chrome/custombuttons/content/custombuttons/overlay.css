@@ -1,0 +1,19 @@
+/*toolbar*/
+toolbar{
+	 -moz-binding: url("toolbarBindings.xml#custombuttons-toolbar-binding");
+}
+
+/********** toolbarbutton **********/
+
+toolbarbutton[id^='custombuttons-button'] {
+  -moz-binding: url("toolbarbutton.xml#toolbarbutton");
+}
+
+toolbarbutton[id^='custombuttons-button'][type="menu"] {
+  -moz-binding: url("toolbarbutton.xml#menu");
+}
+
+toolbarbutton[id^='custombuttons-button'][type="menu-button"] {
+  -moz-binding: url("toolbarbutton.xml#menu-button");
+}
+
