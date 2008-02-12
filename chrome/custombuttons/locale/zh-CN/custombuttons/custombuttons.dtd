@@ -1,0 +1,12 @@
+<!ENTITY custombuttons.viewMenu_Item "添加新按钮...">
+<!ENTITY custombuttons.buttonPopup.edit "编辑该按钮...">
+<!ENTITY custombuttons.buttonPopup.remove "删除该按钮">
+<!ENTITY custombuttons.buttonPopup.clone "复制该按钮">
+<!ENTITY custombuttons.buttonPopup.copyURI "复制该按钮到剪贴板">
+
+<!ENTITY custombuttons_prefsDialog.title "Custombuttons: settings">
+<!ENTITY custombuttons.prefs.use_xml_button_format "Use new button format">
+<!ENTITY custombuttons.prefs.show_apply_button "Show &quot;Apply&quot; button in code editor">
+<!ENTITY custombuttons.prefs.disable_init_in_customize_toolbar "Disable initialization id &quot;Customize Toolbar&quot; dialog">
+<!ENTITY custombuttons.prefs.enable_custombutton_protocol "Enable install buttons from mail messages">
+<!ENTITY editor.accelkey "Key:">
