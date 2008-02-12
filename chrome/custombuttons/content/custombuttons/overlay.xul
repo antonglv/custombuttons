@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<!DOCTYPE overlay [
+<!ENTITY % browserDTD SYSTEM "chrome://browser/locale/browser.dtd" >
+%browserDTD;
+<!ENTITY % custombuttonsDTD SYSTEM "chrome://custombuttons/locale/custombuttons.dtd" >
+%custombuttonsDTD;
+]>
+<overlay id="custombuttonsOverlay"
+		 xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+	<script type="application/x-javascript" src="chrome://custombuttons/content/loader.js"/>
+
+	<popupset id="mainPopupSet">
+		<popup id="custombuttons-contextpopup">
+			<menuitem id="custombuttons-contextpopup-edit"
+					  label="&custombuttons.buttonPopup.edit;"
+					  oncommand="custombuttons.editButton();"/>
+			<menuitem id="custombuttons-contextpopup-remove"
+					  label="&custombuttons.buttonPopup.remove;"
+					  oncommand="custombuttons.removeButton();"/>
+			<menuseparator id="custombuttons-contextpopup-separator1"/>
+			<menuitem id="custombuttons-contextpopup-clone"
+					  label="&custombuttons.buttonPopup.clone;"
+					  oncommand="custombuttons.cloneButton();"/>
+			<menuitem id="custombuttons-contextpopup-copyURI"
+					  label="&custombuttons.buttonPopup.copyURI;"
+					  oncommand="custombuttons.copyURI();"/>
+			<menuseparator id="custombuttons-contextpopup-separator2"/>
+			<menuitem command="cmd_CustomizeToolbars"
+					  id="custombuttons-contextpopup-customize"
+					  label="&viewCustomizeToolbar.label;"
+					  accesskey="&viewCustomizeToolbar.accesskey;"/>
+		</popup>
+	</popupset>
+	
+	<menupopup id="menu_viewPopup">
+		<menuseparator/>
+		<menuitem label="&custombuttons.viewMenu_Item;"
+				  oncommand="custombuttons.addButton()"/>             
+	</menupopup>
+	
+	<window id="main-window">	
+		<stringbundleset id="cbStringBundleSet">
+			<stringbundle id="cbStrings"
+						  src="chrome://custombuttons/locale/custombuttons.properties"/>
+		</stringbundleset>
+	</window>
+
+</overlay>
