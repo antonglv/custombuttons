@@ -1,0 +1,40 @@
+content	custombuttons	jar:chrome/custombuttons.jar!/content/custombuttons/
+content	custombuttons-profilefolder	../../custombuttons/
+
+# Firefox
+overlay	chrome://browser/content/browser.xul	chrome://custombuttons/content/overlay.xul
+overlay	chrome://browser/content/browser.xul chrome://custombuttons-profilefolder/content/buttonsoverlay.xul
+
+# Firefox 3
+overlay	chrome://browser/content/browser.xul	chrome://custombuttons/content/overlay3b2.xul   application={ec8030f7-c20a-464f-9b0e-13a3a9e97384} appversion>=3.0b1
+overlay	chrome://global/content/customizeToolbar.xul	chrome://custombuttons/content/customizeToolbars.xul  application={ec8030f7-c20a-464f-9b0e-13a3a9e97384} appversion>=3.0b1
+
+# Thunderbird
+## main window
+overlay	chrome://messenger/content/messenger.xul	chrome://custombuttons/content/ThunderbirdOverlay.xul
+overlay	chrome://messenger/content/messenger.xul chrome://custombuttons-profilefolder/content/buttonsoverlay.xul
+## message window
+overlay chrome://messenger/content/messageWindow.xul chrome://custombuttons/content/ThunderbirdOverlay.xul
+overlay chrome://messenger/content/messageWindow.xul chrome://custombuttons-profilefolder/content/buttonsoverlay.xul
+## message compose
+overlay chrome://messenger/content/messengercompose/messengercompose.xul chrome://custombuttons/content/ThunderbirdOverlay.xul
+overlay chrome://messenger/content/messengercompose/messengercompose.xul chrome://custombuttons-profilefolder/content/mcbuttonsoverlay.xul
+
+skin	custombuttons	classic/1.0	jar:chrome/custombuttons.jar!/skin/classic/
+
+style	chrome://browser/content/browser.xul	chrome://custombuttons/skin/custombuttons.css
+style	chrome://global/content/customizeToolbar.xul	chrome://custombuttons/skin/custombuttons.css
+
+style	chrome://messenger/content/messenger.xul	chrome://custombuttons/skin/custombuttons.css
+style	chrome://messenger/content/messengercompose/messengercompose.xul chrome://custombuttons/skin/custombuttons.css
+style	chrome://messenger/content/messageWindow.xul chrome://custombuttons/skin/custombuttons.css
+
+style	chrome://browser/content/browser.xul	chrome://custombuttons/content/overlay.css
+style	chrome://browser/content/browser.xul	chrome://custombuttons/content/overlay1.5.css application={ec8030f7-c20a-464f-9b0e-13a3a9e97384} appversion<=1.6
+
+locale	custombuttons	en-US	jar:chrome/custombuttons.jar!/locale/en-US/custombuttons/
+locale	custombuttons	ru-RU	jar:chrome/custombuttons.jar!/locale/ru-RU/custombuttons/
+locale	custombuttons	pl-PL	jar:chrome/custombuttons.jar!/locale/pl-PL/custombuttons/
+locale	custombuttons	pt-BR	jar:chrome/custombuttons.jar!/locale/pt-BR/custombuttons/
+locale	custombuttons	sk-SK	jar:chrome/custombuttons.jar!/locale/sk-SK/custombuttons/
+locale	custombuttons	zh-CN	jar:chrome/custombuttons.jar!/locale/zh-CN/custombuttons/
