@@ -1,0 +1,40 @@
+@namespace url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul");
+
+/*
+* Использованы иконки из расширения "CuteMenus - Crystal SVG"
+* (http://www.cutemenuproject.com/)
+*/
+
+toolbarbutton[id^="custombuttons-button"]{
+  list-style-image: url("chrome://custombuttons/skin/button.png") !important;
+}
+
+toolbarbutton[id^='custombuttons-button']{
+	-moz-binding: url("chrome://custombuttons/content/toolbarbutton.xml#toolbarbutton");
+	opacity:0.5;
+}
+
+toolbarbutton[id^='custombuttons-button'][initialized]{
+	opacity:1;
+}
+
+menuitem[id^="custombuttons-contextpopup-"] {
+   -moz-binding: url("chrome://global/content/bindings/menu.xml#menuitem-iconic") !important;
+}
+
+
+#custombuttons-contextpopup-edit{
+  list-style-image: url("chrome://custombuttons/skin/edit.png") !important;
+}
+
+#custombuttons-contextpopup-remove{
+  list-style-image: url("chrome://custombuttons/skin/remove.png") !important;
+}
+
+#custombuttons-contextpopup-clone{
+  list-style-image: url("chrome://custombuttons/skin/clone.png") !important;
+}
+
+#custombuttons-contextpopup-copyURI{
+  list-style-image: url("chrome://custombuttons/skin/copy.png") !important;
+}
