@@ -1,0 +1,172 @@
+<?xml version="1.0"?>
+<project name="Custom Buttons"
+		 default="buildxpi"
+		 basedir=".">
+
+	<description>
+		Gives a possibility to create custom toolbarbuttons.
+	</description>
+	
+	<!-- set global properties for this build -->
+	<property name="geckosdkpath"
+			  location="Q:\tmp\Mozilla\gecko-sdk-i586-pc-msvc-1.8a6\gecko-sdk"/>
+	<property name="xpidlpath" location="${geckosdkpath}\BIN"/>
+	<property name="idlpath" location="${geckosdkpath}\IDL"/>
+	
+	<property name="xpistdlib" location="${basedir}\stdlib"/>
+	<property name="xpistdinc" location="${xpistdlib}\inc"/>
+	<property name="projectinc" location="${basedir}\inc"/>
+
+	<property name="appname" value="custombuttons"/>
+	<property name="jarname" value="custombuttons"/>
+	<property name="xpiname" value="custombuttons"/>
+	<property name="extensionversion" value="0.0.2"/>
+	
+	<property name="keep_jar" value="true"/>
+	
+	<target name="init">
+		<!-- Create the time stamp -->
+		<tstamp/>
+	</target>
+	
+	<!--
+		************************************************************************
+		* preprocess *.s* files
+		************************************************************************
+	-->
+	<target name="preprocess" depends="init" description="preprocess files">
+		<mapper id="preprocessormapper">
+			<mapper type="glob" from="*.sjs" to="*.js"/>
+			<mapper type="glob" from="*.sxml" to="*.xml"/>
+		</mapper>
+		<apply executable="cpp.exe"
+			   failonerror="true"
+			   force="true"> <!-- and no jpp.bat needed now -->
+			<fileset dir="${basedir}">
+				<include name="**/*.sjs"/>
+				<include name="**/*.sxml"/>
+			</fileset>
+			<mapper refid="preprocessormapper"/>
+			<arg value="-I"/>
+			<arg value="${xpistdlib}"/>
+			<arg value="-I"/>
+			<arg value="${xpistdinc}"/>
+			<arg value="-I"/>
+			<arg value="${projectinc}"/>
+			<arg value="-P"/>
+			<arg value="-CC"/>
+			<srcfile/>
+			<redirector>
+				<outputfilterchain>
+					<linecontains negate="true"> <!-- and no grep needed now -->
+						<contains value="{--exclude-this-line}"/>
+					</linecontains>
+				</outputfilterchain>
+				<outputmapper refid="preprocessormapper"/>
+			</redirector>
+		</apply>
+	</target>
+	
+	<target name="buildxpt" depends="init,preprocess">
+		<apply executable="xpidl.exe" dir="${xpidlpath}"
+			   resolveExecutable="true" dest="${basedir}/components"
+			   failonerror="true"> <!-- and no pack.bat needed now -->
+			<arg value="-m"/>
+			<arg value="typelib"/>
+			<arg value="-I"/>
+			<arg value="${idlpath}"/>
+			<arg value="-e"/>
+			<targetfile/>
+			<srcfile/>
+			<fileset dir="${basedir}/components" includes="*.idl"/>
+			<mapper type="glob" from="*.idl" to="*.xpt"/>
+		</apply>
+	</target>
+	
+	<target name="buildjar" depends="init,preprocess">
+		<zip destfile="${basedir}/chrome/${jarname}.jar"
+			 compress="false" level="0"> <!-- and no 7-zip needed now -->
+			<fileset dir="${basedir}/chrome/${jarname}">
+				<include name="**/*.*"/>
+				<exclude name="**/*.sjs"/>
+				<exclude name="**/*.hjs"/>
+				<exclude name="**/*.ijs"/>
+				<exclude name="**/*.sxml"/>
+				<exclude name="**/*.ixml"/>
+				<exclude name="**/*.idl"/>
+				<exclude name="**/.*"/>
+			</fileset>
+		</zip>
+	</target>
+	
+	<target name="buildxpiwithoutjar" depends="init,preprocess,buildxpt"
+			unless="keep_jar">
+			<!--
+		<replaceregexp file="${basedir}/chrome.manifest" byline="true">
+			<regexp pattern="^(content\s+${appname}\s+)jar:chrome\/${jarname}\.jar!(\/\S*\/)$"/>
+  			<substitution expression="\1chrome/${appname}\2"/>
+		</replaceregexp>
+		<replaceregexp file="${basedir}/chrome.manifest" byline="true">
+			<regexp pattern="^(skin|locale)(\s+\S*\s+\S*\s+)jar:chrome\/${jarname}\.jar!(\/.*\/)$"/>
+  			<substitution expression="\1\2chrome/${jarname}\3"/>
+		</replaceregexp>
+			-->
+		<zip destfile="${xpiname}-${extensionversion}-${DSTAMP}.xpi"
+			 compress="true" level="9"> <!-- and no 7-zip, pack.bat needed now -->
+			<fileset dir="${basedir}">
+				<include name="chrome.manifest"/>
+				<include name="install.rdf"/>
+				<include name="install.rdf"/>
+				<include name="changelog.txt"/>
+				<include name="license.txt"/>
+				<include name="chrome/**/*.*"/>
+				<include name="defaults/**/*.*"/>
+				<include name="components/**/*.*"/>
+				<exclude name="chrome/*.jar"/>
+				<exclude name="**/*.sjs"/>
+				<exclude name="**/*.hjs"/>
+				<exclude name="**/*.ijs"/>
+				<exclude name="**/*.sxml"/>
+				<exclude name="**/*.ixml"/>
+				<exclude name="**/*.idl"/>
+				<exclude name="**/.*"/>
+			</fileset>
+		</zip>
+	</target>
+	
+	<target name="buildxpiwithjar" depends="init,preprocess,buildxpt,buildjar"
+			if="keep_jar">
+			<!--
+		<replaceregexp file="${basedir}/chrome.manifest" byline="true">
+			<regexp pattern="^(content\s+${appname}*\s+)chrome\/${appname}(\/\S*\/)$"/>
+  			<substitution expression="\1jar:chrome\/${jarname}\.jar!\2"/>
+		</replaceregexp>
+		<replaceregexp file="${basedir}/chrome.manifest" byline="true">
+			<regexp pattern="^(skin|locale)(\s+\S*\s+\S*\s+)chrome\/${appname}(\/.*\/)$"/>
+  			<substitution expression="\1\2jar:chrome\/${jarname}\.jar!\3"/>
+		</replaceregexp>
+			-->
+		<zip destfile="${xpiname}-${extensionversion}-${DSTAMP}.xpi"
+			 compress="true" level="9"> <!-- and no 7-zip, pack.bat needed now -->
+			<fileset dir="${basedir}">
+				<include name="chrome.manifest"/>
+				<include name="install.rdf"/>
+				<include name="changelog.txt"/>
+				<include name="license.txt"/>
+				<include name="chrome/${jarname}.jar"/>
+				<include name="defaults/**/*.*"/>
+				<include name="components/**/*.*"/>
+				<exclude name="**/*.sjs"/>
+				<exclude name="**/*.hjs"/>
+				<exclude name="**/*.ijs"/>
+				<exclude name="**/*.sxml"/>
+				<exclude name="**/*.ixml"/>
+				<exclude name="**/*.idl"/>
+				<exclude name="**/.*"/>
+			</fileset>
+		</zip>
+	</target>
+	
+	<target name="buildxpi" depends="buildxpiwithjar,buildxpiwithoutjar"/>
+	
+</project>
