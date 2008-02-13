@@ -51,13 +51,13 @@ custom_buttons-0-0-2
 				components\CustomButtonProtocol.js
 				components\CBKeyMapComponent.js
 				components\CBContentPolicy.js
-		-content
+		+content
 			-xml
 				chrome\custombuttons\content\custombuttons\nbftemplate.xml
 			-css
 				chrome\custombuttons\content\custombuttons\overlay1.5.css
 				chrome\custombuttons\content\custombuttons\overlay.css
-			-sjs
+			+sjs
 				chrome\custombuttons\content\custombuttons\overlay.sjs
 				chrome\custombuttons\content\custombuttons\buttonsoverlay.sjs
 				chrome\custombuttons\content\custombuttons\editor.sjs
@@ -65,7 +65,7 @@ custom_buttons-0-0-2
 				chrome\custombuttons\content\custombuttons\prefs.sjs
 				chrome\custombuttons\content\custombuttons\loader.sjs
 				chrome\custombuttons\content\custombuttons\cbfactory.sjs
-			-js
+			+js
 				chrome\custombuttons\content\custombuttons\overlay.js
 				chrome\custombuttons\content\custombuttons\editor.js
 				chrome\custombuttons\content\custombuttons\buttonsoverlay.js
@@ -126,15 +126,17 @@ custom_buttons-0-0-2
 5=H:\Program Files\Firefox2\chrome\toolkit\content\global\customizeToolbar.js
 6=H:\Program Files\Firefox2\chrome\toolkit\content\global\bindings\toolbar.xml
 7=chrome\custombuttons\locale\zh-CN\custombuttons\editor.dtd
+8=chrome\custombuttons\content\custombuttons\editor.sjs
+9=chrome\custombuttons\content\custombuttons\overlay.js
 [Selected Project Files]
 Main=
-Selected=chrome\custombuttons\locale\zh-CN\custombuttons\editor.dtd
+Selected=build.xml
 [pack.bat]
 TopLine=1
 Caret=11,29
 [chrome\custombuttons\content\custombuttons\overlay.sjs]
-TopLine=517
-Caret=19,566
+TopLine=329
+Caret=25,352
 Mark1=21,133
 Mark2=26,229
 Mark3=21,418
@@ -147,8 +149,8 @@ Mark8=36,77
 TopLine=7
 Caret=1,53
 [build.xml]
-TopLine=124
-Caret=1,173
+TopLine=34
+Caret=48,39
 [H:\ffdownloads\custom_buttons__-2.0.5.15b20-fx+tb+fl\install.rdf]
 TopLine=1
 Caret=30,40
@@ -161,4 +163,10 @@ TopLine=36
 Caret=31,107
 [chrome\custombuttons\locale\zh-CN\custombuttons\editor.dtd]
 TopLine=1
+Caret=1,1
+[chrome\custombuttons\content\custombuttons\editor.sjs]
+TopLine=51
+Caret=1,1
+[chrome\custombuttons\content\custombuttons\overlay.js]
+TopLine=127
 Caret=1,1

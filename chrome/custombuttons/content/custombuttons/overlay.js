@@ -318,7 +318,7 @@ Custombuttons. prototype =
 
  finalizeButtonOperation: function (newButtonId)
  {
-  //�?справляем currentSet для toolbar
+  //Исправляем currentSet для toolbar
   var repstr = "";
   if (newButtonId)
    repstr = this. button. id + "," + newButtonId;
@@ -344,7 +344,7 @@ Custombuttons. prototype =
    toolbarSet. setAttribute (attrName, cs);
    document. persist ("customToolbars", attrName);
   }
-  //�?справления для AIOS
+  //Исправления для AIOS
   if (document. getElementById ("aiostbx-belowtabs-toolbox"))
    persistCurrentSets ();
   this. saveButtonsToProfile ();
