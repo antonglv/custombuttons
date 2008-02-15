@@ -59,7 +59,7 @@ Custombuttons. prototype =
 {
   ps: SERVICE (PREF). getBranch ("custombuttons.button"),
   buttonParameters: ["name", "image", "code", "initCode", "accelkey"],
-  buttonsLoadedFromProfileOverlay == true,
+  buttonsLoadedFromProfileOverlay: true,
   button: null,
   values: null,
   toolbar: null,
