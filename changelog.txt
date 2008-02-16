@@ -1,5 +1,8 @@
 Changelog
 ==============
+0.0.2.6
+* Custom buttons code execution context error fixed.
+* Version number deleted from extension's name.
 0.0.2.5
 * Security fix to prevent local disk access (security issues created by Firefox bug #413250)
 0.0.2.4
