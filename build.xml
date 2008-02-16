@@ -9,7 +9,7 @@
 	
 	<!-- set global properties for this build -->
 	<property name="geckosdkpath"
-			  location="Q:\tmp\Mozilla\gecko-sdk-i586-pc-msvc-1.8a6\gecko-sdk"/>
+			  location="p:\tmp\Mozilla\gecko-sdk-i586-pc-msvc-1.8a6\gecko-sdk"/>
 	<property name="xpidlpath" location="${geckosdkpath}\BIN"/>
 	<property name="idlpath" location="${geckosdkpath}\IDL"/>
 	
