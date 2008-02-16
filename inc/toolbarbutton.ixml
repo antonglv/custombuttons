@@ -285,8 +285,8 @@
 			if (this. cbCommand)
 			{
 				this. checkBind ();
-				//(new Function (this. cbCommand)). apply (this);
-				eval (this. cbCommand, this);
+				(new Function (this. cbCommand)). apply (this);
+				//eval (this. cbCommand, this);
 			}
 		]]>
 	</handler>
