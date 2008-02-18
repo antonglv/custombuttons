@@ -4,5 +4,5 @@
 }
 #accelkey
 {
-	-moz-binding: url("chrome://custombuttons/content/codeeditor.xml#accelkeytextboxbinding");
+  -moz-binding: url("chrome://custombuttons/content/codeeditor.xml#accelkeytextboxbinding");
 }

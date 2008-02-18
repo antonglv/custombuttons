@@ -1,4 +1,4 @@
-<?xml version="1.0"?> 
+<?xml version="1.0"?>
 
 <!DOCTYPE dialog [
 <!ENTITY % customizeToolbarDTD SYSTEM "chrome://global/locale/customizeToolbar.dtd">
@@ -10,6 +10,6 @@
 <?xml-stylesheet href="chrome://global/skin/customizeToolbar.css" type="text/css"?>
 
 <overlay id="cbCustomizeToolbarsOverlay"
-		 xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
-	<script type="application/x-javascript" src="chrome://custombuttons/content/customizeToolbars.js"/>
+     xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+  <script type="application/x-javascript" src="chrome://custombuttons/content/customizeToolbars.js"/>
 </overlay>
