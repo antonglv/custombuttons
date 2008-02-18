@@ -7,104 +7,104 @@
 <!DOCTYPE dialog SYSTEM "chrome://custombuttons/locale/editor.dtd">
 
 <dialog xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
-		id="custombuttons-editor"
-		width="400"
-		height="400"
-		title="&editor.dialog.title;"
-		persist="width,height,screenX,screenY"
-		buttons="extra2,accept,cancel"
-		buttonlabelextra2="&editor.Apply;"
-		ondialogextra2="editor.setButtonParameters()"
-		onload="editor.onLoad();"
-		ondialogaccept="editor.setButtonParameters()">
+    id="custombuttons-editor"
+    width="400"
+    height="400"
+    title="&editor.dialog.title;"
+    persist="width,height,screenX,screenY"
+    buttons="extra2,accept,cancel"
+    buttonlabelextra2="&editor.Apply;"
+    ondialogextra2="editor.setButtonParameters()"
+    onload="editor.onLoad();"
+    ondialogaccept="editor.setButtonParameters()">
 
-	<script type="application/x-javascript" src="chrome://custombuttons/content/cbfactory.js"/>
-	<script type="application/x-javascript" src="editor.js"/>
-	
-	<grid id="urlfield" hidden="true">
-		<columns>
-			<column/>
-			<column flex="1"/>
-		</columns>
-		
-		<rows>
-			<row align="center">
-				<label value="&editor.urlfield;"/>
-				<textbox id="urlfield-textbox" flex="1"/>
-			</row>
-		</rows>
-	</grid>
-	
-	<grid>
-		<columns>
-			<column/>
-			<column flex="1"/>
-		</columns>
-		<rows>
-			<row align="center">
-				<label value="&editor.name;"
-					   tooltiptext="&editor.name.tooltiptext;"/>
-				<textbox id="name" flex="1"/>   
-			</row>
-			<row align="center">
-				<label value="&editor.image;"/>
-				<hbox>
-					<textbox id="image" flex="1"/>
-					<button label="&editor.select;"
-							oncommand="editor.select_image();"/>
-					<button label="&editor.base64;"
-							oncommand="editor.convert_image();"
-							tooltiptext="&editor.base64.tooltiptext;"/>
-				</hbox>
-			</row>
-		</rows>
-	</grid>
-	
-	<tabbox  flex="1">
-		<tabs>
-			<tab label="&editor.code;" tooltiptext="&editor.code.tooltiptext;"/>
-			<tab label="&editor.initCode;"
-				 tooltiptext="&editor.initCode.tooltiptext;"/>
+  <script type="application/x-javascript" src="chrome://custombuttons/content/cbfactory.js"/>
+  <script type="application/x-javascript" src="editor.js"/>
+
+  <grid id="urlfield" hidden="true">
+    <columns>
+      <column/>
+      <column flex="1"/>
+    </columns>
+
+    <rows>
+      <row align="center">
+        <label value="&editor.urlfield;"/>
+        <textbox id="urlfield-textbox" flex="1"/>
+      </row>
+    </rows>
+  </grid>
+
+  <grid>
+    <columns>
+      <column/>
+      <column flex="1"/>
+    </columns>
+    <rows>
+      <row align="center">
+        <label value="&editor.name;"
+             tooltiptext="&editor.name.tooltiptext;"/>
+        <textbox id="name" flex="1"/>
+      </row>
+      <row align="center">
+        <label value="&editor.image;"/>
+        <hbox>
+          <textbox id="image" flex="1"/>
+          <button label="&editor.select;"
+              oncommand="editor.select_image();"/>
+          <button label="&editor.base64;"
+              oncommand="editor.convert_image();"
+              tooltiptext="&editor.base64.tooltiptext;"/>
+        </hbox>
+      </row>
+    </rows>
+  </grid>
+
+  <tabbox  flex="1">
+    <tabs>
+      <tab label="&editor.code;" tooltiptext="&editor.code.tooltiptext;"/>
+      <tab label="&editor.initCode;"
+         tooltiptext="&editor.initCode.tooltiptext;"/>
       <tab label="&editor.dialog.help;"
          tooltiptext="&editor.dialog.help;"/>
-			<tab label="&editor.buttonSettings;"
-				 tooltiptext="&editor.buttonSettings.tooltiptext;"/>
-		</tabs>
-		<tabpanels flex="1" >
-			<textbox class="custombuttons-editor-codeBox"
-					 id="code" multiline="true" flex="1"
-					 value="&editor.code.defaultValue;"/>
-			<textbox class="custombuttons-editor-codeBox"
-					 id="initCode" multiline="true" flex="1"
-					 value="&editor.initCode.defaultValue;"/>
+      <tab label="&editor.buttonSettings;"
+         tooltiptext="&editor.buttonSettings.tooltiptext;"/>
+    </tabs>
+    <tabpanels flex="1" >
+      <textbox class="custombuttons-editor-codeBox"
+           id="code" multiline="true" flex="1"
+           value="&editor.code.defaultValue;"/>
+      <textbox class="custombuttons-editor-codeBox"
+           id="initCode" multiline="true" flex="1"
+           value="&editor.initCode.defaultValue;"/>
       <textbox class="custombuttons-editor-codeBox"
            id="help" multiline="true" flex="1"
            value="&editor.dialog.help;"/>
-			<vbox>
-				<groupbox>
-					<caption label="&editor.buttonSettings.initializationGroupbox;"/>
-					<checkbox id="initInCustomizeToolbarDialog"
-						  label="&editor.buttonSettings.initInCustomizeToolbarDialog;"/>
-				</groupbox>
-				<groupbox>
-					<caption label="&editor.buttonSettings.hotKeyGroupbox;"/>
-					<grid>
-						<columns>
-							<column/>
-							<column/>
-						</columns>
-						<rows>
-							<row align="center">
-								<label value="&editor.buttonSettings.accelkey;"/>
-								<textbox id="accelkey" flex="1"/>
-							</row>
-						</rows>
-					</grid>
-					<checkbox id="disableDefaultKeyBehavior"
-							  label="&editor.buttonSettings.disableDefaultKeyBehavior;"/>
-				</groupbox>
-			</vbox>
-		</tabpanels>
-	</tabbox>
-	
+      <vbox>
+        <groupbox>
+          <caption label="&editor.buttonSettings.initializationGroupbox;"/>
+          <checkbox id="initInCustomizeToolbarDialog"
+              label="&editor.buttonSettings.initInCustomizeToolbarDialog;"/>
+        </groupbox>
+        <groupbox>
+          <caption label="&editor.buttonSettings.hotKeyGroupbox;"/>
+          <grid>
+            <columns>
+              <column/>
+              <column/>
+            </columns>
+            <rows>
+              <row align="center">
+                <label value="&editor.buttonSettings.accelkey;"/>
+                <textbox id="accelkey" flex="1"/>
+              </row>
+            </rows>
+          </grid>
+          <checkbox id="disableDefaultKeyBehavior"
+                label="&editor.buttonSettings.disableDefaultKeyBehavior;"/>
+        </groupbox>
+      </vbox>
+    </tabpanels>
+  </tabbox>
+
 </dialog>
