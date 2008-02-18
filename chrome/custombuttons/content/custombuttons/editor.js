@@ -94,7 +94,7 @@ Editor. prototype =
  setValues: function (values)
  {
   for each (var v in this. CB. buttonParameters)
-   document. getElementById (v). value = values [v];
+  document. getElementById (v). value = (v != "help")? values [v] : values ["Help"];
   document. getElementById ("initInCustomizeToolbarDialog"). checked = values. mode && (values. mode & 1) || false;
   document. getElementById ("disableDefaultKeyBehavior"). checked = values. mode && (values. mode & 2) || false;
  },

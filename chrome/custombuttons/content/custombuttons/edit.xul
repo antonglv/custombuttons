@@ -65,6 +65,8 @@
 			<tab label="&editor.code;" tooltiptext="&editor.code.tooltiptext;"/>
 			<tab label="&editor.initCode;"
 				 tooltiptext="&editor.initCode.tooltiptext;"/>
+      <tab label="&editor.dialog.help;"
+         tooltiptext="&editor.dialog.help;"/>
 			<tab label="&editor.buttonSettings;"
 				 tooltiptext="&editor.buttonSettings.tooltiptext;"/>
 		</tabs>
@@ -75,6 +77,9 @@
 			<textbox class="custombuttons-editor-codeBox"
 					 id="initCode" multiline="true" flex="1"
 					 value="&editor.initCode.defaultValue;"/>
+      <textbox class="custombuttons-editor-codeBox"
+           id="help" multiline="true" flex="1"
+           value="&editor.dialog.help;"/>
 			<vbox>
 				<groupbox>
 					<caption label="&editor.buttonSettings.initializationGroupbox;"/>
