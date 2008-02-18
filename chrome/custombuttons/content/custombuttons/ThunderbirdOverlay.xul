@@ -7,67 +7,67 @@
 ]>
 
 <overlay id="custombuttonsOverlay"
-		 xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
-	<script type="application/x-javascript" src="loader.js"/>
-	<window id="messengerWindow">
-		<stringbundleset id="cbStringBundleSet">
-			<stringbundle id="cbStrings"
-						  src="chrome://custombuttons/locale/custombuttons.properties"/>
-		</stringbundleset>
-		<popup id="custombuttons-contextpopup">
-			<menuitem id="custombuttons-contextpopup-edit"
-					  label="&custombuttons.buttonPopup.edit;"
-					  oncommand="custombuttons.editButton();"/>
-			<menuitem id="custombuttons-contextpopup-remove"
-					  label="&custombuttons.buttonPopup.remove;"
-					  oncommand="custombuttons.removeButton();"/>
-			<menuseparator id="custombuttons-contextpopup-separator1"/>
-			<menuitem id="custombuttons-contextpopup-clone"
-					  label="&custombuttons.buttonPopup.clone;"
-					  oncommand="custombuttons.cloneButton();"/>
-			<menuitem id="custombuttons-contextpopup-copyURI"
-					  label="&custombuttons.buttonPopup.copyURI;"
-					  oncommand="custombuttons.copyURI();"/>
-			<menuseparator id="custombuttons-contextpopup-separator2"/>
-			<menuitem oncommand="CustomizeMailToolbar('mail-toolbox');"
-					  id="custombuttons-contextpopup-customize"
-					  label="&customizeToolbar.label;"
-					  accesskey="&customizeToolbar.accesskey;"/>
-		
-		</popup>
-	</window>
-	
-	<menupopup id="menu_View_Popup">
-		<menuseparator/>
-		<menuitem label="&custombuttons.viewMenu_Item;"
-				  oncommand="custombuttons.addButton()"/>             
-	</menupopup>
-	
-	<window id="msgcomposeWindow">
-		<stringbundleset id="cbStringBundleSet">
-			<stringbundle id="cbStrings"
-						  src="chrome://custombuttons/locale/custombuttons.properties"/>
-		</stringbundleset>
-		<popup id="custombuttons-contextpopup">
-			<menuitem id="custombuttons-contextpopup-edit"
-					  label="&custombuttons.buttonPopup.edit;"
-					  oncommand="custombuttons.editButton();"/>
-			<menuitem id="custombuttons-contextpopup-remove"
-					  label="&custombuttons.buttonPopup.remove;"
-					  oncommand="custombuttons.removeButton();"/>
-			<menuseparator id="custombuttons-contextpopup-separator1"/>
-			<menuitem id="custombuttons-contextpopup-clone"
-					  label="&custombuttons.buttonPopup.clone;"
-					  oncommand="custombuttons.cloneButton();"/>
-			<menuitem id="custombuttons-contextpopup-copyURI"
-					  label="&custombuttons.buttonPopup.copyURI;"
-					  oncommand="custombuttons.copyURI();"/>
-			<menuseparator id="custombuttons-contextpopup-separator2"/>
-			<menuitem oncommand="CustomizeMailToolbar('compose-toolbox');"
-					  id="custombuttons-contextpopup-customize"
-					  label="&customizeToolbar.label;"
-					  accesskey="&customizeToolbar.accesskey;"/>
-		
-		</popup>
-	</window>
+     xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+  <script type="application/x-javascript" src="loader.js"/>
+  <window id="messengerWindow">
+    <stringbundleset id="cbStringBundleSet">
+      <stringbundle id="cbStrings"
+              src="chrome://custombuttons/locale/custombuttons.properties"/>
+    </stringbundleset>
+    <popup id="custombuttons-contextpopup">
+      <menuitem id="custombuttons-contextpopup-edit"
+            label="&custombuttons.buttonPopup.edit;"
+            oncommand="custombuttons.editButton();"/>
+      <menuitem id="custombuttons-contextpopup-remove"
+            label="&custombuttons.buttonPopup.remove;"
+            oncommand="custombuttons.removeButton();"/>
+      <menuseparator id="custombuttons-contextpopup-separator1"/>
+      <menuitem id="custombuttons-contextpopup-clone"
+            label="&custombuttons.buttonPopup.clone;"
+            oncommand="custombuttons.cloneButton();"/>
+      <menuitem id="custombuttons-contextpopup-copyURI"
+            label="&custombuttons.buttonPopup.copyURI;"
+            oncommand="custombuttons.copyURI();"/>
+      <menuseparator id="custombuttons-contextpopup-separator2"/>
+      <menuitem oncommand="CustomizeMailToolbar('mail-toolbox');"
+            id="custombuttons-contextpopup-customize"
+            label="&customizeToolbar.label;"
+            accesskey="&customizeToolbar.accesskey;"/>
+
+    </popup>
+  </window>
+
+  <menupopup id="menu_View_Popup">
+    <menuseparator/>
+    <menuitem label="&custombuttons.viewMenu_Item;"
+          oncommand="custombuttons.addButton()"/>
+  </menupopup>
+
+  <window id="msgcomposeWindow">
+    <stringbundleset id="cbStringBundleSet">
+      <stringbundle id="cbStrings"
+              src="chrome://custombuttons/locale/custombuttons.properties"/>
+    </stringbundleset>
+    <popup id="custombuttons-contextpopup">
+      <menuitem id="custombuttons-contextpopup-edit"
+            label="&custombuttons.buttonPopup.edit;"
+            oncommand="custombuttons.editButton();"/>
+      <menuitem id="custombuttons-contextpopup-remove"
+            label="&custombuttons.buttonPopup.remove;"
+            oncommand="custombuttons.removeButton();"/>
+      <menuseparator id="custombuttons-contextpopup-separator1"/>
+      <menuitem id="custombuttons-contextpopup-clone"
+            label="&custombuttons.buttonPopup.clone;"
+            oncommand="custombuttons.cloneButton();"/>
+      <menuitem id="custombuttons-contextpopup-copyURI"
+            label="&custombuttons.buttonPopup.copyURI;"
+            oncommand="custombuttons.copyURI();"/>
+      <menuseparator id="custombuttons-contextpopup-separator2"/>
+      <menuitem oncommand="CustomizeMailToolbar('compose-toolbox');"
+            id="custombuttons-contextpopup-customize"
+            label="&customizeToolbar.label;"
+            accesskey="&customizeToolbar.accesskey;"/>
+
+    </popup>
+  </window>
 </overlay>
