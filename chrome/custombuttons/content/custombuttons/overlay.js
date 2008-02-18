@@ -24,28 +24,38 @@ CustombuttonsButton. prototype =
   {
     var button_code = unescape (uri);
     if (button_code. substring (0, 2) == "//")
-      button_code = button_code. substring (2);
+     button_code = button_code. substring (2);
     values = {};
     if (button_code. indexOf ("<?xml ") == 0)
     {
-      var xp = new DOMParser ();
-      this. doc = xp. parseFromString (button_code, "text/xml");
-      values. name = this. getText ("name");
-      values. mode = this. getText ("mode");
-      values. image = unescape (this. getText ("image"));
-      values. code = unescape (this. getText ("code"));
-      values. initCode = unescape (this. getText ("initcode"));
-      values. accelkey = unescape (this. getText ("accelkey"));
+     var xp = new DOMParser ();
+     this. doc = xp. parseFromString (button_code, "text/xml");
+     values. name = this. getText ("name");
+     values. mode = this. getText ("mode");
+     values. image = this. getText ("image");
+     values. code = this. getText ("code");
+     values. initCode = this. getText ("initcode");
+     values. accelkey = this. getText ("accelkey");
+     values. help = this. getText ("help");
     }
-    else
-    {
-      var ar = button_code. split ("][");
-      if (ar. length < 3)
-        throw new Error ("Malformed custombutton:// URI");;
-      values. name = ar [0] || "";
-      values. image = ar [1] || "";
-      values. code = ar [2] || "";
-      values. initCode = ar [3] || "";
+    else {
+      var az = ["%5D%E2%96%B2%5B", "]\u00e2\u0096\u00b2[", "]▲[", "%5D%u25B2%5B"], idx = -1;
+      for ( var i = 0; i < az.length; i++) {
+        idx = (idx >= 0)? idx : ( button_code.indexOf(az[i]) > -1 )? i : idx ;
+      } // End for
+      sep = (idx >= 0)? az[idx] : "][";
+      var ar =  button_code.split( sep );             // Split button
+      if (ar.length == 5 || ar.length == 4 )
+      {
+       values. name = ar [0] || "";
+       values. image = ar [1] || "";
+       values. code = ar [2] || "";
+       values. initCode = ar [3] || "";
+       values. help = ar [4] || "";
+      }
+      else {
+       throw new Error ("Malformed custombutton:// URI");
+      }
     }
     this. parameters = values;
   }
@@ -54,269 +64,269 @@ CustombuttonsButton. prototype =
 function Custombuttons () {}
 Custombuttons. prototype =
 {
-  ps: Components. classes ["@mozilla.org/preferences-service;1"]. getService (Components. interfaces. nsIPrefService). getBranch ("custombuttons.button"),
+ ps: Components. classes ["@mozilla.org/preferences-service;1"]. getService (Components. interfaces. nsIPrefService). getBranch ("custombuttons.button"),
  buttonParameters: ["name", "image", "code", "initCode", "accelkey", "help"],
-  buttonsLoadedFromProfileOverlay: true,
-  button: null,
-  values: null,
-  toolbar: null,
-  _palette: null,
-  get palette ()
+ button: null,
+ values: null,
+ toolbar: null,
+ buttonsLoadedFromProfileOverlay: null,
+ _palette: null,
+ get palette ()
+ {
+  if (!this. _palette)
+   this. _palette = this. getPalette ();
+  return this. _palette;
+ },
+
+ getPalette: function ()
+ {
+  var gToolbox = document. getElementById ("navigator-toolbox") || // FF3b2 and lower
+        document. getElementById ("browser-toolbox"); // FF3b3pre and higher
+  return gToolbox. palette;
+ },
+
+ getButtonParameters: function (num)
+ { //using for compatibility with older format
+   try
+   {
+     var data = this. ps. getComplexValue (num, Components. interfaces. nsISupportsString). data;
+     var button = new CustombuttonsButton (data);
+     return button. parameters;
+   } catch (err) {}
+   return false;
+ },
+
+ isCustomizableToolbar: function (aElt)
+ { //using for compatibility with older format
+  return (aElt. localName == "toolbar") &&
+      (aElt. getAttribute ("customizable") == "true");
+ },
+
+ getButtonsPlacesOnToolbars: function ()
+ { //using for compatibility with older format
+  var toolbars = this. getToolbars ();
+  var places = new Array ();
+  for (var i = 0; i < toolbars. length; i++)
   {
-    if (!this. _palette)
-      this. _palette = this. getPalette ();
-    return this. _palette;
-  },
+   var toolbar = toolbars [i];
+   var currentSet = toolbar. getAttribute ("currentset");
+   //BEGIN AIOS - нахождение currentSet для binding-панелей слева и справа от tabbar
+   if (toolbar. getAttribute ("anonymous") == "true")
+   {
+         var attr = "_toolbar_currentset_" +
+          toolbar. getAttribute ("anonid");
+         currentSet = document. documentElement. getAttribute (attr);
+   }
+   //END AIOS
 
-  getPalette: function ()
-  {
-    var gToolbox = document. getElementById ("navigator-toolbox") || // FF3b2 and lower
-             document. getElementById ("browser-toolbox"); // FF3b3pre and higher
-    return gToolbox. palette;
-  },
-
-  getButtonParameters: function (num)
-  { //using for compatibility with older format
-    try
-    {
-      var data = this. ps. getComplexValue (num, Components. interfaces. nsISupportsString). data;
-      var button = new CustombuttonsButton (data);
-      return button. parameters;
-    } catch (err) {}
-    return false;
-  },
-
-  isCustomizableToolbar: function (aElt)
-  { //using for compatibility with older format
-    return (aElt. localName == "toolbar") &&
-         (aElt. getAttribute ("customizable") == "true");
-  },
-
-  getButtonsPlacesOnToolbars: function ()
-  { //using for compatibility with older format
-    var toolbars = this. getToolbars ();
-    var places = new Array ();
-    for (var i = 0; i < toolbars. length; i++)
-    {
-      var toolbar = toolbars [i];
-      var currentSet = toolbar. getAttribute ("currentset");
-      //BEGIN AIOS - нахождение currentSet для binding-панелей слева и справа от tabbar
-      if (toolbar. getAttribute ("anonymous") == "true")
-      {
-            var attr = "_toolbar_currentset_" +
-                 toolbar. getAttribute ("anonid");
-            currentSet = document. documentElement. getAttribute (attr);
-      }
-      //END AIOS
-
-      var ar = currentSet. split (",");
-      var last = ar. pop ();
-      var z = 0;
-      for (var j = 0; j < ar. length; j++)
-      {
-        if (ar [j]. indexOf ("custombuttons-button") != -1)
-           places. push ([toolbar, ar [j], z]);
-        else
-           z++;
-      }
-      if (last. indexOf ("custombuttons-button") != -1)
-      {
-        var pos = null;
-      //BEGIN AIOS bug с пропаданием кнопок в статусбаре (из-за aios-bmbugfix в AIOS)
-        if ((toolbar. id == "aiostbx-toolbar-statusbar-right") &&
-          (toolbar. lastChild. id == "aiostbx-bmbugfix"))
-           pos = toolbar. childNodes. length - 1;
-      //END AIOS
-        places. push ([toolbar, last, pos]);
-      }
-    }
-    return places;
-  },
-
-  makeButtons: function ()
-  { //using for compatibility with older format AND for Initialization
-    var numbers = this. ps. getChildList ("", {});
-    if (numbers. length > 0)
-    {
-      var buttons = new Object ();
-      for (var i = 0; i < numbers. length; i++)
-      {
-        var values = this. getButtonParameters (numbers [i]);
-        var button = this. getButtonById (numbers [i]);
-        if (values && !button)
-        {
-          var newButton = this. createButton (numbers [i], values);
-          buttons [newButton. id] = newButton;
-        }
-      }
-      for (var but in buttons)
-        this. palette. appendChild (buttons [but]);
-      var places = this. getButtonsPlacesOnToolbars ();
-      for (var i = places. length - 1; i >= 0; i--)
-      {
-        var nowButtonNum = this. getNumber (places [i] [1]);
-        if (nowButtonNum)
-        {
-          var aBefore = places [i] [0]. childNodes [places [i] [2]];
-          var values = this. getButtonParameters (nowButtonNum);
-          var newButton = this. createButton (nowButtonNum, values);
-          this. insertToToolbar (places [i] [0], newButton, aBefore);
-        }
-      }
-      //deleting buttons from prefs.js, now they would be saved in the profile
-      for (var i = 0; i < numbers. length; i++)
-      {
-        this. ps. deleteBranch (numbers [i]);
-      }
-      this. saveButtonsToProfile ();
-    }
-    //reinit buttons that for some reasons were not initialized in xbl
-    this. reInitializeButtons ();
-  },
-
-  getButtonById: function (id)
-  {
-    var id2 = (isFinite (id)? "custombuttons-button": "") + id;
-    return this. palette. getElementsByAttribute ("id", id2) [0] || null;
-  },
-
-  createButton: function (num, values)
-  { //updated
-    var oItem = null;
-    for (var i = 0; i < this. palette. childNodes. length; i++)
-      if (this. palette. childNodes [i]. id == "custombuttons-template-button")
-      {
-        var cbpb = this. palette. childNodes [i];
-        oItem = cbpb. cloneNode (true);
-        break;
-      }
-    if (!oItem)
-      oItem = document. createElement ("toolbarbutton");
-    oItem. className = "toolbarbutton-1 chromeclass-toolbar-additional";
-    oItem. setAttribute ("context", "custombuttons-contextpopup");
-    oItem. setAttribute ("id", "custombuttons-button" + num);
-    oItem. setAttribute ("label", values. name || "");
-    oItem. setAttribute ("tooltiptext", values. name || "");
-    if (values. image && values. image. length != -1)
-      oItem. setAttribute ("image", values. image);
-    if (values. mode)
-      oItem. setAttribute ("cb-mode", values. mode);
-    if (values. accelkey)
-      oItem. setAttribute ("cb-accelkey", values. accelkey);
-    var code = values. code || "";
-    var initCode = values. initCode || "";
-  var Help = values. help || "";
-    oItem. setAttribute ("cb-oncommand", code);
-    oItem. setAttribute ("cb-init", initCode);
-  oItem. setAttribute ("Help", Help);
-    return oItem;
-  },
-
-  getToolbars: function ()
-  { //used.
-    var toolbars = new Array;
-    var main_toolbars = document. getElementsByTagName ("toolbar");
-    for (var i = 0; i < main_toolbars. length; i++)
-      if (this. isCustomizableToolbar (main_toolbars [i]))
-        toolbars. push (main_toolbars [i]);
-
-    //BEGIN AIOS binding toolbars
-    //added support for tbx 15.06.2006
-    var aiostbx_bindingBoxes = new Array
-    (
-      "aiostbx-tableft-toolbox",
-      "aiostbx-tabright-toolbox",
-      "aiostbx-belowtabs-toolbox",
-      "tbx-tableft-toolbox",
-      "tbx-tabright-toolbox",
-      "tbx-belowtabs-toolbox"
-    );
-    var aios_toolbox;
-    for (var i = 0; i < aiostbx_bindingBoxes. length; i++)
-    {
-      aios_toolbox = document. getElementById (aiostbx_bindingBoxes [i]);
-      if (aios_toolbox)
-      {
-        var children = aios_toolbox. childNodes;
-        for (var j = 0; j < children. length; j++)
-          if (this. isCustomizableToolbar (children [j]))
-            toolbars. push (children [j]);
-      }
-    }
-    //END AIOS belowtabs toolbars
-
-    return toolbars;
-  },
-
-  insertToToolbar: function (toolbar, newItem, aBeforeElt)
-  { //checked-used
-    if (aBeforeElt)
-      toolbar. insertBefore (newItem, aBeforeElt);
+   var ar = currentSet. split (",");
+   var last = ar. pop ();
+   var z = 0;
+   for (var j = 0; j < ar. length; j++)
+   {
+    if (ar [j]. indexOf ("custombuttons-button") != -1)
+      places. push ([toolbar, ar [j], z]);
     else
-      toolbar. appendChild (newItem);
-  },
+      z++;
+   }
+   if (last. indexOf ("custombuttons-button") != -1)
+   {
+    var pos = null;
+   //BEGIN AIOS bug с пропаданием кнопок в статусбаре (из-за aios-bmbugfix в AIOS)
+    if ((toolbar. id == "aiostbx-toolbar-statusbar-right") &&
+     (toolbar. lastChild. id == "aiostbx-bmbugfix"))
+      pos = toolbar. childNodes. length - 1;
+   //END AIOS
+    places. push ([toolbar, last, pos]);
+   }
+  }
+  return places;
+ },
 
-  reInitializeButtons: function ()
+ makeButtons: function ()
+ { //using for compatibility with older format AND for Initialization
+  var numbers = this. ps. getChildList ("", {});
+  if (numbers. length > 0)
   {
-    for (var j = 0; j < this. palette. childNodes. length; j++)
+   var buttons = new Object ();
+   for (var i = 0; i < numbers. length; i++)
+   {
+    var values = this. getButtonParameters (numbers [i]);
+    var button = this. getButtonById (numbers [i]);
+    if (values && !button)
     {
-      var id = this. palette. childNodes [j]. getAttribute ("id");
-      if (id. indexOf ("custombuttons-button") != -1)
-      {
-        var tbButton = document. getElementById (id);
-        if (tbButton && !tbButton. hasAttribute ("initialized"))
-          tbButton. init ();
-      }
+     var newButton = this. createButton (numbers [i], values);
+     buttons [newButton. id] = newButton;
     }
-  },
-
-  init: function ()
-  {
-    var pref = "settings.editor.showApplyButton";
-    var ps = Components. classes ["@mozilla.org/preferences-service;1"]. getService (Components. interfaces. nsIPrefService);
-    ps = ps. QueryInterface (Components. interfaces. nsIPrefBranch);
-    var cbps = ps. getBranch ("custombuttons.");
-    var mode = cbps. getIntPref ("mode");
-    if (ps. prefHasUserValue (pref))
+   }
+   for (var but in buttons)
+    this. palette. appendChild (buttons [but]);
+   var places = this. getButtonsPlacesOnToolbars ();
+   for (var i = places. length - 1; i >= 0; i--)
+   {
+    var nowButtonNum = this. getNumber (places [i] [1]);
+    if (nowButtonNum)
     {
-      mode |= (ps. getBoolPref (pref)? 2: 0);
-      try
-      {
-        ps. deleteBranch (pref);
-      }
-      catch (e) {}
+     var aBefore = places [i] [0]. childNodes [places [i] [2]];
+     var values = this. getButtonParameters (nowButtonNum);
+     var newButton = this. createButton (nowButtonNum, values);
+     this. insertToToolbar (places [i] [0], newButton, aBefore);
     }
-    cbps. setIntPref ("mode", mode);
-    setTimeout ("custombuttons.makeButtons()", 200);
-  },
+   }
+   //deleting buttons from prefs.js, now they would be saved in the profile
+   for (var i = 0; i < numbers. length; i++)
+   {
+    this. ps. deleteBranch (numbers [i]);
+   }
+   this. saveButtonsToProfile ();
+  }
+  //reinit buttons that for some reasons were not initialized in xbl
+  this. reInitializeButtons ();
+ },
 
-  openButtonDialog: function (editDialogFlag)
-  {
-    openDialog
-    (
-      "chrome://custombuttons/content/edit.xul",
-      "custombuttons-edit",
-      "chrome,resizable,dependent,dialog=no",
-      editDialogFlag? document. popupNode: null
-    );
-  },
+ getButtonById: function (id)
+ {
+  var id2 = (isFinite (id)? "custombuttons-button": "") + id;
+  return this. palette. getElementsByAttribute ("id", id2) [0] || null;
+ },
 
-  editButton: function ()
-  {
-    this. openButtonDialog (true);
-  },
+ createButton: function (num, values)
+ { //updated
+  var oItem = null;
+  for (var i = 0; i < this. palette. childNodes. length; i++)
+   if (this. palette. childNodes [i]. id == "custombuttons-template-button")
+   {
+    var cbpb = this. palette. childNodes [i];
+    oItem = cbpb. cloneNode (true);
+    break;
+   }
+  if (!oItem)
+   oItem = document. createElement ("toolbarbutton");
+  oItem. className = "toolbarbutton-1 chromeclass-toolbar-additional";
+  oItem. setAttribute ("context", "custombuttons-contextpopup");
+  oItem. setAttribute ("id", "custombuttons-button" + num);
+  oItem. setAttribute ("label", values. name || "");
+  oItem. setAttribute ("tooltiptext", values. name || "");
+  if (values. image && values. image. length != -1)
+   oItem. setAttribute ("image", values. image);
+  if (values. mode)
+   oItem. setAttribute ("cb-mode", values. mode);
+  if (values. accelkey)
+   oItem. setAttribute ("cb-accelkey", values. accelkey);
+  var code = values. code || "";
+  var initCode = values. initCode || "";
+  var Help = values. help || "";
+  oItem. setAttribute ("cb-oncommand", code);
+  oItem. setAttribute ("cb-init", initCode);
+  oItem. setAttribute ("Help", Help);
+  return oItem;
+ },
 
-  addButton: function ()
-  {
-    this. openButtonDialog (false);
-  },
+ getToolbars: function ()
+ { //used.
+  var toolbars = new Array;
+  var main_toolbars = document. getElementsByTagName ("toolbar");
+  for (var i = 0; i < main_toolbars. length; i++)
+   if (this. isCustomizableToolbar (main_toolbars [i]))
+    toolbars. push (main_toolbars [i]);
 
-  prepareButtonOperation: function ()
+  //BEGIN AIOS binding toolbars
+  //added support for tbx 15.06.2006
+  var aiostbx_bindingBoxes = new Array
+  (
+   "aiostbx-tableft-toolbox",
+   "aiostbx-tabright-toolbox",
+   "aiostbx-belowtabs-toolbox",
+   "tbx-tableft-toolbox",
+   "tbx-tabright-toolbox",
+   "tbx-belowtabs-toolbox"
+  );
+  var aios_toolbox;
+  for (var i = 0; i < aiostbx_bindingBoxes. length; i++)
   {
-    this. button = document. popupNode;
-    this. values = this. button. parameters;
-    this. toolbar = this. button. parentNode;
-  },
+   aios_toolbox = document. getElementById (aiostbx_bindingBoxes [i]);
+   if (aios_toolbox)
+   {
+    var children = aios_toolbox. childNodes;
+    for (var j = 0; j < children. length; j++)
+     if (this. isCustomizableToolbar (children [j]))
+      toolbars. push (children [j]);
+   }
+  }
+  //END AIOS belowtabs toolbars
+
+  return toolbars;
+ },
+
+ insertToToolbar: function (toolbar, newItem, aBeforeElt)
+ { //checked-used
+  if (aBeforeElt)
+   toolbar. insertBefore (newItem, aBeforeElt);
+  else
+   toolbar. appendChild (newItem);
+ },
+
+ reInitializeButtons: function ()
+ {
+  for (var j = 0; j < this. palette. childNodes. length; j++)
+  {
+   var id = this. palette. childNodes [j]. getAttribute ("id");
+   if (id. indexOf ("custombuttons-button") != -1)
+   {
+    var tbButton = document. getElementById (id);
+    if (tbButton && !tbButton. hasAttribute ("initialized"))
+     tbButton. init ();
+   }
+  }
+ },
+
+ init: function ()
+ {
+  var pref = "settings.editor.showApplyButton";
+  var ps = Components. classes ["@mozilla.org/preferences-service;1"]. getService (Components. interfaces. nsIPrefService);
+  ps = ps. QueryInterface (Components. interfaces. nsIPrefBranch);
+  var cbps = ps. getBranch ("custombuttons.");
+  var mode = cbps. getIntPref ("mode");
+  if (ps. prefHasUserValue (pref))
+  {
+   mode |= (ps. getBoolPref (pref)? 2: 0);
+   try
+   {
+    ps. deleteBranch (pref);
+   }
+   catch (e) {}
+  }
+  cbps. setIntPref ("mode", mode);
+  setTimeout ("custombuttons.makeButtons()", 200);
+ },
+
+ openButtonDialog: function (editDialogFlag)
+ {
+  openDialog
+  (
+   "chrome://custombuttons/content/edit.xul",
+   "custombuttons-edit",
+   "chrome,resizable,dependent,dialog=no",
+   editDialogFlag? document. popupNode: null
+  );
+ },
+
+ editButton: function ()
+ {
+  this. openButtonDialog (true);
+ },
+
+ addButton: function ()
+ {
+  this. openButtonDialog (false);
+ },
+
+ prepareButtonOperation: function ()
+ {
+  this. button = document. popupNode;
+  this. values = this. button. parameters;
+  this. toolbar = this. button. parentNode;
+ },
 
   finalizeButtonOperation: function (newButtonId)
   {
@@ -367,286 +377,286 @@ Custombuttons. prototype =
     }
   },
 
-  cloneButton: function ()
+ cloneButton: function ()
+ {
+  this. prepareButtonOperation ();
+  var newNum = this. min_button_number ();
+  var newButton = this. createButton (newNum, this. values);
+  var newButton2 = this. createButton (newNum, this. values);
+  var newButtonId = newButton. id;
+  this. palette. appendChild (newButton2);
+  var aBefore = this. button. nextSibling;
+  this. insertToToolbar (this. toolbar, newButton, aBefore);
+  this. finalizeButtonOperation (newButtonId);
+ },
+
+ copyURI: function ()
+ { //checked
+  Components. classes ["@mozilla.org/widget/clipboardhelper;1"]. getService (Components. interfaces. nsIClipboardHelper). copyString (document. popupNode. URI);
+ },
+
+ getNumber: function (id)
+ { //checked
+  if (id. indexOf ("custombuttons-button") != -1)
+   return id. substring ("custombuttons-button". length);
+  return "";
+ },
+
+ min_button_number: function ()
+ { //updated
+  var bt = new Object ();
+  var buts = this. palette. childNodes;
+  var butscount = buts. length;
+  var n, id;
+  for (var j = 0; j < butscount; j++)
   {
-    this. prepareButtonOperation ();
-    var newNum = this. min_button_number ();
-    var newButton = this. createButton (newNum, this. values);
-    var newButton2 = this. createButton (newNum, this. values);
-    var newButtonId = newButton. id;
-    this. palette. appendChild (newButton2);
-    var aBefore = this. button. nextSibling;
-    this. insertToToolbar (this. toolbar, newButton, aBefore);
-    this. finalizeButtonOperation (newButtonId);
-  },
+   id = buts [j]. getAttribute ("id");
+   n = this. getNumber (id);
+   if (n)
+    bt [n] = true;
+  }
+  var z = 0;
+  while (typeof bt [z] != "undefined")
+   z++;
+  return z;
+ },
 
-  copyURI: function ()
-  { //checked
-    Components. classes ["@mozilla.org/widget/clipboardhelper;1"]. getService (Components. interfaces. nsIClipboardHelper). copyString (document. popupNode. URI);
-  },
-
-  getNumber: function (id)
-  { //checked
-    if (id. indexOf ("custombuttons-button") != -1)
-      return id. substring ("custombuttons-button". length);
-    return "";
-  },
-
-  min_button_number: function ()
-  { //updated
-    var bt = new Object ();
-    var buts = this. palette. childNodes;
-    var butscount = buts. length;
-    var n, id;
-    for (var j = 0; j < butscount; j++)
-    {
-      id = buts [j]. getAttribute ("id");
-      n = this. getNumber (id);
-      if (n)
-        bt [n] = true;
-    }
-    var z = 0;
-    while (typeof bt [z] != "undefined")
-      z++;
-    return z;
-  },
-
-  setButtonParameters: function (num, values)
-  { //updated
-    if (num) // edit button
-    {
-      //заменяем button в Palette и на панели на обновленную
-      var newButton = this. createButton (num, values);
-      var newButton2 = this. createButton (num, values);
-      var buts;
-      //toolbar
-      buts = document. getElementsByAttribute ("id", newButton2. id);
-      if (buts [0])
-        buts [0]. parentNode. replaceChild (newButton2, buts [0]);
-      //palette
-      buts = this. getButtonById (newButton. id);
-      if (buts)
-        buts. parentNode. replaceChild (newButton, buts);
-    }
-    else // install web button or add new button
-    { //checked
-      num = this. min_button_number ();
-      var newButton = this. createButton (num, values);
-      /*вставляем button в Palette и выдаем алерт об успешном создании*/
-      //palette
-      this. palette. appendChild (newButton);
-      var str = document. getElementById ("cbStrings"). getString ("ButtonAddedAlert");
-      alert (str);
-    }
-    this. saveButtonsToProfile ();
-  },
-
-  installWebButton: function (uri)
-  { //checked
-    try
-    {
-      var button = new CustombuttonsButton (uri);
-    }
-    catch (err)
-    {
-      var str = document. getElementById ("cbStrings"). getString ("ButtonErrors");
-      alert (str);
-      return false;
-    }
-    var str = document. getElementById ("cbStrings"). getString ("InstallConfirm"). replace (/%s/gi, button. parameters. name);
-    if (confirm (str))
-      this. setButtonParameters (null, button. parameters);
-    return true;
-  },
-
-  execute_oncommand_code: function (code, button)
-  { //checked
-    var x = new Function (code);
-    x. apply (button);
-  },
-
-  saveButtonsToProfile: function ()
+ setButtonParameters: function (num, values)
+ { //updated
+  if (num) // edit button
   {
-    var doc;
-    doc = this. makeOverlay ("BrowserToolbarPalette");
-    this. saveOverlayToProfile (doc, "buttonsoverlay.xul");
-  },
+   //заменяем button в Palette и на панели на обновленную
+   var newButton = this. createButton (num, values);
+   var newButton2 = this. createButton (num, values);
+   var buts;
+   //toolbar
+   buts = document. getElementsByAttribute ("id", newButton2. id);
+   if (buts [0])
+    buts [0]. parentNode. replaceChild (newButton2, buts [0]);
+   //palette
+   buts = this. getButtonById (newButton. id);
+   if (buts)
+    buts. parentNode. replaceChild (newButton, buts);
+  }
+  else // install web button or add new button
+  { //checked
+   num = this. min_button_number ();
+   var newButton = this. createButton (num, values);
+   /*вставляем button в Palette и выдаем алерт об успешном создании*/
+   //palette
+   this. palette. appendChild (newButton);
+   var str = document. getElementById ("cbStrings"). getString ("ButtonAddedAlert");
+   alert (str);
+  }
+  this. saveButtonsToProfile ();
+ },
 
-  makeOverlay: function (paletteId)
+ installWebButton: function (uri)
+ { //checked
+  try
   {
-    var doc = document. implementation. createDocument ("", "", null);
-    doc. async = false;
-    doc. load ("chrome://custombuttons/content/buttonsoverlay.xul");
-    var palette = doc. getElementById (paletteId);
-    var copiedAttributes =
-    {
-      "class" : true,
-      "id" : true,
-      "label" : true,
-      "image" : true,
-      "cb-oncommand" : true,
-      "cb-init" : true,
-      "cb-mode" : true,
-      "cb-accelkey" : true,
-      "context" : true,
+   var button = new CustombuttonsButton (uri);
+  }
+  catch (err)
+  {
+   var str = document. getElementById ("cbStrings"). getString ("ButtonErrors");
+   alert (str);
+   return false;
+  }
+  var str = document. getElementById ("cbStrings"). getString ("InstallConfirm"). replace (/%s/gi, button. parameters. name);
+  if (confirm (str))
+   this. setButtonParameters (null, button. parameters);
+  return true;
+ },
+
+ execute_oncommand_code: function (code, button)
+ { //checked
+  var x = new Function (code);
+  x. apply (button);
+ },
+
+ saveButtonsToProfile: function ()
+ {
+  var doc;
+  doc = this. makeOverlay ("BrowserToolbarPalette");
+  this. saveOverlayToProfile (doc, "buttonsoverlay.xul");
+ },
+
+ makeOverlay: function (paletteId)
+ {
+  var doc = document. implementation. createDocument ("", "", null);
+  doc. async = false;
+  doc. load ("chrome://custombuttons/content/buttonsoverlay.xul");
+  var palette = doc. getElementById (paletteId);
+  var copiedAttributes =
+  {
+   "class" : true,
+   "id" : true,
+   "label" : true,
+   "image" : true,
+   "cb-oncommand" : true,
+   "cb-init" : true,
+   "cb-mode" : true,
+   "cb-accelkey" : true,
+   "context" : true,
    "tooltiptext" : true,
    "Help" : true
-    };
+  };
 
-    //adding buttons from palette to new doc
-    for (var j = 0; j < this. palette. childNodes. length; j++)
-    {
-      var but = this. palette. childNodes [j];
-      if (but. getAttribute ("id"). indexOf ("custombuttons-button") != -1)
-      {
-        var newButton = doc. createElement (but. nodeName);
-        for (a in copiedAttributes)
-        {
-          if (but. hasAttribute (a))
-            newButton. setAttribute (a, but. getAttribute (a));
-        }
-        palette. appendChild (newButton);
-      }
-    }
-    return doc;
-  },
-
-  saveOverlayToProfile: function (doc, fileName)
+  //adding buttons from palette to new doc
+  for (var j = 0; j < this. palette. childNodes. length; j++)
   {
-    var serializer = new XMLSerializer ();
-    var data = serializer. serializeToString (doc);
-
-    //beautifull output
-    XML. prettyPrinting = true;
-    data = (new XML (data)). toXMLString ();
-
-    var uniConv = Components. classes ["@mozilla.org/intl/scriptableunicodeconverter"]. createInstance (Components. interfaces. nsIScriptableUnicodeConverter);
-    uniConv. charset = "utf-8";
-    data = uniConv. ConvertFromUnicode (data);
-
-    var dir = Components. classes ["@mozilla.org/file/directory_service;1"]. getService (Components. interfaces. nsIProperties). get ("ProfD", Components. interfaces. nsIFile); // get profile folder
-    dir. append ("custombuttons");
-    if (!dir. exists ())
+   var but = this. palette. childNodes [j];
+   if (but. getAttribute ("id"). indexOf ("custombuttons-button") != -1)
+   {
+    var newButton = doc. createElement (but. nodeName);
+    for (a in copiedAttributes)
     {
-      try
-      {
-        dir. create (1, 0755);
-      }
-      catch (e)
-      {
-        var msg = 'Custom Buttons error.]' +
-              '[ Event: Creating custombuttons directory]' +
-              '[ ' + e;
-        Components. utils. reportError (msg);
-      }
+     if (but. hasAttribute (a))
+      newButton. setAttribute (a, but. getAttribute (a));
     }
-
-    var file = dir. clone ();
-    file. append (fileName);
-    if (file. exists ())
-    {
-      //creating backup
-      var backupfile = dir. clone ();
-      var backupfileName = fileName + ".bak";
-      backupfile. append (backupfileName);
-      if (backupfile. exists ())
-        backupfile. remove (false);
-      file. copyTo (dir, backupfileName);
-    }
-
-    var foStream = Components. classes ["@mozilla.org/network/file-output-stream;1"]. createInstance (Components. interfaces. nsIFileOutputStream);
-    var flags = 0x02 | 0x08 | 0x20;
-    foStream. init (file, flags, 0664, 0);
-    foStream. write (data, data. length);
-    foStream. close ();
-  },
-
-  _eventKeymap: [],
-  getKey: function (event)
-  {
-    if (event. which)
-      return String. fromCharCode (event. which);
-    if (this. _eventKeymap. length == 0)
-    {
-      var prefix = "DOM_VK_";
-      for (i in event)
-        if (i. indexOf (prefix) == 0)
-          this. _eventKeymap [event [i]] = i. substr (prefix. length);
-    }
-    return this. _eventKeymap [event. keyCode];
-  },
-
-  onKeyPress: function (event)
-  {
-    var prefixedKey = "";
-    if (event. altKey) prefixedKey += "Alt+";
-    if (event. ctrlKey) prefixedKey += "Ctrl+";
-    if (event. shiftKey) prefixedKey += "Shift+";
-    var key = this. getKey (event);
-    prefixedKey += key;
-    if ((key == "TAB") || (prefixedKey == "ESCAPE"))
-      return;
-    var cbd = Components. classes ["@xsms.nm.ru/custombuttons/cbkeymap;1"]. getService (Components. interfaces. cbIKeyMapService);
-    var lenobj = {};
-    var ids = cbd. Get (prefixedKey, lenobj);
-    if (ids. length == 0)
-      return;
-    var mode = (ids. shift () == "true");
-    if (mode)
-    {
-      event. stopPropagation ();
-      event. preventDefault ();
-    }
-    for (var i = 0; i < ids. length; i++)
-    {
-      try
-      {
-        document. getElementById (ids [i]). cbExecuteCode ();
-      }
-      catch (e) {}
-    }
-  },
-
-  handleEvent: function (event)
-  {
-    switch (event. type)
-    {
-      case "load":
-        this. init ();
-        break;
-      case "unload":
-        this. saveButtonsToProfile ();
-        window. removeEventListener ("load", custombuttons, false);
-        window. removeEventListener ("unload", custombuttons, false);
-        window. removeEventListener ("keypress", custombuttons, true);
-        break;
-      case "keypress":
-        this. onKeyPress (event);
-        break;
-      default:
-        break;
-    }
+    palette. appendChild (newButton);
+   }
   }
+  return doc;
+ },
+
+ saveOverlayToProfile: function (doc, fileName)
+ {
+  var serializer = new XMLSerializer ();
+  var data = serializer. serializeToString (doc);
+
+  //beautifull output
+  XML. prettyPrinting = true;
+  data = (new XML (data)). toXMLString ();
+
+  var uniConv = Components. classes ["@mozilla.org/intl/scriptableunicodeconverter"]. createInstance (Components. interfaces. nsIScriptableUnicodeConverter);
+  uniConv. charset = "utf-8";
+  data = uniConv. ConvertFromUnicode (data);
+
+  var dir = Components. classes ["@mozilla.org/file/directory_service;1"]. getService (Components. interfaces. nsIProperties). get ("ProfD", Components. interfaces. nsIFile); // get profile folder
+  dir. append ("custombuttons");
+  if (!dir. exists ())
+  {
+   try
+   {
+    dir. create (1, 0755);
+   }
+   catch (e)
+   {
+    var msg = 'Custom Buttons error.]' +
+        '[ Event: Creating custombuttons directory]' +
+        '[ ' + e;
+    Components. utils. reportError (msg);
+   }
+  }
+
+  var file = dir. clone ();
+  file. append (fileName);
+  if (file. exists ())
+  {
+   //creating backup
+   var backupfile = dir. clone ();
+   var backupfileName = fileName + ".bak";
+   backupfile. append (backupfileName);
+   if (backupfile. exists ())
+    backupfile. remove (false);
+   file. copyTo (dir, backupfileName);
+  }
+
+  var foStream = Components. classes ["@mozilla.org/network/file-output-stream;1"]. createInstance (Components. interfaces. nsIFileOutputStream);
+  var flags = 0x02 | 0x08 | 0x20;
+  foStream. init (file, flags, 0664, 0);
+  foStream. write (data, data. length);
+  foStream. close ();
+ },
+
+ _eventKeymap: [],
+ getKey: function (event)
+ {
+  if (event. which)
+   return String. fromCharCode (event. which);
+  if (this. _eventKeymap. length == 0)
+  {
+   var prefix = "DOM_VK_";
+   for (i in event)
+    if (i. indexOf (prefix) == 0)
+     this. _eventKeymap [event [i]] = i. substr (prefix. length);
+  }
+  return this. _eventKeymap [event. keyCode];
+ },
+
+ onKeyPress: function (event)
+ {
+  var prefixedKey = "";
+  if (event. altKey) prefixedKey += "Alt+";
+  if (event. ctrlKey) prefixedKey += "Ctrl+";
+  if (event. shiftKey) prefixedKey += "Shift+";
+  var key = this. getKey (event);
+  prefixedKey += key;
+  if ((key == "TAB") || (prefixedKey == "ESCAPE"))
+   return;
+  var cbd = Components. classes ["@xsms.nm.ru/custombuttons/cbkeymap;1"]. getService (Components. interfaces. cbIKeyMapService);
+  var lenobj = {};
+  var ids = cbd. Get (prefixedKey, lenobj);
+  if (ids. length == 0)
+   return;
+  var mode = (ids. shift () == "true");
+  if (mode)
+  {
+   event. stopPropagation ();
+   event. preventDefault ();
+  }
+  for (var i = 0; i < ids. length; i++)
+  {
+   try
+   {
+    document. getElementById (ids [i]). cbExecuteCode ();
+   }
+   catch (e) {}
+  }
+ },
+
+ handleEvent: function (event)
+ {
+  switch (event. type)
+  {
+   case "load":
+    this. init ();
+    break;
+   case "unload":
+    this. saveButtonsToProfile ();
+    window. removeEventListener ("load", custombuttons, false);
+    window. removeEventListener ("unload", custombuttons, false);
+    window. removeEventListener ("keypress", custombuttons, true);
+    break;
+   case "keypress":
+    this. onKeyPress (event);
+    break;
+   default:
+    break;
+  }
+ }
 };
 
 function TBCustombuttons () {}
 TBCustombuttons. prototype =
 {
-  getPalette: function ()
-  {
-    var gToolbox = document. getElementById ("mail-toolbox") || // main window and message window
-             document. getElementById ("compose-toolbox"); // compose message
-    return gToolbox. palette;
-  },
+ getPalette: function ()
+ {
+  var gToolbox = document. getElementById ("mail-toolbox") || // main window and message window
+        document. getElementById ("compose-toolbox"); // compose message
+  return gToolbox. palette;
+ },
 
-  saveButtonsToProfile: function ()
-  {
-    var doc;
-    doc = this. makeOverlay ("MailToolbarPalette");
-    this. saveOverlayToProfile (doc, "buttonsoverlay.xul");
-    doc = this. makeOverlay ("MsgComposeToolbarPalette");
-    this. saveOverlayToProfile (doc, "mcbuttonsoverlay.xul");
-  }
+ saveButtonsToProfile: function ()
+ {
+  var doc;
+  doc = this. makeOverlay ("MailToolbarPalette");
+  this. saveOverlayToProfile (doc, "buttonsoverlay.xul");
+  doc = this. makeOverlay ("MsgComposeToolbarPalette");
+  this. saveOverlayToProfile (doc, "mcbuttonsoverlay.xul");
+ }
 };
 TBCustombuttons. prototype. __proto__ = Custombuttons. prototype;
 
@@ -674,127 +684,127 @@ var custombuttons = new custombuttonsFactory (). Custombuttons;
 
 **/
 var gClipboard = { //{{{
-  // Properties:
-  sRead:new Array(),
-  // Methods
-  /**  write( str )
+ // Properties:
+ sRead:new Array(),
+ // Methods
+ /**  write( str )
 
-   Scope:    public
-   Args:    sToCopy
-   Returns:  Nothing
-   Called by:  1. Any process wanting to place a string in the clipboard.
-   Purpose:  1.Stuff and Retrieve data from the system clipboard.
-   UPDATED:  9/18/2007 Modified to conform to the MDC suggested process.
-  **/
-  write:function ( sToCopy ) //{{{
-  {
-    if (sToCopy != null){            // Test for actual data
-      var str  = Components.classes["@mozilla.org/supports-string;1"].createInstance(Components.interfaces.nsISupportsString);
-      str.data = sToCopy;
-      var trans = Components.classes["@mozilla.org/widget/transferable;1"].createInstance(Components.interfaces.nsITransferable);
-      trans.addDataFlavor("text/unicode");
-      trans.setTransferData("text/unicode", str, sToCopy.length * 2);
-      var clipid = Components.interfaces.nsIClipboard;
-      var clip   = Components.classes["@mozilla.org/widget/clipboard;1"].getService(clipid);
-      clip.setData(trans, null, clipid.kGlobalClipboard);
-    } // End if (str != null)
-  }, //}}} End Method write( str )
+  Scope:    public
+  Args:    sToCopy
+  Returns:  Nothing
+  Called by:  1. Any process wanting to place a string in the clipboard.
+  Purpose:  1.Stuff and Retrieve data from the system clipboard.
+  UPDATED:  9/18/2007 Modified to conform to the MDC suggested process.
+ **/
+ write:function ( sToCopy ) //{{{
+ {
+   if (sToCopy != null){            // Test for actual data
+     var str  = Components.classes["@mozilla.org/supports-string;1"].createInstance(Components.interfaces.nsISupportsString);
+     str.data = sToCopy;
+     var trans = Components.classes["@mozilla.org/widget/transferable;1"].createInstance(Components.interfaces.nsITransferable);
+     trans.addDataFlavor("text/unicode");
+     trans.setTransferData("text/unicode", str, sToCopy.length * 2);
+     var clipid = Components.interfaces.nsIClipboard;
+     var clip   = Components.classes["@mozilla.org/widget/clipboard;1"].getService(clipid);
+     clip.setData(trans, null, clipid.kGlobalClipboard);
+   } // End if (str != null)
+ }, //}}} End Method write( str )
 
-  /**  clear(  )
+ /**  clear(  )
 
-   Scope:    public
-   Args:
-   Returns:  Nothing
-   Called by:
-      1. Any process wanting to clear the clipboard
-   Purpose:
-      1. Clear the system cllipboard
-   TODO:
-      1.
-  **/
-  clear:function (  ) //{{{
-  {
-    this.write("");
-  }, //}}} End Method clear(  )
-  /**  Clear(  )
+  Scope:    public
+  Args:
+  Returns:  Nothing
+  Called by:
+     1. Any process wanting to clear the clipboard
+  Purpose:
+     1. Clear the system cllipboard
+  TODO:
+     1.
+ **/
+ clear:function (  ) //{{{
+ {
+   this.write("");
+ }, //}}} End Method clear(  )
+ /**  Clear(  )
 
-   Scope:    public
-   Args:
-   Returns:  Nothing
-   Called by:
-      1. Any process wanting to clear the local clipboard
-   Purpose:
-      1. Clear the local cllipboard
-   TODO:
-      1.
-  **/
-  Clear:function (  ) //{{{
-  {
-    this.sRead[0] = "";
-  }, //}}} End Method Clear(  )
-  /**  read(  )
+  Scope:    public
+  Args:
+  Returns:  Nothing
+  Called by:
+     1. Any process wanting to clear the local clipboard
+  Purpose:
+     1. Clear the local cllipboard
+  TODO:
+     1.
+ **/
+ Clear:function (  ) //{{{
+ {
+   this.sRead[0] = "";
+ }, //}}} End Method Clear(  )
+ /**  read(  )
 
-   Scope:    public
-   Args:
-   Returns:  sRet
-   Called by:
-      1.
-   Purpose:
-      1.
-   TODO:
-      1.
-  **/
-  read:function (  ) //{{{
-  {
-    var str       = new Object();
-    var strLength = new Object();
-    var pastetext = null;
-    var clip  = Components.classes["@mozilla.org/widget/clipboard;1"].getService(Components.interfaces.nsIClipboard);
-    if (!clip) return pastetext;
-    var trans = Components.classes["@mozilla.org/widget/transferable;1"].createInstance(Components.interfaces.nsITransferable);
-    if (!trans) return pastetext;
-    trans.addDataFlavor("text/unicode");
-    clip.getData(trans, clip.kGlobalClipboard);
-    trans.getTransferData("text/unicode", str, strLength);
-    if (str) str       = str.value.QueryInterface(Components.interfaces.nsISupportsString);
-    if (str) pastetext = str.data.substring(0, strLength.value / 2);
-    return pastetext;
-  }, //}}} End Method read(  )
+  Scope:    public
+  Args:
+  Returns:  sRet
+  Called by:
+     1.
+  Purpose:
+     1.
+  TODO:
+     1.
+ **/
+ read:function (  ) //{{{
+ {
+   var str       = new Object();
+   var strLength = new Object();
+   var pastetext = null;
+   var clip  = Components.classes["@mozilla.org/widget/clipboard;1"].getService(Components.interfaces.nsIClipboard);
+   if (!clip) return pastetext;
+   var trans = Components.classes["@mozilla.org/widget/transferable;1"].createInstance(Components.interfaces.nsITransferable);
+   if (!trans) return pastetext;
+   trans.addDataFlavor("text/unicode");
+   clip.getData(trans, clip.kGlobalClipboard);
+   trans.getTransferData("text/unicode", str, strLength);
+   if (str) str       = str.value.QueryInterface(Components.interfaces.nsISupportsString);
+   if (str) pastetext = str.data.substring(0, strLength.value / 2);
+   return pastetext;
+ }, //}}} End Method read(  )
 
-  /**  Write( str )
+ /**  Write( str )
 
-   Scope:    public
-   Args:    str
-   Returns:  Nothing
-   Called by:
-      1.
-   Purpose:
-      1.
-   TODO:
-      1.
-  **/
-  Write:function ( str ) //{{{
-  {
-    this.sRead[0] = str;
-  }, //}}} End Method Write( str )
+  Scope:    public
+  Args:    str
+  Returns:  Nothing
+  Called by:
+     1.
+  Purpose:
+     1.
+  TODO:
+     1.
+ **/
+ Write:function ( str ) //{{{
+ {
+   this.sRead[0] = str;
+ }, //}}} End Method Write( str )
 
-  /**  Read(  )
+ /**  Read(  )
 
-   Scope:    public
-   Args:
-   Returns:  sRet
-   Called by:
-      1.
-   Purpose:
-      1.
-   TODO:
-      1.
-  **/
-  Read:function (  ) //{{{
-  {
-    var sRet = this.sRead[0];
-    return sRet;
-  } //}}} End Method Read(  )
+  Scope:    public
+  Args:
+  Returns:  sRet
+  Called by:
+     1.
+  Purpose:
+     1.
+  TODO:
+     1.
+ **/
+ Read:function (  ) //{{{
+ {
+   var sRet = this.sRead[0];
+   return sRet;
+ } //}}} End Method Read(  )
 
 }; //}}} End Object gClipboard
 
