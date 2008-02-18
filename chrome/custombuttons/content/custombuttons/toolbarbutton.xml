@@ -28,6 +28,11 @@
      (this. getAttribute ("image") == "data:"))
      this. removeAttribute ("image");
    }
+   if (this. hasAttribute ("Help"))
+   {
+    if (!this. getAttribute ("Help"))
+         this. removeAttribute ("Help");
+   }
    if (!this. hasAttribute ("initialized"))
    {
     if (this. hasAttribute ("cb-init"))
@@ -121,7 +126,8 @@
      code: this. cbCommand,
      initCode: this. cbInitCode,
      accelkey: this. cbAccelKey,
-     mode: this. cbMode
+     mode: this. cbMode,
+     Help: this. Help
     };
    ]]>
   </getter>
@@ -153,6 +159,22 @@
   </setter>
  </property>
 
+ <property name="Help">
+   <getter>
+     <![CDATA[
+               if (this. hasAttribute ("Help"))
+                 return this. getAttribute ("Help");
+               return "";
+     ]]>
+   </getter>
+
+   <setter>
+     <![CDATA[
+       this. setAttribute ("Help", val);
+     ]]>
+   </setter>
+ </property>
+
  <property name="cbMode">
   <getter>
    <![CDATA[
@@ -174,6 +196,23 @@
       this. cbCommand,
       this. cbInitCode
      ]. join ("][")
+    );
+    return uri;
+   ]]>
+  </getter>
+ </property>
+
+ <property name="midFormatURI">
+  <getter>
+   <![CDATA[
+    var uri = "custombutton://" + escape
+    (
+     [
+      this. name,
+      this. image,
+      this. cbCommand,
+      this. cbInitCode
+     ]. join ("]▲[")
     );
     return uri;
    ]]>
@@ -211,10 +250,11 @@
     doc. load ("chrome://custombuttons/content/nbftemplate.xml");
     this. setText (doc, "name", this. name, false);
     this. setText (doc, "mode", this. cbMode, false);
-    this. setText (doc, "image", escape (this. image), true);
-    this. setText (doc, "code", escape (this. cbCommand), true);
-    this. setText (doc, "initcode", escape (this. cbInitCode), true);
-    this. setText (doc, "accelkey", escape (this. cbAccelKey), true);
+    this. setText (doc, "image", this. image, true);
+    this. setText (doc, "code", this. cbCommand, true);
+    this. setText (doc, "initcode", this. cbInitCode, true);
+    this. setText (doc, "accelkey", this. cbAccelKey, true);
+    this. setText (doc, "Help", this. Help, true);
     var ser = new XMLSerializer ();
     var data = ser. serializeToString (doc);
     return "custombutton://" + escape (data);
@@ -231,7 +271,8 @@
     if (ps. getIntPref ("mode") && 1) // use new format URI constant
      return this. xmlFormatURI;
     else
-     return this. oldFormatURI;
+     return this. midFormatURI;
+     // return this. oldFormatURI;
    ]]>
   </getter>
  </property>
@@ -296,7 +337,6 @@
    {
     this. checkBind ();
     (new Function (this. cbCommand)). apply (this);
-    //eval (this. cbCommand, this);
    }
   ]]>
  </handler>
@@ -328,6 +368,11 @@
      (this. getAttribute ("image") == "data:"))
      this. removeAttribute ("image");
    }
+   if (this. hasAttribute ("Help"))
+   {
+   if (!this. getAttribute ("Help"))
+         this. removeAttribute ("Help");
+   }
    if (!this. hasAttribute ("initialized"))
    {
     if (this. hasAttribute ("cb-init"))
@@ -421,7 +466,8 @@
      code: this. cbCommand,
      initCode: this. cbInitCode,
      accelkey: this. cbAccelKey,
-     mode: this. cbMode
+     mode: this. cbMode,
+     Help: this. Help
     };
    ]]>
   </getter>
@@ -453,6 +499,22 @@
   </setter>
  </property>
 
+ <property name="Help">
+   <getter>
+     <![CDATA[
+               if (this. hasAttribute ("Help"))
+                 return this. getAttribute ("Help");
+               return "";
+     ]]>
+   </getter>
+
+   <setter>
+     <![CDATA[
+       this. setAttribute ("Help", val);
+     ]]>
+   </setter>
+ </property>
+
  <property name="cbMode">
   <getter>
    <![CDATA[
@@ -474,6 +536,23 @@
       this. cbCommand,
       this. cbInitCode
      ]. join ("][")
+    );
+    return uri;
+   ]]>
+  </getter>
+ </property>
+
+ <property name="midFormatURI">
+  <getter>
+   <![CDATA[
+    var uri = "custombutton://" + escape
+    (
+     [
+      this. name,
+      this. image,
+      this. cbCommand,
+      this. cbInitCode
+     ]. join ("]▲[")
     );
     return uri;
    ]]>
@@ -511,10 +590,11 @@
     doc. load ("chrome://custombuttons/content/nbftemplate.xml");
     this. setText (doc, "name", this. name, false);
     this. setText (doc, "mode", this. cbMode, false);
-    this. setText (doc, "image", escape (this. image), true);
-    this. setText (doc, "code", escape (this. cbCommand), true);
-    this. setText (doc, "initcode", escape (this. cbInitCode), true);
-    this. setText (doc, "accelkey", escape (this. cbAccelKey), true);
+    this. setText (doc, "image", this. image, true);
+    this. setText (doc, "code", this. cbCommand, true);
+    this. setText (doc, "initcode", this. cbInitCode, true);
+    this. setText (doc, "accelkey", this. cbAccelKey, true);
+    this. setText (doc, "Help", this. Help, true);
     var ser = new XMLSerializer ();
     var data = ser. serializeToString (doc);
     return "custombutton://" + escape (data);
@@ -596,7 +676,6 @@
    {
     this. checkBind ();
     (new Function (this. cbCommand)). apply (this);
-    //eval (this. cbCommand, this);
    }
   ]]>
  </handler>
@@ -628,6 +707,11 @@
      (this. getAttribute ("image") == "data:"))
      this. removeAttribute ("image");
    }
+   if (this. hasAttribute ("Help"))
+   {
+    if (!this. getAttribute ("Help"))
+         this. removeAttribute ("Help");
+   }
    if (!this. hasAttribute ("initialized"))
    {
     if (this. hasAttribute ("cb-init"))
@@ -721,7 +805,8 @@
      code: this. cbCommand,
      initCode: this. cbInitCode,
      accelkey: this. cbAccelKey,
-     mode: this. cbMode
+     mode: this. cbMode,
+     Help: this. Help
     };
    ]]>
   </getter>
@@ -753,6 +838,22 @@
   </setter>
  </property>
 
+ <property name="Help">
+   <getter>
+     <![CDATA[
+               if (this. hasAttribute ("Help"))
+                 return this. getAttribute ("Help");
+               return "";
+     ]]>
+   </getter>
+
+   <setter>
+     <![CDATA[
+       this. setAttribute ("Help", val);
+     ]]>
+   </setter>
+ </property>
+
  <property name="cbMode">
   <getter>
    <![CDATA[
@@ -774,6 +875,23 @@
       this. cbCommand,
       this. cbInitCode
      ]. join ("][")
+    );
+    return uri;
+   ]]>
+  </getter>
+ </property>
+
+ <property name="midFormatURI">
+  <getter>
+   <![CDATA[
+    var uri = "custombutton://" + escape
+    (
+     [
+      this. name,
+      this. image,
+      this. cbCommand,
+      this. cbInitCode
+     ]. join ("]▲[")
     );
     return uri;
    ]]>
@@ -811,10 +929,11 @@
     doc. load ("chrome://custombuttons/content/nbftemplate.xml");
     this. setText (doc, "name", this. name, false);
     this. setText (doc, "mode", this. cbMode, false);
-    this. setText (doc, "image", escape (this. image), true);
-    this. setText (doc, "code", escape (this. cbCommand), true);
-    this. setText (doc, "initcode", escape (this. cbInitCode), true);
-    this. setText (doc, "accelkey", escape (this. cbAccelKey), true);
+    this. setText (doc, "image", this. image, true);
+    this. setText (doc, "code", this. cbCommand, true);
+    this. setText (doc, "initcode", this. cbInitCode, true);
+    this. setText (doc, "accelkey", this. cbAccelKey, true);
+    this. setText (doc, "Help", this. Help, true);
     var ser = new XMLSerializer ();
     var data = ser. serializeToString (doc);
     return "custombutton://" + escape (data);
@@ -896,7 +1015,6 @@
    {
     this. checkBind ();
     (new Function (this. cbCommand)). apply (this);
-    //eval (this. cbCommand, this);
    }
   ]]>
  </handler>
@@ -928,6 +1046,11 @@
      (this. getAttribute ("image") == "data:"))
      this. removeAttribute ("image");
    }
+   if (this. hasAttribute ("Help"))
+   {
+    if (!this. getAttribute ("Help"))
+         this. removeAttribute ("Help");
+   }
    if (!this. hasAttribute ("initialized"))
    {
     if (this. hasAttribute ("cb-init"))
@@ -1021,7 +1144,8 @@
      code: this. cbCommand,
      initCode: this. cbInitCode,
      accelkey: this. cbAccelKey,
-     mode: this. cbMode
+     mode: this. cbMode,
+     Help: this. Help
     };
    ]]>
   </getter>
@@ -1053,6 +1177,22 @@
   </setter>
  </property>
 
+ <property name="Help">
+   <getter>
+     <![CDATA[
+               if (this. hasAttribute ("Help"))
+                 return this. getAttribute ("Help");
+               return "";
+     ]]>
+   </getter>
+
+   <setter>
+     <![CDATA[
+       this. setAttribute ("Help", val);
+     ]]>
+   </setter>
+ </property>
+
  <property name="cbMode">
   <getter>
    <![CDATA[
@@ -1074,6 +1214,23 @@
       this. cbCommand,
       this. cbInitCode
      ]. join ("][")
+    );
+    return uri;
+   ]]>
+  </getter>
+ </property>
+
+ <property name="midFormatURI">
+  <getter>
+   <![CDATA[
+    var uri = "custombutton://" + escape
+    (
+     [
+      this. name,
+      this. image,
+      this. cbCommand,
+      this. cbInitCode
+     ]. join ("]▲[")
     );
     return uri;
    ]]>
@@ -1111,10 +1268,11 @@
     doc. load ("chrome://custombuttons/content/nbftemplate.xml");
     this. setText (doc, "name", this. name, false);
     this. setText (doc, "mode", this. cbMode, false);
-    this. setText (doc, "image", escape (this. image), true);
-    this. setText (doc, "code", escape (this. cbCommand), true);
-    this. setText (doc, "initcode", escape (this. cbInitCode), true);
-    this. setText (doc, "accelkey", escape (this. cbAccelKey), true);
+    this. setText (doc, "image", this. image, true);
+    this. setText (doc, "code", this. cbCommand, true);
+    this. setText (doc, "initcode", this. cbInitCode, true);
+    this. setText (doc, "accelkey", this. cbAccelKey, true);
+    this. setText (doc, "Help", this. Help, true);
     var ser = new XMLSerializer ();
     var data = ser. serializeToString (doc);
     return "custombutton://" + escape (data);
@@ -1196,7 +1354,6 @@
    {
     this. checkBind ();
     (new Function (this. cbCommand)). apply (this);
-    //eval (this. cbCommand, this);
    }
   ]]>
  </handler>
