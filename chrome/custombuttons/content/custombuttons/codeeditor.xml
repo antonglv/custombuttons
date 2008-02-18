@@ -8,68 +8,68 @@
   (c) Original code by Anton from forum.mozilla.ru
 -->
 
-	<binding id="accelkeytextboxbinding" extends="chrome://global/content/bindings/textbox.xml#textbox">
-		<implementation>
-			<constructor>
-				<![CDATA[
-					this. keymap = new Array ();
-					var prefix = "DOM_VK_";
-					for (var i in KeyEvent)
-					{
-						if (i. indexOf (prefix) == 0)
-							this. keymap [KeyEvent [i]] = i. substr (prefix. length);
-					}
-				]]>
-			</constructor>
-			
-			<destructor>
-				<![CDATA[
-					this. keymap = null;
-				]]>
-			</destructor>
-			
-			<field name="keymap">null</field>
-			
-			<method name="getKey">
-				<parameter name="event"/>
-				<body>
-					<![CDATA[
-						if (event. which)
-							return String. fromCharCode (event. which);
-						else
-							return this. keymap [event. keyCode];
-					]]>
-				</body>
-			</method>
-		
-		</implementation>
-			
-		<handlers>
-			<handler event="keypress" phase="capturing">
-				<![CDATA[
-					var key = this. getKey (event);
-					if (key == "TAB")
-						return;
-					if (key == "ESCAPE")
-					{
-						this. value = "";
-						event. preventDefault ();
-						return;
-					}
-					var alt = event. altKey;
-					var ctrl = event. ctrlKey;
-					var shift = event. shiftKey;
-					var text = "";
-            		if (alt) text = "Alt+";
-            		if (ctrl) text += "Ctrl+";
-            		if (shift) text += "Shift+";
-            		this. value = text + key;
-					event. preventDefault ();
-					event. stopPropagation ();
-				]]>
-			</handler>
-		</handlers>
-	</binding>
+  <binding id="accelkeytextboxbinding" extends="chrome://global/content/bindings/textbox.xml#textbox">
+    <implementation>
+      <constructor>
+        <![CDATA[
+          this. keymap = new Array ();
+          var prefix = "DOM_VK_";
+          for (var i in KeyEvent)
+          {
+            if (i. indexOf (prefix) == 0)
+              this. keymap [KeyEvent [i]] = i. substr (prefix. length);
+          }
+        ]]>
+      </constructor>
+
+      <destructor>
+        <![CDATA[
+          this. keymap = null;
+        ]]>
+      </destructor>
+
+      <field name="keymap">null</field>
+
+      <method name="getKey">
+        <parameter name="event"/>
+        <body>
+          <![CDATA[
+            if (event. which)
+              return String. fromCharCode (event. which);
+            else
+              return this. keymap [event. keyCode];
+          ]]>
+        </body>
+      </method>
+
+    </implementation>
+
+    <handlers>
+      <handler event="keypress" phase="capturing">
+        <![CDATA[
+          var key = this. getKey (event);
+          if (key == "TAB")
+            return;
+          if (key == "ESCAPE")
+          {
+            this. value = "";
+            event. preventDefault ();
+            return;
+          }
+          var alt = event. altKey;
+          var ctrl = event. ctrlKey;
+          var shift = event. shiftKey;
+          var text = "";
+                if (alt) text = "Alt+";
+                if (ctrl) text += "Ctrl+";
+                if (shift) text += "Shift+";
+                this. value = text + key;
+          event. preventDefault ();
+          event. stopPropagation ();
+        ]]>
+      </handler>
+    </handlers>
+  </binding>
 
     <binding id="code_editor_binding" extends="chrome://global/content/bindings/textbox.xml#textarea">
         <implementation>
@@ -223,7 +223,7 @@
 //                    var arr = this. getLines ();
 //                    var range = this. getSelLinesRange ();
 //                    this. currentIndent = arr [range [0]] [0]. match (/^([ \t]*)?/) [0];
-                    //берётся подстрока от начала строки до позиции курсора	
+                    //берётся подстрока от начала строки до позиции курсора
                     var selStart = this. selectionStart;
                     this. currentIndent = this. value. substring
                     (
@@ -237,7 +237,7 @@
                         return;
 
                     // Защита от ложного срабатывания когда код выполняется по F9,
-                    // в коде алерт, и он закрывается нажатием ENTER 
+                    // в коде алерт, и он закрывается нажатием ENTER
                     var selStart = this. selectionStart;
                     if (this. value. substring (selStart - 1, selStart). charCodeAt (0) != 10)
                         return;
@@ -263,8 +263,8 @@
                     }
                 ]]>
             </handler>
-            
-	    <!--Executing code from the "Code" field-->
+
+      <!--Executing code from the "Code" field-->
             <handler event="keydown" keycode="VK_F9">
                 <![CDATA[
                     if (this. getAttribute ("id") == "code")
