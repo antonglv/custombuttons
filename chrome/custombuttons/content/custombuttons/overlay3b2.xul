@@ -6,8 +6,8 @@
 %custombuttonsDTD;
 ]>
 <overlay id="custombuttonsOverlay"
-		 xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
-	<toolbarpalette id="BrowserToolbarPalette">
-		<toolbarbutton id="custombuttons-template-button"/>
-	</toolbarpalette>
+     xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+  <toolbarpalette id="BrowserToolbarPalette">
+    <toolbarbutton id="custombuttons-template-button"/>
+  </toolbarpalette>
 </overlay>
