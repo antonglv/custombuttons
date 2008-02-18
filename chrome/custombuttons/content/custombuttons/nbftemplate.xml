@@ -1,9 +1,10 @@
 <?xml version="1.0"?>
 <custombutton xmlns:cb="http://xsms.nm.ru/custombuttons/">
-	<name/>
-	<image/>
-	<mode/>
-	<initcode/>
-	<code/>
-	<accelkey/>
+  <name/>
+  <image/>
+  <mode/>
+  <initcode/>
+  <code/>
+  <accelkey/>
+  <help/>
 </custombutton>
