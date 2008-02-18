@@ -107,34 +107,34 @@
 #ifdef USE_GLOBAL_COMPONENTS_VARIABLES
 var Cc = CC;
 var Ci = CI;
-	#define S_CLASS(NAME) Cc [NAME##_SERVICE_CID]
-	#define CLASS(NAME) Cc [NAME##_COMPONENT_CID]
-	#define S_INTERFACE(NAME) Ci. NAME##_SERVICE_IID
-	#define INTERFACE(NAME) Ci. NAME##_COMPONENT_IID
+  #define S_CLASS(NAME) Cc [NAME##_SERVICE_CID]
+  #define CLASS(NAME) Cc [NAME##_COMPONENT_CID]
+  #define S_INTERFACE(NAME) Ci. NAME##_SERVICE_IID
+  #define INTERFACE(NAME) Ci. NAME##_COMPONENT_IID
 #else
-	#define S_CLASS(NAME) CC [NAME##_SERVICE_CID]
-	#define CLASS(NAME) CC [NAME##_COMPONENT_CID]
-	#define S_INTERFACE(NAME) CI. NAME##_SERVICE_IID
-	#define INTERFACE(NAME) CI. NAME##_COMPONENT_IID
+  #define S_CLASS(NAME) CC [NAME##_SERVICE_CID]
+  #define CLASS(NAME) CC [NAME##_COMPONENT_CID]
+  #define S_INTERFACE(NAME) CI. NAME##_SERVICE_IID
+  #define INTERFACE(NAME) CI. NAME##_COMPONENT_IID
 #endif
 
 #ifdef USE_COMPONENTS_WRAPPERS
-	// Dark-Demon's Components wrappers
-	function _s (cid, iid)
-	{
-		return Cc [cid]. getService (eval ("Ci. " + iid));
-	}
-	function _i (cid, iid)
-	{
-		return Cc [cid]. createInstance (eval ("Ci. " + iid));
-	}
-	#define QUOTED2(x) #x
-	#define QUOTED(x) QUOTED2(x)
-	#define SERVICE(NAME) _s (NAME##_SERVICE_CID, QUOTED (NAME##_SERVICE_IID))
-	#define COMPONENT(NAME) _i (NAME##_COMPONENT_CID, QUOTED (NAME##_COMPONENT_IID))
+  // Dark-Demon's Components wrappers
+  function _s (cid, iid)
+  {
+    return Cc [cid]. getService (eval ("Ci. " + iid));
+  }
+  function _i (cid, iid)
+  {
+    return Cc [cid]. createInstance (eval ("Ci. " + iid));
+  }
+  #define QUOTED2(x) #x
+  #define QUOTED(x) QUOTED2(x)
+  #define SERVICE(NAME) _s (NAME##_SERVICE_CID, QUOTED (NAME##_SERVICE_IID))
+  #define COMPONENT(NAME) _i (NAME##_COMPONENT_CID, QUOTED (NAME##_COMPONENT_IID))
 #else
-	#define SERVICE(NAME) S_CLASS(NAME). getService (S_INTERFACE (NAME))
-	#define COMPONENT(NAME) CLASS(NAME). createInstance (INTERFACE (NAME))
+  #define SERVICE(NAME) S_CLASS(NAME). getService (S_INTERFACE (NAME))
+  #define COMPONENT(NAME) CLASS(NAME). createInstance (INTERFACE (NAME))
 #endif
 
 #define QI(INTERFACE_ID) QueryInterface (CI. INTERFACE_ID)
