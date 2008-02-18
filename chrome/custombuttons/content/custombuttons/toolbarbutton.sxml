@@ -4,32 +4,32 @@
           xmlns:xbl="http://www.mozilla.org/xbl"
           xmlns:xul="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
-	<binding id="toolbarbutton"
-			 extends="chrome://global/content/bindings/toolbarbutton.xml#toolbarbutton">
+  <binding id="toolbarbutton"
+       extends="chrome://global/content/bindings/toolbarbutton.xml#toolbarbutton">
 
 #include <toolbarbutton.ixml>
 
-	</binding>
-	
-	<binding id="menu"
-			 extends="chrome://global/content/bindings/toolbarbutton.xml#menu">
-	
-#include <toolbarbutton.ixml>
+  </binding>
 
-	</binding>
-		
-	<binding id="menu-orient"
-			 extends="chrome://global/content/bindings/toolbarbutton.xml#menu-orient">
+  <binding id="menu"
+       extends="chrome://global/content/bindings/toolbarbutton.xml#menu">
 
 #include <toolbarbutton.ixml>
 
-	</binding>
-	
-	<binding id="menu-button"
-			 extends="chrome://global/content/bindings/toolbarbutton.xml#menu-button">
-		
+  </binding>
+
+  <binding id="menu-orient"
+       extends="chrome://global/content/bindings/toolbarbutton.xml#menu-orient">
+
 #include <toolbarbutton.ixml>
 
-	</binding>
+  </binding>
+
+  <binding id="menu-button"
+       extends="chrome://global/content/bindings/toolbarbutton.xml#menu-button">
+
+#include <toolbarbutton.ixml>
+
+  </binding>
 
 </bindings>
