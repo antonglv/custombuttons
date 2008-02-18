@@ -55,7 +55,7 @@ function Custombuttons () {}
 Custombuttons. prototype =
 {
   ps: Components. classes ["@mozilla.org/preferences-service;1"]. getService (Components. interfaces. nsIPrefService). getBranch ("custombuttons.button"),
-  buttonParameters: ["name", "image", "code", "initCode", "accelkey"],
+ buttonParameters: ["name", "image", "code", "initCode", "accelkey", "help"],
   buttonsLoadedFromProfileOverlay: true,
   button: null,
   values: null,
@@ -205,8 +205,10 @@ Custombuttons. prototype =
       oItem. setAttribute ("cb-accelkey", values. accelkey);
     var code = values. code || "";
     var initCode = values. initCode || "";
+  var Help = values. help || "";
     oItem. setAttribute ("cb-oncommand", code);
     oItem. setAttribute ("cb-init", initCode);
+  oItem. setAttribute ("Help", Help);
     return oItem;
   },
 
@@ -487,7 +489,8 @@ Custombuttons. prototype =
       "cb-mode" : true,
       "cb-accelkey" : true,
       "context" : true,
-      "tooltiptext" : true
+   "tooltiptext" : true,
+   "Help" : true
     };
 
     //adding buttons from palette to new doc
@@ -649,6 +652,154 @@ TBCustombuttons. prototype. __proto__ = Custombuttons. prototype;
 
 var custombuttons = new custombuttonsFactory (). Custombuttons;
 
-window. addEventListener ("load", custombuttons, false);
-window. addEventListener ("unload", custombuttons, false);
-window. addEventListener ("keypress", custombuttons, true);
+/**  Object gClipboard
+ Author:	George Dunham aka: SCClockDr
+ Date:		2007-02-11
+ Scope:		Public
+ Properties:
+    sRead - An array which holds the local clipboard data.
+ Methods:
+    write - Stuffs data into the system clipboard.
+    clear - Clears the system clipboard.
+    Clear - Clears the local clipboard.
+    read - Retrieves the system clipboard data.
+    Write - Stuffs data into the local clipboard.
+    Read - Retrieves the local clipboard data.
+ Purpose:	1. Provide a simple means to access the system clipboard
+    2. Provid an alternate clipboard for storing a buffer of
+       copied strings.
+ TODO:		1. gClipboard.ClearHist sets sRead.length to 0
+ TODO:		2. gClipboard.History offers a context menu of up to 10 past clips to paste
+ TODO:		3. gClipboard.SystoI adds the sys Clipboard to the internal clipboard
+
+**/
+var gClipboard = { //{{{
+  // Properties:
+  sRead:new Array(),
+  // Methods
+  /**  write( str )
+
+   Scope:		public
+   Args:		sToCopy
+   Returns:	Nothing
+   Called by:	1. Any process wanting to place a string in the clipboard.
+   Purpose:	1.Stuff and Retrieve data from the system clipboard.
+   UPDATED:	9/18/2007 Modified to conform to the MDC suggested process.
+  **/
+  write:function ( sToCopy ) //{{{
+  {
+    if (sToCopy != null){		  			// Test for actual data
+      var str  = Components.classes["@mozilla.org/supports-string;1"].createInstance(Components.interfaces.nsISupportsString);
+      str.data = sToCopy;
+      var trans = Components.classes["@mozilla.org/widget/transferable;1"].createInstance(Components.interfaces.nsITransferable);
+      trans.addDataFlavor("text/unicode");
+      trans.setTransferData("text/unicode", str, sToCopy.length * 2);
+      var clipid = Components.interfaces.nsIClipboard;
+      var clip   = Components.classes["@mozilla.org/widget/clipboard;1"].getService(clipid);
+      clip.setData(trans, null, clipid.kGlobalClipboard);
+    } // End if (str != null)
+  }, //}}} End Method write( str )
+
+  /**  clear(  )
+
+   Scope:		public
+   Args:
+   Returns:	Nothing
+   Called by:
+      1. Any process wanting to clear the clipboard
+   Purpose:
+      1. Clear the system cllipboard
+   TODO:
+      1.
+  **/
+  clear:function (  ) //{{{
+  {
+    this.write("");
+  }, //}}} End Method clear(  )
+  /**  Clear(  )
+
+   Scope:		public
+   Args:
+   Returns:	Nothing
+   Called by:
+      1. Any process wanting to clear the local clipboard
+   Purpose:
+      1. Clear the local cllipboard
+   TODO:
+      1.
+  **/
+  Clear:function (  ) //{{{
+  {
+    this.sRead[0] = "";
+  }, //}}} End Method Clear(  )
+  /**  read(  )
+
+   Scope:		public
+   Args:
+   Returns:	sRet
+   Called by:
+      1.
+   Purpose:
+      1.
+   TODO:
+      1.
+  **/
+  read:function (  ) //{{{
+  {
+    var str       = new Object();
+    var strLength = new Object();
+    var pastetext = null;
+    var clip  = Components.classes["@mozilla.org/widget/clipboard;1"].getService(Components.interfaces.nsIClipboard);
+    if (!clip) return pastetext;
+    var trans = Components.classes["@mozilla.org/widget/transferable;1"].createInstance(Components.interfaces.nsITransferable);
+    if (!trans) return pastetext;
+    trans.addDataFlavor("text/unicode");
+    clip.getData(trans, clip.kGlobalClipboard);
+    trans.getTransferData("text/unicode", str, strLength);
+    if (str) str       = str.value.QueryInterface(Components.interfaces.nsISupportsString);
+    if (str) pastetext = str.data.substring(0, strLength.value / 2);
+    return pastetext;
+  }, //}}} End Method read(  )
+
+  /**  Write( str )
+
+   Scope:		public
+   Args:		str
+   Returns:	Nothing
+   Called by:
+      1.
+   Purpose:
+      1.
+   TODO:
+      1.
+  **/
+  Write:function ( str ) //{{{
+  {
+    this.sRead[0] = str;
+  }, //}}} End Method Write( str )
+
+  /**  Read(  )
+
+   Scope:		public
+   Args:
+   Returns:	sRet
+   Called by:
+      1.
+   Purpose:
+      1.
+   TODO:
+      1.
+  **/
+  Read:function (  ) //{{{
+  {
+    var sRet = this.sRead[0];
+    return sRet;
+  } //}}} End Method Read(  )
+
+}; //}}} End Object gClipboard
+
+
+
+window. addEventListener ( "load", function (event) { custombuttons. init (); }, false );
+window. addEventListener ( "unload", function (event) { custombuttons. saveButtonsToProfile (); }, false );
+window. addEventListener ( "keypress", function (event) { custombuttons. onKeyPress (event); }, true );
