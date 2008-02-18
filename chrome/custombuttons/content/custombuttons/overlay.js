@@ -653,9 +653,9 @@ TBCustombuttons. prototype. __proto__ = Custombuttons. prototype;
 var custombuttons = new custombuttonsFactory (). Custombuttons;
 
 /**  Object gClipboard
- Author:	George Dunham aka: SCClockDr
- Date:		2007-02-11
- Scope:		Public
+ Author:  George Dunham aka: SCClockDr
+ Date:    2007-02-11
+ Scope:    Public
  Properties:
     sRead - An array which holds the local clipboard data.
  Methods:
@@ -665,12 +665,12 @@ var custombuttons = new custombuttonsFactory (). Custombuttons;
     read - Retrieves the system clipboard data.
     Write - Stuffs data into the local clipboard.
     Read - Retrieves the local clipboard data.
- Purpose:	1. Provide a simple means to access the system clipboard
+ Purpose:  1. Provide a simple means to access the system clipboard
     2. Provid an alternate clipboard for storing a buffer of
        copied strings.
- TODO:		1. gClipboard.ClearHist sets sRead.length to 0
- TODO:		2. gClipboard.History offers a context menu of up to 10 past clips to paste
- TODO:		3. gClipboard.SystoI adds the sys Clipboard to the internal clipboard
+ TODO:    1. gClipboard.ClearHist sets sRead.length to 0
+ TODO:    2. gClipboard.History offers a context menu of up to 10 past clips to paste
+ TODO:    3. gClipboard.SystoI adds the sys Clipboard to the internal clipboard
 
 **/
 var gClipboard = { //{{{
@@ -679,16 +679,16 @@ var gClipboard = { //{{{
   // Methods
   /**  write( str )
 
-   Scope:		public
-   Args:		sToCopy
-   Returns:	Nothing
-   Called by:	1. Any process wanting to place a string in the clipboard.
-   Purpose:	1.Stuff and Retrieve data from the system clipboard.
-   UPDATED:	9/18/2007 Modified to conform to the MDC suggested process.
+   Scope:    public
+   Args:    sToCopy
+   Returns:  Nothing
+   Called by:  1. Any process wanting to place a string in the clipboard.
+   Purpose:  1.Stuff and Retrieve data from the system clipboard.
+   UPDATED:  9/18/2007 Modified to conform to the MDC suggested process.
   **/
   write:function ( sToCopy ) //{{{
   {
-    if (sToCopy != null){		  			// Test for actual data
+    if (sToCopy != null){            // Test for actual data
       var str  = Components.classes["@mozilla.org/supports-string;1"].createInstance(Components.interfaces.nsISupportsString);
       str.data = sToCopy;
       var trans = Components.classes["@mozilla.org/widget/transferable;1"].createInstance(Components.interfaces.nsITransferable);
@@ -702,9 +702,9 @@ var gClipboard = { //{{{
 
   /**  clear(  )
 
-   Scope:		public
+   Scope:    public
    Args:
-   Returns:	Nothing
+   Returns:  Nothing
    Called by:
       1. Any process wanting to clear the clipboard
    Purpose:
@@ -718,9 +718,9 @@ var gClipboard = { //{{{
   }, //}}} End Method clear(  )
   /**  Clear(  )
 
-   Scope:		public
+   Scope:    public
    Args:
-   Returns:	Nothing
+   Returns:  Nothing
    Called by:
       1. Any process wanting to clear the local clipboard
    Purpose:
@@ -734,9 +734,9 @@ var gClipboard = { //{{{
   }, //}}} End Method Clear(  )
   /**  read(  )
 
-   Scope:		public
+   Scope:    public
    Args:
-   Returns:	sRet
+   Returns:  sRet
    Called by:
       1.
    Purpose:
@@ -763,9 +763,9 @@ var gClipboard = { //{{{
 
   /**  Write( str )
 
-   Scope:		public
-   Args:		str
-   Returns:	Nothing
+   Scope:    public
+   Args:    str
+   Returns:  Nothing
    Called by:
       1.
    Purpose:
@@ -780,9 +780,9 @@ var gClipboard = { //{{{
 
   /**  Read(  )
 
-   Scope:		public
+   Scope:    public
    Args:
-   Returns:	sRet
+   Returns:  sRet
    Called by:
       1.
    Purpose:
