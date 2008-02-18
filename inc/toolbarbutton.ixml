@@ -1,293 +1,293 @@
 <implementation>
-	<constructor>
-		<![CDATA[
-			var cbd = Components. classes ["@xsms.nm.ru/custombuttons/cbkeymap;1"].
-					  getService (Components. interfaces. cbIKeyMapService);
-			cbd. Delete (this. getAttribute ("id"));
-			if (this. hasAttribute ("cb-accelkey"))
-			{
-				cbd. Add (this. getAttribute ("id"),
-						  this. getAttribute ("cb-accelkey"),
-						  (this. cbMode & 2)? true: false);
-			}
-			if (this. hasAttribute ("cb-oncommand"))
-				this. cbCommand = this. getAttribute ("cb-oncommand");
-			if (this. hasAttribute ("image"))
-			{
-				if (!this. getAttribute ("image") ||
-					(this. getAttribute ("image") == "data:"))
-					this. removeAttribute ("image");
-			}
-			if (!this. hasAttribute ("initialized"))
-			{
-				if (this. hasAttribute ("cb-init"))
-				{
-					var ps = Components. classes ["@mozilla.org/preferences-service;1"].
-							 getService (Components. interfaces. nsIPrefService).
-							 getBranch ("custombuttons.");
-					var mode = ps. getIntPref ("mode");
-					if ((this. parentNode. nodeName != "toolbar") &&
-						((mode & 4) || !(this. cbMode & 1))) // 4 - disable initialization in Customize Toolbar dialog global flag
-						return;
-					this. cbInitCode = this. getAttribute ("cb-init");
-					this. init ();
-				}
-				else
-				{
-					this. setAttribute ("cb-init", "");
-					this. setAttribute ("initialized", "true");
-				}
-			}
-		]]>
-	</constructor>
-	
-	<destructor>
-		<![CDATA[
-			if (this. hasAttribute ("cb-accelkey"))
-			{
-				var cbd = Components. classes ["@xsms.nm.ru/custombuttons/cbkeymap;1"].
-						  getService (Components. interfaces. cbIKeyMapService);
-				cbd. Delete (this. getAttribute ("id"));
-			}
-		]]>
-	</destructor>
-	
-	<method name="checkBind">
-		<body>
-			<![CDATA[
-				if (Function. prototype. bind == undefined)
-				{
-					Function. prototype. bind = function (object)
-					{
-						var method = this;
-						return function ()
-						{
-							return method. apply (object, arguments);
-						}
-					}
-				}
-			]]>
-		</body>
-	</method>
+  <constructor>
+    <![CDATA[
+      var cbd = Components. classes ["@xsms.nm.ru/custombuttons/cbkeymap;1"].
+            getService (Components. interfaces. cbIKeyMapService);
+      cbd. Delete (this. getAttribute ("id"));
+      if (this. hasAttribute ("cb-accelkey"))
+      {
+        cbd. Add (this. getAttribute ("id"),
+              this. getAttribute ("cb-accelkey"),
+              (this. cbMode & 2)? true: false);
+      }
+      if (this. hasAttribute ("cb-oncommand"))
+        this. cbCommand = this. getAttribute ("cb-oncommand");
+      if (this. hasAttribute ("image"))
+      {
+        if (!this. getAttribute ("image") ||
+          (this. getAttribute ("image") == "data:"))
+          this. removeAttribute ("image");
+      }
+      if (!this. hasAttribute ("initialized"))
+      {
+        if (this. hasAttribute ("cb-init"))
+        {
+          var ps = Components. classes ["@mozilla.org/preferences-service;1"].
+               getService (Components. interfaces. nsIPrefService).
+               getBranch ("custombuttons.");
+          var mode = ps. getIntPref ("mode");
+          if ((this. parentNode. nodeName != "toolbar") &&
+            ((mode & 4) || !(this. cbMode & 1))) // 4 - disable initialization in Customize Toolbar dialog global flag
+            return;
+          this. cbInitCode = this. getAttribute ("cb-init");
+          this. init ();
+        }
+        else
+        {
+          this. setAttribute ("cb-init", "");
+          this. setAttribute ("initialized", "true");
+        }
+      }
+    ]]>
+  </constructor>
 
-	<method name="init">
-		<body>
-			<![CDATA[
-				if (this. cbInitCode)
-				{
-					while (this. hasChildNodes ())
-						this. removeChild (this. childNodes [0]);
-					this. checkBind ();
-					try
-					{
-						(new Function (this. cbInitCode)). apply (this);
-					}
-					catch (e)
-					{
-						var msg = "Custom Buttons error.]" +
-								  "[ Event: Initialization]" +
-								  "[ Button name: " +
-								  this. getAttribute ("label") +
-								  "]" +
-								  "[ Button ID: " +
-								  this. getAttribute ("id") +
-								  "]" +
-								  "[ " +
-								  e;
-						throw new Error (msg);
-					}
-				}
-				this. setAttribute ("initialized", "true");
-			]]>
-		</body>
-	</method>
-	
-	<property name="parameters">
-		<getter>
-			<![CDATA[
-				return {
-					name: this. name,
-					image: this. image,
-					code: this. cbCommand,
-					initCode: this. cbInitCode,
-					accelkey: this. cbAccelKey,
-					mode: this. cbMode
-				};
-			]]>
-		</getter>
-	</property>
-	
-	<property name="cbAccelKey">
-		<getter>
-			<![CDATA[
-				if (this. hasAttribute ("cb-accelkey"))
-					return this. getAttribute ("cb-accelkey");
-				return "";
-			]]>
-		</getter>
-	</property>
-	
-	<property name="image">
-		<getter>
-			<![CDATA[
+  <destructor>
+    <![CDATA[
+      if (this. hasAttribute ("cb-accelkey"))
+      {
+        var cbd = Components. classes ["@xsms.nm.ru/custombuttons/cbkeymap;1"].
+              getService (Components. interfaces. cbIKeyMapService);
+        cbd. Delete (this. getAttribute ("id"));
+      }
+    ]]>
+  </destructor>
+
+  <method name="checkBind">
+    <body>
+      <![CDATA[
+        if (Function. prototype. bind == undefined)
+        {
+          Function. prototype. bind = function (object)
+          {
+            var method = this;
+            return function ()
+            {
+              return method. apply (object, arguments);
+            }
+          }
+        }
+      ]]>
+    </body>
+  </method>
+
+  <method name="init">
+    <body>
+      <![CDATA[
+        if (this. cbInitCode)
+        {
+          while (this. hasChildNodes ())
+            this. removeChild (this. childNodes [0]);
+          this. checkBind ();
+          try
+          {
+            (new Function (this. cbInitCode)). apply (this);
+          }
+          catch (e)
+          {
+            var msg = "Custom Buttons error.]" +
+                  "[ Event: Initialization]" +
+                  "[ Button name: " +
+                  this. getAttribute ("label") +
+                  "]" +
+                  "[ Button ID: " +
+                  this. getAttribute ("id") +
+                  "]" +
+                  "[ " +
+                  e;
+            throw new Error (msg);
+          }
+        }
+        this. setAttribute ("initialized", "true");
+      ]]>
+    </body>
+  </method>
+
+  <property name="parameters">
+    <getter>
+      <![CDATA[
+        return {
+          name: this. name,
+          image: this. image,
+          code: this. cbCommand,
+          initCode: this. cbInitCode,
+          accelkey: this. cbAccelKey,
+          mode: this. cbMode
+        };
+      ]]>
+    </getter>
+  </property>
+
+  <property name="cbAccelKey">
+    <getter>
+      <![CDATA[
+        if (this. hasAttribute ("cb-accelkey"))
+          return this. getAttribute ("cb-accelkey");
+        return "";
+      ]]>
+    </getter>
+  </property>
+
+  <property name="image">
+    <getter>
+      <![CDATA[
                 if (this. hasAttribute ("image"))
-                	return this. getAttribute ("image");
+                  return this. getAttribute ("image");
                 return "";
-			]]>
-		</getter>
-		
-		<setter>
-			<![CDATA[
-				this. setAttribute ("image", val);
-			]]>
-		</setter>
-	</property>
-	
-	<property name="cbMode">
-		<getter>
-			<![CDATA[
-				if (this. hasAttribute ("cb-mode"))
-					return this. getAttribute ("cb-mode");
-				return 0;
-			]]>
-		</getter>
-	</property>
-	
-	<property name="oldFormatURI">
-		<getter>
-			<![CDATA[
-				var uri = "custombutton://" + escape
-				(
-					[
-						this. name,
-						this. image,
-						this. cbCommand,
-						this. cbInitCode
-					]. join ("][")
-				);
-				return uri;
-			]]>
-		</getter>
-	</property>
-	
-	<method name="setText">
-		<parameter name="doc"/>
-		<parameter name="nodeName"/>
-		<parameter name="text"/>
-		<parameter name="make_CDATASection"/>
-		<body>
-			<![CDATA[
-				var node = doc. getElementsByTagName (nodeName) [0];
-				if (!node)
-					return;
-				if (make_CDATASection)
-				{
-					cds = doc. createCDATASection (text || "");
-					node. appendChild (cds);
-				}
-				else
-				{
-					node. textContent = text;
-				}
-			]]>
-		</body>
-	</method>
-	
-	<property name="xmlFormatURI">
-		<getter>
-			<![CDATA[
-				var doc = document. implementation. createDocument ("", "", null);
-				doc. async = false;
-				doc. load ("chrome://custombuttons/content/nbftemplate.xml");
-				this. setText (doc, "name", this. name, false);
-				this. setText (doc, "mode", this. cbMode, false);
-				this. setText (doc, "image", escape (this. image), true);
-				this. setText (doc, "code", escape (this. cbCommand), true);
-				this. setText (doc, "initcode", escape (this. cbInitCode), true);
-				this. setText (doc, "accelkey", escape (this. cbAccelKey), true);
-				var ser = new XMLSerializer ();
-				var data = ser. serializeToString (doc);
-				return "custombutton://" + escape (data);
-			]]>
-		</getter>
-	</property>
-	
-	<property name="URI">
-		<getter>
-			<![CDATA[
-				var ps = Components. classes ["@mozilla.org/preferences-service;1"].
-						 getService (Components. interfaces. nsIPrefService).
-						 getBranch ("custombuttons.");
-				if (ps. getIntPref ("mode") && 1) // use new format URI constant
-					return this. xmlFormatURI;
-				else
-					return this. oldFormatURI;
-			]]>
-		</getter>
-	</property>
-	
-	<property name="name">
-		<getter>
-			<![CDATA[
-				return this. getAttribute ("label");
-			]]>
-		</getter>
-	</property>
-	
-	<field name="_cbCommand">null</field>
-	
-	<property name="cbCommand">
-		<getter>
-			<![CDATA[
-				return this. getAttribute ("cb-oncommand") || "";
-			]]>
-		</getter>
-		
-		<setter>
-			<![CDATA[
-			]]>
-		</setter>
-	</property>
-	
-	<field name="_cbInitCode">null</field>
-	
-	<property name="cbInitCode">
-		<getter>
-			<![CDATA[
-				return this. getAttribute ("cb-init") || "";
-			]]>
-		</getter>
-		
-		<setter>
-			<![CDATA[
-				if (this. hasAttribute ("initialized"))
-					this. removeAttribute ("initialized");
-			]]>
-		</setter>
-	</property>
-	
-	<method name="cbExecuteCode">
-		<body>
-			<![CDATA[
-				if (this. cbCommand)
-				{
-					this. checkBind ();
-					(new Function (this. cbCommand)). apply (this);
-				}
-			]]>
-		</body>
-	</method>
+      ]]>
+    </getter>
+
+    <setter>
+      <![CDATA[
+        this. setAttribute ("image", val);
+      ]]>
+    </setter>
+  </property>
+
+  <property name="cbMode">
+    <getter>
+      <![CDATA[
+        if (this. hasAttribute ("cb-mode"))
+          return this. getAttribute ("cb-mode");
+        return 0;
+      ]]>
+    </getter>
+  </property>
+
+  <property name="oldFormatURI">
+    <getter>
+      <![CDATA[
+        var uri = "custombutton://" + escape
+        (
+          [
+            this. name,
+            this. image,
+            this. cbCommand,
+            this. cbInitCode
+          ]. join ("][")
+        );
+        return uri;
+      ]]>
+    </getter>
+  </property>
+
+  <method name="setText">
+    <parameter name="doc"/>
+    <parameter name="nodeName"/>
+    <parameter name="text"/>
+    <parameter name="make_CDATASection"/>
+    <body>
+      <![CDATA[
+        var node = doc. getElementsByTagName (nodeName) [0];
+        if (!node)
+          return;
+        if (make_CDATASection)
+        {
+          cds = doc. createCDATASection (text || "");
+          node. appendChild (cds);
+        }
+        else
+        {
+          node. textContent = text;
+        }
+      ]]>
+    </body>
+  </method>
+
+  <property name="xmlFormatURI">
+    <getter>
+      <![CDATA[
+        var doc = document. implementation. createDocument ("", "", null);
+        doc. async = false;
+        doc. load ("chrome://custombuttons/content/nbftemplate.xml");
+        this. setText (doc, "name", this. name, false);
+        this. setText (doc, "mode", this. cbMode, false);
+        this. setText (doc, "image", escape (this. image), true);
+        this. setText (doc, "code", escape (this. cbCommand), true);
+        this. setText (doc, "initcode", escape (this. cbInitCode), true);
+        this. setText (doc, "accelkey", escape (this. cbAccelKey), true);
+        var ser = new XMLSerializer ();
+        var data = ser. serializeToString (doc);
+        return "custombutton://" + escape (data);
+      ]]>
+    </getter>
+  </property>
+
+  <property name="URI">
+    <getter>
+      <![CDATA[
+        var ps = Components. classes ["@mozilla.org/preferences-service;1"].
+             getService (Components. interfaces. nsIPrefService).
+             getBranch ("custombuttons.");
+        if (ps. getIntPref ("mode") && 1) // use new format URI constant
+          return this. xmlFormatURI;
+        else
+          return this. oldFormatURI;
+      ]]>
+    </getter>
+  </property>
+
+  <property name="name">
+    <getter>
+      <![CDATA[
+        return this. getAttribute ("label");
+      ]]>
+    </getter>
+  </property>
+
+  <field name="_cbCommand">null</field>
+
+  <property name="cbCommand">
+    <getter>
+      <![CDATA[
+        return this. getAttribute ("cb-oncommand") || "";
+      ]]>
+    </getter>
+
+    <setter>
+      <![CDATA[
+      ]]>
+    </setter>
+  </property>
+
+  <field name="_cbInitCode">null</field>
+
+  <property name="cbInitCode">
+    <getter>
+      <![CDATA[
+        return this. getAttribute ("cb-init") || "";
+      ]]>
+    </getter>
+
+    <setter>
+      <![CDATA[
+        if (this. hasAttribute ("initialized"))
+          this. removeAttribute ("initialized");
+      ]]>
+    </setter>
+  </property>
+
+  <method name="cbExecuteCode">
+    <body>
+      <![CDATA[
+        if (this. cbCommand)
+        {
+          this. checkBind ();
+          (new Function (this. cbCommand)). apply (this);
+        }
+      ]]>
+    </body>
+  </method>
 </implementation>
 
 <handlers>
-	<handler event="command">
-		<![CDATA[
-			if (this. cbCommand)
-			{
-				this. checkBind ();
-				(new Function (this. cbCommand)). apply (this);
-				//eval (this. cbCommand, this);
-			}
-		]]>
-	</handler>
+  <handler event="command">
+    <![CDATA[
+      if (this. cbCommand)
+      {
+        this. checkBind ();
+        (new Function (this. cbCommand)). apply (this);
+        //eval (this. cbCommand, this);
+      }
+    ]]>
+  </handler>
 </handlers>
