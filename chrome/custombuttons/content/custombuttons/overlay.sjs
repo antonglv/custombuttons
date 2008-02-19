@@ -507,18 +507,15 @@ Custombuttons. prototype =
 		return "custombutton://" + escape (data);
 	},
 	
-	// TODO: replace "oBtn. ???FormatURI;" with "this. ???FormatURI (oBtn);"
-	// REASON: these propertise was removed from toolbarbutton.ixml,
-	//		   so button hasn't these.
 	buttonGetURI: function (oBtn)
 	{
 		var ps = Components. classes ["@mozilla.org/preferences-service;1"].
 		getService (Components. interfaces. nsIPrefService).
 		getBranch ("custombuttons.");
 		if (ps. getIntPref ("mode") && CB_MODE_USE_XML_BUTTON_FORMAT)
-			return oBtn. xmlFormatURI;
+			return this. xmlFormatURI (oBtn);
 		else
-			return oBtn. midFormatURI;
+			return this. midFormatURI (oBtn);
 	},
 	
 	buttonCbExecuteCode: function(oBtn)
