@@ -97,7 +97,7 @@ Editor. prototype =
   setValues: function (values)
   {
     for each (var v in this. CB. buttonParameters)
-      ELEMENT (v). value = values [v];
+    ELEMENT (v). value = (v != "help")? values [v]: values ["Help"];
     ELEMENT ("initInCustomizeToolbarDialog"). checked = values. mode && (values. mode & CB_MODE_ENABLE_INIT_IN_CTDIALOG) || false;
     ELEMENT ("disableDefaultKeyBehavior"). checked = values. mode && (values. mode & CB_MODE_DISABLE_DEFAULT_KEY_BEHAVIOR) || false;
   },
