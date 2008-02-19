@@ -79,20 +79,6 @@
 		</getter>
 	</property>
 	
-	<property name="oldFormatURI">
-		<getter>
-			<![CDATA[
-				return custombuttons. GetOldFormatURI (this);
-			]]>
-		</getter>
-	</property>
-	
-	<property name="midFormatURI">
-		<![CDATA[
-			return custombuttons. buttonGetMidFormatURI (this);
-		]]>
-	</property>
-	
 	<method name="setText">
 		<parameter name="doc"/>
 		<parameter name="nodeName"/>
@@ -104,14 +90,6 @@
 			]]>
 		</body>
 	</method>
-	
-	<property name="xmlFormatURI">
-		<getter>
-			<![CDATA[
-				return custombuttons. buttonGetXmlFormatURI (this);
-			]]>
-		</getter>
-	</property>
 	
 	<property name="URI">
 		<getter>
