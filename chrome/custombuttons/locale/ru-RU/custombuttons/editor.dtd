@@ -1,3 +1,4 @@
+<!ENTITY editor.dialog.help "Help">
 <!ENTITY editor.dialog.title "Редактирование кнопки">
 <!ENTITY editor.name "Имя:">
 <!ENTITY editor.name.tooltiptext "Задаёт надпись на кнопке и всплывающую подсказку">
