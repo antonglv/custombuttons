@@ -1,3 +1,4 @@
+<!ENTITY editor.dialog.help "Help">
 <!ENTITY editor.dialog.title "Edit button">
 <!ENTITY editor.name "Name:">
 <!ENTITY editor.name.tooltiptext "Defines button&apos;s label and popup text">
