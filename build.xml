@@ -8,8 +8,7 @@
 	</description>
 	
 	<!-- set global properties for this build -->
-	<property name="geckosdkpath"
-			  location="p:\tmp\Mozilla\gecko-sdk-i586-pc-msvc-1.8a6\gecko-sdk"/>
+	<property file="build.properties"/>
 	<property name="xpidlpath" location="${geckosdkpath}\BIN"/>
 	<property name="idlpath" location="${geckosdkpath}\IDL"/>
 	
@@ -68,6 +67,8 @@
 	</target>
 	
 	<target name="buildxpt" depends="init,preprocess">
+				<fail unless="geckosdkpath">The path to gecko sdk (geckosdkpath property) not defined.
+Define it in build.properties (don't forget about double back slashes)</fail>
 		<apply executable="xpidl.exe" dir="${xpidlpath}"
 			   resolveExecutable="true" dest="${basedir}/components"
 			   failonerror="true"> <!-- and no pack.bat needed now -->
