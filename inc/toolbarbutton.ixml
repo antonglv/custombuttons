@@ -2,28 +2,28 @@
 <implementation>
 	<constructor>
     	<![CDATA[
-			custombuttons. buttonConstructor (this);
+			// to avoid errors in JS console when we are trying to
+			// initialize in Customize Toolbar dialog
+			if (!window. custombutton)
+			{
+			  Components. classes ["@mozilla.org/moz/jssubscript-loader;1"]. getService (Components. interfaces. mozIJSSubScriptLoader).
+				loadSubScript ("chrome://custombuttons/content/cbbutton.js");
+			}
+			// end
+			custombutton. buttonConstructor (this);
 		]]>
 	</constructor>
 
 	<destructor>
     	<![CDATA[
-			custombuttons. buttonDestructor (this);
+			custombutton. buttonDestructor (this);
 		]]>
 	</destructor>
-	
-	<method name="checkBind">
-		<body>
-			<![CDATA[
-				custombuttons. buttonCheckBind (this);
-			]]>
-		</body>
-	</method>
 	
 	<method name="init">
 		<body>
 			<![CDATA[
-				custombuttons. buttonInit (this);
+				custombutton. buttonInit (this);
 			]]>
 		</body>
 	</method>
@@ -31,7 +31,7 @@
 	<property name="parameters">
 		<getter>
 			<![CDATA[
-				return custombuttons. buttonGetParameters (this);
+				return custombutton. buttonGetParameters (this);
 			]]>
 		</getter>
 	</property>
@@ -39,7 +39,7 @@
 	<property name="cbAccelKey">
 		<getter>
 			<![CDATA[
-				return custombuttons. buttonGetCbAccelKey (this);
+				return custombutton. buttonGetCbAccelKey (this);
 			]]>
 		</getter>
 	</property>
@@ -47,7 +47,7 @@
 	<property name="image">
 		<getter>
 			<![CDATA[
-				return custombuttons. buttonGetImage (this);
+				return custombutton. buttonGetImage (this);
 			]]>
 		</getter>
 		
@@ -61,7 +61,7 @@
 	<property name="Help">
 		<getter>
 			<![CDATA[
-				return custombuttons. buttonGetHelp (this);
+				return custombutton. buttonGetHelp (this);
 			]]>
 		</getter>
 		
@@ -69,12 +69,13 @@
 			<![CDATA[
 				this. setAttribute ("Help", val);
 			]]>
+		</setter>
 	</property>
 	
 	<property name="cbMode">
 		<getter>
 			<![CDATA[
-				return custombuttons. buttonGetMode (this);
+				return custombutton. buttonGetCbMode (this);
 			]]>
 		</getter>
 	</property>
@@ -86,7 +87,7 @@
 		<parameter name="make_CDATASection"/>
 		<body>
 			<![CDATA[
-				custombuttons. buttonSetText (doc, nodeName, text, make_CDATASection);
+				custombutton. buttonSetText (doc, nodeName, text, make_CDATASection);
 			]]>
 		</body>
 	</method>
@@ -94,7 +95,7 @@
 	<property name="URI">
 		<getter>
 			<![CDATA[
-				return custombuttons. buttonGetURI (this);
+				return custombutton. buttonGetURI (this);
 			]]>
 		</getter>
 	</property>
@@ -142,7 +143,7 @@
 	<method name="cbExecuteCode">
 		<body>
 			<![CDATA[
-				custombuttons. buttonCbExecuteCode (this);
+				custombutton. buttonCbExecuteCode (this);
 			]]>
 		</body>
 	</method>
@@ -151,7 +152,7 @@
 <handlers>
 	<handler event="command">
 		<![CDATA[
-			custombuttons. buttonCommand (event, this);
+			custombutton. buttonCommand (event, this);
 		]]>
 	</handler>
 </handlers>
