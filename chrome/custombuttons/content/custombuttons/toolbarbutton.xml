@@ -7,638 +7,661 @@
   <binding id="toolbarbutton"
        extends="chrome://global/content/bindings/toolbarbutton.xml#toolbarbutton">
 
-  <implementation>
-   <constructor>
-    <![CDATA[
-    custombuttons. buttonConstructor(this);
-    ]]>
-   </constructor>
-   <destructor>
-    <![CDATA[
-    custombuttons. buttonDestructor(this);
-    ]]>
-   </destructor>
 
-   <method name="checkBind">
-    <body>
+
+<implementation>
+ <constructor>
      <![CDATA[
-     custombuttons. buttonCheckBind(this);
-     ]]>
-    </body>
-   </method>
+   // to avoid errors in JS console when we are trying to
+   // initialize in Customize Toolbar dialog
+   if (!window. custombutton)
+   {
+     Components. classes ["@mozilla.org/moz/jssubscript-loader;1"]. getService (Components. interfaces. mozIJSSubScriptLoader).
+    loadSubScript ("chrome://custombuttons/content/cbbutton.js");
+   }
+   // end
+   custombutton. buttonConstructor (this);
+  ]]>
+ </constructor>
 
-   <method name="init">
-    <body>
+ <destructor>
      <![CDATA[
-     custombuttons. buttonInit(this);
-     ]]>
-    </body>
-   </method>
+   custombutton. buttonDestructor (this);
+  ]]>
+ </destructor>
 
-   <property name="parameters">
-    <getter>
-     <![CDATA[
-     return custombuttons. buttonGetParameters(this);
-     ]]>
-    </getter>
-   </property>
+ <method name="init">
+  <body>
+   <![CDATA[
+    custombutton. buttonInit (this);
+   ]]>
+  </body>
+ </method>
 
-   <property name="cbAccelKey">
-    <getter>
-     <![CDATA[
-     return custombuttons. buttonGetCbAccelKey(this);
-     ]]>
-    </getter>
-   </property>
+ <property name="parameters">
+  <getter>
+   <![CDATA[
+    return custombutton. buttonGetParameters (this);
+   ]]>
+  </getter>
+ </property>
 
-   <property name="image">
-    <getter>
-     <![CDATA[
-     return custombuttons. buttonGetImage(this);
-     ]]>
-    </getter>
+ <property name="cbAccelKey">
+  <getter>
+   <![CDATA[
+    return custombutton. buttonGetCbAccelKey (this);
+   ]]>
+  </getter>
+ </property>
 
-    <setter>
-     <![CDATA[
-      this. setAttribute ("image", val);
-     ]]>
-    </setter>
-   </property>
+ <property name="image">
+  <getter>
+   <![CDATA[
+    return custombutton. buttonGetImage (this);
+   ]]>
+  </getter>
 
-   <property name="Help">
-    <getter>
-     <![CDATA[
-      return custombuttons. buttonGetHelp(this);
-     ]]>
-    </getter>
+  <setter>
+   <![CDATA[
+    this. setAttribute ("image", val);
+   ]]>
+  </setter>
+ </property>
 
-    <setter>
-     <![CDATA[
-      this. setAttribute ("Help", val);
-     ]]>
-    </setter>
-   </property>
+ <property name="Help">
+  <getter>
+   <![CDATA[
+    return custombutton. buttonGetHelp (this);
+   ]]>
+  </getter>
 
-   <property name="cbMode">
-    <getter>
-     <![CDATA[
-      return custombuttons. buttonGetCbMode(this);
-     ]]>
-    </getter>
-   </property>
+  <setter>
+   <![CDATA[
+    this. setAttribute ("Help", val);
+   ]]>
+  </setter>
+ </property>
 
-   <method name="setText">
-    <parameter name="doc"/>
-    <parameter name="nodeName"/>
-    <parameter name="text"/>
-    <parameter name="make_CDATASection"/>
-    <body>
-     <![CDATA[
-      custombuttons. buttonSetText(doc, nodeName, text, make_CDATASection);
-     ]]>
-    </body>
-   </method>
+ <property name="cbMode">
+  <getter>
+   <![CDATA[
+    return custombutton. buttonGetCbMode (this);
+   ]]>
+  </getter>
+ </property>
 
-   <property name="URI">
-    <getter>
-     <![CDATA[
-      return custombuttons. buttonGetURI(this);
-     ]]>
-    </getter>
-   </property>
+ <method name="setText">
+  <parameter name="doc"/>
+  <parameter name="nodeName"/>
+  <parameter name="text"/>
+  <parameter name="make_CDATASection"/>
+  <body>
+   <![CDATA[
+    custombutton. buttonSetText (doc, nodeName, text, make_CDATASection);
+   ]]>
+  </body>
+ </method>
 
-   <property name="name">
-    <getter>
-     <![CDATA[
-      return this. getAttribute ("label");
-     ]]>
-    </getter>
-   </property>
+ <property name="URI">
+  <getter>
+   <![CDATA[
+    return custombutton. buttonGetURI (this);
+   ]]>
+  </getter>
+ </property>
 
-   <field name="_cbCommand">null</field>
+ <property name="name">
+  <getter>
+   <![CDATA[
+    return this. getAttribute ("label");
+   ]]>
+  </getter>
+ </property>
 
-   <property name="cbCommand">
-    <getter>
-     <![CDATA[
-      return this. getAttribute ("cb-oncommand") || "";
-     ]]>
-    </getter>
+ <field name="_cbCommand">null</field>
 
-    <setter>
-     <![CDATA[
-     ]]>
-    </setter>
-   </property>
+ <property name="cbCommand">
+  <getter>
+   <![CDATA[
+    return this. getAttribute ("cb-oncommand") || "";
+   ]]>
+  </getter>
 
-   <field name="_cbInitCode">null</field>
+  <setter>
+   <![CDATA[
+   ]]>
+  </setter>
+ </property>
 
-   <property name="cbInitCode">
-    <getter>
-     <![CDATA[
-      return this. getAttribute ("cb-init") || "";
-     ]]>
-    </getter>
+ <field name="_cbInitCode">null</field>
 
-    <setter>
-     <![CDATA[
-      if (this. hasAttribute ("initialized")) this. removeAttribute ("initialized");
-     ]]>
-    </setter>
-   </property>
+ <property name="cbInitCode">
+  <getter>
+   <![CDATA[
+    return this. getAttribute ("cb-init") || "";
+   ]]>
+  </getter>
 
-   <method name="cbExecuteCode">
-    <body>
-     <![CDATA[
-      custombuttons. buttonCbExecuteCode (this);
-     ]]>
-    </body>
-   </method>
-  </implementation>
+  <setter>
+   <![CDATA[
+    if (this. hasAttribute ("initialized"))
+     this. removeAttribute ("initialized");
+   ]]>
+  </setter>
+ </property>
 
-  <handlers>
-   <handler event="command">
-    <![CDATA[
-     custombuttons. buttonCommand(event, this);
-    ]]>
-   </handler>
-  </handlers>
- </binding>
+ <method name="cbExecuteCode">
+  <body>
+   <![CDATA[
+    custombutton. buttonCbExecuteCode (this);
+   ]]>
+  </body>
+ </method>
+</implementation>
+
+<handlers>
+ <handler event="command">
+  <![CDATA[
+   custombutton. buttonCommand (event, this);
+  ]]>
+ </handler>
+</handlers>
+
+  </binding>
 
   <binding id="menu"
        extends="chrome://global/content/bindings/toolbarbutton.xml#menu">
 
-  <implementation>
-   <constructor>
-    <![CDATA[
-    custombuttons. buttonConstructor(this);
-    ]]>
-   </constructor>
-   <destructor>
-    <![CDATA[
-    custombuttons. buttonDestructor(this);
-    ]]>
-   </destructor>
 
-   <method name="checkBind">
-    <body>
+
+<implementation>
+ <constructor>
      <![CDATA[
-     custombuttons. buttonCheckBind(this);
-     ]]>
-    </body>
-   </method>
+   // to avoid errors in JS console when we are trying to
+   // initialize in Customize Toolbar dialog
+   if (!window. custombutton)
+   {
+     Components. classes ["@mozilla.org/moz/jssubscript-loader;1"]. getService (Components. interfaces. mozIJSSubScriptLoader).
+    loadSubScript ("chrome://custombuttons/content/cbbutton.js");
+   }
+   // end
+   custombutton. buttonConstructor (this);
+  ]]>
+ </constructor>
 
-   <method name="init">
-    <body>
+ <destructor>
      <![CDATA[
-     custombuttons. buttonInit(this);
-     ]]>
-    </body>
-   </method>
+   custombutton. buttonDestructor (this);
+  ]]>
+ </destructor>
 
-   <property name="parameters">
-    <getter>
+ <method name="init">
+  <body>
+   <![CDATA[
+    custombutton. buttonInit (this);
+   ]]>
+  </body>
+ </method>
+
+ <property name="parameters">
+  <getter>
+   <![CDATA[
+    return custombutton. buttonGetParameters (this);
+   ]]>
+  </getter>
+ </property>
+
+ <property name="cbAccelKey">
+  <getter>
+   <![CDATA[
+    return custombutton. buttonGetCbAccelKey (this);
+   ]]>
+  </getter>
+ </property>
+
+ <property name="image">
+  <getter>
+   <![CDATA[
+    return custombutton. buttonGetImage (this);
+   ]]>
+  </getter>
+
+  <setter>
+   <![CDATA[
+    this. setAttribute ("image", val);
+   ]]>
+  </setter>
+ </property>
+
+ <property name="Help">
+  <getter>
+   <![CDATA[
+    return custombutton. buttonGetHelp (this);
+   ]]>
+  </getter>
+
+  <setter>
+   <![CDATA[
+    this. setAttribute ("Help", val);
+   ]]>
+  </setter>
+ </property>
+
+ <property name="cbMode">
+  <getter>
+   <![CDATA[
+    return custombutton. buttonGetCbMode (this);
+   ]]>
+  </getter>
+ </property>
+
+ <method name="setText">
+  <parameter name="doc"/>
+  <parameter name="nodeName"/>
+  <parameter name="text"/>
+  <parameter name="make_CDATASection"/>
+  <body>
+   <![CDATA[
+    custombutton. buttonSetText (doc, nodeName, text, make_CDATASection);
+   ]]>
+  </body>
+ </method>
+
+ <property name="URI">
+  <getter>
+   <![CDATA[
+    return custombutton. buttonGetURI (this);
+   ]]>
+  </getter>
+ </property>
+
+ <property name="name">
+  <getter>
+   <![CDATA[
+    return this. getAttribute ("label");
+   ]]>
+  </getter>
+ </property>
+
+ <field name="_cbCommand">null</field>
+
+ <property name="cbCommand">
+  <getter>
+   <![CDATA[
+    return this. getAttribute ("cb-oncommand") || "";
+   ]]>
+  </getter>
+
+  <setter>
+   <![CDATA[
+   ]]>
+  </setter>
+ </property>
+
+ <field name="_cbInitCode">null</field>
+
+ <property name="cbInitCode">
+  <getter>
+   <![CDATA[
+    return this. getAttribute ("cb-init") || "";
+   ]]>
+  </getter>
+
+  <setter>
+   <![CDATA[
+    if (this. hasAttribute ("initialized"))
+     this. removeAttribute ("initialized");
+   ]]>
+  </setter>
+ </property>
+
+ <method name="cbExecuteCode">
+  <body>
+   <![CDATA[
+    custombutton. buttonCbExecuteCode (this);
+   ]]>
+  </body>
+ </method>
+</implementation>
+
+<handlers>
+ <handler event="command">
+  <![CDATA[
+   custombutton. buttonCommand (event, this);
+  ]]>
+ </handler>
+</handlers>
+
+  </binding>
+
+  <binding id="menu-orient"
+       extends="chrome://global/content/bindings/toolbarbutton.xml#menu-orient">
+
+
+
+<implementation>
+ <constructor>
      <![CDATA[
-     return custombuttons. buttonGetParameters(this);
-     ]]>
-    </getter>
-   </property>
+   // to avoid errors in JS console when we are trying to
+   // initialize in Customize Toolbar dialog
+   if (!window. custombutton)
+   {
+     Components. classes ["@mozilla.org/moz/jssubscript-loader;1"]. getService (Components. interfaces. mozIJSSubScriptLoader).
+    loadSubScript ("chrome://custombuttons/content/cbbutton.js");
+   }
+   // end
+   custombutton. buttonConstructor (this);
+  ]]>
+ </constructor>
 
-   <property name="cbAccelKey">
-    <getter>
+ <destructor>
      <![CDATA[
-     return custombuttons. buttonGetCbAccelKey(this);
-     ]]>
-    </getter>
-   </property>
+   custombutton. buttonDestructor (this);
+  ]]>
+ </destructor>
 
-   <property name="image">
-    <getter>
+ <method name="init">
+  <body>
+   <![CDATA[
+    custombutton. buttonInit (this);
+   ]]>
+  </body>
+ </method>
+
+ <property name="parameters">
+  <getter>
+   <![CDATA[
+    return custombutton. buttonGetParameters (this);
+   ]]>
+  </getter>
+ </property>
+
+ <property name="cbAccelKey">
+  <getter>
+   <![CDATA[
+    return custombutton. buttonGetCbAccelKey (this);
+   ]]>
+  </getter>
+ </property>
+
+ <property name="image">
+  <getter>
+   <![CDATA[
+    return custombutton. buttonGetImage (this);
+   ]]>
+  </getter>
+
+  <setter>
+   <![CDATA[
+    this. setAttribute ("image", val);
+   ]]>
+  </setter>
+ </property>
+
+ <property name="Help">
+  <getter>
+   <![CDATA[
+    return custombutton. buttonGetHelp (this);
+   ]]>
+  </getter>
+
+  <setter>
+   <![CDATA[
+    this. setAttribute ("Help", val);
+   ]]>
+  </setter>
+ </property>
+
+ <property name="cbMode">
+  <getter>
+   <![CDATA[
+    return custombutton. buttonGetCbMode (this);
+   ]]>
+  </getter>
+ </property>
+
+ <method name="setText">
+  <parameter name="doc"/>
+  <parameter name="nodeName"/>
+  <parameter name="text"/>
+  <parameter name="make_CDATASection"/>
+  <body>
+   <![CDATA[
+    custombutton. buttonSetText (doc, nodeName, text, make_CDATASection);
+   ]]>
+  </body>
+ </method>
+
+ <property name="URI">
+  <getter>
+   <![CDATA[
+    return custombutton. buttonGetURI (this);
+   ]]>
+  </getter>
+ </property>
+
+ <property name="name">
+  <getter>
+   <![CDATA[
+    return this. getAttribute ("label");
+   ]]>
+  </getter>
+ </property>
+
+ <field name="_cbCommand">null</field>
+
+ <property name="cbCommand">
+  <getter>
+   <![CDATA[
+    return this. getAttribute ("cb-oncommand") || "";
+   ]]>
+  </getter>
+
+  <setter>
+   <![CDATA[
+   ]]>
+  </setter>
+ </property>
+
+ <field name="_cbInitCode">null</field>
+
+ <property name="cbInitCode">
+  <getter>
+   <![CDATA[
+    return this. getAttribute ("cb-init") || "";
+   ]]>
+  </getter>
+
+  <setter>
+   <![CDATA[
+    if (this. hasAttribute ("initialized"))
+     this. removeAttribute ("initialized");
+   ]]>
+  </setter>
+ </property>
+
+ <method name="cbExecuteCode">
+  <body>
+   <![CDATA[
+    custombutton. buttonCbExecuteCode (this);
+   ]]>
+  </body>
+ </method>
+</implementation>
+
+<handlers>
+ <handler event="command">
+  <![CDATA[
+   custombutton. buttonCommand (event, this);
+  ]]>
+ </handler>
+</handlers>
+
+  </binding>
+
+  <binding id="menu-button"
+       extends="chrome://global/content/bindings/toolbarbutton.xml#menu-button">
+
+
+
+<implementation>
+ <constructor>
      <![CDATA[
-     return custombuttons. buttonGetImage(this);
-     ]]>
-    </getter>
+   // to avoid errors in JS console when we are trying to
+   // initialize in Customize Toolbar dialog
+   if (!window. custombutton)
+   {
+     Components. classes ["@mozilla.org/moz/jssubscript-loader;1"]. getService (Components. interfaces. mozIJSSubScriptLoader).
+    loadSubScript ("chrome://custombuttons/content/cbbutton.js");
+   }
+   // end
+   custombutton. buttonConstructor (this);
+  ]]>
+ </constructor>
 
-    <setter>
+ <destructor>
      <![CDATA[
-      this. setAttribute ("image", val);
-     ]]>
-    </setter>
-   </property>
+   custombutton. buttonDestructor (this);
+  ]]>
+ </destructor>
 
-   <property name="Help">
-    <getter>
-     <![CDATA[
-      return custombuttons. buttonGetHelp (this);
-     ]]>
-    </getter>
+ <method name="init">
+  <body>
+   <![CDATA[
+    custombutton. buttonInit (this);
+   ]]>
+  </body>
+ </method>
 
-    <setter>
-     <![CDATA[
-      this. setAttribute ("Help", val);
-     ]]>
-    </setter>
-   </property>
+ <property name="parameters">
+  <getter>
+   <![CDATA[
+    return custombutton. buttonGetParameters (this);
+   ]]>
+  </getter>
+ </property>
 
-   <property name="cbMode">
-    <getter>
-     <![CDATA[
-      return custombuttons. buttonGetCbMode(this);
-     ]]>
-    </getter>
-   </property>
+ <property name="cbAccelKey">
+  <getter>
+   <![CDATA[
+    return custombutton. buttonGetCbAccelKey (this);
+   ]]>
+  </getter>
+ </property>
 
-   <method name="setText">
-    <parameter name="doc"/>
-    <parameter name="nodeName"/>
-    <parameter name="text"/>
-    <parameter name="make_CDATASection"/>
-    <body>
-     <![CDATA[
-      custombuttons. buttonSetText(doc, nodeName, text, make_CDATASection);
-     ]]>
-    </body>
-   </method>
+ <property name="image">
+  <getter>
+   <![CDATA[
+    return custombutton. buttonGetImage (this);
+   ]]>
+  </getter>
 
-   <property name="URI">
-    <getter>
-     <![CDATA[
-      return custombuttons. buttonGetURI(this);
-     ]]>
-    </getter>
-   </property>
+  <setter>
+   <![CDATA[
+    this. setAttribute ("image", val);
+   ]]>
+  </setter>
+ </property>
 
-   <property name="name">
-    <getter>
-     <![CDATA[
-      return this. getAttribute ("label");
-     ]]>
-    </getter>
-   </property>
+ <property name="Help">
+  <getter>
+   <![CDATA[
+    return custombutton. buttonGetHelp (this);
+   ]]>
+  </getter>
 
-   <field name="_cbCommand">null</field>
+  <setter>
+   <![CDATA[
+    this. setAttribute ("Help", val);
+   ]]>
+  </setter>
+ </property>
 
-   <property name="cbCommand">
-    <getter>
-     <![CDATA[
-      return this. getAttribute ("cb-oncommand") || "";
-     ]]>
-    </getter>
+ <property name="cbMode">
+  <getter>
+   <![CDATA[
+    return custombutton. buttonGetCbMode (this);
+   ]]>
+  </getter>
+ </property>
 
-    <setter>
-     <![CDATA[
-     ]]>
-    </setter>
-   </property>
+ <method name="setText">
+  <parameter name="doc"/>
+  <parameter name="nodeName"/>
+  <parameter name="text"/>
+  <parameter name="make_CDATASection"/>
+  <body>
+   <![CDATA[
+    custombutton. buttonSetText (doc, nodeName, text, make_CDATASection);
+   ]]>
+  </body>
+ </method>
 
-   <field name="_cbInitCode">null</field>
+ <property name="URI">
+  <getter>
+   <![CDATA[
+    return custombutton. buttonGetURI (this);
+   ]]>
+  </getter>
+ </property>
 
-   <property name="cbInitCode">
-    <getter>
-     <![CDATA[
-      return this. getAttribute ("cb-init") || "";
-     ]]>
-    </getter>
+ <property name="name">
+  <getter>
+   <![CDATA[
+    return this. getAttribute ("label");
+   ]]>
+  </getter>
+ </property>
 
-    <setter>
-     <![CDATA[
-      if (this. hasAttribute ("initialized")) this. removeAttribute ("initialized");
-     ]]>
-    </setter>
-   </property>
+ <field name="_cbCommand">null</field>
 
-   <method name="cbExecuteCode">
-    <body>
-     <![CDATA[
-      custombuttons. buttonCbExecuteCode (this);
-     ]]>
-    </body>
-   </method>
-  </implementation>
+ <property name="cbCommand">
+  <getter>
+   <![CDATA[
+    return this. getAttribute ("cb-oncommand") || "";
+   ]]>
+  </getter>
 
-  <handlers>
-   <handler event="command">
-    <![CDATA[
-     custombuttons. buttonCommand(event, this);
-    ]]>
-   </handler>
-  </handlers>
- </binding>
+  <setter>
+   <![CDATA[
+   ]]>
+  </setter>
+ </property>
 
- <binding id="menu-orient" extends="chrome://global/content/bindings/toolbarbutton.xml#menu-orient">
-  <implementation>
-   <constructor>
-    <![CDATA[
-    custombuttons. buttonConstructor(this);
-    ]]>
-   </constructor>
-   <destructor>
-    <![CDATA[
-    custombuttons. buttonDestructor(this);
-    ]]>
-   </destructor>
+ <field name="_cbInitCode">null</field>
 
-   <method name="checkBind">
-    <body>
-     <![CDATA[
-     custombuttons. buttonCheckBind(this);
-     ]]>
-    </body>
-   </method>
+ <property name="cbInitCode">
+  <getter>
+   <![CDATA[
+    return this. getAttribute ("cb-init") || "";
+   ]]>
+  </getter>
 
-   <method name="init">
-    <body>
-     <![CDATA[
-     custombuttons. buttonInit(this);
-     ]]>
-    </body>
-   </method>
+  <setter>
+   <![CDATA[
+    if (this. hasAttribute ("initialized"))
+     this. removeAttribute ("initialized");
+   ]]>
+  </setter>
+ </property>
 
-   <property name="parameters">
-    <getter>
-     <![CDATA[
-     return custombuttons. buttonGetParameters(this);
-     ]]>
-    </getter>
-   </property>
+ <method name="cbExecuteCode">
+  <body>
+   <![CDATA[
+    custombutton. buttonCbExecuteCode (this);
+   ]]>
+  </body>
+ </method>
+</implementation>
 
-   <property name="cbAccelKey">
-    <getter>
-     <![CDATA[
-     return custombuttons. buttonGetCbAccelKey(this);
-     ]]>
-    </getter>
-   </property>
+<handlers>
+ <handler event="command">
+  <![CDATA[
+   custombutton. buttonCommand (event, this);
+  ]]>
+ </handler>
+</handlers>
 
-   <property name="image">
-    <getter>
-     <![CDATA[
-     return custombuttons. buttonGetImage(this);
-     ]]>
-    </getter>
+  </binding>
 
-    <setter>
-     <![CDATA[
-      this. setAttribute ("image", val);
-     ]]>
-    </setter>
-   </property>
-
-   <property name="Help">
-    <getter>
-     <![CDATA[
-      return custombuttons. buttonGetHelp(this);
-     ]]>
-    </getter>
-
-    <setter>
-     <![CDATA[
-      this. setAttribute ("Help", val);
-     ]]>
-    </setter>
-   </property>
-
-   <property name="cbMode">
-    <getter>
-     <![CDATA[
-      return custombuttons. buttonGetCbMode(this);
-     ]]>
-    </getter>
-   </property>
-
-   <method name="setText">
-    <parameter name="doc"/>
-    <parameter name="nodeName"/>
-    <parameter name="text"/>
-    <parameter name="make_CDATASection"/>
-    <body>
-     <![CDATA[
-      custombuttons. buttonSetText(doc, nodeName, text, make_CDATASection);
-     ]]>
-    </body>
-   </method>
-
-   <property name="URI">
-    <getter>
-     <![CDATA[
-      return custombuttons. buttonGetURI(this);
-     ]]>
-    </getter>
-   </property>
-
-   <property name="name">
-    <getter>
-     <![CDATA[
-      return this. getAttribute ("label");
-     ]]>
-    </getter>
-   </property>
-
-   <field name="_cbCommand">null</field>
-
-   <property name="cbCommand">
-    <getter>
-     <![CDATA[
-      return this. getAttribute ("cb-oncommand") || "";
-     ]]>
-    </getter>
-
-    <setter>
-     <![CDATA[
-     ]]>
-    </setter>
-   </property>
-
-   <field name="_cbInitCode">null</field>
-
-   <property name="cbInitCode">
-    <getter>
-     <![CDATA[
-      return this. getAttribute ("cb-init") || "";
-     ]]>
-    </getter>
-
-    <setter>
-     <![CDATA[
-      if (this. hasAttribute ("initialized")) this. removeAttribute ("initialized");
-     ]]>
-    </setter>
-   </property>
-
-   <method name="cbExecuteCode">
-    <body>
-     <![CDATA[
-      custombuttons. buttonCbExecuteCode (this);
-     ]]>
-    </body>
-   </method>
-  </implementation>
-
-  <handlers>
-   <handler event="command">
-    <![CDATA[
-     custombuttons. buttonCommand(event, this);
-    ]]>
-   </handler>
-  </handlers>
- </binding>
-
- <binding id="menu-button"
-      extends="chrome://global/content/bindings/toolbarbutton.xml#menu-button">
-
-  <implementation>
-   <constructor>
-    <![CDATA[
-    custombuttons. buttonConstructor(this);
-    ]]>
-   </constructor>
-   <destructor>
-    <![CDATA[
-    custombuttons. buttonDestructor(this);
-    ]]>
-   </destructor>
-
-   <method name="checkBind">
-    <body>
-     <![CDATA[
-     custombuttons. buttonCheckBind(this);
-     ]]>
-    </body>
-   </method>
-
-   <method name="init">
-    <body>
-     <![CDATA[
-     custombuttons. buttonInit(this);
-     ]]>
-    </body>
-   </method>
-
-   <property name="parameters">
-    <getter>
-     <![CDATA[
-     return custombuttons. buttonGetParameters(this);
-     ]]>
-    </getter>
-   </property>
-
-   <property name="cbAccelKey">
-    <getter>
-     <![CDATA[
-     return custombuttons. buttonGetCbAccelKey(this);
-     ]]>
-    </getter>
-   </property>
-
-   <property name="image">
-    <getter>
-     <![CDATA[
-     return custombuttons. buttonGetImage(this);
-     ]]>
-    </getter>
-
-    <setter>
-     <![CDATA[
-      this. setAttribute ("image", val);
-     ]]>
-    </setter>
-   </property>
-
-   <property name="Help">
-    <getter>
-     <![CDATA[
-      return custombuttons. buttonGetHelp(this);
-     ]]>
-    </getter>
-
-    <setter>
-     <![CDATA[
-      this. setAttribute ("Help", val);
-     ]]>
-    </setter>
-   </property>
-
-   <property name="cbMode">
-    <getter>
-     <![CDATA[
-      return custombuttons. buttonGetCbMode(this);
-     ]]>
-    </getter>
-   </property>
-
-   <method name="setText">
-    <parameter name="doc"/>
-    <parameter name="nodeName"/>
-    <parameter name="text"/>
-    <parameter name="make_CDATASection"/>
-    <body>
-     <![CDATA[
-      custombuttons. buttonSetText(doc, nodeName, text, make_CDATASection);
-     ]]>
-    </body>
-   </method>
-
-   <property name="URI">
-    <getter>
-     <![CDATA[
-      return custombuttons. buttonGetURI(this);
-     ]]>
-    </getter>
-   </property>
-
-   <property name="name">
-    <getter>
-     <![CDATA[
-      return this. getAttribute ("label");
-     ]]>
-    </getter>
-   </property>
-
-   <field name="_cbCommand">null</field>
-
-   <property name="cbCommand">
-    <getter>
-     <![CDATA[
-      return this. getAttribute ("cb-oncommand") || "";
-     ]]>
-    </getter>
-
-    <setter>
-     <![CDATA[
-     ]]>
-    </setter>
-   </property>
-
-   <field name="_cbInitCode">null</field>
-
-   <property name="cbInitCode">
-    <getter>
-     <![CDATA[
-      return this. getAttribute ("cb-init") || "";
-     ]]>
-    </getter>
-
-    <setter>
-     <![CDATA[
-      if (this. hasAttribute ("initialized")) this. removeAttribute ("initialized");
-     ]]>
-    </setter>
-   </property>
-
-   <method name="cbExecuteCode">
-    <body>
-     <![CDATA[
-      custombuttons. buttonCbExecuteCode (this);
-     ]]>
-    </body>
-   </method>
-  </implementation>
-
-  <handlers>
-   <handler event="command">
-    <![CDATA[
-     custombuttons. buttonCommand(event, this);
-    ]]>
-   </handler>
-  </handlers>
- </binding>
 </bindings>
