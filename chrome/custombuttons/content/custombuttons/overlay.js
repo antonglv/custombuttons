@@ -36,7 +36,7 @@ CustombuttonsButton. prototype =
    values. code = this. getText ("code");
    values. initCode = this. getText ("initcode");
    values. accelkey = this. getText ("accelkey");
-   values. help = this. getText ("help");
+            values. help = this. getText ("help");
   }
   else
   {
@@ -301,256 +301,6 @@ Custombuttons. prototype =
   setTimeout ("custombuttons.makeButtons()", 200);
  },
 
- buttonConstructor: function (oBtn)
- {
-  var cbd = Components. classes ["@xsms.nm.ru/custombuttons/cbkeymap;1"]. getService (Components. interfaces. cbIKeyMapService);
-  cbd. Delete (oBtn. getAttribute ("id"));
-  if (oBtn. hasAttribute ("cb-accelkey"))
-  {
-   cbd. Add
-   (
-    oBtn. getAttribute ("id"),
-    oBtn. getAttribute ("cb-accelkey"),
-    (oBtn. cbMode & 2)? true: false
-   );
-  }
-  if (oBtn. hasAttribute ("cb-oncommand"))
-   oBtn. cbCommand = oBtn. getAttribute ("cb-oncommand");
-  if (oBtn. hasAttribute ("image"))
-  {
-   if (!oBtn. getAttribute ("image") ||
-    (oBtn. getAttribute ("image") == "data:"))
-   oBtn. removeAttribute ("image");
-  }
-  if (oBtn. hasAttribute ("Help"))
-  {
-   if (!oBtn. getAttribute ("Help"))
-    oBtn. removeAttribute ("Help");
-  }
-  if (!oBtn. hasAttribute ("initialized"))
-  {
-   if (oBtn. hasAttribute ("cb-init"))
-   {
-    var ps = Components. classes ["@mozilla.org/preferences-service;1"]. getService (Components. interfaces. nsIPrefService). getBranch ("custombuttons.");
-    var mode = ps. getIntPref ("mode");
-    if ((oBtn. parentNode. nodeName != "toolbar") &&
-     ((mode & 4) ||
-     !(oBtn. cbMode & 1)))
-    return;
-    oBtn. cbInitCode = oBtn. getAttribute ("cb-init");
-    oBtn. init ();
-   }
-   else
-   {
-    oBtn. setAttribute ("cb-init", "");
-    oBtn. setAttribute ("initialized", "true");
-   }
-  }
- },
- buttonDestructor: function(oBtn)
- {
-  if (this. hasAttribute ("cb-accelkey"))
-  {
-   var cbd = Components. classes ["@xsms.nm.ru/custombuttons/cbkeymap;1"]. getService (Components. interfaces. cbIKeyMapService);
-   cbd. Delete (this. getAttribute ("id"));
-  }
- },
-
- buttonCheckBind: function(oBtn)
- {
-  if (Function. prototype. bind == undefined)
-  {
-   Function. prototype. bind = function (object)
-   {
-    var method = oBtn;
-    return function ()
-    {
-     return method. apply (object, arguments);
-    }
-   }
-  }
- },
-
- buttonInit: function(oBtn)
- {
-  if (oBtn. cbInitCode)
-  {
-   while (oBtn. hasChildNodes ())
-    oBtn. removeChild (oBtn. childNodes [0]);
-   oBtn. checkBind ();
-   try
-   {
-
-
-
-
-
-
-
-    (new Function (oBtn. cbInitCode)). apply (oBtn);
-   }
-   catch (e)
-   {
-    var msg = "Custom Buttons error.]" +
-    "[ Event: Initialization]" +
-    "[ Button name: " +
-    oBtn. getAttribute ("label") +
-    "]" +
-    "[ Button ID: " +
-    oBtn. getAttribute ("id") +
-    "]" +
-    "[ " +
-    e;
-    throw new Error (msg);;
-   }
-  }
-  oBtn. setAttribute ("initialized", "true");
- },
-
- buttonGetParameters: function(oBtn)
- {
-  return {
-   name: oBtn. name,
-   image: oBtn. image,
-   code: oBtn. cbCommand,
-   initCode: oBtn. cbInitCode,
-   accelkey: oBtn. cbAccelKey,
-   mode: oBtn. cbMode,
-   Help: oBtn. Help
-  };
- },
-
- buttonGetCbAccelKey: function(oBtn)
- {
-  if (oBtn. hasAttribute ("cb-accelkey"))
-   return oBtn. getAttribute ("cb-accelkey");
-  return "";
- },
-
- buttonGetImage: function(oBtn)
- {
-  if (oBtn. hasAttribute ("image"))
-   return oBtn. getAttribute ("image");
-  return "";
- },
-
- buttonGetHelp: function(oBtn)
- {
-  if (oBtn. hasAttribute ("Help"))
-   return oBtn. getAttribute ("Help");
-  return "";
- },
-
- buttonGetCbMode: function(oBtn)
- {
-  if (oBtn. hasAttribute ("cb-mode"))
-   return oBtn. getAttribute ("cb-mode");
-  return 0;
- },
-
- buttonGetOldFormatURI: function(oBtn)
- {
-  var uri = "custombutton://" + escape
-  (
-   [
-    oBtn. name,
-    oBtn. image,
-    oBtn. cbCommand,
-    oBtn. cbInitCode
-   ]. join ("][")
-  );
-  return uri;
- },
-
- buttonGetMidFormatURI: function(oBtn)
- {
-  var uri = "custombutton://" + escape
-  (
-   [
-    oBtn. name,
-    oBtn. image,
-    oBtn. cbCommand,
-    oBtn. cbInitCode
-   ]. join ("]▲[")
-   );
-  return uri;
- },
-
- buttonSetText: function(doc, nodeName, text, make_CDATASection)
- {
-  var node = doc. getElementsByTagName (nodeName) [0], cds;
-  if (!node)
-   return;
-  if (make_CDATASection)
-  {
-   cds = doc. createCDATASection (text || "");
-   node. appendChild (cds);
-  }
-  else
-  {
-   node. textContent = text;
-  }
- },
-
-
- buttonGetXmlFormatURI: function(oBtn)
- {
-  var doc = document. implementation. createDocument ("", "", null);
-  doc. async = false;
-  doc. load ("chrome://custombuttons/content/nbftemplate.xml");
-  oBtn. setText (doc, "name", oBtn. name, false);
-  oBtn. setText (doc, "mode", oBtn. cbMode, false);
-  oBtn. setText (doc, "image", oBtn. image, true);
-  oBtn. setText (doc, "code", oBtn. cbCommand, true);
-  oBtn. setText (doc, "initcode", oBtn. cbInitCode, true);
-  oBtn. setText (doc, "accelkey", oBtn. cbAccelKey, true);
-  oBtn. setText (doc, "help", oBtn. Help, true);
-  var ser = new XMLSerializer ();
-  var data = ser. serializeToString (doc);
-  return "custombutton://" + escape (data);
- },
-
- buttonGetURI: function (oBtn)
- {
-  var ps = Components. classes ["@mozilla.org/preferences-service;1"].
-  getService (Components. interfaces. nsIPrefService).
-  getBranch ("custombuttons.");
-  if (ps. getIntPref ("mode") && 1)
-   return this. xmlFormatURI (oBtn);
-  else
-   return this. midFormatURI (oBtn);
- },
-
- buttonCbExecuteCode: function(oBtn)
- {
-  if (oBtn. cbCommand)
-  {
-   oBtn. checkBind ();
-   (new Function (oBtn. cbCommand)). apply (oBtn);
-  }
- },
-
- // TODO: check for code evaluation construction. Carefully check.
- buttonCommand: function(event, oBtn)
- {
-  if (oBtn. cbCommand)
-  {
-   var code = "var event = arguments[0];\n";
-   code += oBtn. cbCommand;
-   oBtn. checkBind ();
-
-
-
-
-
-
-
-
-
-   (new Function (code)). apply (oBtn, arguments);
-  }
- },
-
  openButtonDialog: function (editDialogFlag)
  {
   openDialog
@@ -643,8 +393,9 @@ Custombuttons. prototype =
 
  copyURI: function ()
  { //checked
-  gClipboard.write(document. popupNode. URI);
-  // Components. classes ["@mozilla.org/widget/clipboardhelper;1"]. getService (Components. interfaces. nsIClipboardHelper). copyString (document. popupNode. URI);
+        gClipboard. write (document. popupNode. URI);
+        // note: if we want to use external implementation
+        // we shall be sure it will not change suddenly.
  },
 
  getNumber: function (id)
@@ -869,15 +620,6 @@ Custombuttons. prototype =
   }
  },
 
- /**  handleEvent method
-
-    Purpose: EventListener interface implementation
-
-      Handles events if event handler was added by
-
-      ...addEventListener ("eventName", parentObject, captureFlag);
-
-  */
  handleEvent: function (event)
  {
   switch (event. type)
@@ -921,7 +663,7 @@ TBCustombuttons. prototype =
 };
 TBCustombuttons. prototype. __proto__ = Custombuttons. prototype;
 
-var custombuttons = new custombuttonsFactory (). Custombuttons;
+const custombuttons = new custombuttonsFactory (). Custombuttons;
 
 /**  Object gClipboard
  Author:  George Dunham aka: SCClockDr
@@ -933,31 +675,31 @@ var custombuttons = new custombuttonsFactory (). Custombuttons;
     write - Stuffs data into the system clipboard.
     clear - Clears the system clipboard.
     Clear - Clears the local clipboard.
-    read  - Retrieves the system clipboard data.
+    read - Retrieves the system clipboard data.
     Write - Stuffs data into the local clipboard.
-    Read  - Retrieves the local clipboard data.
+    Read - Retrieves the local clipboard data.
  Purpose:  1. Provide a simple means to access the system clipboard
-           2. Provid an alternate clipboard for storing a buffer of
+    2. Provid an alternate clipboard for storing a buffer of
        copied strings.
  TODO:    1. gClipboard.ClearHist sets sRead.length to 0
  TODO:    2. gClipboard.History offers a context menu of up to 10 past clips to paste
  TODO:    3. gClipboard.SystoI adds the sys Clipboard to the internal clipboard
 
 **/
-var gClipboard = { //{{{
+const gClipboard = { //{{{
  // Properties:
- sRead: new Array(),
+ sRead:new Array(),
  // Methods
  /**  write( str )
 
   Scope:    public
-  Args:     sToCopy
+  Args:    sToCopy
   Returns:  Nothing
   Called by:  1. Any process wanting to place a string in the clipboard.
-  Purpose:    1.Stuff and Retrieve data from the system clipboard.
-  UPDATED:    9/18/2007 Modified to conform to the MDC suggested process.
+  Purpose:  1.Stuff and Retrieve data from the system clipboard.
+  UPDATED:  9/18/2007 Modified to conform to the MDC suggested process.
  **/
- write: function( sToCopy ) //{{{
+ write:function ( sToCopy ) //{{{
  {
    if (sToCopy != null){ // Test for actual data
      var str = Components.classes["@mozilla.org/supports-string;1"].createInstance(Components.interfaces.nsISupportsString);
@@ -980,10 +722,12 @@ var gClipboard = { //{{{
      1. Any process wanting to clear the clipboard
   Purpose:
      1. Clear the system cllipboard
+  TODO:
+     1.
  **/
- clear: function( ) //{{{
+ clear:function ( ) //{{{
  {
-   this. write("");
+   this.write("");
  }, //}}} End Method clear(  )
  /**  Clear(  )
 
@@ -994,10 +738,12 @@ var gClipboard = { //{{{
      1. Any process wanting to clear the local clipboard
   Purpose:
      1. Clear the local cllipboard
+  TODO:
+     1.
  **/
- Clear: function( ) //{{{
+ Clear:function ( ) //{{{
  {
-   this. sRead[0] = "";
+   this.sRead[0] = "";
  }, //}}} End Method Clear(  )
  /**  read(  )
 
@@ -1008,8 +754,10 @@ var gClipboard = { //{{{
      1.
   Purpose:
      1.
+  TODO:
+     1.
  **/
- read: function( ) //{{{
+ read:function ( ) //{{{
  {
    var str = new Object();
    var strLength = new Object();
@@ -1029,16 +777,18 @@ var gClipboard = { //{{{
  /**  Write( str )
 
   Scope:    public
-  Args:     str
+  Args:    str
   Returns:  Nothing
   Called by:
      1.
   Purpose:
      1.
+  TODO:
+     1.
  **/
- Write: function( str ) //{{{
+ Write:function ( str ) //{{{
  {
-   this. sRead[0] = str;
+   this.sRead[0] = str;
  }, //}}} End Method Write( str )
 
  /**  Read(  )
@@ -1050,10 +800,12 @@ var gClipboard = { //{{{
      1.
   Purpose:
      1.
+  TODO:
+     1.
  **/
- Read: function( ) //{{{
+ Read:function ( ) //{{{
  {
-   var sRet = this. sRead[0];
+   var sRet = this.sRead[0];
    return sRet;
  } //}}} End Method Read(  )
 
