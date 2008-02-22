@@ -39,6 +39,7 @@ CustombuttonsButton. prototype =
 			values. code	 = this. getText ("code");
 			values. initCode = this. getText ("initcode");
 			values. accelkey = this. getText ("accelkey");
+            values. help = this. getText ("help");
 		}
 		else
 		{
@@ -57,7 +58,7 @@ CustombuttonsButton. prototype =
                 values. help     = ar [4] || "";
             }
             else {
-                THROW ("Malformed custombuttons:// URI");
+                THROW ("Malformed custombutton:// URI");
 			}
 			this. parameters = values;
 		}
@@ -532,7 +533,6 @@ Custombuttons. prototype =
 	{
 		if (oBtn. cbCommand)
 		{
-			alert(event.target.id);
 			var code = "var event = arguments[0];\n";
 			code += oBtn. cbCommand;
 			oBtn. checkBind ();
@@ -632,7 +632,9 @@ Custombuttons. prototype =
 	
 	copyURI: function ()
 	{ //checked
-		SERVICE (CLIPBOARD_HELPER). copyString (document. popupNode. URI);
+        gClipboard. write (document. popupNode. URI);
+        // note: if we want to use external implementation
+        // we shall be sure it will not change suddenly.
 	},
 	
 	getNumber: function (id)
@@ -900,7 +902,7 @@ TBCustombuttons. prototype =
 };
 EXTEND (TBCustombuttons, Custombuttons);
 
-var custombuttons = new custombuttonsFactory (). Custombuttons;
+const custombuttons = new custombuttonsFactory (). Custombuttons;
 
 /**  Object gClipboard
  Author:  George Dunham aka: SCClockDr
@@ -923,7 +925,7 @@ var custombuttons = new custombuttonsFactory (). Custombuttons;
  TODO:    3. gClipboard.SystoI adds the sys Clipboard to the internal clipboard
 
 **/
-var gClipboard = { //{{{
+const gClipboard = { //{{{
  // Properties:
  sRead:new Array(),
  // Methods
