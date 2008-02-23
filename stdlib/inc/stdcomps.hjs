@@ -20,6 +20,7 @@
 #define INTERNET_SEARCH_SERVICE_CID "@mozilla.org/rdf/datasource;1?name=internetsearch"
 #define IO_SERVICE_CID "@mozilla.org/network/io-service;1"
 #define JS_SUBSCRIPT_LOADER_SERVICE_CID "@mozilla.org/moz/jssubscript-loader;1"
+#define NAV_BOOKMARKS_SERVICE_CID "@mozilla.org/browser/nav-bookmarks-service;1"
 #define OBSERVER_SERVICE_CID "@mozilla.org/observer-service;1"
 #define PREF_SERVICE_CID "@mozilla.org/preferences-service;1"
 #define PROMPT_SERVICE_CID "@mozilla.org/embedcomp/prompt-service;1"
@@ -68,6 +69,7 @@
 #define INTERNET_SEARCH_SERVICE_IID nsIInternetSearchService
 #define IO_SERVICE_IID nsIIOService
 #define JS_SUBSCRIPT_LOADER_SERVICE_IID mozIJSSubScriptLoader
+#define NAV_BOOKMARKS_SERVICE_IID nsINavBookmarksService
 #define OBSERVER_SERVICE_IID nsIObserverService
 #define PREF_SERVICE_IID nsIPrefService
 #define PROMPT_SERVICE_IID nsIPromptService
