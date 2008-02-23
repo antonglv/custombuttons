@@ -5,6 +5,12 @@ function custombuttonsFactory ()
   switch (info. name)
   {
     case "Firefox": // Firefox
+        var oVC = Components. classes ["@mozilla.org/xpcom/version-comparator;1"]. createInstance (Components. interfaces. nsIVersionComparator);
+        if (oVC. compare ("3.0a1", info. version) <= 0)
+            retobj = this. CustombuttonsMFFactory;
+        else
+            retobj = this. CustombuttonsFactory;
+        break;
     case "Browser": // strange name for Flock
       retobj = this. CustombuttonsFactory;
       break;
@@ -25,8 +31,15 @@ custombuttonsFactory. prototype =
 
   CustombuttonsTBFactory:
   {
-    get Custombuttons () { return new TBCustombuttons (); },
+    get Custombuttons () { return new CustombuttonsTB (); },
     get Editor () { return new TBEditor (); },
     get Prefs () { return new TBPrefs (); }
+  },
+
+  CustombuttonsMFFactory:
+  {
+      get Custombuttons () { return new CustombuttonsMF (); },
+      get Editor () { return new Editor (); },
+      get Prefs () { return new Prefs (); }
   }
 };
