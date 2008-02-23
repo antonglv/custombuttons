@@ -14,7 +14,8 @@
           if
           ( // begin condition
             (this. ownerDocument. getElementsByTagName ("toolbarpalette"). length != 0) &&
-            (window. custombuttons. buttonsLoadedFromProfileOverlay == false)
+			((!window. custombuttons) ||
+            (window. custombuttons. buttonsLoadedFromProfileOverlay == false))
           ) // end condition
             (
               function ()
