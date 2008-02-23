@@ -155,7 +155,7 @@ var custombutton =
   return uri;
  },
 
- buttonGetMidFormatURI: function(oBtn)
+ midFormatURI: function(oBtn)
  {
   var uri = "custombutton://" + escape
   (
@@ -186,7 +186,7 @@ var custombutton =
  },
 
 
- buttonGetXmlFormatURI: function(oBtn)
+ xmlFormatURI: function(oBtn)
  {
   var doc = document. implementation. createDocument ("", "", null);
   doc. async = false;
