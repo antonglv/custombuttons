@@ -13,7 +13,8 @@ CustombuttonsButton. prototype =
   var node = this. doc. getElementsByTagName (nodeName) [0];
   if (!node)
    return result;
-  if (node. firstChild && (node. firstChild. nodeType == node. TEXT_NODE))
+  if (!node. firstChild || (node. firstChild &&
+            (node. firstChild. nodeType == node. TEXT_NODE)))
    result = node. textContent;
   else // CDATA
    result = node. firstChild. textContent;
@@ -57,8 +58,8 @@ CustombuttonsButton. prototype =
             else {
                 throw new Error ("Malformed custombutton:// URI");;
    }
-   this. parameters = values;
   }
+        this. parameters = values;
  }
 };
 
@@ -639,11 +640,57 @@ Custombuttons. prototype =
   default:
    break;
   }
- }
+ },
+
+    /**  bookmarkButton(  )
+      Author George Dunham
+    
+      Args:
+      Returns: Nothing
+      Scope:	 private
+      Called:   from overlay.xul
+      Purpose: Allows one to save a button as a bookmark
+      UPDATED: 11/12/2007 to improve stability.
+      changed by Anton 24.02.08
+    **/
+    bookmarkButton: function (oBtn)
+    {
+        var Button = (oBtn)? oBtn: document. popupNode;
+        this. makeBookmark (Button. URI, Button. label);
+    },
+
+    makeBookmark: function (CbLink, sName)
+    {
+        BookmarksUtils. addBookmark (CbLink, sName);
+    }
 };
 
-function TBCustombuttons () {}
-TBCustombuttons. prototype =
+function CustombuttonsMF () {}
+CustombuttonsMF. prototype =
+{
+    makeBookmark: function (CbLink, sName)
+    {
+  var uri = Components. classes ["@mozilla.org/network/simple-uri;1"]. createInstance (Components. interfaces. nsIURI);
+  uri. spec = CbLink;
+  PlacesCommandHook. bookmarkLink (PlacesUtils. bookmarksMenuFolderId, uri. spec, sName);
+  /*
+		var uri = COMPONENT (SIMPLE_URI);
+		uri. spec = CbLink;
+        var bmsvc = SERVICE (NAV_BOOKMARKS);
+        bmsvc. insertBookmark
+        (
+            bmsvc. bookmarksMenuFolder,
+			uri,
+			bmsvc. DEFAULT_INDEX,
+			sName
+		);
+		*/
+    }
+};
+CustombuttonsMF. prototype. __proto__ = Custombuttons. prototype;
+
+function CustombuttonsTB () {}
+CustombuttonsTB. prototype =
 {
     getPalette: function ()
  {
@@ -659,9 +706,11 @@ TBCustombuttons. prototype =
   this. saveOverlayToProfile (doc, "buttonsoverlay.xul");
   doc = this. makeOverlay ("MsgComposeToolbarPalette");
   this. saveOverlayToProfile (doc, "mcbuttonsoverlay.xul");
- }
+ },
+
+    makeBookmark: function (CbLink, sName) {}
 };
-TBCustombuttons. prototype. __proto__ = Custombuttons. prototype;
+CustombuttonsTB. prototype. __proto__ = Custombuttons. prototype;
 
 const custombuttons = new custombuttonsFactory (). Custombuttons;
 
