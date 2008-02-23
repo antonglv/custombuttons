@@ -169,7 +169,8 @@ TBEditor. prototype =
 {
   onLoad: function ()
   {
-    ELEMENT ("urlfield"). removeAttribute ("hidden");
+    if (!window. arguments [0]) // new button
+      ELEMENT ("urlfield"). removeAttribute ("hidden");
     SUPER (onLoad);
   },
 
