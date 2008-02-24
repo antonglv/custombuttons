@@ -4,6 +4,7 @@
 <!ENTITY custombuttons.buttonPopup.clone "Clone button">
 <!ENTITY custombuttons.buttonPopup.copyURI "Copy to clipboard">
 <!ENTITY custombuttons.buttonPopup.bookmark "Bookmark Button">
+<!ENTITY custombuttons.buttonPopup.help "Button Help">
 
 <!ENTITY custombuttons_prefsDialog.title "Custombuttons: settings">
 <!ENTITY custombuttons.prefs.use_xml_button_format "Use new button format">
