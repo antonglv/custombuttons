@@ -28,6 +28,9 @@
 	  <menuitem id="custombuttons-contextpopup-bookmarkButton"
             label="&custombuttons.buttonPopup.bookmark;"
             oncommand="custombuttons.bookmarkButton();"/>
+	  <menuitem id="custombuttons-contextpopup-buttonHelp"
+            label="&custombuttons.buttonPopup.help;"
+            oncommand="custombuttons.uChelpButton();"/>
 	  <menuseparator id="custombuttons-contextpopup-separator3"/>
       <menuitem command="cmd_CustomizeToolbars"
             id="custombuttons-contextpopup-customize"
