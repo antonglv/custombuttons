@@ -225,7 +225,7 @@ Custombuttons. prototype =
 			var Help = values. help || "";
 			oItem. setAttribute ("cb-oncommand", code);
 			oItem. setAttribute ("cb-init", initCode);
-			oItem. setAttribute ("Help", Help);
+            oItem. setAttribute ("Help", Help);
 			return oItem;
 	},
 	
@@ -719,6 +719,99 @@ EXTEND (CustombuttonsTB, Custombuttons);
 
 const custombuttons = new custombuttonsFactory (). Custombuttons;
 
+// add-ons
+/**  uChelpButton(  )
+  Author Yan, George Dunham
+
+  Args:
+  Returns: Nothing
+  Scope:	 private
+  Called:	 By:
+     1. Custom buttons context menu.
+  Purpose: To:
+     1. Display the button's help text.
+     2. Insert the help data into the clipboard.
+     TODO: Provide a means to display help in the form of
+           web page.
+     Add
+     changed by Anton 24.02.08
+     TODO: refactor it
+**/
+custombuttons.uChelpButton = function ( oBtn ) //{{{
+{
+  // UPDATED: 11/8/2007 to accept oBtn as an arg.
+  var Button = ( oBtn )? oBtn : document.popupNode;
+  var bId = this.getNumber(Button.id); // <---
+  var str = Button.getAttribute( "Help" ).split( "[,]" )[0] || Button.getAttribute( "help" ).split( "," )[1];
+
+  var hlpTitle = CB_STRING ("cbStrings", "ButtonHelpTitle", Button. label);
+  hlpTitle = hlpTitle. replace (/%y/gi, bId);
+  var hlp = createMsg(hlpTitle);
+  gClipboard.write(str.replace(/\<label\>/gi,Button.label).replace(/\<id\>/gi,bId));
+  hlp.aMsg(gClipboard.read());
+}; //}}} End Method uChelpButton(  )
+
+// Custombuttons utils
+const custombuttonsUtils =
+{
+
+    /**  createMsg( [title] )
+ Author:	George Dunham aka: SCClockDr
+
+ Scope:		global
+ Args:		title - Optional Title to init the object with.
+ Returns:	Msg
+ Called by:	1. Any process wanting to instance this message object.
+ Purpose: 	1. Create a message object and return it to the caller process.
+ How it works:	gMsg uses the constructor method to create an object gMsg
+ Setup:		MyObj = new gMsg();
+ Use:		MyObj.aMsg("Any string", ["Optional Title"]);
+ changed by Anton 24.02.08
+ TODO: refactor it
+**/
+createMsg: function (title) //{{{
+{
+  /**  Object Msg
+   Author:	George Dunham aka: SCClockDr
+
+   Scope:		Public
+   Properties:	prompts - nsIPromptService
+      check - Provides a check box if value = true.
+      sTitle - Retains the default/assigned title for the
+         Dialog box.
+   Methods:	aMsg - Displays the dialog box.
+   Purpose:	1. Provide a better means to alert the operator.
+  **/
+  var Msg = { //{{{
+    // Properties:
+    prompts: SERVICE (PROMPT),
+    check:{value: false},
+    sTitle:"Custom Buttons²",
+    button:false,
+    // Methods
+    /**  aMsg( str, [title] )
+
+     Scope:		global
+     Args:		str - String to display
+        title - Optional title of the dialog
+     Returns:	Nothing
+     Called by:	1. Any process which has the aMsg object
+           available
+     Purpose: 	1. Present a confirm dialog.
+    **/
+    aMsg:function ( str, title ) //{{{
+    {
+      if (typeof title == "string"){this.sTitle = title}
+      var flags = this.prompts.BUTTON_POS_0 * this.prompts.BUTTON_TITLE_IS_STRING;
+      var button = this.prompts.confirmEx(null, this.sTitle, str, flags, GET_STRING ("cbStrings", "ContinueButton"), "", "", "", this.check);
+    }  //}}} End Method aMsg( str, [title] )
+
+
+  }; //}}} End Object Msg
+  if (typeof title == "string"){Msg.sTitle = title}
+  return Msg;
+}, //}}} End createMsg( [title] )
+
 /**  Object gClipboard
  Author:  George Dunham aka: SCClockDr
  Date:    2007-02-11
@@ -740,7 +833,7 @@ const custombuttons = new custombuttonsFactory (). Custombuttons;
  TODO:    3. gClipboard.SystoI adds the sys Clipboard to the internal clipboard
 
 **/
-const gClipboard = { //{{{
+gClipboard: { //{{{
  // Properties:
  sRead:new Array(),
  // Methods
@@ -863,7 +956,13 @@ const gClipboard = { //{{{
    return sRet;
  } //}}} End Method Read(  )
 
-}; //}}} End Object gClipboard
+} //}}} End Object gClipboard
+}; // -- custombuttonsUtils
+
+// Custombuttons API
+
+const createMsg = custombuttonsUtils. createMsg;
+const gClipboard = custombuttonsUtils. gClipboard;
 
 window. addEventListener ("load", custombuttons, false);
 window. addEventListener ("unload", custombuttons, false);
