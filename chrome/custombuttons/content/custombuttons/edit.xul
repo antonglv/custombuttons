@@ -79,7 +79,7 @@
            value="&editor.initCode.defaultValue;"/>
       <textbox class="custombuttons-editor-codeBox"
            id="help" multiline="true" flex="1"
-           value="&editor.dialog.help;"/>
+           value=""/>
       <vbox>
         <groupbox>
           <caption label="&editor.buttonSettings.initializationGroupbox;"/>
