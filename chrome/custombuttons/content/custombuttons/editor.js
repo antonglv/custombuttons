@@ -77,7 +77,7 @@ Editor. prototype =
     {
       Function. prototype. bind = window. opener. Function. prototype. bind;
     }
-    var ps = Components. classes ["@mozilla.org/preferences-service;1"]. getService (Components. interfaces. nsIPrefService). getBranch("custombuttons.");
+    var ps = Components. classes ["@mozilla.org/preferences-service;1"]. getService (Components. interfaces. nsIPrefService). getBranch ("custombuttons.");
     var mode = ps. getIntPref ("mode");
     var sab = (ps. getIntPref ("mode") & 2);
     if (sab)
@@ -94,7 +94,7 @@ Editor. prototype =
   setValues: function (values)
   {
     for each (var v in this. CB. buttonParameters)
-    document. getElementById (v). value = (v != "help")? values [v]: values ["Help"];
+        document. getElementById (v). value = (v != "help")? values [v]: (values ["Help"] || "");
     document. getElementById ("initInCustomizeToolbarDialog"). checked = values. mode && (values. mode & 1) || false;
     document. getElementById ("disableDefaultKeyBehavior"). checked = values. mode && (values. mode & 2) || false;
   },

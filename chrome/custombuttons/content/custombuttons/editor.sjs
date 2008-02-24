@@ -80,7 +80,7 @@ Editor. prototype =
     {
       Function. prototype. bind = window. opener. Function. prototype. bind;
     }
-    var ps = SERVICE (PREF). getBranch("custombuttons.");
+    var ps = SERVICE (PREF). getBranch ("custombuttons.");
     var mode = ps. getIntPref ("mode");
     var sab = (ps. getIntPref ("mode") & CB_MODE_SHOW_APPLY_BUTTON);
     if (sab)
@@ -97,7 +97,7 @@ Editor. prototype =
   setValues: function (values)
   {
     for each (var v in this. CB. buttonParameters)
-    ELEMENT (v). value = (v != "help")? values [v]: values ["Help"];
+        ELEMENT (v). value = (v != "help")? values [v]: (values ["Help"] || "");
     ELEMENT ("initInCustomizeToolbarDialog"). checked = values. mode && (values. mode & CB_MODE_ENABLE_INIT_IN_CTDIALOG) || false;
     ELEMENT ("disableDefaultKeyBehavior"). checked = values. mode && (values. mode & CB_MODE_DISABLE_DEFAULT_KEY_BEHAVIOR) || false;
   },
