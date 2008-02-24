@@ -223,6 +223,13 @@ var custombutton =
   }
  },
 
+    buttonContext: function (event, oBtn)
+    {
+        var helpButtonMenuitem = document. getElementById ("custombuttons-contextpopup-buttonHelp");
+        var bHasHelp = oBtn. hasAttribute ("help") || oBtn. hasAttribute ("Help");
+        helpButtonMenuitem. setAttribute ("hidden", bHasHelp? "false": "true");
+    },
+
  // TODO: check for code evaluation construction. Carefully check.
  buttonCommand: function(event, oBtn)
  {

@@ -224,6 +224,13 @@ var custombutton =
 			(new Function (oBtn. cbCommand)). apply (oBtn);
 		}
 	},
+    
+    buttonContext: function (event, oBtn)
+    {
+        var helpButtonMenuitem = ELEMENT ("custombuttons-contextpopup-buttonHelp");
+        var bHasHelp = oBtn. hasAttribute ("help") || oBtn. hasAttribute ("Help");
+        helpButtonMenuitem. setAttribute ("hidden", bHasHelp? "false": "true");
+    },
 	
 	// TODO: check for code evaluation construction. Carefully check.
 	buttonCommand: function(event, oBtn)
