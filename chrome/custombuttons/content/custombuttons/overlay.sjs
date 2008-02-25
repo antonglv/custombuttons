@@ -812,6 +812,188 @@ createMsg: function (title) //{{{
   return Msg;
 }, //}}} End createMsg( [title] )
 
+get ps ()
+{
+    return SERVICE (PREF);
+},
+
+/*--------------------------- Preference Utilities ---------------------------*/
+
+/**  isPref( sPrefId, aDefault )
+  Author	 George Dunham
+
+  Args:	 aprefId - Preference ID string
+     aDefault - Default Preference Value
+  Returns: lRet - Boolean, true if the preference exists.
+  Scope:	 public
+  Called:	 By:
+     1. Any process which passes aprefId and will accept
+        a boolean return.
+     2. Passing the optional [Default] will cause the pref
+        to be created if not defined.
+  Purpose: To:
+     1. Test for the presence of a specified pref.
+     NOTE: Inserted with ver. 2.0.02a
+**/
+isPref: function ( sPrefId, aDefault ) //{{{
+{
+  try{
+    var lRet = (this.getPrefs( sPrefId ) !== null	); // UPDATED: 11/29/2007
+    if ( typeof aDefault != "undefined" && !lRet ) {
+      this.setPrefs( sPrefId, aDefault )
+      lRet = true;
+    } // End if ( typeof aDefault != CB2const.VOID && !rRet )
+  }
+  catch(e) {
+    alert([sPrefId, aDefault, e, e.stack]);
+  }
+  return lRet;
+}, //}}} End Method isPref( sPrefId, aDefault )
+/**  getPrefs( sPrefId )
+  Author	 George Dunham
+
+  Args:	 sPrefId - Preference ID string
+  Returns: rRet - Preference value in the correct type.
+     1. null if Preference ID not in about:config list.
+  Scope:	 public
+  Called:	 By:
+     1. Any process passing a prefid string and accepting
+        its value.
+  Purpose: To:
+     1. Return the pref specified in sPrefId
+     NOTE: Inserted with ver. 2.0.02a
+**/
+getPrefs: function ( sPrefId ) //{{{
+{
+  var rRet = null;
+  var nsIPrefBranchObj = this.ps.getBranch( null );
+  switch ( nsIPrefBranchObj.getPrefType( sPrefId ) ){
+  case 32:						// string
+    rRet = nsIPrefBranchObj.getCharPref( sPrefId );
+    break;
+  case 64:						// number
+    rRet = nsIPrefBranchObj.getIntPref( sPrefId );
+    break;
+  case 128:						//  boolean
+    rRet = nsIPrefBranchObj.getBoolPref( sPrefId );
+    break;
+  default:
+    rRet = null;
+  }
+  return rRet;
+}, //}}} End Method getPrefs( sPrefId )
+/**  setPrefs( sPrefId, prefValue )
+  Author	 George Dunham
+
+  Args:	 sPrefId - Preference ID string
+     prefValue - Value to set into the Preference ID.
+  Returns: Nothing
+  Scope:	 public
+  Called by:
+     1. Any process which passes a pref id and it's new value.
+  Purpose: To:
+     1. Modify the specified pref to the passed value.
+     NOTE: Inserted with ver. 2.0.02a
+**/
+setPrefs: function ( sPrefId, prefValue ) //{{{
+{
+  var nsIPrefBranchObj = this.ps.getBranch(null);
+  switch (typeof prefValue){
+  case "undefined":
+    break;
+  case "string":
+    nsIPrefBranchObj.setCharPref( sPrefId, prefValue );
+    this.ps.savePrefFile( null );
+    break;
+  case "number":
+    nsIPrefBranchObj.setIntPref( sPrefId, prefValue );
+    this.ps.savePrefFile( null );
+    break;
+  case "boolean":
+    nsIPrefBranchObj.setBoolPref( sPrefId, prefValue );
+    this.ps.savePrefFile( null );
+    break;
+  default:
+  }
+}, //}}} End Method setPrefs( sPrefId, prefValue )
+
+/**  clearPrefs( sPrefId )
+ Author:    George Dunham aka: SCClockDr
+ Scope:	    global
+ Args:	    sPrefId - Preference ID string
+
+ Returns:   Nothing
+ Called by: 1.
+ Purpose:   1. Clear specified User preference
+ changed by Anton 25.02.08
+ */
+ clearPrefs: function(sPrefId) //{{{
+{
+  var nsIPrefBranchObj = this.ps.getBranch(null);
+  nsIPrefBranchObj.clearUserPref(sPrefId);
+  this.ps.savePrefFile( null );
+}, //}}} End Method clearPrefs( sPrefId )
+
+/**  readFile( fPath )
+ Author:    George Dunham aka: SCClockDr
+ Scope:	    private
+ Args:	    fPath -
+ Returns:   sRet
+ Called by: 1.
+ Purpose:   1.
+ TODO:	    1.
+ changed by Anton 25.02.08
+ */
+ readFile: function(fPath) //{{{
+{
+  var sRet = null;
+  var file = null;
+  fPath = (fPath.indexOf(':\\') > -1 )? fPath.replace(/\//g,'\\') : fPath;
+  try {
+    netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+  } catch (e) {
+    alert("Permission to read file was denied.");
+  }
+  file = COMPONENT (LOCAL_FILE);
+  file.initWithPath( fPath );
+  var fis = COMPONENT (FILE_INPUT_STREAM);
+  fis.init( file,0x01, 00004, null);
+  var sis = COMPONENT (SCRIPTABLE_INPUT_STREAM);
+  sis.init( fis );
+  sRet = sis.read( sis.available() );
+  return sRet;
+}, //}}} End Method readFile( fPath )
+
+/**  writeFile( fPath, sData )
+ Author:    George Dunham aka: SCClockDr
+ Scope:	    private
+ Args:	    fPath -
+            sData -
+ Returns:   Nothing
+ Called by: 1.
+ Purpose:   1.
+ TODO:	    1.
+ */
+ writeFile: function(fPath, sData) //{{{
+{
+  try{
+    fPath = (fPath.indexOf(':\\') > -1 )? fPath.replace(/\//g,'\\') : fPath;
+    var file = COMPONENT (LOCAL_FILE);
+    file.QueryInterface(Components.interfaces.nsIFile);
+    file.initWithPath( fPath );
+    if( file.exists() == true ) file.remove( false );
+    var strm = COMPONENT (FILE_OUTPUT_STREAM);
+    strm.QueryInterface(Components.interfaces.nsIOutputStream);
+    strm.QueryInterface(Components.interfaces.nsISeekableStream);
+    strm.init( file, 0x04 | 0x08, 420, 0 );
+    strm.write( sData, sData.length );
+    strm.flush();
+    strm.close();
+  }catch(ex){
+    window.alert(ex.message+'nnn');
+  }
+},
+
 /**  Object gClipboard
  Author:  George Dunham aka: SCClockDr
  Date:    2007-02-11
@@ -963,6 +1145,12 @@ gClipboard: { //{{{
 
 const createMsg = custombuttonsUtils. createMsg;
 const gClipboard = custombuttonsUtils. gClipboard;
+custombuttons. isPref = custombuttonsUtils. isPref;
+custombuttons. getPrefs = custombuttonsUtils. getPrefs;
+custombuttons. setPrefs = custombuttonsUtils. setPrefs;
+custombuttons. clearPrefs = custombuttonsUtils. clearPrefs;
+custombuttons. readFile = custombuttonsUtils. readFile;
+custombuttons. writeFile = custombuttonsUtils. writeFile;
 
 window. addEventListener ("load", custombuttons, false);
 window. addEventListener ("unload", custombuttons, false);
