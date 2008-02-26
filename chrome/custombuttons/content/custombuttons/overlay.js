@@ -394,7 +394,7 @@ Custombuttons. prototype =
 
  copyURI: function ()
  { //checked
-        gClipboard. write (document. popupNode. URI);
+        custombuttonsUtils. gClipboard. write (document. popupNode. URI);
         // note: if we want to use external implementation
         // we shall be sure it will not change suddenly.
  },
@@ -585,7 +585,7 @@ Custombuttons. prototype =
    var prefix = "DOM_VK_";
    for (i in event)
     if (i. indexOf (prefix) == 0)
-    this. _eventKeymap [event [i]] = i. substr (prefix. length);
+     this. _eventKeymap [event [i]] = i. substr (prefix. length);
   }
   return this. _eventKeymap [event. keyCode];
  },
@@ -625,20 +625,19 @@ Custombuttons. prototype =
  {
   switch (event. type)
   {
-  case "load":
-   this. init ();
-   break;
-  case "unload":
-   this. saveButtonsToProfile ();
-   window. removeEventListener ("load", custombuttons, false);
-   window. removeEventListener ("unload", custombuttons, false);
-   window. removeEventListener ("keypress", custombuttons, true);
-   break;
-  case "keypress":
-   this. onKeyPress (event);
-   break;
-  default:
-   break;
+   case "load":
+    this. init ();
+    break;
+   case "unload":
+    window. removeEventListener ("load", custombuttons, false);
+    window. removeEventListener ("unload", custombuttons, false);
+    window. removeEventListener ("keypress", custombuttons, true);
+    break;
+   case "keypress":
+    this. onKeyPress (event);
+    break;
+   default:
+    break;
   }
  },
 
