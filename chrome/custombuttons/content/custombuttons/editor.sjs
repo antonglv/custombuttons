@@ -96,6 +96,19 @@ Editor. prototype =
 
   setValues: function (values)
   {
+	  var cbss = SERVICE (CB_STORAGE);
+	  var id = window. arguments [0]. id;
+	  if (cbss. wasChanged (id))
+	  {
+		  var cbpp = cbss. getButtonParameters (id);
+		  values. name = cbpp. name;
+		  values. mode = cbpp. mode;
+		  values. image = cbpp. image;
+		  values. code = cbpp. code;
+		  values. initCode = cbpp. initcode;
+		  values. accelkey = cbpp. accelkey;
+		  values. help = cbpp. help;
+	  }
     for each (var v in this. CB. buttonParameters)
         ELEMENT (v). value = (v != "help")? values [v]: (values ["Help"] || "");
     ELEMENT ("initInCustomizeToolbarDialog"). checked = values. mode && (values. mode & CB_MODE_ENABLE_INIT_IN_CTDIALOG) || false;
@@ -114,6 +127,16 @@ Editor. prototype =
       var button = window. arguments [0];
       var num = this. CB. getNumber (button. id);
       this. CB. setButtonParameters (num, values);
+	  var cbss = SERVICE (CB_STORAGE);
+	  var cbbp = COMPONENT (CB_BUTTON_PARAMETERS);
+	  cbbp. name = values. name;
+	  cbbp. mode = values. mode;
+	  cbbp. image = values. image;
+	  cbbp. code = values. code;
+	  cbbp. initcode = values. initCode;
+	  cbbp. accelkey = values. accelkey;
+	  cbbp. help = values. help;
+	  cbss. storeButtonParameters (button. id, cbbp);
     }
     else
       this. CB. setButtonParameters (null, values);
