@@ -93,6 +93,19 @@ Editor. prototype =
 
   setValues: function (values)
   {
+   var cbss = Components. classes ["@xsms.nm.ru/custombuttons/cbstorageservice;1"]. getService (Components. interfaces. cbIStorageService);
+   var id = window. arguments [0]. id;
+   if (cbss. wasChanged (id))
+   {
+    var cbpp = cbss. getButtonParameters (id);
+    values. name = cbpp. name;
+    values. mode = cbpp. mode;
+    values. image = cbpp. image;
+    values. code = cbpp. code;
+    values. initCode = cbpp. initcode;
+    values. accelkey = cbpp. accelkey;
+    values. help = cbpp. help;
+   }
     for each (var v in this. CB. buttonParameters)
         document. getElementById (v). value = (v != "help")? values [v]: (values ["Help"] || "");
     document. getElementById ("initInCustomizeToolbarDialog"). checked = values. mode && (values. mode & 1) || false;
@@ -111,6 +124,16 @@ Editor. prototype =
       var button = window. arguments [0];
       var num = this. CB. getNumber (button. id);
       this. CB. setButtonParameters (num, values);
+   var cbss = Components. classes ["@xsms.nm.ru/custombuttons/cbstorageservice;1"]. getService (Components. interfaces. cbIStorageService);
+   var cbbp = Components. classes ["@xsms.nm.ru/custombuttons/cbbuttonparameters;1"]. createInstance (Components. interfaces. cbIButtonParameters);
+   cbbp. name = values. name;
+   cbbp. mode = values. mode;
+   cbbp. image = values. image;
+   cbbp. code = values. code;
+   cbbp. initcode = values. initCode;
+   cbbp. accelkey = values. accelkey;
+   cbbp. help = values. help;
+   cbss. storeButtonParameters (button. id, cbbp);
     }
     else
       this. CB. setButtonParameters (null, values);
