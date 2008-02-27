@@ -21,6 +21,14 @@
 #define CB_CONTENT_POLICY_COMPONENT_CID "@xsms.nm.ru/custombuttons/cbcontentpolicy;1"
 #define CB_CONTENT_POLICY_COMPONENT_IID cbIContentPolicyComponent
 
+#define CB_BUTTONEDIT_NOTIFICATION_UUID "2c73fe2f-2ed5-432d-9901-a8dbc4961e83"
+
+#define CB_BUTTON_PARAMETERS_COMPONENT_CID "@xsms.nm.ru/custombuttons/cbbuttonparameters;1"
+#define CB_BUTTON_PARAMETERS_COMPONENT_IID cbIButtonParameters
+
+#define CB_STORAGE_SERVICE_CID "@xsms.nm.ru/custombuttons/cbstorageservice;1"
+#define CB_STORAGE_SERVICE_IID cbIStorageService
+
 #define BT(X,Y) (((X) & (Y)) == Y)
 #define SET(X,Y) if (!X) X = Y
 
