@@ -75,6 +75,7 @@ Custombuttons. prototype =
 	button: null,
 	values: null,
 	toolbar: null,
+	notificationSender: false,
 	_palette: null,
 	get palette ()
 	{
@@ -305,6 +306,26 @@ Custombuttons. prototype =
 		}
 		cbps. setIntPref ("mode", mode);
 		setTimeout ("custombuttons.makeButtons()", 200);
+		var cbss = SERVICE (CB_STORAGE);
+		var result = {};
+		var aChangedButtons = cbss. getChangedButtonsIds (result);
+		var buttonParameters, values, id;
+		for (var i = 0; i < aChangedButtons. length; i++)
+		{
+			id = aChangedButtons [i];
+			values = {};
+			buttonParameters = cbss. getButtonParameters (id);
+			values. name = buttonParameters. name;
+			values. mode = buttonParameters. mode;
+			values. image = buttonParameters. image;
+			values. code = buttonParameters. code;
+			values. initCode = buttonParameters. initcode;
+			values. accelkey = buttonParameters. accelkey;
+			values. help = buttonParameters. help;
+			this. setButtonParameters (this. getNumber (id), values);
+		}
+		var os = SERVICE (OBSERVER);
+		os. addObserver (this, CB_BUTTONEDIT_NOTIFICATION_UUID, false);
 	},
 	
 	openButtonDialog: function (editDialogFlag)
@@ -446,6 +467,10 @@ Custombuttons. prototype =
 			buts = this. getButtonById (newButton. id);
 			if (buts)
 				buts. parentNode. replaceChild (newButton, buts);
+			this. notificationSender = true;
+			var os = SERVICE (OBSERVER);
+			os. notifyObservers (newButton2, CB_BUTTONEDIT_NOTIFICATION_UUID, num);
+			this. notificationSender = false;
 		}
 		else // install web button or add new button
 		{ //checked
@@ -626,6 +651,7 @@ Custombuttons. prototype =
 		}
 	},
 	
+	/* EventHandler interface */
 	handleEvent: function (event)
 	{
 		switch (event. type)
@@ -634,6 +660,8 @@ Custombuttons. prototype =
 				this. init ();
 				break;
 			case "unload":
+				var os = SERVICE (OBSERVER);
+				os. removeObserver (this, CB_BUTTONEDIT_NOTIFICATION_UUID);
 				window. removeEventListener ("load", custombuttons, false);
 				window. removeEventListener ("unload", custombuttons, false);
 				window. removeEventListener ("keypress", custombuttons, true);
@@ -645,7 +673,17 @@ Custombuttons. prototype =
 				break;
 		}
 	},
-    
+	
+	/* nsIObserver interface */
+	observe: function (subject, topic, data)
+	{
+		if ((topic == CB_BUTTONEDIT_NOTIFICATION_UUID) &&
+			!this. notificationSender)
+		{
+			this. setButtonParameters (data, subject. parameters);
+		}
+	},
+	
     /**  bookmarkButton(  )
       Author George Dunham
     

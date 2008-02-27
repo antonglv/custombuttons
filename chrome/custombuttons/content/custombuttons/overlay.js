@@ -72,6 +72,7 @@ Custombuttons. prototype =
  button: null,
  values: null,
  toolbar: null,
+ notificationSender: false,
  _palette: null,
  get palette ()
  {
@@ -300,6 +301,26 @@ Custombuttons. prototype =
   }
   cbps. setIntPref ("mode", mode);
   setTimeout ("custombuttons.makeButtons()", 200);
+  var cbss = Components. classes ["@xsms.nm.ru/custombuttons/cbstorageservice;1"]. getService (Components. interfaces. cbIStorageService);
+  var result = {};
+  var aChangedButtons = cbss. getChangedButtonsIds (result);
+  var buttonParameters, values, id;
+  for (var i = 0; i < aChangedButtons. length; i++)
+  {
+   id = aChangedButtons [i];
+   values = {};
+   buttonParameters = cbss. getButtonParameters (id);
+   values. name = buttonParameters. name;
+   values. mode = buttonParameters. mode;
+   values. image = buttonParameters. image;
+   values. code = buttonParameters. code;
+   values. initCode = buttonParameters. initcode;
+   values. accelkey = buttonParameters. accelkey;
+   values. help = buttonParameters. help;
+   this. setButtonParameters (this. getNumber (id), values);
+  }
+  var os = Components. classes ["@mozilla.org/observer-service;1"]. getService (Components. interfaces. nsIObserverService);
+  os. addObserver (this, "2c73fe2f-2ed5-432d-9901-a8dbc4961e83", false);
  },
 
  openButtonDialog: function (editDialogFlag)
@@ -441,6 +462,10 @@ Custombuttons. prototype =
    buts = this. getButtonById (newButton. id);
    if (buts)
     buts. parentNode. replaceChild (newButton, buts);
+   this. notificationSender = true;
+   var os = Components. classes ["@mozilla.org/observer-service;1"]. getService (Components. interfaces. nsIObserverService);
+   os. notifyObservers (newButton2, "2c73fe2f-2ed5-432d-9901-a8dbc4961e83", num);
+   this. notificationSender = false;
   }
   else // install web button or add new button
   { //checked
@@ -621,6 +646,7 @@ Custombuttons. prototype =
   }
  },
 
+ /* EventHandler interface */
  handleEvent: function (event)
  {
   switch (event. type)
@@ -629,6 +655,8 @@ Custombuttons. prototype =
     this. init ();
     break;
    case "unload":
+    var os = Components. classes ["@mozilla.org/observer-service;1"]. getService (Components. interfaces. nsIObserverService);
+    os. removeObserver (this, "2c73fe2f-2ed5-432d-9901-a8dbc4961e83");
     window. removeEventListener ("load", custombuttons, false);
     window. removeEventListener ("unload", custombuttons, false);
     window. removeEventListener ("keypress", custombuttons, true);
@@ -638,6 +666,16 @@ Custombuttons. prototype =
     break;
    default:
     break;
+  }
+ },
+
+ /* nsIObserver interface */
+ observe: function (subject, topic, data)
+ {
+  if ((topic == "2c73fe2f-2ed5-432d-9901-a8dbc4961e83") &&
+   !this. notificationSender)
+  {
+   this. setButtonParameters (data, subject. parameters);
   }
  },
 
