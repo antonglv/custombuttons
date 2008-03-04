@@ -13,26 +13,17 @@
 // 
 // Custom Buttons:
 // - Gives a possibility to create custom toolbarbuttons.
-// - These components is intended to provide extension's
+// - This component is intended to provide extension's
 // - subservient data storage
 // 
 // Author: Anton Glazatov (c) 2008
 // 
 // ***** END LICENSE BLOCK *****
-function cbButtonParameters () {}
-cbButtonParameters. prototype =
+function CustombuttonsStorageService ()
 {
- QueryInterface: function (iid) { if (!iid. equals (Components. interfaces. cbIButtonParameters) && !iid. equals (Components. interfaces. nsISupports)) throw Components. results. NS_ERROR_NO_INTERFACE; return this; },
- name: "",
- mode: 0,
- image: "",
- code: "",
- initCode: "",
- accelkey: "",
- help: ""
-};
-
-var cbStorageService =
+ this. wrappedJSObject = this;
+}
+CustombuttonsStorageService. prototype =
 {
  QueryInterface: function (iid) { if (!iid. equals (Components. interfaces. cbIStorageService) && !iid. equals (Components. interfaces. nsISupports)) throw Components. results. NS_ERROR_NO_INTERFACE; return this; },
 
@@ -67,74 +58,12 @@ var cbStorageService =
 
 var Module =
 {
- CLSID: [Components. ID ("{cb3c9904-7d0e-4efc-bffd-291ae91d4a6f}"),
-   Components. ID ("{85a63191-33a3-4d77-a70d-ed4b3cc4c0d2}")],
-    ContractID: ["@xsms.nm.ru/custombuttons/cbbuttonparameters;1", "@xsms.nm.ru/custombuttons/cbstorageservice;1"],
-    ComponentName: ["Custombuttons extension button parameters component",
-     "Custombuttons extension storage service"],
+ CLSID: Components. ID ("{85a63191-33a3-4d77-a70d-ed4b3cc4c0d2}"),
+    ContractID: "@xsms.nm.ru/custombuttons/cbstorageservice;1",
+    ComponentName: "Custombuttons extension storage service",
 
- canUnload: function (componentManager)
- {
-  return true;
- },
-
- getClassObject: function (componentManager, cid, iid)
- {
-  if (!cid. equals (this. CLSID [0]) && !cid. equals (this. CLSID [1]))
-   throw Components. results. NS_ERROR_NO_INTERFACE;
-  if (!iid. equals (Components. interfaces. nsIFactory))
-   throw Components. results. NS_ERROR_NOT_IMPLEMENTED;
-  return this. CLASS_FACTORY;
- },
-
- FIRST_TIME: true,
-
- registerSelf: function (componentManager, fileSpec, location, type)
- {
-  if (this. FIRST_TIME)
-   this. FIRST_TIME = false;
-  else
-   throw Components. results. NS_ERROR_FACTORY_REGISTER_AGAIN;
-  componentManager = componentManager. QueryInterface (Components. interfaces. nsIComponentRegistrar);
-  componentManager. registerFactoryLocation
-  (
-   this. CLSID [0], this. ComponentName [0], this. ContractID [0],
-   fileSpec, location, type
-  );
-  componentManager. registerFactoryLocation
-  (
-   this. CLSID [1], this. ComponentName [1], this. ContractID [1],
-   fileSpec, location, type
-  );
- },
-
- unregisterSelf: function (componentManager, location, loaderStr) {},
-
- CLASS_FACTORY:
- {
-  QueryInterface: function (iid)
-  {
-   if (iid. equals (Components. interfaces. nsIFactory) || iid. equals (Components. interfaces. nsISupports))
-    return this;
-   throw Components. results. NS_ERROR_NO_INTERFACE;
-  },
-
-  createInstance: function (outer, iid)
-  {
-   if (outer != null)
-    throw Components. results. NS_ERROR_NO_AGGREGATION;
-   if (iid. equals (Components. interfaces. cbIButtonParameters))
-    return (new cbButtonParameters ()). QueryInterface (iid);
-   else
-    return cbStorageService;
-  },
-
-  getService: function (iid)
-  {
-   return cbStorageService;
-  }
- }
-
+ canUnload: function (componentManager) { return true; }, getClassObject: function (componentManager, cid, iid) { if (!cid. equals (this. CLSID)) throw Components. results. NS_ERROR_NO_INTERFACE; if (!iid. equals (Components. interfaces. nsIFactory)) throw Components. results. NS_ERROR_NOT_IMPLEMENTED; return this. CLASS_FACTORY; }, FIRST_TIME: true, registerSelf: function (componentManager, fileSpec, location, type) { if (this. FIRST_TIME) this. FIRST_TIME = false; else throw Components. results. NS_ERROR_FACTORY_REGISTER_AGAIN; componentManager = componentManager. QueryInterface (Components. interfaces. nsIComponentRegistrar); componentManager. registerFactoryLocation ( this. CLSID, this. ComponentName, this. ContractID, fileSpec, location, type ); }, unregisterSelf: function (componentManager, location, loaderStr) {},
+ CLASS_FACTORY: { QueryInterface: function (iid) { if (iid. equals (Components. interfaces. nsIFactory) || iid. equals (Components. interfaces. nsISupports)) return this; throw Components. results. NS_ERROR_NO_INTERFACE; }, createInstance: function (outer, iid) { if (outer != null) throw Components. results. NS_ERROR_NO_AGGREGATION; return (new CustombuttonsStorageService ()). QueryInterface (iid); } }
 };
 
 function NSGetModule (componentManager, fileSpec) { return Module; }
