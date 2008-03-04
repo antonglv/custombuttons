@@ -1,23 +1,13 @@
 #include "nsISupports.idl"
 
-[scriptable, uuid (cb3c9904-7d0e-4efc-bffd-291ae91d4a6f)]
-interface cbIButtonParameters: nsISupports
-{
-	attribute AUTF8String name;
-	attribute long mode;
-	attribute AUTF8String image;
-	attribute AUTF8String code;
-	attribute AUTF8String initcode;
-	attribute AUTF8String accelkey;
-	attribute AUTF8String help;
-};
-
 [scriptable, uuid (85a63191-33a3-4d77-a70d-ed4b3cc4c0d2)]
 interface cbIStorageService: nsISupports
 {
 	boolean wasChanged (in AUTF8String id);
 	void getChangedButtonsIds (out unsigned long count,
 							   [retval, array, size_is(count)] out string values);
-	void storeButtonParameters (in AUTF8String id, in cbIButtonParameters buttonParameters);
-	cbIButtonParameters getButtonParameters (in AUTF8String id);
+	/* next definition ommitted, but service provides these methods
+	   because wrappedJSObject "magic" property is used */
+	/*void storeButtonParameters (in AUTF8String id, in cbIButtonParameters buttonParameters);
+	cbIButtonParameters getButtonParameters (in AUTF8String id);*/
 };
