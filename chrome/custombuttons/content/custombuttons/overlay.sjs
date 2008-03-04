@@ -1,11 +1,11 @@
 #include <project.hjs>
 #include <prio.hjs>
 
-function CustombuttonsButton (uri)
+function CustombuttonsURIParser (uri)
 {
 	this. parse (uri);
 }
-CustombuttonsButton. prototype =
+CustombuttonsURIParser. prototype =
 {
 	doc: null,
 	parameters: {},
@@ -96,7 +96,7 @@ Custombuttons. prototype =
 		try
 		{
 			var data = this. ps. getComplexValue (num, CI. nsISupportsString). data;
-			var button = new CustombuttonsButton (data);
+			var button = new CustombuttonsURIParser (data);
 			return button. parameters;
 	} catch (err) {}
 	return false;
@@ -306,22 +306,14 @@ Custombuttons. prototype =
 		}
 		cbps. setIntPref ("mode", mode);
 		setTimeout ("custombuttons.makeButtons()", 200);
-		var cbss = SERVICE (CB_STORAGE);
+		var cbss = SERVICE (CB_STORAGE). wrappedJSObject;
 		var result = {};
 		var aChangedButtons = cbss. getChangedButtonsIds (result);
-		var buttonParameters, values, id;
+		var values, id;
 		for (var i = 0; i < aChangedButtons. length; i++)
 		{
 			id = aChangedButtons [i];
-			values = {};
-			buttonParameters = cbss. getButtonParameters (id);
-			values. name = buttonParameters. name;
-			values. mode = buttonParameters. mode;
-			values. image = buttonParameters. image;
-			values. code = buttonParameters. code;
-			values. initCode = buttonParameters. initcode;
-			values. accelkey = buttonParameters. accelkey;
-			values. help = buttonParameters. help;
+			values = cbss. getButtonParameters (id);
 			this. setButtonParameters (this. getNumber (id), values);
 		}
 		var os = SERVICE (OBSERVER);
@@ -463,6 +455,8 @@ Custombuttons. prototype =
 			buts = document. getElementsByAttribute ("id", newButton2. id);
 			if (buts [0])
 				buts [0]. parentNode. replaceChild (newButton2, buts [0]);
+			var toolbar = newButton2. parentNode;
+			document. persist (toolbar. id, "currentset");
 			//palette
 			buts = this. getButtonById (newButton. id);
 			if (buts)
@@ -489,7 +483,7 @@ Custombuttons. prototype =
 	{ //checked
 		try
 		{
-			var button = new CustombuttonsButton (uri);
+			var button = new CustombuttonsURIParser (uri);
 		}
 		catch (err)
 		{

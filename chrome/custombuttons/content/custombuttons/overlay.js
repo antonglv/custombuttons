@@ -1,8 +1,8 @@
-function CustombuttonsButton (uri)
+function CustombuttonsURIParser (uri)
 {
  this. parse (uri);
 }
-CustombuttonsButton. prototype =
+CustombuttonsURIParser. prototype =
 {
  doc: null,
  parameters: {},
@@ -93,7 +93,7 @@ Custombuttons. prototype =
   try
   {
    var data = this. ps. getComplexValue (num, Components. interfaces. nsISupportsString). data;
-   var button = new CustombuttonsButton (data);
+   var button = new CustombuttonsURIParser (data);
    return button. parameters;
  } catch (err) {}
  return false;
@@ -301,22 +301,14 @@ Custombuttons. prototype =
   }
   cbps. setIntPref ("mode", mode);
   setTimeout ("custombuttons.makeButtons()", 200);
-  var cbss = Components. classes ["@xsms.nm.ru/custombuttons/cbstorageservice;1"]. getService (Components. interfaces. cbIStorageService);
+  var cbss = Components. classes ["@xsms.nm.ru/custombuttons/cbstorageservice;1"]. getService (Components. interfaces. cbIStorageService). wrappedJSObject;
   var result = {};
   var aChangedButtons = cbss. getChangedButtonsIds (result);
-  var buttonParameters, values, id;
+  var values, id;
   for (var i = 0; i < aChangedButtons. length; i++)
   {
    id = aChangedButtons [i];
-   values = {};
-   buttonParameters = cbss. getButtonParameters (id);
-   values. name = buttonParameters. name;
-   values. mode = buttonParameters. mode;
-   values. image = buttonParameters. image;
-   values. code = buttonParameters. code;
-   values. initCode = buttonParameters. initcode;
-   values. accelkey = buttonParameters. accelkey;
-   values. help = buttonParameters. help;
+   values = cbss. getButtonParameters (id);
    this. setButtonParameters (this. getNumber (id), values);
   }
   var os = Components. classes ["@mozilla.org/observer-service;1"]. getService (Components. interfaces. nsIObserverService);
@@ -458,14 +450,16 @@ Custombuttons. prototype =
    buts = document. getElementsByAttribute ("id", newButton2. id);
    if (buts [0])
     buts [0]. parentNode. replaceChild (newButton2, buts [0]);
+   var toolbar = newButton2. parentNode;
+   document. persist (toolbar. id, "currentset");
    //palette
    buts = this. getButtonById (newButton. id);
    if (buts)
     buts. parentNode. replaceChild (newButton, buts);
-   this. notificationSender = true;
-   var os = Components. classes ["@mozilla.org/observer-service;1"]. getService (Components. interfaces. nsIObserverService);
-   os. notifyObservers (newButton2, "2c73fe2f-2ed5-432d-9901-a8dbc4961e83", num);
-   this. notificationSender = false;
+   //this. notificationSender = true;
+   //var os = SERVICE (OBSERVER);
+   //os. notifyObservers (newButton2, CB_BUTTONEDIT_NOTIFICATION_UUID, num);
+   //this. notificationSender = false;
   }
   else // install web button or add new button
   { //checked
@@ -484,7 +478,7 @@ Custombuttons. prototype =
  { //checked
   try
   {
-   var button = new CustombuttonsButton (uri);
+   var button = new CustombuttonsURIParser (uri);
   }
   catch (err)
   {
@@ -655,8 +649,8 @@ Custombuttons. prototype =
     this. init ();
     break;
    case "unload":
-    var os = Components. classes ["@mozilla.org/observer-service;1"]. getService (Components. interfaces. nsIObserverService);
-    os. removeObserver (this, "2c73fe2f-2ed5-432d-9901-a8dbc4961e83");
+    //var os = SERVICE (OBSERVER);
+    //os. removeObserver (this, CB_BUTTONEDIT_NOTIFICATION_UUID);
     window. removeEventListener ("load", custombuttons, false);
     window. removeEventListener ("unload", custombuttons, false);
     window. removeEventListener ("keypress", custombuttons, true);
@@ -1187,3 +1181,79 @@ custombuttons. writeFile = custombuttonsUtils. writeFile;
 window. addEventListener ("load", custombuttons, false);
 window. addEventListener ("unload", custombuttons, false);
 window. addEventListener ("keypress", custombuttons, true);
+
+/**
+ * Persist the current set of buttons in all customizable toolbars to
+ * localstore.
+ */
+function persistCurrentSets()
+{
+var gToolbox = document. getElementById ("navigator-toolbox") || // FF3b2 and lower
+  document. getElementById ("browser-toolbox"); // FF3b3pre and higher
+var gToolboxDocument = gToolbox. ownerDocument;
+
+  var customCount = 0;
+  for (var i = 0; i < gToolbox.childNodes.length; ++i) {
+    // Look for customizable toolbars that need to be persisted.
+    var toolbar = gToolbox. childNodes [i];
+    if (custombuttons. isCustomizableToolbar(toolbar)) {
+      // Calculate currentset and store it in the attribute.
+      var currentSet = toolbar.currentSet;
+      toolbar.setAttribute("currentset", currentSet);
+
+      var customIndex = toolbar.hasAttribute("customindex");
+      if (customIndex) {
+        if (!toolbar.firstChild) {
+          // Remove custom toolbars whose contents have been removed.
+          gToolbox.removeChild(toolbar);
+          --i;
+        } else {
+          // Persist custom toolbar info on the <toolbarset/>
+          gToolbox.toolbarset.setAttribute("toolbar"+(++customCount),
+                                           toolbar.toolbarName + ":" + currentSet);
+          gToolboxDocument.persist(gToolbox.toolbarset.id, "toolbar"+customCount);
+        }
+      }
+
+      if (!customIndex) {
+        // Persist the currentset attribute directly on hardcoded toolbars.
+        gToolboxDocument.persist(toolbar.id, "currentset");
+      }
+    }
+  }
+
+  // Remove toolbarX attributes for removed toolbars.
+  while (gToolbox.toolbarset.hasAttribute("toolbar"+(++customCount))) {
+    gToolbox.toolbarset.removeAttribute("toolbar"+customCount);
+    gToolboxDocument.persist(gToolbox.toolbarset.id, "toolbar"+customCount);
+  }
+  if ("customizeDone" in gToolbox)
+  {
+    gToolbox.customizeDone(true);
+  }
+}
+
+
+
+// *****************************************************************************
+var TDDFS = Components. classes ["@xsms.nm.ru/custombuttons/tddframework-service;1"];
+if (TDDFS)
+{
+ var TestCase = TDDFS. getService (). wrappedJSObject. TestCase;
+ var tc = new TestCase ();
+ tc. tests =
+ {
+  "test 1": function ()
+  {
+   // test for pass
+  },
+
+  "test 2 search palettefounded in toolbars": function ()
+  {
+   //var nt = document. getElementById ("navigator-toolbox");
+   //this. assertDefined (nt. getAttribute ("palettefounded"));
+   //this. assertEquals ("yes", nt. getAttribute ("palettefounded"));
+  }
+ };
+ tc. run ();
+}
