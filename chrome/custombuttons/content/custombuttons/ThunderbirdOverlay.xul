@@ -29,6 +29,11 @@
             label="&custombuttons.buttonPopup.copyURI;"
             oncommand="custombuttons.copyURI();"/>
       <menuseparator id="custombuttons-contextpopup-separator2"/>
+	  <menuitem id="custombuttons-contextpopup-buttonHelp"
+            label="&custombuttons.buttonPopup.help;"
+            oncommand="custombuttons.uChelpButton();"/>
+	  <menuseparator id="custombuttons-contextpopup-separator3"
+	  				 observes="custombuttons-contextpopup-buttonHelp"/>
       <menuitem oncommand="CustomizeMailToolbar('mail-toolbox');"
             id="custombuttons-contextpopup-customize"
             label="&customizeToolbar.label;"
@@ -36,7 +41,7 @@
 
     </popup>
   </window>
-
+  
   <menupopup id="menu_View_Popup">
     <menuseparator/>
     <menuitem label="&custombuttons.viewMenu_Item;"
@@ -63,6 +68,11 @@
             label="&custombuttons.buttonPopup.copyURI;"
             oncommand="custombuttons.copyURI();"/>
       <menuseparator id="custombuttons-contextpopup-separator2"/>
+	  <menuitem id="custombuttons-contextpopup-buttonHelp"
+            label="&custombuttons.buttonPopup.help;"
+            oncommand="custombuttons.uChelpButton();"/>
+	  <menuseparator id="custombuttons-contextpopup-separator3"
+	  				 observes="custombuttons-contextpopup-buttonHelp"/>
       <menuitem oncommand="CustomizeMailToolbar('compose-toolbox');"
             id="custombuttons-contextpopup-customize"
             label="&customizeToolbar.label;"
