@@ -1,7 +1,9 @@
 /*toolbar*/
+/*
 toolbar{
    -moz-binding: url("toolbarBindings.xml#custombuttons-toolbar-binding");
 }
+*/
 
 /********** toolbarbutton **********/
 
