@@ -1,7 +1,7 @@
 #ifndef PROJECT_HEADER_JS
 #define PROJECT_HEADER_JS
 
-#define NODEBUG
+#define DEBUG
 
 #include <debug.hjs>
 #include <stdcomps.hjs>
@@ -21,7 +21,10 @@
 #define CB_CONTENT_POLICY_COMPONENT_CID "@xsms.nm.ru/custombuttons/cbcontentpolicy;1"
 #define CB_CONTENT_POLICY_COMPONENT_IID cbIContentPolicyComponent
 
-#define CB_BUTTONEDIT_NOTIFICATION_UUID "2c73fe2f-2ed5-432d-9901-a8dbc4961e83"
+#define CB_BUTTONEDIT_NOTIFICATION_UUID "custombuttons:2c73fe2f-2ed5-432d-9901-a8dbc4961e83"
+#define CB_BUTTONREMOVE_NOTIFICATION_UUID "custombuttons:69423527-65a1-4b8f-bd7a-29593fc46d27:remove"
+#define CB_BUTTONCLONE_NOTIFICATION_UUID "custombuttons:69423527-65a1-4b8f-bd7a-29593fc46d27:clone"
+#define CB_NOTIFICATION(NAME) CB_BUTTON##NAME##_NOTIFICATION_UUID
 
 #define CB_BUTTON_PARAMETERS_COMPONENT_CID "@xsms.nm.ru/custombuttons/cbbuttonparameters;1"
 #define CB_BUTTON_PARAMETERS_COMPONENT_IID cbIButtonParameters
