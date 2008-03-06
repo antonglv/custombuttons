@@ -26,6 +26,20 @@
 // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 // 
 // ***** END LICENSE BLOCK *****
+    function dLOG (text)
+    {
+          var consoleService = Components. classes ["@mozilla.org/consoleservice;1"]. getService (Components. interfaces. nsIConsoleService);
+          consoleService. logStringMessage (text);
+    }
+    function dEXTLOG (aMessage, aSourceName, aSourceLine, aLineNumber,
+              aColumnNumber, aFlags, aCategory)
+    {
+      var consoleService = Components. classes ["@mozilla.org/consoleservice;1"]. getService (Components. interfaces. nsIConsoleService);
+      var scriptError = Components. classes ["@mozilla.org/scripterror;1"]. createInstance (Components. interfaces. nsIScriptError);
+      scriptError. init (aMessage, aSourceName, aSourceLine, aLineNumber,
+                 aColumnNumber, aFlags, aCategory);
+      consoleService. logMessage (scriptError);
+    }
 // Adblock Plus code
 //HACKHACK: need a way to get an implicit wrapper for nodes because of bug 337095 (fixed in Gecko 1.8.0.5)
 var fakeFactory =
@@ -103,8 +117,7 @@ cbContentPolicyComponent. prototype =
   if (wndType != Components. interfaces. nsIDocShellTreeItem. typeContent)
    return 1;
 
-  var location = contentLocation. spec;
-  if (location. indexOf ("custombuttons-profilefolder") != -1)
+  if (contentLocation. spec == "custombutton://buttonoverlay.xul")
    return -1;
 
   return 1;
