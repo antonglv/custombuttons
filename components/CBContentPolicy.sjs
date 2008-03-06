@@ -107,8 +107,8 @@ cbContentPolicyComponent. prototype =
 		if (wndType != CI. nsIDocShellTreeItem. typeContent)
 			return CONTENT_POLICY_ACCEPT;
 
-		var location = contentLocation. spec;
-		if (location. indexOf ("custombuttons-profilefolder") != -1)
+		if ((contentLocation. spec == "custombutton://buttonoverlay.xul") ||
+			(contentLocation. spec == "custombutton://mcbuttonsoverlay.xul"))
 			return CONTENT_POLICY_REJECT_REQUEST;
 
 		return CONTENT_POLICY_ACCEPT;
