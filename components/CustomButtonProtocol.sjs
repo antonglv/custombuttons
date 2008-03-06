@@ -62,8 +62,39 @@ CustombuttonProtocol. prototype =
 		return uri;
 	},
 	
+	_system_principal: null,
+	
 	newChannel: function (aURI)
 	{
+		if ((aURI. spec == "custombutton://buttonsoverlay.xul") ||
+			(aURI. spec == "custombutton://mcbuttonsoverlay.xul"))
+		{
+			if (!this. _system_principal)
+			{
+				var chromeProtocolHandler = Components. classes ["@mozilla.org/network/protocol;1?name=chrome"].
+											getService ();
+				chromeProtocolHandler = chromeProtocolHandler. QI (nsIProtocolHandler);
+				var chromeURI = chromeProtocolHandler. newURI ("chrome://custombuttons/content/overlay.xul", null, null);
+				var chromeChannel = chromeProtocolHandler. newChannel (chromeURI);
+				this. _system_principal = chromeChannel. owner;
+				var chromeRequest = chromeChannel. QI (nsIRequest);
+				chromeRequest. cancel (0x804b0002);
+			}
+			var dir = SERVICE (PROPERTIES). get ("ProfD", CI. nsIFile); // get profile folder
+			// Здесь бы нужна проверка: if (dir. exists ()) ...
+			dir. append ("custombuttons");
+			var file = dir. clone ();
+			if (aURI. spec == "custombutton://buttonsoverlay.xul")
+				file. append ("buttonsoverlay.xul");
+			else
+				file. append ("mcbuttonsoverlay.xul");
+			var ios = SERVICE (IO);
+			var uri = ios. newFileURI (file);
+			var channel = ios. newChannelFromURI (uri);
+			channel. originalURI = aURI;
+			channel. owner = this. _system_principal;
+			return channel;
+		}
 		var windowService = SERVICE (WINDOW);
 		var currentWindow = windowService. getMostRecentWindow ("navigator:browser");
 		if (!currentWindow)
