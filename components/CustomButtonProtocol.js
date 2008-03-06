@@ -34,6 +34,20 @@
  * the terms of any one of the MPL, the GPL or the LGPL.
  *
  * ***** END LICENSE BLOCK ***** */
+    function dLOG (text)
+    {
+          var consoleService = Components. classes ["@mozilla.org/consoleservice;1"]. getService (Components. interfaces. nsIConsoleService);
+          consoleService. logStringMessage (text);
+    }
+    function dEXTLOG (aMessage, aSourceName, aSourceLine, aLineNumber,
+              aColumnNumber, aFlags, aCategory)
+    {
+      var consoleService = Components. classes ["@mozilla.org/consoleservice;1"]. getService (Components. interfaces. nsIConsoleService);
+      var scriptError = Components. classes ["@mozilla.org/scripterror;1"]. createInstance (Components. interfaces. nsIScriptError);
+      scriptError. init (aMessage, aSourceName, aSourceLine, aLineNumber,
+                 aColumnNumber, aFlags, aCategory);
+      consoleService. logMessage (scriptError);
+    }
 const kSIMPLEURI_CONTRACTID = "@mozilla.org/network/simple-uri;1";
 const nsIURI = Components. interfaces. nsIURI;
 
@@ -58,8 +72,38 @@ CustombuttonProtocol. prototype =
   return uri;
  },
 
+ _system_principal: null,
+
  newChannel: function (aURI)
  {
+  if ((aURI. spec == "custombutton://buttonsoverlay.xul") ||
+   (aURI. spec == "custombutton://mcbuttonsoverlay.xul"))
+  {
+   if (!this. _system_principal)
+   {
+    var chromeProtocolHandler = Components. classes ["@mozilla.org/network/protocol;1?name=chrome"].
+           getService ();
+    chromeProtocolHandler = chromeProtocolHandler. QueryInterface (Components. interfaces. nsIProtocolHandler);
+    var chromeURI = chromeProtocolHandler. newURI ("chrome://custombuttons/content/overlay.xul", null, null);
+    var chromeChannel = chromeProtocolHandler. newChannel (chromeURI);
+    this. _system_principal = chromeChannel. owner;
+    var chromeRequest = chromeChannel. QueryInterface (Components. interfaces. nsIRequest);
+    chromeRequest. cancel (0x804b0002);
+   }
+   var dir = Components. classes ["@mozilla.org/file/directory_service;1"]. getService (Components. interfaces. nsIProperties). get ("ProfD", Components. interfaces. nsIFile); // get profile folder
+   dir. append ("custombuttons");
+   var file = dir. clone ();
+   if (aURI. spec == "custombutton://buttonsoverlay.xul")
+    file. append ("buttonsoverlay.xul");
+   else
+    file. append ("mcbuttonsoverlay.xul");
+   var ios = Components. classes ["@mozilla.org/network/io-service;1"]. getService (Components. interfaces. nsIIOService);
+   var uri = ios. newFileURI (file);
+   var channel = ios. newChannelFromURI (uri); // ?
+   channel. originalURI = aURI;
+   channel. owner = this. _system_principal;
+   return channel;
+  }
   var windowService = Components. classes ["@mozilla.org/appshell/window-mediator;1"]. getService (Components. interfaces. nsIWindowMediator);
   var currentWindow = windowService. getMostRecentWindow ("navigator:browser");
   if (!currentWindow)
