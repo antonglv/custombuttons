@@ -317,7 +317,9 @@ Custombuttons. prototype =
 			this. setButtonParameters (this. getNumber (id), values);
 		}
 		var os = SERVICE (OBSERVER);
-		os. addObserver (this, CB_BUTTONEDIT_NOTIFICATION_UUID, false);
+		os. addObserver (this, CB_NOTIFICATION (EDIT), false);
+		os. addObserver (this, CB_NOTIFICATION (REMOVE), false);
+		os. addObserver (this, CB_NOTIFICATION (CLONE), false);
 	},
 	
 	openButtonDialog: function (editDialogFlag)
@@ -340,12 +342,12 @@ Custombuttons. prototype =
 	{
 		this. openButtonDialog (false);
 	},
-	
-	prepareButtonOperation: function ()
+
+	prepareButtonOperation: function (oButton)
 	{
-		this. button = document. popupNode;
-		this. values = this. button. parameters;
-		this. toolbar = this. button. parentNode;
+		this. button = oButton;
+		this. values = oButton. parameters;
+		this. toolbar = oButton. parentNode;
 	},
 	
 	finalizeButtonOperation: function (newButtonId)
@@ -382,24 +384,39 @@ Custombuttons. prototype =
 		this. saveButtonsToProfile ();
 	},
 	
-	removeButton: function ()
+	removeButton: function (sId)
 	{
-		this. prepareButtonOperation ();
-		var str = CB_STRING ("cbStrings", "RemoveConfirm", this. values. name);
-		var buts = this. palette. childNodes;
-		if (confirm (str))
+		var oButton;
+		if (sId) // notification
+			oButton = ELEMENT (sId);
+		else // context menu
+			oButton = document. popupNode;
+		if (!oButton)
+			return;
+		this. prepareButtonOperation (oButton);
+		if (!sId) // context menu
 		{
-			var but = this. getButtonById (this. button. id);
-			if (but)
-				this. palette. removeChild (but);
-			this. toolbar. removeChild (this. button);
-			this. finalizeButtonOperation (null);
+			var str = CB_STRING ("cbStrings", "RemoveConfirm", this. values. name);
+			if (!confirm (str))
+				return;
 		}
+		var oPaletteButtonInstance = this. getButtonById (oButton. id);
+		if (oPaletteButtonInstance)
+			this. palette. removeChild (oPaletteButtonInstance);
+		this. toolbar. removeChild (oButton);
+		this. finalizeButtonOperation (null);
+		if (!sId)
+			this. fireNotification (null, CB_NOTIFICATION (REMOVE), oButton. id);
 	},
 	
-	cloneButton: function ()
+	cloneButton: function (sId)
 	{
-		this. prepareButtonOperation ();
+		var oButton;
+		if (sId) // notification
+			oButton = ELEMENT (sId);
+		else // context menu
+			oButton = document. popupNode;
+		this. prepareButtonOperation (oButton);
 		var newNum = this. min_button_number ();
 		var newButton = this. createButton (newNum, this. values);
 		var newButton2 = this. createButton (newNum, this. values);
@@ -408,6 +425,8 @@ Custombuttons. prototype =
 		var aBefore = this. button. nextSibling;
 		this. insertToToolbar (this. toolbar, newButton, aBefore);
 		this. finalizeButtonOperation (newButtonId);
+		if (!sId)
+			this. fireNotification (null, CB_NOTIFICATION (CLONE), oButton. id);
 	},
 	
 	copyURI: function ()
@@ -443,6 +462,14 @@ Custombuttons. prototype =
 		return z;
 	},
 	
+	fireNotification: function (oSubject, sNotification, sData)
+	{
+		this. notificationSender = true;
+		var os = SERVICE (OBSERVER);
+		os. notifyObservers (oSubject, sNotification, sData);
+		this. notificationSender = false;
+	},
+	
 	setButtonParameters: function (num, values)
 	{ //updated
 		if (num) // edit button
@@ -456,15 +483,13 @@ Custombuttons. prototype =
 			if (buts [0])
 				buts [0]. parentNode. replaceChild (newButton2, buts [0]);
 			var toolbar = newButton2. parentNode;
-			document. persist (toolbar. id, "currentset");
+			if (toolbar)
+				document. persist (toolbar. id, "currentset");
 			//palette
 			buts = this. getButtonById (newButton. id);
 			if (buts)
 				buts. parentNode. replaceChild (newButton, buts);
-			this. notificationSender = true;
-			var os = SERVICE (OBSERVER);
-			os. notifyObservers (newButton2, CB_BUTTONEDIT_NOTIFICATION_UUID, num);
-			this. notificationSender = false;
+			this. fireNotification (newButton2, CB_NOTIFICATION (EDIT), num);
 		}
 		else // install web button or add new button
 		{ //checked
@@ -597,6 +622,9 @@ Custombuttons. prototype =
 		foStream. init (file, flags, 0664, 0);
 		foStream. write (data, data. length);
 		foStream. close ();
+		// flush xul cache
+		//var os = SERVICE (OBSERVER);
+		//os. notifyObservers (null, "chrome-flush-cashes", null);
 	},
 	
 	_eventKeymap: [],
@@ -655,7 +683,9 @@ Custombuttons. prototype =
 				break;
 			case "unload":
 				var os = SERVICE (OBSERVER);
-				os. removeObserver (this, CB_BUTTONEDIT_NOTIFICATION_UUID);
+				os. removeObserver (this, CB_NOTIFICATION (CLONE));
+				os. removeObserver (this, CB_NOTIFICATION (REMOVE));
+				os. removeObserver (this, CB_NOTIFICATION (EDIT));
 				window. removeEventListener ("load", custombuttons, false);
 				window. removeEventListener ("unload", custombuttons, false);
 				window. removeEventListener ("keypress", custombuttons, true);
@@ -669,12 +699,23 @@ Custombuttons. prototype =
 	},
 	
 	/* nsIObserver interface */
-	observe: function (subject, topic, data)
+	observe: function (oSubject, sTopic, sData)
 	{
-		if ((topic == CB_BUTTONEDIT_NOTIFICATION_UUID) &&
-			!this. notificationSender)
+		if (!this. notificationSender)
 		{
-			this. setButtonParameters (data, subject. parameters);
+			switch (sTopic)
+			{
+				case CB_BUTTONEDIT_NOTIFICATION_UUID:
+					this. setButtonParameters (sData, oSubject. parameters);
+					break;
+				case CB_BUTTONREMOVE_NOTIFICATION_UUID:
+					this. removeButton (sData);
+					break;
+				case CB_BUTTONCLONE_NOTIFICATION_UUID:
+					this. cloneButton (sData);
+					break;
+				default:
+			}
 		}
 	},
 	

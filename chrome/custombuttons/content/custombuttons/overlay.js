@@ -1,3 +1,17 @@
+    function dLOG (text)
+    {
+          var consoleService = Components. classes ["@mozilla.org/consoleservice;1"]. getService (Components. interfaces. nsIConsoleService);
+          consoleService. logStringMessage (text);
+    }
+    function dEXTLOG (aMessage, aSourceName, aSourceLine, aLineNumber,
+              aColumnNumber, aFlags, aCategory)
+    {
+      var consoleService = Components. classes ["@mozilla.org/consoleservice;1"]. getService (Components. interfaces. nsIConsoleService);
+      var scriptError = Components. classes ["@mozilla.org/scripterror;1"]. createInstance (Components. interfaces. nsIScriptError);
+      scriptError. init (aMessage, aSourceName, aSourceLine, aLineNumber,
+                 aColumnNumber, aFlags, aCategory);
+      consoleService. logMessage (scriptError);
+    }
 function CustombuttonsURIParser (uri)
 {
  this. parse (uri);
@@ -151,6 +165,7 @@ Custombuttons. prototype =
   var numbers = this. ps. getChildList ("", {});
   if (numbers. length > 0)
   {
+   dump ('\nfound buttons in prefs.js...');
    var buttons = new Object ();
    for (var i = 0; i < numbers. length; i++)
    {
@@ -179,6 +194,7 @@ Custombuttons. prototype =
    //deleting buttons from prefs.js, now they would be saved in the profile
    for (var i = 0; i < numbers. length; i++)
    {
+    dump ("\ndeleting button #" + i);
     this. ps. deleteBranch (numbers [i]);
    }
    this. saveButtonsToProfile ();
@@ -312,7 +328,9 @@ Custombuttons. prototype =
    this. setButtonParameters (this. getNumber (id), values);
   }
   var os = Components. classes ["@mozilla.org/observer-service;1"]. getService (Components. interfaces. nsIObserverService);
-  os. addObserver (this, "2c73fe2f-2ed5-432d-9901-a8dbc4961e83", false);
+  os. addObserver (this, "custombuttons:2c73fe2f-2ed5-432d-9901-a8dbc4961e83", false);
+  os. addObserver (this, "custombuttons:69423527-65a1-4b8f-bd7a-29593fc46d27:remove", false);
+  os. addObserver (this, "custombuttons:69423527-65a1-4b8f-bd7a-29593fc46d27:clone", false);
  },
 
  openButtonDialog: function (editDialogFlag)
@@ -336,11 +354,11 @@ Custombuttons. prototype =
   this. openButtonDialog (false);
  },
 
- prepareButtonOperation: function ()
+ prepareButtonOperation: function (oButton)
  {
-  this. button = document. popupNode;
-  this. values = this. button. parameters;
-  this. toolbar = this. button. parentNode;
+  this. button = oButton;
+  this. values = oButton. parameters;
+  this. toolbar = oButton. parentNode;
  },
 
  finalizeButtonOperation: function (newButtonId)
@@ -377,24 +395,39 @@ Custombuttons. prototype =
   this. saveButtonsToProfile ();
  },
 
- removeButton: function ()
+ removeButton: function (sId)
  {
-  this. prepareButtonOperation ();
-  var str = document. getElementById ("cbStrings"). getString ("RemoveConfirm"). replace (/%s/gi, this. values. name);
-  var buts = this. palette. childNodes;
-  if (confirm (str))
+  var oButton;
+  if (sId) // notification
+   oButton = document. getElementById (sId);
+  else // context menu
+   oButton = document. popupNode;
+  if (!oButton)
+   return;
+  this. prepareButtonOperation (oButton);
+  if (!sId) // context menu
   {
-   var but = this. getButtonById (this. button. id);
-   if (but)
-    this. palette. removeChild (but);
-   this. toolbar. removeChild (this. button);
-   this. finalizeButtonOperation (null);
+   var str = document. getElementById ("cbStrings"). getString ("RemoveConfirm"). replace (/%s/gi, this. values. name);
+   if (!confirm (str))
+    return;
   }
+  var oPaletteButtonInstance = this. getButtonById (oButton. id);
+  if (oPaletteButtonInstance)
+   this. palette. removeChild (oPaletteButtonInstance);
+  this. toolbar. removeChild (oButton);
+  this. finalizeButtonOperation (null);
+  if (!sId)
+   this. fireNotification (null, "custombuttons:69423527-65a1-4b8f-bd7a-29593fc46d27:remove", oButton. id);
  },
 
- cloneButton: function ()
+ cloneButton: function (sId)
  {
-  this. prepareButtonOperation ();
+  var oButton;
+  if (sId) // notification
+   oButton = document. getElementById (sId);
+  else // context menu
+   oButton = document. popupNode;
+  this. prepareButtonOperation (oButton);
   var newNum = this. min_button_number ();
   var newButton = this. createButton (newNum, this. values);
   var newButton2 = this. createButton (newNum, this. values);
@@ -403,6 +436,8 @@ Custombuttons. prototype =
   var aBefore = this. button. nextSibling;
   this. insertToToolbar (this. toolbar, newButton, aBefore);
   this. finalizeButtonOperation (newButtonId);
+  if (!sId)
+   this. fireNotification (null, "custombuttons:69423527-65a1-4b8f-bd7a-29593fc46d27:clone", oButton. id);
  },
 
  copyURI: function ()
@@ -438,6 +473,14 @@ Custombuttons. prototype =
   return z;
  },
 
+ fireNotification: function (oSubject, sNotification, sData)
+ {
+  this. notificationSender = true;
+  var os = Components. classes ["@mozilla.org/observer-service;1"]. getService (Components. interfaces. nsIObserverService);
+  os. notifyObservers (oSubject, sNotification, sData);
+  this. notificationSender = false;
+ },
+
  setButtonParameters: function (num, values)
  { //updated
   if (num) // edit button
@@ -451,15 +494,13 @@ Custombuttons. prototype =
    if (buts [0])
     buts [0]. parentNode. replaceChild (newButton2, buts [0]);
    var toolbar = newButton2. parentNode;
-   document. persist (toolbar. id, "currentset");
+   if (toolbar)
+    document. persist (toolbar. id, "currentset");
    //palette
    buts = this. getButtonById (newButton. id);
    if (buts)
     buts. parentNode. replaceChild (newButton, buts);
-   //this. notificationSender = true;
-   //var os = SERVICE (OBSERVER);
-   //os. notifyObservers (newButton2, CB_BUTTONEDIT_NOTIFICATION_UUID, num);
-   //this. notificationSender = false;
+   this. fireNotification (newButton2, "custombuttons:2c73fe2f-2ed5-432d-9901-a8dbc4961e83", num);
   }
   else // install web button or add new button
   { //checked
@@ -592,6 +633,9 @@ Custombuttons. prototype =
   foStream. init (file, flags, 0664, 0);
   foStream. write (data, data. length);
   foStream. close ();
+  // flush xul cache
+  //var os = SERVICE (OBSERVER);
+  //os. notifyObservers (null, "chrome-flush-cashes", null);
  },
 
  _eventKeymap: [],
@@ -649,8 +693,10 @@ Custombuttons. prototype =
     this. init ();
     break;
    case "unload":
-    //var os = SERVICE (OBSERVER);
-    //os. removeObserver (this, CB_BUTTONEDIT_NOTIFICATION_UUID);
+    var os = Components. classes ["@mozilla.org/observer-service;1"]. getService (Components. interfaces. nsIObserverService);
+    os. removeObserver (this, "custombuttons:69423527-65a1-4b8f-bd7a-29593fc46d27:clone");
+    os. removeObserver (this, "custombuttons:69423527-65a1-4b8f-bd7a-29593fc46d27:remove");
+    os. removeObserver (this, "custombuttons:2c73fe2f-2ed5-432d-9901-a8dbc4961e83");
     window. removeEventListener ("load", custombuttons, false);
     window. removeEventListener ("unload", custombuttons, false);
     window. removeEventListener ("keypress", custombuttons, true);
@@ -664,12 +710,23 @@ Custombuttons. prototype =
  },
 
  /* nsIObserver interface */
- observe: function (subject, topic, data)
+ observe: function (oSubject, sTopic, sData)
  {
-  if ((topic == "2c73fe2f-2ed5-432d-9901-a8dbc4961e83") &&
-   !this. notificationSender)
+  if (!this. notificationSender)
   {
-   this. setButtonParameters (data, subject. parameters);
+   switch (sTopic)
+   {
+    case "custombuttons:2c73fe2f-2ed5-432d-9901-a8dbc4961e83":
+     this. setButtonParameters (sData, oSubject. parameters);
+     break;
+    case "custombuttons:69423527-65a1-4b8f-bd7a-29593fc46d27:remove":
+     this. removeButton (sData);
+     break;
+    case "custombuttons:69423527-65a1-4b8f-bd7a-29593fc46d27:clone":
+     this. cloneButton (sData);
+     break;
+    default:
+   }
   }
  },
 
@@ -1181,79 +1238,3 @@ custombuttons. writeFile = custombuttonsUtils. writeFile;
 window. addEventListener ("load", custombuttons, false);
 window. addEventListener ("unload", custombuttons, false);
 window. addEventListener ("keypress", custombuttons, true);
-
-/**
- * Persist the current set of buttons in all customizable toolbars to
- * localstore.
- */
-function persistCurrentSets()
-{
-var gToolbox = document. getElementById ("navigator-toolbox") || // FF3b2 and lower
-  document. getElementById ("browser-toolbox"); // FF3b3pre and higher
-var gToolboxDocument = gToolbox. ownerDocument;
-
-  var customCount = 0;
-  for (var i = 0; i < gToolbox.childNodes.length; ++i) {
-    // Look for customizable toolbars that need to be persisted.
-    var toolbar = gToolbox. childNodes [i];
-    if (custombuttons. isCustomizableToolbar(toolbar)) {
-      // Calculate currentset and store it in the attribute.
-      var currentSet = toolbar.currentSet;
-      toolbar.setAttribute("currentset", currentSet);
-
-      var customIndex = toolbar.hasAttribute("customindex");
-      if (customIndex) {
-        if (!toolbar.firstChild) {
-          // Remove custom toolbars whose contents have been removed.
-          gToolbox.removeChild(toolbar);
-          --i;
-        } else {
-          // Persist custom toolbar info on the <toolbarset/>
-          gToolbox.toolbarset.setAttribute("toolbar"+(++customCount),
-                                           toolbar.toolbarName + ":" + currentSet);
-          gToolboxDocument.persist(gToolbox.toolbarset.id, "toolbar"+customCount);
-        }
-      }
-
-      if (!customIndex) {
-        // Persist the currentset attribute directly on hardcoded toolbars.
-        gToolboxDocument.persist(toolbar.id, "currentset");
-      }
-    }
-  }
-
-  // Remove toolbarX attributes for removed toolbars.
-  while (gToolbox.toolbarset.hasAttribute("toolbar"+(++customCount))) {
-    gToolbox.toolbarset.removeAttribute("toolbar"+customCount);
-    gToolboxDocument.persist(gToolbox.toolbarset.id, "toolbar"+customCount);
-  }
-  if ("customizeDone" in gToolbox)
-  {
-    gToolbox.customizeDone(true);
-  }
-}
-
-
-
-// *****************************************************************************
-var TDDFS = Components. classes ["@xsms.nm.ru/custombuttons/tddframework-service;1"];
-if (TDDFS)
-{
- var TestCase = TDDFS. getService (). wrappedJSObject. TestCase;
- var tc = new TestCase ();
- tc. tests =
- {
-  "test 1": function ()
-  {
-   // test for pass
-  },
-
-  "test 2 search palettefounded in toolbars": function ()
-  {
-   //var nt = document. getElementById ("navigator-toolbox");
-   //this. assertDefined (nt. getAttribute ("palettefounded"));
-   //this. assertEquals ("yes", nt. getAttribute ("palettefounded"));
-  }
- };
- tc. run ();
-}
