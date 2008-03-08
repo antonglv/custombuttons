@@ -74,32 +74,41 @@ CustombuttonProtocol. prototype =
 
  _system_principal: null,
 
+ fakeOverlayChannel: function ()
+ {
+  var chromeProtocolHandler = Components. classes ["@mozilla.org/network/protocol;1?name=chrome"].
+         getService ();
+  chromeProtocolHandler = chromeProtocolHandler. QueryInterface (Components. interfaces. nsIProtocolHandler);
+  var fakeOverlayURI = "chrome://custombuttons/content/buttonsoverlay.xul";
+  var chromeURI = chromeProtocolHandler. newURI (fakeOverlayURI, null, null);
+  return chromeProtocolHandler. newChannel (chromeURI);
+ },
+
+ sCbPrefix: "custombutton://content/",
+
  newChannel: function (aURI)
  {
-  if ((aURI. spec == "custombutton://buttonsoverlay.xul") ||
-   (aURI. spec == "custombutton://mcbuttonsoverlay.xul"))
+  if (aURI. spec. indexOf (this. sCbPrefix) == 0)
   {
+   var sFileName = aURI. spec. substring (this. sCbPrefix. length);
    if (!this. _system_principal)
    {
-    var chromeProtocolHandler = Components. classes ["@mozilla.org/network/protocol;1?name=chrome"].
-           getService ();
-    chromeProtocolHandler = chromeProtocolHandler. QueryInterface (Components. interfaces. nsIProtocolHandler);
-    var chromeURI = chromeProtocolHandler. newURI ("chrome://custombuttons/content/overlay.xul", null, null);
-    var chromeChannel = chromeProtocolHandler. newChannel (chromeURI);
+    var chromeChannel = this. fakeOverlayChannel ();
     this. _system_principal = chromeChannel. owner;
     var chromeRequest = chromeChannel. QueryInterface (Components. interfaces. nsIRequest);
     chromeRequest. cancel (0x804b0002);
    }
    var dir = Components. classes ["@mozilla.org/file/directory_service;1"]. getService (Components. interfaces. nsIProperties). get ("ProfD", Components. interfaces. nsIFile); // get profile folder
+   if (!dir. exists ())
+    return this. fakeOverlayChannel ();
    dir. append ("custombuttons");
    var file = dir. clone ();
-   if (aURI. spec == "custombutton://buttonsoverlay.xul")
-    file. append ("buttonsoverlay.xul");
-   else
-    file. append ("mcbuttonsoverlay.xul");
+   if (!file. exists ())
+    return this. fakeOverlayChannel ();
+   file. append (sFileName);
    var ios = Components. classes ["@mozilla.org/network/io-service;1"]. getService (Components. interfaces. nsIIOService);
    var uri = ios. newFileURI (file);
-   var channel = ios. newChannelFromURI (uri); // ?
+   var channel = ios. newChannelFromURI (uri);
    channel. originalURI = aURI;
    channel. owner = this. _system_principal;
    return channel;
