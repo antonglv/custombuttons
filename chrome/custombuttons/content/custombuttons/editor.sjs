@@ -96,10 +96,7 @@ Editor. prototype =
 
   setValues: function (values)
   {
-	  var cbss = SERVICE (CB_STORAGE). wrappedJSObject;
 	  var id = window. arguments [0]. id;
-	  if (cbss. wasChanged (id))
-		  values = cbss. getButtonParameters (id);
     for each (var v in this. CB. buttonParameters)
         ELEMENT (v). value = (v != "help")? values [v]: (values ["Help"] || "");
     ELEMENT ("initInCustomizeToolbarDialog"). checked = values. mode && (values. mode & CB_MODE_ENABLE_INIT_IN_CTDIALOG) || false;
@@ -117,9 +114,7 @@ Editor. prototype =
     {
       var button = window. arguments [0];
       var num = this. CB. getNumber (button. id);
-      this. CB. setButtonParameters (num, values);
-	  var cbss = SERVICE (CB_STORAGE). wrappedJSObject;
-	  cbss. storeButtonParameters (button. id, values);
+      this. CB. setButtonParameters (num, values, true);
     }
     else
       this. CB. setButtonParameters (null, values);
