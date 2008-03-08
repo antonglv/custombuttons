@@ -26,10 +26,13 @@ CustombuttonsURIParser. prototype =
 	
 	parse: function (uri)
 	{
+		var sProtocolPrefix = "custombutton:";
+		if (uri. indexOf (sProtocolPrefix) == 0)
+			uri = uri. substring (sProtocolPrefix. length);
 		var button_code = unescape (uri);
 		if (button_code. substring (0, 2) == "//")
 			button_code = button_code. substring (2);
-		values = {};
+		var values = {};
 		if (button_code. indexOf ("<?xml ") == 0)
 		{
 			var xp = new DOMParser ();
@@ -48,7 +51,7 @@ CustombuttonsURIParser. prototype =
             for ( var i = 0; i < az.length; i++) {
                 idx = (idx >= 0)? idx : ( button_code.indexOf(az[i]) > -1 )? i : idx ;
             } // End for
-            sep = (idx >= 0)? az[idx] : "][";
+            var sep = (idx >= 0)? az[idx] : "][";
             var ar =  button_code.split( sep );             // Split button
             if (ar.length == 5 || ar.length == 4 )
             {
@@ -306,20 +309,21 @@ Custombuttons. prototype =
 		}
 		cbps. setIntPref ("mode", mode);
 		setTimeout ("custombuttons.makeButtons()", 200);
-		var cbss = SERVICE (CB_STORAGE). wrappedJSObject;
-		var result = {};
-		var aChangedButtons = cbss. getChangedButtonsIds (result);
-		var values, id;
-		for (var i = 0; i < aChangedButtons. length; i++)
-		{
-			id = aChangedButtons [i];
-			values = cbss. getButtonParameters (id);
-			this. setButtonParameters (this. getNumber (id), values);
-		}
 		var os = SERVICE (OBSERVER);
-		os. addObserver (this, CB_NOTIFICATION (EDIT), false);
+		os. addObserver (this, CB_NOTIFICATION (UPDATE), false);
 		os. addObserver (this, CB_NOTIFICATION (REMOVE), false);
 		os. addObserver (this, CB_NOTIFICATION (CLONE), false);
+	},
+	
+	close: function ()
+	{
+		var os = SERVICE (OBSERVER);
+		os. removeObserver (this, CB_NOTIFICATION (CLONE));
+		os. removeObserver (this, CB_NOTIFICATION (REMOVE));
+		os. removeObserver (this, CB_NOTIFICATION (UPDATE));
+		window. removeEventListener ("load", custombuttons, false);
+		window. removeEventListener ("unload", custombuttons, false);
+		window. removeEventListener ("keypress", custombuttons, true);
 	},
 	
 	openButtonDialog: function (editDialogFlag)
@@ -386,37 +390,21 @@ Custombuttons. prototype =
 	
 	removeButton: function (sId)
 	{
-		var oButton;
-		if (sId) // notification
-			oButton = ELEMENT (sId);
-		else // context menu
-			oButton = document. popupNode;
-		if (!oButton)
-			return;
-		this. prepareButtonOperation (oButton);
 		if (!sId) // context menu
 		{
 			var str = CB_STRING ("cbStrings", "RemoveConfirm", this. values. name);
 			if (!confirm (str))
 				return;
 		}
-		var oPaletteButtonInstance = this. getButtonById (oButton. id);
+		var oPaletteButtonInstance = this. getButtonById (this. button. id);
 		if (oPaletteButtonInstance)
 			this. palette. removeChild (oPaletteButtonInstance);
-		this. toolbar. removeChild (oButton);
+		this. toolbar. removeChild (this. button);
 		this. finalizeButtonOperation (null);
-		if (!sId)
-			this. fireNotification (null, CB_NOTIFICATION (REMOVE), oButton. id);
 	},
 	
 	cloneButton: function (sId)
 	{
-		var oButton;
-		if (sId) // notification
-			oButton = ELEMENT (sId);
-		else // context menu
-			oButton = document. popupNode;
-		this. prepareButtonOperation (oButton);
 		var newNum = this. min_button_number ();
 		var newButton = this. createButton (newNum, this. values);
 		var newButton2 = this. createButton (newNum, this. values);
@@ -425,8 +413,47 @@ Custombuttons. prototype =
 		var aBefore = this. button. nextSibling;
 		this. insertToToolbar (this. toolbar, newButton, aBefore);
 		this. finalizeButtonOperation (newButtonId);
-		if (!sId)
-			this. fireNotification (null, CB_NOTIFICATION (CLONE), oButton. id);
+	},
+	
+	updateButton: function ()
+	{
+		var oButton = document. popupNode;
+		if (!oButton)
+			return;
+		var sURI = custombuttonsUtils. gClipboard. read ();
+		var oParameters = new CustombuttonsURIParser (sURI). parameters;
+		var str = CB_STRING ("cbStrings", "UpdateConfirm", oButton. parameters. name);
+		str = str. replace (/%n/, oParameters. name);
+		if (!confirm (str))
+			return;
+		var nButtonNum = this. getNumber (oButton. id);
+		this. setButtonParameters (nButtonNum, oParameters, true);
+	},
+	
+	doButtonOperation: function (sOperation, sId)
+	{
+		var oButton;
+		if (sId) // notification
+			oButton = ELEMENT ("custombuttons-button" + sId);
+		else // context menu
+			oButton = document. popupNode;
+		if (!oButton)
+			return;
+		this. prepareButtonOperation (oButton);
+		switch (sOperation)
+		{
+			case "clone":
+				this. cloneButton (sId);
+				break;
+			case "remove":
+				this. removeButton (sId);
+				break;
+		}
+		if (!sId) // context menu
+		{
+			var nButtonNum = this. getNumber (oButton. id);
+			this. fireNotification (oButton, CB_NOTIFICATION_PREFIX + ":" + sOperation, nButtonNum);
+		}
 	},
 	
 	copyURI: function ()
@@ -470,7 +497,7 @@ Custombuttons. prototype =
 		this. notificationSender = false;
 	},
 	
-	setButtonParameters: function (num, values)
+	setButtonParameters: function (num, values, bShouldNotify)
 	{ //updated
 		if (num) // edit button
 		{
@@ -489,7 +516,9 @@ Custombuttons. prototype =
 			buts = this. getButtonById (newButton. id);
 			if (buts)
 				buts. parentNode. replaceChild (newButton, buts);
-			this. fireNotification (newButton2, CB_NOTIFICATION (EDIT), num);
+			if (bShouldNotify)
+				this. fireNotification (newButton2, CB_NOTIFICATION (UPDATE), num);
+
 		}
 		else // install web button or add new button
 		{ //checked
@@ -518,7 +547,7 @@ Custombuttons. prototype =
 		}
 		var str = CB_STRING ("cbStrings", "InstallConfirm", button. parameters. name);
 		if (confirm (str))
-			this. setButtonParameters (null, button. parameters);
+			this. setButtonParameters (null, button. parameters, false);
 		return true;
 	},
 	
@@ -682,13 +711,7 @@ Custombuttons. prototype =
 				this. init ();
 				break;
 			case "unload":
-				var os = SERVICE (OBSERVER);
-				os. removeObserver (this, CB_NOTIFICATION (CLONE));
-				os. removeObserver (this, CB_NOTIFICATION (REMOVE));
-				os. removeObserver (this, CB_NOTIFICATION (EDIT));
-				window. removeEventListener ("load", custombuttons, false);
-				window. removeEventListener ("unload", custombuttons, false);
-				window. removeEventListener ("keypress", custombuttons, true);
+				this. close ();
 				break;
 			case "keypress":
 				this. onKeyPress (event);
@@ -701,21 +724,21 @@ Custombuttons. prototype =
 	/* nsIObserver interface */
 	observe: function (oSubject, sTopic, sData)
 	{
-		if (!this. notificationSender)
+		if (this. notificationSender)
+			return;
+		switch (sTopic)
 		{
-			switch (sTopic)
-			{
-				case CB_BUTTONEDIT_NOTIFICATION_UUID:
-					this. setButtonParameters (sData, oSubject. parameters);
-					break;
-				case CB_BUTTONREMOVE_NOTIFICATION_UUID:
-					this. removeButton (sData);
-					break;
-				case CB_BUTTONCLONE_NOTIFICATION_UUID:
-					this. cloneButton (sData);
-					break;
-				default:
-			}
+			case CB_NOTIFICATION (UPDATE):
+				this. setButtonParameters (sData, oSubject. parameters, false);
+				break;
+			case CB_NOTIFICATION (REMOVE):
+				this. doButtonOperation ("remove", sData);
+				break;
+			case CB_NOTIFICATION (CLONE):
+				this. doButtonOperation ("clone", sData);
+				break;
+			default:
+				break;
 		}
 	},
 	
@@ -750,18 +773,6 @@ CustombuttonsMF. prototype =
 		var uri = COMPONENT (SIMPLE_URI); // since there was 'bookmarkLink' execution problem
 		uri. spec = CbLink;               // it seems nsIURI spec re-passing solves it
 		PlacesCommandHook. bookmarkLink (PlacesUtils. bookmarksMenuFolderId, uri. spec, sName);
-		/* alternative code, does not show dialog
-		var uri = COMPONENT (SIMPLE_URI);
-		uri. spec = CbLink;
-        var bmsvc = SERVICE (NAV_BOOKMARKS);
-        bmsvc. insertBookmark
-        (
-            bmsvc. bookmarksMenuFolder,
-			uri,
-			bmsvc. DEFAULT_INDEX,
-			sName
-		);
-		*/
     }
 };
 EXTEND (CustombuttonsMF, Custombuttons);
