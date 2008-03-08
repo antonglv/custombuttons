@@ -5,6 +5,7 @@
 <!ENTITY custombuttons.buttonPopup.copyURI "Копировать код в буфер">
 <!ENTITY custombuttons.buttonPopup.bookmark "Сделать закладку">
 <!ENTITY custombuttons.buttonPopup.help "Справка">
+<!ENTITY custombuttons.buttonPopup.update "Обновить кнопку">
 
 <!ENTITY custombuttons_prefsDialog.title "Custombuttons: настройки">
 <!ENTITY custombuttons.prefs.use_xml_button_format "Использовать новый формат кнопки">
