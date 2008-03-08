@@ -16,15 +16,18 @@
             oncommand="custombuttons.editButton();"/>
       <menuitem id="custombuttons-contextpopup-remove"
             label="&custombuttons.buttonPopup.remove;"
-            oncommand="custombuttons.removeButton();"/>
+            oncommand="custombuttons.doButtonOperation('remove');"/>
       <menuseparator id="custombuttons-contextpopup-separator1"/>
       <menuitem id="custombuttons-contextpopup-clone"
             label="&custombuttons.buttonPopup.clone;"
-            oncommand="custombuttons.cloneButton();"/>
+            oncommand="custombuttons.doButtonOperation('clone');"/>
       <menuitem id="custombuttons-contextpopup-copyURI"
             label="&custombuttons.buttonPopup.copyURI;"
             oncommand="custombuttons.copyURI();"/>
       <menuseparator id="custombuttons-contextpopup-separator2"/>
+	  <menuitem id="custombuttons-contextpopup-updateButton"
+	  		label="&custombuttons.buttonPopup.update;"
+			oncommand="custombuttons.updateButton();"/>
 	  <menuitem id="custombuttons-contextpopup-bookmarkButton"
             label="&custombuttons.buttonPopup.bookmark;"
             oncommand="custombuttons.bookmarkButton();"/>
@@ -38,7 +41,7 @@
             accesskey="&viewCustomizeToolbar.accesskey;"/>
     </popup>
   </popupset>
-
+  
   <menupopup id="menu_viewPopup">
     <menuseparator/>
     <menuitem label="&custombuttons.viewMenu_Item;"
