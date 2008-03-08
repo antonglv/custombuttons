@@ -117,7 +117,7 @@ cbContentPolicyComponent. prototype =
   if (wndType != Components. interfaces. nsIDocShellTreeItem. typeContent)
    return 1;
 
-  if (contentLocation. spec == "custombutton://buttonoverlay.xul")
+  if (contentLocation. spec. indexOf ("custombutton://content/") == 0)
    return -1;
 
   return 1;
