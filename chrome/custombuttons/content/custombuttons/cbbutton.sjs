@@ -230,6 +230,20 @@ var custombutton =
         var helpButtonMenuitem = ELEMENT ("custombuttons-contextpopup-buttonHelp");
         var bHasHelp = oBtn. hasAttribute ("help") || oBtn. hasAttribute ("Help");
         helpButtonMenuitem. setAttribute ("hidden", bHasHelp? "false": "true");
+		var updateButtonMenuitem = ELEMENT ("custombuttons-contextpopup-updateButton");
+		var bShouldHideUpdateMenuitem = true;
+		try
+		{
+			var uri = new CustombuttonsURIParser (custombuttonsUtils. gClipboard. read ());
+			bShouldHideUpdateMenuitem = false;
+		}
+		catch (e) {}
+		updateButtonMenuitem. setAttribute ("hidden", bShouldHideUpdateMenuitem);
+		var bShouldHideSeparator = (!bHasHelp && bShouldHideUpdateMenuitem);
+		if (ELEMENT ("custombuttons-contextpopup-bookmarkButton"))
+			bShouldHideSeparator = false;
+		var oSeparator = ELEMENT ("custombuttons-contextpopup-separator3");
+		oSeparator. setAttribute ("hidden", bShouldHideSeparator);
     },
 	
 	// TODO: check for code evaluation construction. Carefully check.
