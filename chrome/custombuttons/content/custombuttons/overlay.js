@@ -31,7 +31,7 @@ CustombuttonsURIParser. prototype =
             (node. firstChild. nodeType == node. TEXT_NODE)))
    result = node. textContent;
   else // CDATA
-   result = node. firstChild. textContent;
+   result = unescape (node. firstChild. textContent);
   return result;
  },
 
@@ -321,6 +321,7 @@ Custombuttons. prototype =
   cbps. setIntPref ("mode", mode);
   setTimeout ("custombuttons.makeButtons()", 200);
   var os = Components. classes ["@mozilla.org/observer-service;1"]. getService (Components. interfaces. nsIObserverService);
+  os. addObserver (this, "custombuttons:69423527-65a1-4b8f-bd7a-29593fc46d27:added", false);
   os. addObserver (this, "custombuttons:69423527-65a1-4b8f-bd7a-29593fc46d27:update", false);
   os. addObserver (this, "custombuttons:69423527-65a1-4b8f-bd7a-29593fc46d27:remove", false);
   os. addObserver (this, "custombuttons:69423527-65a1-4b8f-bd7a-29593fc46d27:clone", false);
@@ -332,6 +333,7 @@ Custombuttons. prototype =
   os. removeObserver (this, "custombuttons:69423527-65a1-4b8f-bd7a-29593fc46d27:clone");
   os. removeObserver (this, "custombuttons:69423527-65a1-4b8f-bd7a-29593fc46d27:remove");
   os. removeObserver (this, "custombuttons:69423527-65a1-4b8f-bd7a-29593fc46d27:update");
+  os. removeObserver (this, "custombuttons:69423527-65a1-4b8f-bd7a-29593fc46d27:added");
   window. removeEventListener ("load", custombuttons, false);
   window. removeEventListener ("unload", custombuttons, false);
   window. removeEventListener ("keypress", custombuttons, true);
@@ -463,7 +465,7 @@ Custombuttons. prototype =
   if (!sId) // context menu
   {
    var nButtonNum = this. getNumber (oButton. id);
-   this. fireNotification (oButton, "custombuttons:69423527-65a1-4b8f-bd7a-29593fc46d27" + ":" + sOperation, nButtonNum);
+   this. fireNotification (oButton, "custombuttons:69423527-65a1-4b8f-bd7a-29593fc46d27:" + sOperation, nButtonNum);
   }
  },
 
@@ -538,6 +540,7 @@ Custombuttons. prototype =
    /*вставляем button в Palette и выдаем алерт об успешном создании*/
    //palette
    this. palette. appendChild (newButton);
+   this. fireNotification (newButton, "custombuttons:69423527-65a1-4b8f-bd7a-29593fc46d27:added", "");
    var str = document. getElementById ("cbStrings"). getString ("ButtonAddedAlert");
    alert (str);
   }
@@ -662,9 +665,6 @@ Custombuttons. prototype =
   foStream. init (file, flags, 0664, 0);
   foStream. write (data, data. length);
   foStream. close ();
-  // flush xul cache
-  //var os = SERVICE (OBSERVER);
-  //os. notifyObservers (null, "chrome-flush-cashes", null);
  },
 
  _eventKeymap: [],
@@ -739,6 +739,11 @@ Custombuttons. prototype =
    return;
   switch (sTopic)
   {
+   case "custombuttons:69423527-65a1-4b8f-bd7a-29593fc46d27:added":
+    var oButton = oSubject. cloneNode (true);
+    oButton = document. importNode (oButton, true);
+    this. palette. appendChild (oButton);
+    break;
    case "custombuttons:69423527-65a1-4b8f-bd7a-29593fc46d27:update":
     this. setButtonParameters (sData, oSubject. parameters, false);
     break;
