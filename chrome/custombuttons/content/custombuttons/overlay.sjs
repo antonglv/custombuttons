@@ -20,7 +20,7 @@ CustombuttonsURIParser. prototype =
             (node. firstChild. nodeType == node. TEXT_NODE)))
 			result = node. textContent;
 		else // CDATA
-			result = node. firstChild. textContent;
+			result = unescape (node. firstChild. textContent);
 		return result;
 	},
 	
@@ -310,6 +310,7 @@ Custombuttons. prototype =
 		cbps. setIntPref ("mode", mode);
 		setTimeout ("custombuttons.makeButtons()", 200);
 		var os = SERVICE (OBSERVER);
+		os. addObserver (this, CB_NOTIFICATION (ADDED), false);
 		os. addObserver (this, CB_NOTIFICATION (UPDATE), false);
 		os. addObserver (this, CB_NOTIFICATION (REMOVE), false);
 		os. addObserver (this, CB_NOTIFICATION (CLONE), false);
@@ -321,6 +322,7 @@ Custombuttons. prototype =
 		os. removeObserver (this, CB_NOTIFICATION (CLONE));
 		os. removeObserver (this, CB_NOTIFICATION (REMOVE));
 		os. removeObserver (this, CB_NOTIFICATION (UPDATE));
+		os. removeObserver (this, CB_NOTIFICATION (ADDED));
 		window. removeEventListener ("load", custombuttons, false);
 		window. removeEventListener ("unload", custombuttons, false);
 		window. removeEventListener ("keypress", custombuttons, true);
@@ -452,7 +454,7 @@ Custombuttons. prototype =
 		if (!sId) // context menu
 		{
 			var nButtonNum = this. getNumber (oButton. id);
-			this. fireNotification (oButton, CB_NOTIFICATION_PREFIX + ":" + sOperation, nButtonNum);
+			this. fireNotification (oButton, CB_NOTIFICATION_PREFIX + sOperation, nButtonNum);
 		}
 	},
 	
@@ -527,6 +529,7 @@ Custombuttons. prototype =
 			/*вставляем button в Palette и выдаем алерт об успешном создании*/
 			//palette
 			this. palette. appendChild (newButton);
+			this. fireNotification (newButton, CB_NOTIFICATION (ADDED), "");
 			var str = GET_STRING ("cbStrings", "ButtonAddedAlert");
 			alert (str);
 		}
@@ -651,9 +654,6 @@ Custombuttons. prototype =
 		foStream. init (file, flags, 0664, 0);
 		foStream. write (data, data. length);
 		foStream. close ();
-		// flush xul cache
-		//var os = SERVICE (OBSERVER);
-		//os. notifyObservers (null, "chrome-flush-cashes", null);
 	},
 	
 	_eventKeymap: [],
@@ -728,6 +728,11 @@ Custombuttons. prototype =
 			return;
 		switch (sTopic)
 		{
+			case CB_NOTIFICATION (ADDED):
+				var oButton = oSubject. cloneNode (true);
+				oButton = document. importNode (oButton, true);
+				this. palette. appendChild (oButton);
+				break;
 			case CB_NOTIFICATION (UPDATE):
 				this. setButtonParameters (sData, oSubject. parameters, false);
 				break;
