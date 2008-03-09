@@ -179,7 +179,7 @@ var custombutton =
     oBtn. cbCommand,
     oBtn. cbInitCode
    ]. join ("]▲[")
-   );
+  );
   return uri;
  },
 
@@ -222,10 +222,13 @@ var custombutton =
   var ps = Components. classes ["@mozilla.org/preferences-service;1"].
   getService (Components. interfaces. nsIPrefService).
   getBranch ("custombuttons.");
-  if (ps. getIntPref ("mode") && 1)
+  var mode = ps. getIntPref ("mode");
+  if (mode & 1)
    return this. xmlFormatURI (oBtn);
-  else
+  else if (mode & 8)
    return this. midFormatURI (oBtn);
+  else
+   return this. buttonGetOldFormatURI (oBtn);
  },
 
  buttonCbExecuteCode: function(oBtn)
