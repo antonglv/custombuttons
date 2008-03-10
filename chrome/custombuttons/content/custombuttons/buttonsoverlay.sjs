@@ -7,5 +7,7 @@ if (!window. custombuttonsFactory)
 if (!window. custombuttons)
 {
   SERVICE (JS_SUBSCRIPT_LOADER).
-    loadSubScript ("chrome://custombuttons/content/overlay.js");
+    loadSubScript ("chrome://custombuttons/content/overlay.js")
+  SERVICE (JS_SUBSCRIPT_LOADER).
+    loadSubScript ("chrome://custombuttons/content/cb2api.js");
 }
