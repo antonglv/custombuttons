@@ -29,7 +29,8 @@
    </destructor>
 
    <field name="keymap">null</field>
-
+   <field name="bExtendedMode">false</field>
+   
    <method name="getKey">
     <parameter name="event"/>
     <body>
@@ -48,14 +49,31 @@
    <handler event="keypress" phase="capturing">
     <![CDATA[
      var key = this. getKey (event);
-     if (key == "TAB")
-      return;
-     if (key == "ESCAPE")
-     {
-      this. value = "";
-      event. preventDefault ();
-      return;
-     }
+	 if (key == "ESCAPE")
+	 {
+	 	event. preventDefault ();
+		if (this. value != "")
+		{
+			this. bExtendedMode = false;
+			this. value = "";
+			return;
+		}
+		if (!this. bExtendedMode)
+		{
+			this. bExtendedMode = true;
+			return;
+		}
+	 }
+	 if (key == "TAB")
+	 {
+	 	if (!this. bExtendedMode)
+			return;
+		this. bExtendedMode = false;
+		if (this. value != "")
+			return;
+		event. preventDefault ();
+	 }
+	 this. bExtendedMode = false;
      var alt = event. altKey;
      var ctrl = event. ctrlKey;
      var shift = event. shiftKey;
@@ -64,8 +82,9 @@
      if (ctrl) text += "Ctrl+";
      if (shift) text += "Shift+";
      this. value = text + key;
-     event. preventDefault ();
+	 event. preventDefault ();
      event. stopPropagation ();
+	
     ]]>
    </handler>
   </handlers>
