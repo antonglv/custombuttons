@@ -6,6 +6,7 @@
 <!ENTITY custombuttons.buttonPopup.bookmark "Сделать закладку">
 <!ENTITY custombuttons.buttonPopup.help "Справка">
 <!ENTITY custombuttons.buttonPopup.update "Обновить кнопку">
+<!ENTITY custombuttons.buttonPopup.subCall "Меню кнопки">
 
 <!ENTITY custombuttons_prefsDialog.title "Custombuttons: настройки">
 <!ENTITY custombuttons.prefs.use_xml_button_format "Использовать новый формат кнопки">
