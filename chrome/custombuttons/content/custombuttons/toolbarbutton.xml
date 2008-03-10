@@ -171,6 +171,12 @@
    custombutton. buttonContext (event, this);
   ]]>
  </handler>
+
+ <handler event="mousedown">
+  <![CDATA[
+   custombutton. buttonContext (event, this);
+  ]]>
+ </handler>
 </handlers>
 
   </binding>
@@ -338,6 +344,12 @@
  </handler>
 
  <handler event="contextmenu">
+  <![CDATA[
+   custombutton. buttonContext (event, this);
+  ]]>
+ </handler>
+
+ <handler event="mousedown">
   <![CDATA[
    custombutton. buttonContext (event, this);
   ]]>
@@ -513,6 +525,12 @@
    custombutton. buttonContext (event, this);
   ]]>
  </handler>
+
+ <handler event="mousedown">
+  <![CDATA[
+   custombutton. buttonContext (event, this);
+  ]]>
+ </handler>
 </handlers>
 
   </binding>
@@ -680,6 +698,12 @@
  </handler>
 
  <handler event="contextmenu">
+  <![CDATA[
+   custombutton. buttonContext (event, this);
+  ]]>
+ </handler>
+
+ <handler event="mousedown">
   <![CDATA[
    custombutton. buttonContext (event, this);
   ]]>
