@@ -161,4 +161,10 @@
 			custombutton. buttonContext (event, this);
 		]]>
 	</handler>
+	
+	<handler event="mousedown">
+		<![CDATA[
+			custombutton. buttonContext (event, this);
+		]]>
+	</handler>
 </handlers>
