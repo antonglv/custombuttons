@@ -227,13 +227,40 @@ var custombutton =
 			(new Function (oBtn. cbCommand)). apply (oBtn);
 		}
 	},
-    
-    buttonContext: function (event, oBtn)
-    {
-        var helpButtonMenuitem = ELEMENT ("custombuttons-contextpopup-buttonHelp");
+	
+	setContextMenuVisibility: function (oBtn)
+	{
+		var nCurrentButtonNum = oBtn. id. replace (/custombuttons-button/, "");
+		var sCurrentButtonMenuitemPrefix = "Cb2-" + nCurrentButtonNum + "-";
+		var bPrimary = (!oBtn. _ctxtObj) || (!oBtn. _ctxtObj. mCtxtSub);
+		ELEMENT ("custombuttons-contextpopup-subCall"). hidden = bPrimary;
+		var oPrimaryContextMenu = ELEMENT ("custombuttons-contextpopup");
+		var aChildren = oPrimaryContextMenu. childNodes;
+		var sMenuitemId;
+		for (var i = 0; i < aChildren. length; i++)
+		{
+			if (aChildren [i]. nodeName != "menu")
+			{
+				sMenuitemId = aChildren [i]. id;
+				if (sMenuitemId. indexOf ("custombuttons-contextpopup-") == 0)
+				{
+					aChildren [i]. hidden = !bPrimary;
+				}
+				else
+				{
+					if (sMenuitemId. indexOf (sCurrentButtonMenuitemPrefix) == 0)
+						aChildren [i]. hidden = bPrimary;
+					else
+						aChildren [i]. hidden = true;
+				}
+			}
+		}
+        var helpButtonMenuitem = bPrimary? ELEMENT ("custombuttons-contextpopup-buttonHelp"):
+										   ELEMENT ("custombuttons-contextpopup-buttonHelp-sub");
         var bHasHelp = oBtn. hasAttribute ("help") || oBtn. hasAttribute ("Help");
         helpButtonMenuitem. setAttribute ("hidden", bHasHelp? "false": "true");
-		var updateButtonMenuitem = ELEMENT ("custombuttons-contextpopup-updateButton");
+		var updateButtonMenuitem = bPrimary? ELEMENT ("custombuttons-contextpopup-updateButton"):
+											 ELEMENT ("custombuttons-contextpopup-updateButton-sub");
 		var bShouldHideUpdateMenuitem = true;
 		try
 		{
@@ -245,8 +272,14 @@ var custombutton =
 		var bShouldHideSeparator = (!bHasHelp && bShouldHideUpdateMenuitem);
 		if (ELEMENT ("custombuttons-contextpopup-bookmarkButton"))
 			bShouldHideSeparator = false;
-		var oSeparator = ELEMENT ("custombuttons-contextpopup-separator3");
+		var oSeparator = bPrimary? ELEMENT ("custombuttons-contextpopup-separator3"):
+								   ELEMENT ("custombuttons-contextpopup-separator3-sub");
 		oSeparator. setAttribute ("hidden", bShouldHideSeparator);
+	},
+    
+    buttonContext: function (event, oBtn)
+    {
+		this. setContextMenuVisibility (oBtn);
     },
 	
 	// TODO: check for code evaluation construction. Carefully check.
