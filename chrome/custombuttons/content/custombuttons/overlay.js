@@ -58,9 +58,9 @@ CustombuttonsURIParser. prototype =
   }
   else
   {
-   var az = ["%5D%E2%96%B2%5B", "]\u00e2\u0096\u00b2[", "]▲[", "%5D%u25B2%5B"], idx = -1;
+   var az = ["%5D%E2%96%B2%5B", "]\u00e2\u0096\u00b2[", "\x5d\u25b2\x5b", "%5D%u25B2%5B"], idx = -1;
             for ( var i = 0; i < az.length; i++) {
-                idx = (idx >= 0)? idx : ( button_code.indexOf(az[i]) > -1 )? i : idx ;
+                idx = (idx >= 0)? idx : (( button_code.indexOf(az[i]) != -1 )? i : idx);
             } // End for
             var sep = (idx >= 0)? az[idx] : "][";
             var ar = button_code.split( sep ); // Split button
@@ -98,11 +98,15 @@ Custombuttons. prototype =
   return this. _palette;
  },
 
+ get gToolbox ()
+ {
+  return document. getElementById ("navigator-toolbox") || // FF3b2 and lower
+      document. getElementById ("browser-toolbox"); // FF3b3pre and higher
+ },
+
  getPalette: function ()
  {
-  var gToolbox = document. getElementById ("navigator-toolbox") || // FF3b2 and lower
-  document. getElementById ("browser-toolbox"); // FF3b3pre and higher
-  return gToolbox. palette;
+  return this. gToolbox. palette;
  },
 
  getButtonParameters: function (num)
@@ -339,20 +343,21 @@ Custombuttons. prototype =
   window. removeEventListener ("keypress", custombuttons, true);
  },
 
- openButtonDialog: function (editDialogFlag)
+ openButtonDialog: function (vArg)
  {
   openDialog
   (
    "chrome://custombuttons/content/edit.xul",
    "custombuttons-edit",
    "chrome,resizable,dependent,dialog=no",
-   editDialogFlag? document. popupNode: null
+   (typeof (vArg) == "boolean")?
+    (vArg? document. popupNode: null): vArg
   );
  },
 
- editButton: function ()
+ editButton: function (oBtn)
  {
-  this. openButtonDialog (true);
+  this. openButtonDialog (oBtn || true);
  },
 
  addButton: function ()
@@ -531,7 +536,6 @@ Custombuttons. prototype =
     buts. parentNode. replaceChild (newButton, buts);
    if (bShouldNotify)
     this. fireNotification (newButton2, "custombuttons:69423527-65a1-4b8f-bd7a-29593fc46d27:update", num);
-
   }
   else // install web button or add new button
   { //checked
@@ -540,7 +544,7 @@ Custombuttons. prototype =
    /*вставляем button в Palette и выдаем алерт об успешном создании*/
    //palette
    this. palette. appendChild (newButton);
-   this. fireNotification (newButton, "custombuttons:69423527-65a1-4b8f-bd7a-29593fc46d27:added", "");
+   this. fireNotification (newButton, "custombuttons:69423527-65a1-4b8f-bd7a-29593fc46d27:added", num);
    var str = document. getElementById ("cbStrings"). getString ("ButtonAddedAlert");
    alert (str);
   }
@@ -690,8 +694,6 @@ Custombuttons. prototype =
   if (event. shiftKey) prefixedKey += "Shift+";
   var key = this. getKey (event);
   prefixedKey += key;
-  if ((key == "TAB") || (prefixedKey == "ESCAPE"))
-   return;
   var cbd = Components. classes ["@xsms.nm.ru/custombuttons/cbkeymap;1"]. getService (Components. interfaces. cbIKeyMapService);
   var lenobj = {};
   var ids = cbd. Get (prefixedKey, lenobj);
@@ -796,11 +798,10 @@ CustombuttonsMF. prototype. __proto__ = Custombuttons. prototype;
 function CustombuttonsTB () {}
 CustombuttonsTB. prototype =
 {
-    getPalette: function ()
+ get gToolbox ()
  {
-  var gToolbox = document. getElementById ("mail-toolbox") || // main window and message window
-  document. getElementById ("compose-toolbox"); // compose message
-  return gToolbox. palette;
+  return document. getElementById ("mail-toolbox") || // main window and message window
+      document. getElementById ("compose-toolbox"); // compose message
  },
 
  saveButtonsToProfile: function ()
