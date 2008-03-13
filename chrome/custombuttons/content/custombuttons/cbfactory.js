@@ -31,6 +31,9 @@ function custombuttonsFactory ()
     case "Thunderbird": // Thunderbird
       retobj = this. CustombuttonsTBFactory;
       break;
+    case "Sunbird":
+  retobj = this. CustombuttonsSBFactory;
+  break;
   }
   return retobj;
 }
@@ -53,6 +56,13 @@ custombuttonsFactory. prototype =
   CustombuttonsMFFactory:
   {
       get Custombuttons () { return new CustombuttonsMF (); },
+      get Editor () { return new Editor (); },
+      get Prefs () { return new Prefs (); }
+  },
+
+  CustombuttonsSBFactory:
+  {
+      get Custombuttons () { return new CustombuttonsSB (); },
       get Editor () { return new Editor (); },
       get Prefs () { return new Prefs (); }
   }
