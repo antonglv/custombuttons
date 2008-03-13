@@ -222,7 +222,6 @@ custombuttons.getCbContextObj = function ( oBtn ) //{{{
   oId:"",
   nId:"",
   OurCount:{},
-  itemStack:[],
   aElements:[],
   listener:function(){},
   aItemIdx:["id","label","image","oncommand","command","acceltext","accesskey","allowevents",
@@ -484,19 +483,7 @@ custombuttons.getCbContextObj = function ( oBtn ) //{{{
     }
    } // End for
   }, //}}} End Method remItem( id )
-  /**  remAll(  )
-		Scope:     private
-		Args:
-		Returns:   Nothing
-		Called by: 1. editor.onload()
-		2. this.removeButton
-		Purpose:   1. Maintain the DOM
-		TODO:      1.
-		*/
-  remAll:function () //{{{
-  {
-   while (this.itemStack.length > 0) this.remItem(this.itemStack.pop());
-  }, //}}} End Method remAll(  )
+
   /**  deInit(  )
 		Scope:     private
 		Args:
@@ -509,7 +496,6 @@ custombuttons.getCbContextObj = function ( oBtn ) //{{{
   deInit:function () //{{{
   {
    this.setPri();
-   this.remAll();
    this.listener = function(){};
   } //}}} End Method deInit(  )
 
@@ -723,61 +709,61 @@ custombuttons.gQuot = { //{{{
  } //}}} End Method gShowPopup( node )
  }; //}}} End Object   gQuot
 
- /**  gQuot( evt, cButton )
-	Author:  George Dunham aka: SCClockDr
-	
-	Scope:   global
-	Args:    evt -
-	cButton -
-	Returns: Nothing
-	Called:  1. Any custombuttons-button.
-	Purpose: 1. Handle mouse click events.
-	**/
- var gQuot = function( evt, cButton ) //{{{
- {
-  custombuttons.gQuot.mHandler( evt, cButton );
- } //}}} End Function gQuot( evt, cButton ) 
+/**  gQuot( evt, cButton )
+Author:  George Dunham aka: SCClockDr
 
- /**  gShowPopup( node )
-	Author:  George Dunham aka: SCClockDr
-	
-	Scope:    global
-	Args:     node -
-	Returns:  Nothing
-	Called:  1. ???
-	Purpose: 1. Display the Custom Buttons² context menu.
-	2. No button author intervention expected.
-	**/
- var gShowPopup = function( node ) //{{{
- {
-  custombuttons.gQuot.gShowPopup( node );
- }; //}}} End gShowPopup( node )
+Scope:   global
+Args:    evt -
+cButton -
+Returns: Nothing
+Called:  1. Any custombuttons-button.
+Purpose: 1. Handle mouse click events.
+**/
+var gQuot = function( evt, cButton ) //{{{
+{
+ custombuttons.gQuot.mHandler( evt, cButton );
+} //}}} End Function gQuot( evt, cButton ) 
 
- /**  getButtonParameters2( num )
-	Author Yan, George Dunham
-	
-	Args:    num
-	Returns: ret,
-	Returns: Nothing
-	Scope:  private
-	Called:
-	Purpose:
-	Updated 8/23/2007 to format and document the function
-	UPDATED: 10.03.08 by Anton
-	**/
- custombuttons.getButtonParameters2 = function ( num ) //{{{
- {
-  var ret = null;
-  var but1 = this.palette.getElementsByAttribute("id","custombuttons-button"+num)[0];
-  var but = document.getElementById( "custombuttons-button"+num );
-  if (!but) return false;
-  var sHelp = but.getAttribute("Help") || but.getAttribute("help") || ""
-  var ret = {
-   "name": but.getAttribute("label")||"",
-   "image": but.getAttribute("image")||"",
-   "code": but.getAttribute("cb-oncommand")||"",
-   "initCode": but.getAttribute("cb-init")||"",
-   "Help": sHelp
-  };
-  return ret;
- }; //}}} End Method getButtonParameters2(num )
+/**  gShowPopup( node )
+Author:  George Dunham aka: SCClockDr
+
+Scope:    global
+Args:     node -
+Returns:  Nothing
+Called:  1. ???
+Purpose: 1. Display the Custom Buttons² context menu.
+2. No button author intervention expected.
+**/
+var gShowPopup = function( node ) //{{{
+{
+ custombuttons.gQuot.gShowPopup( node );
+}; //}}} End gShowPopup( node )
+
+/**  getButtonParameters2( num )
+Author Yan, George Dunham
+
+Args:    num
+Returns: ret,
+Returns: Nothing
+Scope:  private
+Called:
+Purpose:
+Updated 8/23/2007 to format and document the function
+UPDATED: 10.03.08 by Anton
+**/
+custombuttons.getButtonParameters2 = function ( num ) //{{{
+{
+ var ret = null;
+ var but1 = this. getButtonById (num);
+ var but = document.getElementById( "custombuttons-button"+num );
+ if (!but) return false;
+ var sHelp = but.getAttribute("Help") || but.getAttribute("help") || ""
+ var ret = {
+  "name": but.getAttribute("label")||"",
+  "image": but.getAttribute("image")||"",
+  "code": but.getAttribute("cb-oncommand")||"",
+  "initCode": but.getAttribute("cb-init")||"",
+  "Help": sHelp
+ };
+ return ret;
+}; //}}} End Method getButtonParameters2(num )
