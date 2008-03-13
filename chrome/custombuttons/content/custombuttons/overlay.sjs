@@ -806,6 +806,25 @@ CustombuttonsTB. prototype =
 };
 EXTEND (CustombuttonsTB, Custombuttons);
 
+function CustombuttonsSB () {}
+CustombuttonsSB. prototype =
+{
+	get gToolbox ()
+	{
+		return ELEMENT ("calendar-toolbox"); // compose message
+	},
+	
+	saveButtonsToProfile: function ()
+	{
+		var doc;
+		doc = this. makeOverlay ("calendarToolbarPalette");
+		this. saveOverlayToProfile (doc, "buttonsoverlay.xul");
+	},
+    
+    makeBookmark: function (CbLink, sName) {}
+};
+EXTEND (CustombuttonsSB, Custombuttons);
+
 const custombuttons = new custombuttonsFactory (). Custombuttons;
 
 // add-ons
