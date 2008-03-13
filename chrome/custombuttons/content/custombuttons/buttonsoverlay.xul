@@ -10,5 +10,8 @@
   <!-- Thunderbird -->
   <toolbarpalette id="MailToolbarPalette"/> <!-- main window -->
   <toolbarpalette id="MsgComposeToolbarPalette"/> <!-- message compose -->
+  
+  <!-- Sunbird -->
+  <toolbarpalette id="calendarToolbarPalette"/>
 
 </overlay>
