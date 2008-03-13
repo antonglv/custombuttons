@@ -19,6 +19,9 @@ function custombuttonsFactory ()
     case "Thunderbird": // Thunderbird
       retobj = this. CustombuttonsTBFactory;
       break;
+    case "Sunbird":
+		retobj = this. CustombuttonsSBFactory;
+		break;
   }
   return retobj;
 }
@@ -41,6 +44,13 @@ custombuttonsFactory. prototype =
   CustombuttonsMFFactory:
   {
       DEFINE_GETTER (Custombuttons, CustombuttonsMF),
+      DEFINE_GETTER (Editor, Editor),
+      DEFINE_GETTER (Prefs, Prefs)
+  },
+  
+  CustombuttonsSBFactory:
+  {
+      DEFINE_GETTER (Custombuttons, CustombuttonsSB),
       DEFINE_GETTER (Editor, Editor),
       DEFINE_GETTER (Prefs, Prefs)
   }
