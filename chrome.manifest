@@ -1,10 +1,18 @@
 content	custombuttons	jar:chrome/custombuttons.jar!/content/custombuttons/
 
 # Firefox
+overlay	chrome://global/content/customizeToolbar.xul	chrome://custombuttons/content/cbbutton.xul
+
+## Firefox 1.5
+overlay	chrome://browser/content/browser.xul	chrome://custombuttons/content/cbbutton1.5.xul application={ec8030f7-c20a-464f-9b0e-13a3a9e97384} appversion<=1.6
+overlay	chrome://global/content/customizeToolbar.xul	chrome://custombuttons/content/cbbutton1.5.xul  application={ec8030f7-c20a-464f-9b0e-13a3a9e97384} appversion<=3.0b1
+
+## Firefox 2 and higher
 overlay	chrome://browser/content/browser.xul	chrome://custombuttons/content/overlay.xul
 overlay	chrome://browser/content/browser.xul	custombutton://content/buttonsoverlay.xul
+overlay	chrome://browser/content/browser.xul	chrome://custombuttons/content/cbbutton.xul
 
-# Firefox 3
+## Firefox 3
 overlay	chrome://browser/content/browser.xul	chrome://custombuttons/content/overlay3b2.xul   application={ec8030f7-c20a-464f-9b0e-13a3a9e97384} appversion>=3.0b1
 overlay	chrome://global/content/customizeToolbar.xul	chrome://custombuttons/content/customizeToolbars.xul  application={ec8030f7-c20a-464f-9b0e-13a3a9e97384} appversion>=3.0b1
 
@@ -12,12 +20,21 @@ overlay	chrome://global/content/customizeToolbar.xul	chrome://custombuttons/cont
 ## main window
 overlay	chrome://messenger/content/messenger.xul	chrome://custombuttons/content/ThunderbirdOverlay.xul
 overlay	chrome://messenger/content/messenger.xul	custombutton://content/buttonsoverlay.xul
+overlay	chrome://messenger/content/messenger.xul	chrome://custombuttons/content/cbbutton.xul
 ## message window
 overlay chrome://messenger/content/messageWindow.xul	chrome://custombuttons/content/ThunderbirdOverlay.xul
 overlay chrome://messenger/content/messageWindow.xul	custombutton://content/buttonsoverlay.xul
+overlay chrome://messenger/content/messageWindow.xul	chrome://custombuttons/content/cbbutton.xul
 ## message compose
 overlay chrome://messenger/content/messengercompose/messengercompose.xul	chrome://custombuttons/content/ThunderbirdOverlay.xul
 overlay chrome://messenger/content/messengercompose/messengercompose.xul	custombutton://content/mcbuttonsoverlay.xul
+overlay chrome://messenger/content/messengercompose/messengercompose.xul	chrome://custombuttons/content/cbbutton.xul
+
+#Sunbird
+overlay	chrome://calendar/content/calendar.xul	chrome://custombuttons/content/SunbirdOverlay.xul
+overlay chrome://calendar/content/calendar.xul	custombutton://content/buttonsoverlay.xul
+overlay	chrome://calendar/content/calendar.xul	chrome://custombuttons/content/cbbutton.xul
+overlay	chrome://calendar/content/customizeToolbar.xul	chrome://custombuttons/content/cbbutton.xul
 
 skin	custombuttons	classic/1.0	jar:chrome/custombuttons.jar!/skin/classic/
 
@@ -27,6 +44,8 @@ style	chrome://global/content/customizeToolbar.xul	chrome://custombuttons/skin/c
 style	chrome://messenger/content/messenger.xul	chrome://custombuttons/skin/custombuttons.css
 style	chrome://messenger/content/messengercompose/messengercompose.xul chrome://custombuttons/skin/custombuttons.css
 style	chrome://messenger/content/messageWindow.xul chrome://custombuttons/skin/custombuttons.css
+
+style	chrome://calendar/content/calendar.xul	chrome://custombuttons/skin/custombuttons.css
 
 style	chrome://browser/content/browser.xul	chrome://custombuttons/content/overlay.css
 style	chrome://browser/content/browser.xul	chrome://custombuttons/content/overlay1.5.css application={ec8030f7-c20a-464f-9b0e-13a3a9e97384} appversion<=1.6
