@@ -35,7 +35,8 @@
 	  <menuitem id="custombuttons-contextpopup-buttonHelp"
             label="&custombuttons.buttonPopup.help;"
             oncommand="custombuttons.uChelpButton();"/>
-	  <menuseparator id="custombuttons-contextpopup-separator3"/>
+	  <menuseparator id="custombuttons-contextpopup-separator3"
+	  				 observes="custombuttons-contextpopup-buttonHelp"/>
       <menuitem oncommand="CustomizeMailToolbar('mail-toolbox');"
             id="custombuttons-contextpopup-customize"
             label="&customizeToolbar.label;"
@@ -65,10 +66,10 @@
 				label="&custombuttons.buttonPopup.help;"
 				oncommand="custombuttons.uChelpButton();"/>
 		  <menuseparator id="custombuttons-contextpopup-separator3-sub"/>
-		  <menuitem command="cmd_CustomizeToolbars"
-				id="custombuttons-contextpopup-customize-sub"
-				label="&viewCustomizeToolbar.label;"
-				accesskey="&viewCustomizeToolbar.accesskey;"/>
+		  <menuitem oncommand="CustomizeMailToolbar('mail-toolbox');"
+            id="custombuttons-contextpopup-customize-sub"
+            label="&customizeToolbar.label;"
+            accesskey="&customizeToolbar.accesskey;"/>
         </menupopup>
       </menu>
     </popup>
@@ -136,10 +137,10 @@
 				label="&custombuttons.buttonPopup.help;"
 				oncommand="custombuttons.uChelpButton();"/>
 		  <menuseparator id="custombuttons-contextpopup-separator3-sub"/>
-		  <menuitem command="cmd_CustomizeToolbars"
-				id="custombuttons-contextpopup-customize-sub"
-				label="&viewCustomizeToolbar.label;"
-				accesskey="&viewCustomizeToolbar.accesskey;"/>
+		  <menuitem oncommand="CustomizeMailToolbar('compose-toolbox');"
+            id="custombuttons-contextpopup-customize-sub"
+            label="&customizeToolbar.label;"
+            accesskey="&customizeToolbar.accesskey;"/>
         </menupopup>
       </menu>
     </popup>
