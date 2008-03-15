@@ -297,6 +297,10 @@ Custombuttons. prototype =
 	
 	init: function ()
 	{
+		var oCustomizeMenuitem = ELEMENT ("custombuttons-contextpopup-customize");
+		oCustomizeMenuitem. parentNode. appendChild (oCustomizeMenuitem);
+		oCustomizeMenuitem = ELEMENT ("custombuttons-contextpopup-customize-sub");
+		oCustomizeMenuitem. parentNode. appendChild (oCustomizeMenuitem);
 		var pref = "settings.editor.showApplyButton";
 		var ps = SERVICE (PREF);
 		ps = ps. QI (nsIPrefBranch);
@@ -787,6 +791,15 @@ EXTEND (CustombuttonsMF, Custombuttons);
 function CustombuttonsTB () {}
 CustombuttonsTB. prototype =
 {
+	init: function ()
+	{
+		SUPER (init, null);
+		var oBookmarkButtonMenuitem = ELEMENT ("custombuttons-contextpopup-bookmarkButton");
+		oBookmarkButtonMenuitem. parentNode. removeChild (oBookmarkButtonMenuitem);
+		var oBookmarkButtonMenuitem = ELEMENT ("custombuttons-contextpopup-bookmarkButton-sub");
+		oBookmarkButtonMenuitem. parentNode. removeChild (oBookmarkButtonMenuitem);
+	},
+	
 	get gToolbox ()
 	{
 		return ELEMENT ("mail-toolbox") || // main window and message window
@@ -804,7 +817,7 @@ CustombuttonsTB. prototype =
     
     makeBookmark: function (CbLink, sName) {}
 };
-EXTEND (CustombuttonsTB, Custombuttons);
+EXTENDS (CustombuttonsTB, Custombuttons);
 
 function CustombuttonsSB () {}
 CustombuttonsSB. prototype =
@@ -823,7 +836,7 @@ CustombuttonsSB. prototype =
     
     makeBookmark: function (CbLink, sName) {}
 };
-EXTEND (CustombuttonsSB, Custombuttons);
+EXTEND (CustombuttonsSB, CustombuttonsTB);
 
 const custombuttons = new custombuttonsFactory (). Custombuttons;
 
