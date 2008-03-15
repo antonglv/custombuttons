@@ -230,6 +230,8 @@ var custombutton =
 	
 	setContextMenuVisibility: function (oBtn)
 	{
+		if (oBtn. parentNode. nodeName != "toolbar")
+			return;
 		var nCurrentButtonNum = oBtn. id. replace (/custombuttons-button/, "");
 		var sCurrentButtonMenuitemPrefix = "Cb2-" + nCurrentButtonNum + "-";
 		var bPrimary = (!oBtn. _ctxtObj) || (!oBtn. _ctxtObj. mCtxtSub);
