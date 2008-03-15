@@ -88,7 +88,7 @@ var CB2const = //{{{
   nHyperBu: 4,
   sButtonLinkMethod: "extensions.custombuttons.originalButtonSplitMethod",
   xLast: "last item no comma"
-} //}}}
+}; //}}}
 
 /**  Object gCounter
 Author:      SCClockDr
