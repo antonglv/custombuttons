@@ -13,7 +13,7 @@ Prefs. prototype =
 		}
 		return this. _ps;
 	},
-
+	
 	handleCheckboxes: function (mode)
 	{
 		var setCheckboxesFlag = (mode || (mode == 0));
@@ -32,6 +32,20 @@ Prefs. prototype =
 		}
 		return result;
 	},
+	
+	removeAttribute: function (oElement, sAttributeName)
+	{
+		if (oElement. hasAttribute (sAttributeName))
+			oElement. removeAttribute (sAttributeName);
+	},
+	
+	sizeWindowToContent: function ()
+	{
+		var oDialog = ELEMENT ("custombuttonsSettingsDialog");
+		this. removeAttribute (oDialog, "width");
+		this. removeAttribute (oDialog, "height");
+		window. sizeToContent ();
+	},
 
 	onLoad: function ()
 	{
@@ -39,8 +53,9 @@ Prefs. prototype =
 		var mode = cbps. getIntPref ("mode");
 		this. handleCheckboxes (mode);
 		var oFormatSelector = ELEMENT ("modebit3");
-		oFormatSelector. disabled = mode & CB_MODE_USE_XML_BUTTON_FORMAT;
+		oFormatSelector. hidden = mode & CB_MODE_USE_XML_BUTTON_FORMAT;
 		window. addEventListener ("command", this, false);
+		this. sizeWindowToContent ();
 	},
 
 	onAccept: function ()
@@ -67,7 +82,8 @@ Prefs. prototype =
 			{
 				var sBlockedElementId = oTarget. getAttribute ("cbblocks");
 				var oBlockedElement = ELEMENT (sBlockedElementId);
-				oBlockedElement. disabled = oTarget. checked;
+				oBlockedElement. hidden = oTarget. checked;
+				this. sizeWindowToContent ();
 			}
 		}
 	},

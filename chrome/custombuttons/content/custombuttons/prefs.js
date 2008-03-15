@@ -45,14 +45,29 @@ Prefs. prototype =
   return result;
  },
 
+ removeAttribute: function (oElement, sAttributeName)
+ {
+  if (oElement. hasAttribute (sAttributeName))
+   oElement. removeAttribute (sAttributeName);
+ },
+
+ sizeWindowToContent: function ()
+ {
+  var oDialog = document. getElementById ("custombuttonsSettingsDialog");
+  this. removeAttribute (oDialog, "width");
+  this. removeAttribute (oDialog, "height");
+  window. sizeToContent ();
+ },
+
  onLoad: function ()
  {
   var cbps = this. ps. getBranch ("custombuttons.");
   var mode = cbps. getIntPref ("mode");
   this. handleCheckboxes (mode);
   var oFormatSelector = document. getElementById ("modebit3");
-  oFormatSelector. disabled = mode & 1;
+  oFormatSelector. hidden = mode & 1;
   window. addEventListener ("command", this, false);
+  this. sizeWindowToContent ();
  },
 
  onAccept: function ()
@@ -79,7 +94,8 @@ Prefs. prototype =
    {
     var sBlockedElementId = oTarget. getAttribute ("cbblocks");
     var oBlockedElement = document. getElementById (sBlockedElementId);
-    oBlockedElement. disabled = oTarget. checked;
+    oBlockedElement. hidden = oTarget. checked;
+    this. sizeWindowToContent ();
    }
   }
  },
