@@ -216,9 +216,11 @@ custombuttons.getCbContextObj = function ( oBtn ) //{{{
 		// Properties:
 		BtnIdNum:0,
 		ItemIdPre:"Cb2-",
+		sIdPrefix: "",
 		mCtxtSub:false,
 		oMenu:null,
 		nMenu:null,
+		oButton: null,
 		oId:"",
 		nId:"",
 		OurCount:{},
@@ -260,8 +262,10 @@ custombuttons.getCbContextObj = function ( oBtn ) //{{{
 		init:function ( oBtn ) //{{{
 		{
 			oBtn. _ctxtObj = this;
+			this. oButton = oBtn;
 			var ct = this;
 			ct.BtnIdNum = custombuttons. getNumber( oBtn.id );
+			ct.sIdPrefix = ct. ItemIdPre + ct. BtnIdNum + "-";
 			ct.OurCount = custombuttons. gCounter();
 			ct.oMenu = document. getElementById ("custombuttons-contextpopup");
 			ct.nMenu = document. getElementById ("custombuttons-contextpopup-sub");
@@ -279,12 +283,8 @@ custombuttons.getCbContextObj = function ( oBtn ) //{{{
 		**/
 		setSub:function (  ) //{{{
 		{
-			var ct = this;
-			ct.mCtxtSub = true;
-			for ( var i = 0; i < ct.menuitems; i++) {
-				if (ct.aElements.item(i).id.indexOf("custombuttons-contextpopup") > -1) ct.aElements.item(i).hidden = true;
-			} // End for
-			ct.aElements.item(ct.menuitems-1).hidden = false;
+			this. mCtxtSub = true;
+			this. oButton. setAttribute ("context", "custombuttons-contextpopup");
 		}, //}}} End Method setSub(  )
 		/**  setPri(  )
 		
@@ -296,12 +296,8 @@ custombuttons.getCbContextObj = function ( oBtn ) //{{{
 		**/
 		setPri:function (  ) //{{{
 		{
-			var ct = this;
-			ct.mCtxtSub = false;
-			for ( var i = 0; i < ct.menuitems-1; i++) {
-				ct.aElements.item(i).hidden = false;
-			} // End for
-			ct.aElements.item(i).hidden = true;
+			this. mCtxtSub = false;
+			this. oButton. setAttribute ("context", "custombuttons-contextpopup-pri");
 		}, //}}} End Method setPri(  )
 		/**  getItem(  )
 		
@@ -338,6 +334,21 @@ custombuttons.getCbContextObj = function ( oBtn ) //{{{
 			} // End if ( mCtxtSub )
 			return null;
 		}, //}}} End Method getItem(  )
+		
+		/*
+		 * @author Anton
+		 */
+		constructItem: function (oNew, bInc)
+		{
+			var sIdPre = this. sIdPrefix;
+			var sTagName = oNew. label? "menuitem": "menuseparator";
+			var oNewItem = document. createElement (sTagName);
+			sIdPre += oNew. id || oNew. label || "separator";
+			sIdPre += this. OurCount [bInc? "inc": "get"] () [0];
+			oNew. id = sIdPre;
+			this. populate (oNew, oNewItem);
+			return oNewItem;
+		},
 		/**  insertBefore( oMenuItem )
 		
 		Scope:   global
@@ -355,14 +366,8 @@ custombuttons.getCbContextObj = function ( oBtn ) //{{{
 				oChildNode = ct.oMenu.firstChild;
 			} // End if ( oChildNode )
 			if ( ct.mCtxtSub ) {
-				var idPre = ct.ItemIdPre + ct.BtnIdNum + "-";
 				var oRet = ""
-				var newItem = ( oNew.label )? document.createElement("menuitem") : document.createElement("menuseparator") ;
-				sTemp = idPre;
-				sTemp += ( oNew.id )? oNew.id : ( oNew.label )? oNew.label : "separator";
-				sTemp += ct.OurCount.inc()[0];
-				oNew.id = sTemp;
-				ct.populate( oNew, newItem );
+				var newItem = this. constructItem (oNew, true);
 				oRet = ct.oMenu.insertBefore( newItem, oChildNode );
 			} // End if ( mCtxtSub )
 			return oRet
@@ -381,15 +386,8 @@ custombuttons.getCbContextObj = function ( oBtn ) //{{{
 			var ct = this;
 			var sTemp = "";
 			if ( ct.mCtxtSub ) {
-				var idPre = ct.ItemIdPre + ct.BtnIdNum + "-";
 				var oRef = {}
-				var oRet = {};
-				var newItem = ( oNew.label )? document.createElement("menuitem") : document.createElement("menuseparator") ;
-				sTemp = idPre;
-				sTemp += ( oNew.id )? oNew.id : ( oNew.label )? oNew.label : "separator";
-				sTemp += ct.OurCount.get();
-				oNew.id = sTemp;
-				ct.populate( oNew, newItem );
+				var newItem = this. constructItem (oNew, false);
 				oRet = ct.oMenu.insertBefore(newItem, oChildNode);
 				ct.OurCount.inc();
 			} // End if ( mCtxtSub )
@@ -409,14 +407,8 @@ custombuttons.getCbContextObj = function ( oBtn ) //{{{
 			var ct = this;
 			var sTemp = "";
 			if ( ct.mCtxtSub ) {
-				var idPre = ct.ItemIdPre + ct.BtnIdNum + "-";
 				var oRet = ""
-				var newItem = ( oNew.label )? document.createElement("menuitem") : document.createElement("menuseparator") ;
-				sTemp = idPre;
-				sTemp += ( oNew.id )? oNew.id : ( oNew.label )? oNew.label : "separator";
-				sTemp += ct.OurCount.inc()[0];
-				oNew.id = sTemp;
-				ct.populate( oNew, newItem );
+				var newItem = this. constructItem (oNew, true);
 				oRet = ct.oMenu.insertBefore( newItem, ct.oMenu.firstChild );
 				
 			} // End if ( mCtxtSub )
@@ -439,6 +431,18 @@ custombuttons.getCbContextObj = function ( oBtn ) //{{{
 				if ( oData[ct.aItemIdx[i]] ) mItem.setAttribute( ct.aItemIdx[i], oData[ct.aItemIdx[i]] );
 			} // End for
 		}, //}}} End Method populate( oData, mItem )
+		
+		/*
+		 * @author Anton
+		 */
+		constructId: function (sId)
+		{
+			var cId = sId || "";
+			if (cId. indexOf (this. sIdPrefix) == 0)
+				return cId;
+			return this. sIdPrefix + cId;
+		},
+		
 		/**  getItemsById( id )
 		
 		Scope:   global
@@ -451,9 +455,7 @@ custombuttons.getCbContextObj = function ( oBtn ) //{{{
 		{
 			var aRet = [];
 			var ct = this
-			var cId = ( id )? id : "" ;
-			var idPre = ct.ItemIdPre + ct.BtnIdNum + "-";
-			cId = ( cId.indexOf( idPre ) > -1 )? cId : idPre + cId;
+			var cId = this. constructId (id);
 			for ( var i = 0; i < ct.menuitems; i++) {
 				if ( ct.aElements.item(i).id.indexOf( cId ) > -1 ) {
 					aRet.push( ct.aElements.item(i) );
@@ -473,9 +475,7 @@ custombuttons.getCbContextObj = function ( oBtn ) //{{{
 		remItem:function ( id ) //{{{
 		{
 			var ct = this;
-			var cId = ( id )? id : "" ;
-			var idPre = ct.ItemIdPre + ct.BtnIdNum + "-";
-			cId = ( cId.indexOf( idPre ) > -1 )? cId : idPre + cId;
+			var cId = this. constructId (id);
 			for ( var i = 0; i < ct.menuitems; i++) {
 				if ( ct.aElements.item(i).id.indexOf( cId ) > -1 ) {
 					ct.oMenu.removeChild( ct.aElements.item(i) );
@@ -572,6 +572,8 @@ custombuttons.gQuot = { //{{{
 	**/
 	mHandler:function ( evt ) //{{{
 	{
+		if ((evt. button == 2) && evt. shiftKey)
+			return;
 		evt.preventDefault();
 		this.which = evt.type;
 		this.savEvent = evt;
@@ -588,7 +590,7 @@ custombuttons.gQuot = { //{{{
 		case "dblclick":
 			this.doDoubleClick(this.savEvent);
 			break;
-			default :
+		default :
 			break;
 		} // End switch ( evt.type )
 	},
@@ -632,16 +634,19 @@ custombuttons.gQuot = { //{{{
 	getMethodName: function (oEvent)
 	{
 		var sMethodName = "";
-		if (oEvent. altKey) sMethodName = "a";
-		if (oEvent. ctrlKey) sMethodName += "c";
-		if (oEvent. shiftKey) sMethodName += "s";
-		sMethodName += ["left", "mid", "right"] [oEvent. button];
-		if (oEvent. type == "click")
-			sMethodName += "click";
-		else if (oEvent. type == "dblclick")
-			sMethodName += "Dclick";
-		else
-			sMethodName += "mouseevent";
+		try // because error in FF1.5.0.2 js console
+		{
+			if (oEvent. altKey) sMethodName = "a";
+			if (oEvent. ctrlKey) sMethodName += "c";
+			if (oEvent. shiftKey) sMethodName += "s";
+			sMethodName += ["left", "mid", "right"] [oEvent. button];
+			if (oEvent. type == "click")
+				sMethodName += "click";
+			else if (oEvent. type == "dblclick")
+				sMethodName += "Dclick";
+			else
+				sMethodName += "mouseevent";
+		} catch (e) {}
 		return sMethodName;
 	},
 	
@@ -662,7 +667,7 @@ custombuttons.gQuot = { //{{{
 		}
 		oEvent. preventDefault ();
 		var sMethodName = this. getMethodName (oEvent);
-		if ((sMethodName != "srightclick") && oButton [sMethodName])
+		if (sMethodName && oButton [sMethodName])
 			oButton [sMethodName] (oEvent);
 		else
 			this. gShowPopup (oButton);
