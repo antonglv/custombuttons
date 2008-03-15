@@ -807,7 +807,7 @@ CustombuttonsTB. prototype =
  init: function ()
  {
   this. __super. prototype. init. apply (this, [null]);
-  var oBookmarkButtonMenuitem = document. getElementById ("custombuttons-contextpopup-bookmarkButton");
+  var oBookmarkButtonMenuitem = document. getElementById ("custombuttons-contextpopup-bookmarkButton-pri");
   oBookmarkButtonMenuitem. parentNode. removeChild (oBookmarkButtonMenuitem);
   var oBookmarkButtonMenuitem = document. getElementById ("custombuttons-contextpopup-bookmarkButton-sub");
   oBookmarkButtonMenuitem. parentNode. removeChild (oBookmarkButtonMenuitem);

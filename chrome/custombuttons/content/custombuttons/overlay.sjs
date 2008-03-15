@@ -796,7 +796,7 @@ CustombuttonsTB. prototype =
 	init: function ()
 	{
 		SUPER (init, null);
-		var oBookmarkButtonMenuitem = ELEMENT ("custombuttons-contextpopup-bookmarkButton");
+		var oBookmarkButtonMenuitem = ELEMENT ("custombuttons-contextpopup-bookmarkButton-pri");
 		oBookmarkButtonMenuitem. parentNode. removeChild (oBookmarkButtonMenuitem);
 		var oBookmarkButtonMenuitem = ELEMENT ("custombuttons-contextpopup-bookmarkButton-sub");
 		oBookmarkButtonMenuitem. parentNode. removeChild (oBookmarkButtonMenuitem);
@@ -859,6 +859,7 @@ const custombuttons = new custombuttonsFactory (). Custombuttons;
      Add
      changed by Anton 24.02.08
      TODO: refactor it
+	 UPDATED: 16.03.08 by Anton - uChelpButton should not use global clipboard
 **/
 custombuttons.uChelpButton = function ( oBtn ) //{{{
 {
@@ -870,8 +871,8 @@ custombuttons.uChelpButton = function ( oBtn ) //{{{
   var hlpTitle = CB_STRING ("cbStrings", "ButtonHelpTitle", Button. label);
   hlpTitle = hlpTitle. replace (/%y/gi, bId);
   var hlp = createMsg(hlpTitle);
-  gClipboard.write(str.replace(/\<label\>/gi,Button.label).replace(/\<id\>/gi,bId));
-  hlp.aMsg(gClipboard.read());
+  str = str. replace (/\<label\>/gi, Button. label). replace (/\<id\>/gi, bId);
+  hlp. aMsg (str);
 }; //}}} End Method uChelpButton(  )
 
 // Custombuttons utils
