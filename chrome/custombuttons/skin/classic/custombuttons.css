@@ -23,18 +23,30 @@ menuitem[id^="custombuttons-contextpopup-"] {
 }
 
 
-#custombuttons-contextpopup-edit{
+menuitem[id^="custombuttons-contextpopup-edit"]{
   list-style-image: url("chrome://custombuttons/skin/edit.png") !important;
 }
 
-#custombuttons-contextpopup-remove{
+menuitem[id^="custombuttons-contextpopup-remove"]{
   list-style-image: url("chrome://custombuttons/skin/remove.png") !important;
 }
 
-#custombuttons-contextpopup-clone{
+menuitem[id^="custombuttons-contextpopup-clone"]{
   list-style-image: url("chrome://custombuttons/skin/clone.png") !important;
 }
 
-#custombuttons-contextpopup-copyURI{
+menuitem[id^="custombuttons-contextpopup-copyURI"]{
   list-style-image: url("chrome://custombuttons/skin/copy.png") !important;
+}
+
+menuitem[id^="custombuttons-contextpopup-updateButton"]{
+  list-style-image: url("chrome://custombuttons/skin/paste1.png") !important;
+}
+
+menuitem[id^="custombuttons-contextpopup-bookmarkButton"]{
+  list-style-image: url("chrome://custombuttons/skin/bookmark1.png") !important;
+}
+
+menuitem[id^="custombuttons-contextpopup-buttonHelp"]{
+  list-style-image: url("chrome://custombuttons/skin/help1.png") !important;
 }
