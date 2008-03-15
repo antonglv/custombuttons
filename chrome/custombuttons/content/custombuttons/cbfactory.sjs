@@ -51,7 +51,7 @@ custombuttonsFactory. prototype =
   CustombuttonsSBFactory:
   {
       DEFINE_GETTER (Custombuttons, CustombuttonsSB),
-      DEFINE_GETTER (Editor, Editor),
+      DEFINE_GETTER (Editor, TBEditor),
       DEFINE_GETTER (Prefs, Prefs)
   }
 };
