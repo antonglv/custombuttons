@@ -10,6 +10,7 @@
 
 <!ENTITY custombuttons_prefsDialog.title "Custombuttons: настройки">
 <!ENTITY custombuttons.prefs.use_xml_button_format "Использовать новый формат кнопки">
+<!ENTITY custombuttons.prefs.use_cb2_button_format "Использовать старый формат кнопки Custom Buttons²">
 <!ENTITY custombuttons.prefs.show_apply_button "Отобразить кнопку &quot;Применить&quot; в редакторе кода">
 <!ENTITY custombuttons.prefs.disable_init_in_customize_toolbar "Запретить инициализацию кнопок в диалоговом окне &quot;Настройка панелей инструментов&quot;">
 <!ENTITY custombuttons.prefs.enable_custombutton_protocol "Разрешить установку кнопок из почтовых сообщений">
