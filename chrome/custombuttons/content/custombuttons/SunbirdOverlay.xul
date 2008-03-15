@@ -16,20 +16,22 @@
 	
 	<popupset id="calendar-popupset">
 		<popup id="custombuttons-contextpopup">
+			<menu id="custombuttons-contextpopup-subCall"
+				  label="&custombuttons.buttonPopup.subCall;">
+				<menupopup id="custombuttons-contextpopup-sub">
+					<menuitem id="custombuttons-contextpopup-customize-sub"
+							  accesskey="&calendar.context.customize.accesskey;"
+							  command="cmd_CustomizeToolbars"
+							  label="&calendar.context.customize.label;"/>
+				</menupopup>
+			</menu>
+		</popup>
+		
+		<popup id="custombuttons-contextpopup-pri">
 			<menuitem id="custombuttons-contextpopup-customize"
 					  accesskey="&calendar.context.customize.accesskey;"
 					  command="cmd_CustomizeToolbars"
 					  label="&calendar.context.customize.label;"/>
-				<menu id="custombuttons-contextpopup-subCall"
-					  hidden="true"
-					  label="&custombuttons.buttonPopup.subCall;">
-					<menupopup id="custombuttons-contextpopup-sub">
-						<menuitem id="custombuttons-contextpopup-customize-sub"
-								  accesskey="&calendar.context.customize.accesskey;"
-								  command="cmd_CustomizeToolbars"
-								  label="&calendar.context.customize.label;"/>
-					</menupopup>
-				</menu>
 		</popup>
 	</popupset>
 
