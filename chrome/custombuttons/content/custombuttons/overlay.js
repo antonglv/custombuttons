@@ -308,6 +308,10 @@ Custombuttons. prototype =
 
  init: function ()
  {
+  var oCustomizeMenuitem = document. getElementById ("custombuttons-contextpopup-customize");
+  oCustomizeMenuitem. parentNode. appendChild (oCustomizeMenuitem);
+  oCustomizeMenuitem = document. getElementById ("custombuttons-contextpopup-customize-sub");
+  oCustomizeMenuitem. parentNode. appendChild (oCustomizeMenuitem);
   var pref = "settings.editor.showApplyButton";
   var ps = Components. classes ["@mozilla.org/preferences-service;1"]. getService (Components. interfaces. nsIPrefService);
   ps = ps. QueryInterface (Components. interfaces. nsIPrefBranch);
@@ -798,6 +802,15 @@ CustombuttonsMF. prototype. __proto__ = Custombuttons. prototype;
 function CustombuttonsTB () {}
 CustombuttonsTB. prototype =
 {
+ init: function ()
+ {
+  this. __super. prototype. init. apply (this, [null]);
+  var oBookmarkButtonMenuitem = document. getElementById ("custombuttons-contextpopup-bookmarkButton");
+  oBookmarkButtonMenuitem. parentNode. removeChild (oBookmarkButtonMenuitem);
+  var oBookmarkButtonMenuitem = document. getElementById ("custombuttons-contextpopup-bookmarkButton-sub");
+  oBookmarkButtonMenuitem. parentNode. removeChild (oBookmarkButtonMenuitem);
+ },
+
  get gToolbox ()
  {
   return document. getElementById ("mail-toolbox") || // main window and message window
@@ -815,7 +828,7 @@ CustombuttonsTB. prototype =
 
     makeBookmark: function (CbLink, sName) {}
 };
-CustombuttonsTB. prototype. __proto__ = Custombuttons. prototype;
+CustombuttonsTB. prototype. __proto__ = Custombuttons. prototype; CustombuttonsTB. prototype. __super = Custombuttons;
 
 function CustombuttonsSB () {}
 CustombuttonsSB. prototype =
@@ -834,7 +847,7 @@ CustombuttonsSB. prototype =
 
     makeBookmark: function (CbLink, sName) {}
 };
-CustombuttonsSB. prototype. __proto__ = Custombuttons. prototype;
+CustombuttonsSB. prototype. __proto__ = CustombuttonsTB. prototype;
 
 const custombuttons = new custombuttonsFactory (). Custombuttons;
 
