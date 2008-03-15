@@ -1,92 +1,44 @@
 <?xml version="1.0"?>
+<?xul-overlay href="chrome://custombuttons/content/commoverlay.xul"?>
 <!DOCTYPE overlay [
 <!ENTITY % browserDTD SYSTEM "chrome://browser/locale/browser.dtd" >
 %browserDTD;
 <!ENTITY % custombuttonsDTD SYSTEM "chrome://custombuttons/locale/custombuttons.dtd" >
 %custombuttonsDTD;
 ]>
+
 <overlay id="custombuttonsOverlay"
-     xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
-  <script type="application/x-javascript" src="chrome://custombuttons/content/loader.js"/>
+		 xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
-  <popupset id="mainPopupSet">
-    <popup id="custombuttons-contextpopup">
-	  <menuitem id="custombuttons-contextpopup-edit"
-			label="&custombuttons.buttonPopup.edit;"
-			oncommand="custombuttons.editButton();"/>
-	  <menuitem id="custombuttons-contextpopup-remove"
-			label="&custombuttons.buttonPopup.remove;"
-			oncommand="custombuttons.doButtonOperation('remove');"/>
-	  <menuseparator id="custombuttons-contextpopup-separator1"/>
-	  <menuitem id="custombuttons-contextpopup-clone"
-			label="&custombuttons.buttonPopup.clone;"
-			oncommand="custombuttons.doButtonOperation('clone');"/>
-	  <menuitem id="custombuttons-contextpopup-copyURI"
-			label="&custombuttons.buttonPopup.copyURI;"
-			oncommand="custombuttons.copyURI();"/>
-	  <menuseparator id="custombuttons-contextpopup-separator2"/>
-	  <menuitem id="custombuttons-contextpopup-updateButton"
-			label="&custombuttons.buttonPopup.update;"
-			oncommand="custombuttons.updateButton();"/>
-	  <menuitem id="custombuttons-contextpopup-bookmarkButton"
-			label="&custombuttons.buttonPopup.bookmark;"
-			oncommand="custombuttons.bookmarkButton();"/>
-	  <menuitem id="custombuttons-contextpopup-buttonHelp"
-			label="&custombuttons.buttonPopup.help;"
-			oncommand="custombuttons.uChelpButton();"/>
-	  <menuseparator id="custombuttons-contextpopup-separator3"/>
-	  <menuitem command="cmd_CustomizeToolbars"
-			id="custombuttons-contextpopup-customize"
-			label="&viewCustomizeToolbar.label;"
-			accesskey="&viewCustomizeToolbar.accesskey;"/>
-	  <menu id="custombuttons-contextpopup-subCall"
-	  		label="&custombuttons.buttonPopup.subCall;"
-			hidden="true">
-        <menupopup id="custombuttons-contextpopup-sub">
-          <menuitem id="custombuttons-contextpopup-edit-sub"
-				label="&custombuttons.buttonPopup.edit;"
-				oncommand="custombuttons.editButton();"/>
-		  <menuitem id="custombuttons-contextpopup-remove-sub"
-				label="&custombuttons.buttonPopup.remove;"
-				oncommand="custombuttons.doButtonOperation('remove');"/>
-		  <menuseparator id="custombuttons-contextpopup-separator1-sub"/>
-		  <menuitem id="custombuttons-contextpopup-clone-sub"
-				label="&custombuttons.buttonPopup.clone;"
-				oncommand="custombuttons.doButtonOperation('clone');"/>
-		  <menuitem id="custombuttons-contextpopup-copyURI-sub"
-				label="&custombuttons.buttonPopup.copyURI;"
-				oncommand="custombuttons.copyURI();"/>
-		  <menuseparator id="custombuttons-contextpopup-separator2-sub"/>
-		  <menuitem id="custombuttons-contextpopup-updateButton-sub"
-				label="&custombuttons.buttonPopup.update;"
-				oncommand="custombuttons.updateButton();"/>
-		  <menuitem id="custombuttons-contextpopup-bookmarkButton-sub"
-				label="&custombuttons.buttonPopup.bookmark;"
-				oncommand="custombuttons.bookmarkButton();"/>
-		  <menuitem id="custombuttons-contextpopup-buttonHelp-sub"
-				label="&custombuttons.buttonPopup.help;"
-				oncommand="custombuttons.uChelpButton();"/>
-		  <menuseparator id="custombuttons-contextpopup-separator3-sub"/>
-		  <menuitem command="cmd_CustomizeToolbars"
-				id="custombuttons-contextpopup-customize-sub"
-				label="&viewCustomizeToolbar.label;"
-				accesskey="&viewCustomizeToolbar.accesskey;"/>
-        </menupopup>
-      </menu>
-    </popup>
-  </popupset>
-  
-  <menupopup id="menu_viewPopup">
-    <menuseparator/>
-    <menuitem label="&custombuttons.viewMenu_Item;"
-          oncommand="custombuttons.addButton()"/>
-  </menupopup>
+	<script type="application/x-javascript" src="chrome://custombuttons/content/loader.js"/>
 
-  <window id="main-window">
-    <stringbundleset id="cbStringBundleSet">
-      <stringbundle id="cbStrings"
-              src="chrome://custombuttons/locale/custombuttons.properties"/>
-    </stringbundleset>
-  </window>
+	<popupset id="mainPopupSet">
+		<popup id="custombuttons-contextpopup">
+			<menuitem id="custombuttons-contextpopup-customize"
+					  accesskey="&viewCustomizeToolbar.accesskey;"
+					  command="cmd_CustomizeToolbars"
+					  label="&viewCustomizeToolbar.label;"/>
+				<menu id="custombuttons-contextpopup-subCall"
+					  hidden="true"
+					  label="&custombuttons.buttonPopup.subCall;">
+					<menupopup id="custombuttons-contextpopup-sub">
+						<menuitem id="custombuttons-contextpopup-customize-sub"
+								  accesskey="&viewCustomizeToolbar.accesskey;"
+								  command="cmd_CustomizeToolbars"
+								  label="&viewCustomizeToolbar.label;"/>
+					</menupopup>
+				</menu>
+		</popup>
+	</popupset>
+
+	<menupopup id="menu_viewPopup">
+		<menuseparator/>
+		<menuitem label="&custombuttons.viewMenu_Item;"
+				  oncommand="custombuttons.addButton()"/>
+	</menupopup>
+
+	<window id="main-window">
+		<stringbundleset id="cbStringBundleSet"/>
+	</window>
 
 </overlay>

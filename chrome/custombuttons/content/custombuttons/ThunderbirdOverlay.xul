@@ -1,4 +1,5 @@
 <?xml version="1.0"?>
+<?xul-overlay href="chrome://custombuttons/content/commoverlay.xul"?>
 <!DOCTYPE overlay [
 <!ENTITY % messengerDTD SYSTEM "chrome://messenger/locale/messenger.dtd" >
 %messengerDTD;
@@ -7,142 +8,56 @@
 ]>
 
 <overlay id="custombuttonsOverlay"
-     xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
-  <script type="application/x-javascript" src="loader.js"/>
-  <window id="messengerWindow">
-    <stringbundleset id="cbStringBundleSet">
-      <stringbundle id="cbStrings"
-              src="chrome://custombuttons/locale/custombuttons.properties"/>
-    </stringbundleset>
-    <popup id="custombuttons-contextpopup">
-      <menuitem id="custombuttons-contextpopup-edit"
-            label="&custombuttons.buttonPopup.edit;"
-            oncommand="custombuttons.editButton();"/>
-      <menuitem id="custombuttons-contextpopup-remove"
-            label="&custombuttons.buttonPopup.remove;"
-            oncommand="custombuttons.doButtonOperation('remove');"/>
-      <menuseparator id="custombuttons-contextpopup-separator1"/>
-      <menuitem id="custombuttons-contextpopup-clone"
-            label="&custombuttons.buttonPopup.clone;"
-            oncommand="custombuttons.doButtonOperation('clone');"/>
-      <menuitem id="custombuttons-contextpopup-copyURI"
-            label="&custombuttons.buttonPopup.copyURI;"
-            oncommand="custombuttons.copyURI();"/>
-      <menuseparator id="custombuttons-contextpopup-separator2"/>
-	  <menuitem id="custombuttons-contextpopup-updateButton"
-	  		label="&custombuttons.buttonPopup.update;"
-			oncommand="custombuttons.updateButton();"/>
-	  <menuitem id="custombuttons-contextpopup-buttonHelp"
-            label="&custombuttons.buttonPopup.help;"
-            oncommand="custombuttons.uChelpButton();"/>
-	  <menuseparator id="custombuttons-contextpopup-separator3"
-	  				 observes="custombuttons-contextpopup-buttonHelp"/>
-      <menuitem oncommand="CustomizeMailToolbar('mail-toolbox');"
-            id="custombuttons-contextpopup-customize"
-            label="&customizeToolbar.label;"
-            accesskey="&customizeToolbar.accesskey;"/>
-	  <menu id="custombuttons-contextpopup-subCall"
-	  		label="&custombuttons.buttonPopup.subCall;"
-			hidden="true">
-        <menupopup id="custombuttons-contextpopup-sub">
-          <menuitem id="custombuttons-contextpopup-edit-sub"
-				label="&custombuttons.buttonPopup.edit;"
-				oncommand="custombuttons.editButton();"/>
-		  <menuitem id="custombuttons-contextpopup-remove-sub"
-				label="&custombuttons.buttonPopup.remove;"
-				oncommand="custombuttons.doButtonOperation('remove');"/>
-		  <menuseparator id="custombuttons-contextpopup-separator1-sub"/>
-		  <menuitem id="custombuttons-contextpopup-clone-sub"
-				label="&custombuttons.buttonPopup.clone;"
-				oncommand="custombuttons.doButtonOperation('clone');"/>
-		  <menuitem id="custombuttons-contextpopup-copyURI-sub"
-				label="&custombuttons.buttonPopup.copyURI;"
-				oncommand="custombuttons.copyURI();"/>
-		  <menuseparator id="custombuttons-contextpopup-separator2-sub"/>
-		  <menuitem id="custombuttons-contextpopup-updateButton-sub"
-				label="&custombuttons.buttonPopup.update;"
-				oncommand="custombuttons.updateButton();"/>
-		  <menuitem id="custombuttons-contextpopup-buttonHelp-sub"
-				label="&custombuttons.buttonPopup.help;"
-				oncommand="custombuttons.uChelpButton();"/>
-		  <menuseparator id="custombuttons-contextpopup-separator3-sub"/>
-		  <menuitem oncommand="CustomizeMailToolbar('mail-toolbox');"
-            id="custombuttons-contextpopup-customize-sub"
-            label="&customizeToolbar.label;"
-            accesskey="&customizeToolbar.accesskey;"/>
-        </menupopup>
-      </menu>
-    </popup>
-  </window>
-  
-  <menupopup id="menu_View_Popup">
-    <menuseparator/>
-    <menuitem label="&custombuttons.viewMenu_Item;"
-          oncommand="custombuttons.addButton()"/>
-  </menupopup>
+		 xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
-  <window id="msgcomposeWindow">
-    <stringbundleset id="cbStringBundleSet">
-      <stringbundle id="cbStrings"
-              src="chrome://custombuttons/locale/custombuttons.properties"/>
-    </stringbundleset>
-    <popup id="custombuttons-contextpopup">
-      <menuitem id="custombuttons-contextpopup-edit"
-            label="&custombuttons.buttonPopup.edit;"
-            oncommand="custombuttons.editButton();"/>
-      <menuitem id="custombuttons-contextpopup-remove"
-            label="&custombuttons.buttonPopup.remove;"
-            oncommand="custombuttons.doButtonOperation('remove');"/>
-      <menuseparator id="custombuttons-contextpopup-separator1"/>
-      <menuitem id="custombuttons-contextpopup-clone"
-            label="&custombuttons.buttonPopup.clone;"
-            oncommand="custombuttons.doButtonOperation('clone');"/>
-      <menuitem id="custombuttons-contextpopup-copyURI"
-            label="&custombuttons.buttonPopup.copyURI;"
-            oncommand="custombuttons.copyURI();"/>
-      <menuseparator id="custombuttons-contextpopup-separator2"/>
-	  <menuitem id="custombuttons-contextpopup-updateButton"
-	  		label="&custombuttons.buttonPopup.update;"
-			oncommand="custombuttons.updateButton();"/>
-	  <menuitem id="custombuttons-contextpopup-buttonHelp"
-            label="&custombuttons.buttonPopup.help;"
-            oncommand="custombuttons.uChelpButton();"/>
-	  <menuseparator id="custombuttons-contextpopup-separator3"/>
-      <menuitem oncommand="CustomizeMailToolbar('compose-toolbox');"
-            id="custombuttons-contextpopup-customize"
-            label="&customizeToolbar.label;"
-            accesskey="&customizeToolbar.accesskey;"/>
-	  <menu id="custombuttons-contextpopup-subCall"
-	  		label="&custombuttons.buttonPopup.subCall;"
-			hidden="true">
-        <menupopup id="custombuttons-contextpopup-sub">
-          <menuitem id="custombuttons-contextpopup-edit-sub"
-				label="&custombuttons.buttonPopup.edit;"
-				oncommand="custombuttons.editButton();"/>
-		  <menuitem id="custombuttons-contextpopup-remove-sub"
-				label="&custombuttons.buttonPopup.remove;"
-				oncommand="custombuttons.doButtonOperation('remove');"/>
-		  <menuseparator id="custombuttons-contextpopup-separator1-sub"/>
-		  <menuitem id="custombuttons-contextpopup-clone-sub"
-				label="&custombuttons.buttonPopup.clone;"
-				oncommand="custombuttons.doButtonOperation('clone');"/>
-		  <menuitem id="custombuttons-contextpopup-copyURI-sub"
-				label="&custombuttons.buttonPopup.copyURI;"
-				oncommand="custombuttons.copyURI();"/>
-		  <menuseparator id="custombuttons-contextpopup-separator2-sub"/>
-		  <menuitem id="custombuttons-contextpopup-updateButton-sub"
-				label="&custombuttons.buttonPopup.update;"
-				oncommand="custombuttons.updateButton();"/>
-		  <menuitem id="custombuttons-contextpopup-buttonHelp-sub"
-				label="&custombuttons.buttonPopup.help;"
-				oncommand="custombuttons.uChelpButton();"/>
-		  <menuseparator id="custombuttons-contextpopup-separator3-sub"/>
-		  <menuitem oncommand="CustomizeMailToolbar('compose-toolbox');"
-            id="custombuttons-contextpopup-customize-sub"
-            label="&customizeToolbar.label;"
-            accesskey="&customizeToolbar.accesskey;"/>
-        </menupopup>
-      </menu>
-    </popup>
-  </window>
+	 <script type="application/x-javascript" src="loader.js"/>
+
+	 <window id="messengerWindow">
+	 	<stringbundleset id="cbStringBundleSet"/>
+
+		<popup id="custombuttons-contextpopup">
+			<menuitem id="custombuttons-contextpopup-customize"
+					  accesskey="&customizeToolbar.accesskey;"
+					  label="&customizeToolbar.label;"
+					  oncommand="CustomizeMailToolbar('mail-toolbox');"/>
+			<menu id="custombuttons-contextpopup-subCall"
+				  hidden="true"
+				  label="&custombuttons.buttonPopup.subCall;">
+				<menupopup id="custombuttons-contextpopup-sub">
+					<menuitem id="custombuttons-contextpopup-customize-sub"
+							  accesskey="&customizeToolbar.accesskey;"
+							  label="&customizeToolbar.label;"
+							  oncommand="CustomizeMailToolbar('mail-toolbox');"/>
+				</menupopup>
+			</menu>
+		</popup>
+	</window>
+
+	<menupopup id="menu_View_Popup">
+		<menuseparator/>
+		<menuitem label="&custombuttons.viewMenu_Item;"
+				  oncommand="custombuttons.addButton()"/>
+	</menupopup>
+
+	<window id="msgcomposeWindow">
+		<stringbundleset id="cbStringBundleSet"/>
+
+		<popup id="custombuttons-contextpopup">
+			<menuitem id="custombuttons-contextpopup-customize"
+					  accesskey="&customizeToolbar.accesskey;"
+					  label="&customizeToolbar.label;"
+					  oncommand="CustomizeMailToolbar('compose-toolbox');"/>
+			<menu id="custombuttons-contextpopup-subCall"
+				  hidden="true"
+				  label="&custombuttons.buttonPopup.subCall;">
+				<menupopup id="custombuttons-contextpopup-sub">
+					<menuitem id="custombuttons-contextpopup-customize-sub"
+							  accesskey="&customizeToolbar.accesskey;"
+							  label="&customizeToolbar.label;"
+							  oncommand="CustomizeMailToolbar('compose-toolbox');"/>
+				</menupopup>
+			</menu>
+		</popup>
+	</window>
+
 </overlay>
