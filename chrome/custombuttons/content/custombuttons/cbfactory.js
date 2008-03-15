@@ -26,11 +26,11 @@ function custombuttonsFactory ()
             retobj = this. CustombuttonsFactory;
         break;
     case "Browser": // strange name for Flock
-      retobj = this. CustombuttonsFactory;
-      break;
+  retobj = this. CustombuttonsFactory;
+  break;
     case "Thunderbird": // Thunderbird
-      retobj = this. CustombuttonsTBFactory;
-      break;
+  retobj = this. CustombuttonsTBFactory;
+  break;
     case "Sunbird":
   retobj = this. CustombuttonsSBFactory;
   break;
@@ -39,31 +39,31 @@ function custombuttonsFactory ()
 }
 custombuttonsFactory. prototype =
 {
-  CustombuttonsFactory:
-  {
-    get Custombuttons () { return new Custombuttons (); },
-    get Editor () { return new Editor (); },
-    get Prefs () { return new Prefs (); }
-  },
+ CustombuttonsFactory:
+ {
+  get Custombuttons () { return new Custombuttons (); },
+  get Editor () { return new Editor (); },
+  get Prefs () { return new Prefs (); }
+ },
 
-  CustombuttonsTBFactory:
-  {
-    get Custombuttons () { return new CustombuttonsTB (); },
-    get Editor () { return new TBEditor (); },
-    get Prefs () { return new TBPrefs (); }
-  },
+ CustombuttonsTBFactory:
+ {
+  get Custombuttons () { return new CustombuttonsTB (); },
+  get Editor () { return new TBEditor (); },
+  get Prefs () { return new TBPrefs (); }
+ },
 
-  CustombuttonsMFFactory:
-  {
-      get Custombuttons () { return new CustombuttonsMF (); },
-      get Editor () { return new Editor (); },
-      get Prefs () { return new Prefs (); }
-  },
+ CustombuttonsMFFactory:
+ {
+  get Custombuttons () { return new CustombuttonsMF (); },
+  get Editor () { return new Editor (); },
+  get Prefs () { return new Prefs (); }
+ },
 
-  CustombuttonsSBFactory:
-  {
-      get Custombuttons () { return new CustombuttonsSB (); },
-      get Editor () { return new TBEditor (); },
-      get Prefs () { return new Prefs (); }
-  }
+ CustombuttonsSBFactory:
+ {
+  get Custombuttons () { return new CustombuttonsSB (); },
+  get Editor () { return new TBEditor (); },
+  get Prefs () { return new Prefs (); }
+ }
 };
