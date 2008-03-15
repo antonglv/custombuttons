@@ -91,12 +91,19 @@ var CB2const = //{{{
 }; //}}}
 
 /**  Object gCounter
+
 Author:      SCClockDr
 
+
+
 Scope:       private
+
 Properties:  count -
+
 Methods:     inc -
+
 Purpose:     1. Maintain a counter
+
 **/
 custombuttons.gCounter = function ( nC, nS ) //{{{
 {
@@ -133,92 +140,170 @@ custombuttons.gCounter = function ( nC, nS ) //{{{
 
 /**  getCbContextObj( oBtn )
 
+
+
 Scope:   global
+
 Args:    oBtn -
+
 Returns: oRet
+
 Called:  1. Any Custom Buttons² Button
+
 Purpose: 1. Maintain and manipilate the Custom Buttons² Context
+
 Menu
+
 NOTE:    1. Must be named this.mObj within the button's
+
 Initialization Code field
+
 2. The Object is presented to the button as Initalized,
+
 no setup required.
+
 3. View usage documentation within the object's comments
+
 **/
 custombuttons.getCbContextObj = function ( oBtn ) //{{{
 {
  /**  Object mObj
+
 	Author:  SCClockDr
+
 	
+
 	Scope:    Private - Each instance of this object is unique.
+
 	Global - It's properties and methods are available
+
 	within the button's namedspace.
+
 	ButtonObj.mObj.property/method()
+
 	Properties:  BtnIdNum - Owner's id #
+
 	ItemIdPre - Init to "Cb2-BtnIdNum-"
+
 	mCtxtSub - Context mode flag.
+
 	setSub makes this true
+
 	setPri makes this false
+
 	oMenu - Primary Context menu Object
+
 	nMenu - SubMenu Context menu Object
+
 	oId - Primary Context menu id
+
 	nId - SubMenu Context menu id
+
 	OurCount - Counter Object used to provide the
+
 	sequential number in the item id
+
 	menuitems - Holds the menu child count
+
 	itemStack - Holds a stack of the owner id's
+
 	aElements - Holds the menu child collection
+
 	aItemIdx - An array of Menuitem property names
+
     Methods:  init - Sets the initial state and is called by
+
 	the wrapper prior to presenting the object
+
 	to the caller.
+
 	setSub - Sets the Sub menu on and reduces the
+
 	primary menu to one Custom Buttons² item
+
 	"Custom Button" which invokes the subMenu
+
 	If button specific Items are already in
+
 	the primary menu they will be presented
+
 	as well.
+
 	setPri - Resets the Primary menu and kills the
+
 	SubMenu. It hides any button specific
+
 	Items appended to the primary menu.
+
 	getItem - Retrieves an object with named
+
 	properties. Which the user populates with
+
 	the item data specific to their
+
 	application. Fields not populated will not
+
 	alter the menuitem when populated.
+
 	Id is REQUIRED and if ommitted a default
+
 	will be substituted. the Id's structure
+
 	is: "Cb2-##-YourID++" Where:
+
 	## is the button's id number
+
 	++ is a 0 based sequential number
+
 	Menuseparators are invoked by omitting
+
 	the label property
+
 	insertBefore - Inserts a menuitem to the primary
+
 	Context menu before the menuitem specified in arg2
+
 	Requires the populated getItem Object as an arg
+
 	and a reference menuitem as arg 2
+
 	insertAfter - Inserts a menuitem to the primary
+
 	Context menu after the menuitem specified in arg2
+
 	Requires the populated getItem Object as an arg
+
 	and a reference menuitem as arg 2
+
 	addItem - Prepends a menuitem to the primary
+
 	Context menu. Requires the populated
+
 	getItem Object as an arg.
+
 	populate - Populated the menuitem with the data
+
 	supplied.
+
 	remItem - Removes the specified item (by Id) from the
+
 	Primary Context Menu.
+
 	remAll - Removes all the menuItem in the stack
+
 	Purpose:  1. See preceding comment block
+
     **/
     var oRet =
     {
   // Properties:
   BtnIdNum:0,
   ItemIdPre:"Cb2-",
+  sIdPrefix: "",
   mCtxtSub:false,
   oMenu:null,
   nMenu:null,
+  oButton: null,
   oId:"",
   nId:"",
   OurCount:{},
@@ -229,7 +314,9 @@ custombuttons.getCbContextObj = function ( oBtn ) //{{{
   "tabindex","type","validate","value"],
 
   /**
+
 		 * @author Anton
+
 		 */
   get menuitems ()
   {
@@ -239,7 +326,9 @@ custombuttons.getCbContextObj = function ( oBtn ) //{{{
   },
 
   /*
+
 		 * @author Anton
+
 		 */
   get aElements ()
   {
@@ -250,18 +339,27 @@ custombuttons.getCbContextObj = function ( oBtn ) //{{{
 
   // Methods
   /**  init(   )
+
 		
+
 		Scope:   global
+
 		Args:
+
 		Returns: Nothing
+
 		Called:  1.
+
 		Purpose: 1.
+
 		**/
   init:function ( oBtn ) //{{{
   {
    oBtn. _ctxtObj = this;
+   this. oButton = oBtn;
    var ct = this;
    ct.BtnIdNum = custombuttons. getNumber( oBtn.id );
+   ct.sIdPrefix = ct. ItemIdPre + ct. BtnIdNum + "-";
    ct.OurCount = custombuttons. gCounter();
    ct.oMenu = document. getElementById ("custombuttons-contextpopup");
    ct.nMenu = document. getElementById ("custombuttons-contextpopup-sub");
@@ -270,46 +368,59 @@ custombuttons.getCbContextObj = function ( oBtn ) //{{{
    ct.remItem();
   }, //}}} End Method init(  )
   /**  setSub(  )
+
 		
+
 		Scope:   global
+
 		Args:
+
 		Returns: Nothing
+
 		Called:  1.
+
 		Purpose: 1.
+
 		**/
   setSub:function ( ) //{{{
   {
-   var ct = this;
-   ct.mCtxtSub = true;
-   for ( var i = 0; i < ct.menuitems; i++) {
-    if (ct.aElements.item(i).id.indexOf("custombuttons-contextpopup") > -1) ct.aElements.item(i).hidden = true;
-   } // End for
-   ct.aElements.item(ct.menuitems-1).hidden = false;
+   this. mCtxtSub = true;
+   this. oButton. setAttribute ("context", "custombuttons-contextpopup");
   }, //}}} End Method setSub(  )
   /**  setPri(  )
+
 		
+
 		Scope:   global
+
 		Args:
+
 		Returns: Nothing
+
 		Called:  1.
+
 		Purpose: 1.
+
 		**/
   setPri:function ( ) //{{{
   {
-   var ct = this;
-   ct.mCtxtSub = false;
-   for ( var i = 0; i < ct.menuitems-1; i++) {
-    ct.aElements.item(i).hidden = false;
-   } // End for
-   ct.aElements.item(i).hidden = true;
+   this. mCtxtSub = false;
+   this. oButton. setAttribute ("context", "custombuttons-contextpopup-pri");
   }, //}}} End Method setPri(  )
   /**  getItem(  )
+
 		
+
 		Scope:   global
+
 		Args:
+
 		Returns: oItem
+
 		Called:  1.
+
 		Purpose: 1.
+
 		**/
   getItem:function ( ) //{{{
   {
@@ -338,14 +449,39 @@ custombuttons.getCbContextObj = function ( oBtn ) //{{{
    } // End if ( mCtxtSub )
    return null;
   }, //}}} End Method getItem(  )
+
+  /*
+
+		 * @author Anton
+
+		 */
+  constructItem: function (oNew, bInc)
+  {
+   var sIdPre = this. sIdPrefix;
+   var sTagName = oNew. label? "menuitem": "menuseparator";
+   var oNewItem = document. createElement (sTagName);
+   sIdPre += oNew. id || oNew. label || "separator";
+   sIdPre += this. OurCount [bInc? "inc": "get"] () [0];
+   oNew. id = sIdPre;
+   this. populate (oNew, oNewItem);
+   return oNewItem;
+  },
   /**  insertBefore( oMenuItem )
+
 		
+
 		Scope:   global
+
 		Args:    oNew - Data Object
+
 		oChildNode - Node to insert before
+
 		Returns: sRet - ItemId
+
 		Called:  1.
+
 		Purpose: 1.
+
 		**/
   insertBefore:function ( oNew, oChildNode ) //{{{
   {
@@ -355,41 +491,35 @@ custombuttons.getCbContextObj = function ( oBtn ) //{{{
     oChildNode = ct.oMenu.firstChild;
    } // End if ( oChildNode )
    if ( ct.mCtxtSub ) {
-    var idPre = ct.ItemIdPre + ct.BtnIdNum + "-";
     var oRet = ""
-    var newItem = ( oNew.label )? document.createElement("menuitem") : document.createElement("menuseparator") ;
-    sTemp = idPre;
-    sTemp += ( oNew.id )? oNew.id : ( oNew.label )? oNew.label : "separator";
-    sTemp += ct.OurCount.inc()[0];
-    oNew.id = sTemp;
-    ct.populate( oNew, newItem );
+    var newItem = this. constructItem (oNew, true);
     oRet = ct.oMenu.insertBefore( newItem, oChildNode );
    } // End if ( mCtxtSub )
    return oRet
   }, //}}} End Method insertBefore( oNew, oChildNode )
 
   /**  insertAfter( oMenuItem, oChildNode )
+
 		Scope:   global
+
 		Args:    oNew - Data Object
+
 		oChildNode - Node to insert before
+
 		Returns: sRet - ItemId
+
 		Called:  1.
+
 		Purpose: 1.
+
 		**/
   insertAfter:function ( oNew, oChildNode ) //{{{
   {
    var ct = this;
    var sTemp = "";
    if ( ct.mCtxtSub ) {
-    var idPre = ct.ItemIdPre + ct.BtnIdNum + "-";
     var oRef = {}
-    var oRet = {};
-    var newItem = ( oNew.label )? document.createElement("menuitem") : document.createElement("menuseparator") ;
-    sTemp = idPre;
-    sTemp += ( oNew.id )? oNew.id : ( oNew.label )? oNew.label : "separator";
-    sTemp += ct.OurCount.get();
-    oNew.id = sTemp;
-    ct.populate( oNew, newItem );
+    var newItem = this. constructItem (oNew, false);
     oRet = ct.oMenu.insertBefore(newItem, oChildNode);
     ct.OurCount.inc();
    } // End if ( mCtxtSub )
@@ -397,26 +527,27 @@ custombuttons.getCbContextObj = function ( oBtn ) //{{{
   }, //}}} End Method insertAfter( oNew, oChildNode )
 
   /**  addItem( oMenuItem )
+
 		
+
 		Scope:   global
+
 		Args:    oNew - Data Object
+
 		Returns: sRet - ItemId
+
 		Called:  1.
+
 		Purpose: 1.
+
 		**/
   addItem:function ( oNew ) //{{{
   {
    var ct = this;
    var sTemp = "";
    if ( ct.mCtxtSub ) {
-    var idPre = ct.ItemIdPre + ct.BtnIdNum + "-";
     var oRet = ""
-    var newItem = ( oNew.label )? document.createElement("menuitem") : document.createElement("menuseparator") ;
-    sTemp = idPre;
-    sTemp += ( oNew.id )? oNew.id : ( oNew.label )? oNew.label : "separator";
-    sTemp += ct.OurCount.inc()[0];
-    oNew.id = sTemp;
-    ct.populate( oNew, newItem );
+    var newItem = this. constructItem (oNew, true);
     oRet = ct.oMenu.insertBefore( newItem, ct.oMenu.firstChild );
 
    } // End if ( mCtxtSub )
@@ -424,13 +555,21 @@ custombuttons.getCbContextObj = function ( oBtn ) //{{{
   }, //}}} End Method addItem( oNew )
 
   /**  populate( oData, mItem )
+
 		
+
 		Scope:   private
+
 		Args:    oData -
+
 		mItem -
+
 		Returns: Nothing
+
 		Called:  1.
+
 		Purpose: 1.
+
 		**/
   populate:function ( oData, mItem ) //{{{
   {
@@ -439,21 +578,40 @@ custombuttons.getCbContextObj = function ( oBtn ) //{{{
     if ( oData[ct.aItemIdx[i]] ) mItem.setAttribute( ct.aItemIdx[i], oData[ct.aItemIdx[i]] );
    } // End for
   }, //}}} End Method populate( oData, mItem )
+
+  /*
+
+		 * @author Anton
+
+		 */
+  constructId: function (sId)
+  {
+   var cId = sId || "";
+   if (cId. indexOf (this. sIdPrefix) == 0)
+    return cId;
+   return this. sIdPrefix + cId;
+  },
+
   /**  getItemsById( id )
+
 		
+
 		Scope:   global
+
 		Args:    id -
+
 		Returns: aRet
+
 		Called:  1.
+
 		Purpose: 1.
+
 		**/
   getItemsById:function ( id ) //{{{
   {
    var aRet = [];
    var ct = this
-   var cId = ( id )? id : "" ;
-   var idPre = ct.ItemIdPre + ct.BtnIdNum + "-";
-   cId = ( cId.indexOf( idPre ) > -1 )? cId : idPre + cId;
+   var cId = this. constructId (id);
    for ( var i = 0; i < ct.menuitems; i++) {
     if ( ct.aElements.item(i).id.indexOf( cId ) > -1 ) {
      aRet.push( ct.aElements.item(i) );
@@ -463,19 +621,24 @@ custombuttons.getCbContextObj = function ( oBtn ) //{{{
   }, //}}} End Method getItemsById( id )
 
   /**  remItem( id )
+
 		
+
 		Scope:   private
+
 		Args:    id -
+
 		Returns: Nothing
+
 		Called:  1.
+
 		Purpose: 1.
+
 		**/
   remItem:function ( id ) //{{{
   {
    var ct = this;
-   var cId = ( id )? id : "" ;
-   var idPre = ct.ItemIdPre + ct.BtnIdNum + "-";
-   cId = ( cId.indexOf( idPre ) > -1 )? cId : idPre + cId;
+   var cId = this. constructId (id);
    for ( var i = 0; i < ct.menuitems; i++) {
     if ( ct.aElements.item(i).id.indexOf( cId ) > -1 ) {
      ct.oMenu.removeChild( ct.aElements.item(i) );
@@ -485,13 +648,21 @@ custombuttons.getCbContextObj = function ( oBtn ) //{{{
   }, //}}} End Method remItem( id )
 
   /**  deInit(  )
+
 		Scope:     private
+
 		Args:
+
 		Returns:   Nothing
+
 		Called by: 1. editor.onload
+
 		2. this.removeButton
+
 		Purpose:   1. De Initializes this object
+
 		TODO:      1.
+
 		*/
   deInit:function () //{{{
   {
@@ -506,44 +677,83 @@ return oRet;
 }; //}}} End Method getCbContextObj( oBtn )
 
 /**  Object   gQuot
+
 Author:  George Dunham aka: SCClockDr
 
+
+
 Scope:    Public
+
 Properties:
+
 Methods:
+
 mHandler -
+
 this.gQuot.gShowPopup -
+
 Purpose:  1. Handle mouse clicks
+
 2. Popup the Custom Buttons² context menu
+
 How it works:    On a click the calling button is strobed via
+
 "this.setAttribute("onclick", "  gQuot(event, this);");"
+
 line in its Initialization Code section. This passes
+
 the event and button (this) object here.
+
 Execution:  1. First we check for a shift + right click if that was
+
 the event we call this.gQuot.gShowPopup(cButton) passing it the
+
 button object.
+
 2. If not a shift + right click we proceed to check for
+
 a click event called function presence pair.
+
 a. Testing progress down the tree till we arrive
+
 at the clicked button with no extra key
+
 qualifier.
+
 b. If that function is persent execution passes
+
 to the called function within the calling
+
 button. We pass the event object to the called
+
 function to provide the button author the info
+
 for further processing.
+
 3. If no matches are found then all combinations will put
+
 up the menu.
+
 Calls:      1. "cButton.cleftclick(evt)" calls the button object that
+
 was passed function cleftclick.
+
 It passes the Click event object to the button and
+
 expects nothing in return.
+
 2. When control returns to this function we encounter
+
 break and the function exits to the button's calling
+
 attribute "onclick" statement.
+
 3. We are then done with that event.
+
 UPDATED:    8/25/2007 Moved to custombuttons object
+
 UPDATED: 10.03.08 by Anton
+
 **/
 custombuttons.gQuot = { //{{{
  // Properties:
@@ -557,21 +767,36 @@ custombuttons.gQuot = { //{{{
  now: null,
  // Methods
  /**  mHandler( evt, cButton )
+
 	
+
 	Scope:   private
+
 	Args:    evt -  Mouse click event used to direct code
+
 	execution based on the button clicked and
+
 	any extra state keys held during the
+
 	event.
+
 	cButton - Button of the calling button used to
+
 	appropriatly locate the context menu.
+
 	Returns: Nothing
+
 	Called:  1. Custom Buttons² buttons onclick Attribute
+
 	Purpose: 1. Call the appropriate click function based on
+
 	the mouse button clicked and its modifiers.
+
 	**/
  mHandler:function ( evt ) //{{{
  {
+  if ((evt. button == 2) && evt. shiftKey)
+   return;
   evt.preventDefault();
   this.which = evt.type;
   this.savEvent = evt;
@@ -588,7 +813,7 @@ custombuttons.gQuot = { //{{{
   case "dblclick":
    this.doDoubleClick(this.savEvent);
    break;
-   default :
+  default :
    break;
   } // End switch ( evt.type )
  },
@@ -623,34 +848,49 @@ custombuttons.gQuot = { //{{{
  },
 
  /*
+
 	* Construct callback method name for given event object
+
 	* @author Anton Glazatov
+
 	* @type {String}
+
 	* @argument {Event} oEvent Event object
+
 	*
+
 	*/
  getMethodName: function (oEvent)
  {
   var sMethodName = "";
-  if (oEvent. altKey) sMethodName = "a";
-  if (oEvent. ctrlKey) sMethodName += "c";
-  if (oEvent. shiftKey) sMethodName += "s";
-  sMethodName += ["left", "mid", "right"] [oEvent. button];
-  if (oEvent. type == "click")
-   sMethodName += "click";
-  else if (oEvent. type == "dblclick")
-   sMethodName += "Dclick";
-  else
-   sMethodName += "mouseevent";
+  try // because error in FF1.5.0.2 js console
+  {
+   if (oEvent. altKey) sMethodName = "a";
+   if (oEvent. ctrlKey) sMethodName += "c";
+   if (oEvent. shiftKey) sMethodName += "s";
+   sMethodName += ["left", "mid", "right"] [oEvent. button];
+   if (oEvent. type == "click")
+    sMethodName += "click";
+   else if (oEvent. type == "dblclick")
+    sMethodName += "Dclick";
+   else
+    sMethodName += "mouseevent";
+  } catch (e) {}
   return sMethodName;
  },
 
  /**
+
 	* Search and execute button's callback method or show context menu
+
 	* @author Anton Glazatov
+
 	* @returns none
+
 	* @argument {Event} oEvent Event object
+
 	*
+
 	*/
  click: function (oEvent)
  {
@@ -662,7 +902,7 @@ custombuttons.gQuot = { //{{{
   }
   oEvent. preventDefault ();
   var sMethodName = this. getMethodName (oEvent);
-  if ((sMethodName != "srightclick") && oButton [sMethodName])
+  if (sMethodName && oButton [sMethodName])
    oButton [sMethodName] (oEvent);
   else
    this. gShowPopup (oButton);
@@ -675,19 +915,33 @@ custombuttons.gQuot = { //{{{
  },
 
  /**  gShowPopup( node )
+
 	
+
 	Scope:   public
+
 	Args:    node - Button in focus
+
 	Returns: Nothing
+
 	Called:  1. this.mHandler
+
 	2. Any process which passes node as an object
+
 	and will handle the Custom Buttons² context
+
 	menu.
+
 	Purpose: 1. Display the Custom Buttons² context menu.
+
 	2. No button author intervention expected.
+
 	UPDATED:    *  8/25/2007 - Added as an object in custombuttons
+
 	UPDATED:    *  2/2/2008 - Modified to handle new popup method.
+
 	UPDATED: 10.03.08 by Anton - added context menu items visibility test
+
 	**/
  gShowPopup:function ( node, menuId ) //{{{
  {
@@ -710,14 +964,23 @@ custombuttons.gQuot = { //{{{
  }; //}}} End Object   gQuot
 
 /**  gQuot( evt, cButton )
+
 Author:  George Dunham aka: SCClockDr
 
+
+
 Scope:   global
+
 Args:    evt -
+
 cButton -
+
 Returns: Nothing
+
 Called:  1. Any custombuttons-button.
+
 Purpose: 1. Handle mouse click events.
+
 **/
 var gQuot = function( evt, cButton ) //{{{
 {
@@ -725,14 +988,23 @@ var gQuot = function( evt, cButton ) //{{{
 } //}}} End Function gQuot( evt, cButton ) 
 
 /**  gShowPopup( node )
+
 Author:  George Dunham aka: SCClockDr
 
+
+
 Scope:    global
+
 Args:     node -
+
 Returns:  Nothing
+
 Called:  1. ???
+
 Purpose: 1. Display the Custom Buttons² context menu.
+
 2. No button author intervention expected.
+
 **/
 var gShowPopup = function( node ) //{{{
 {
@@ -740,16 +1012,27 @@ var gShowPopup = function( node ) //{{{
 }; //}}} End gShowPopup( node )
 
 /**  getButtonParameters2( num )
+
 Author Yan, George Dunham
 
+
+
 Args:    num
+
 Returns: ret,
+
 Returns: Nothing
+
 Scope:  private
+
 Called:
+
 Purpose:
+
 Updated 8/23/2007 to format and document the function
+
 UPDATED: 10.03.08 by Anton
+
 **/
 custombuttons.getButtonParameters2 = function ( num ) //{{{
 {
