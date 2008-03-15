@@ -18,7 +18,12 @@
 
     <vbox flex="1">
         <groupbox flex="1">
-            <checkbox id="modebit0" label="&custombuttons.prefs.use_xml_button_format;"/>
+            <checkbox id="modebit0" cbblocks="modebit3"
+					  label="&custombuttons.prefs.use_xml_button_format;"/>
+			<hbox flex="1" id="oldformatselector">
+				<spacer width="20"/>
+				<checkbox id="modebit3" label="&custombuttons.prefs.use_cb2_button_format;"/>
+			</hbox>
             <checkbox id="modebit1" label="&custombuttons.prefs.show_apply_button;"/>
             <checkbox id="modebit2" label="&custombuttons.prefs.disable_init_in_customize_toolbar;"/>
             <checkbox id="cbEnableCBProtocol"
