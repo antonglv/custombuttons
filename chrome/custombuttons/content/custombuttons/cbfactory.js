@@ -63,7 +63,7 @@ custombuttonsFactory. prototype =
   CustombuttonsSBFactory:
   {
       get Custombuttons () { return new CustombuttonsSB (); },
-      get Editor () { return new Editor (); },
+      get Editor () { return new TBEditor (); },
       get Prefs () { return new Prefs (); }
   }
 };
