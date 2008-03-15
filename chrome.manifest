@@ -10,11 +10,12 @@ overlay	chrome://global/content/customizeToolbar.xul	chrome://custombuttons/cont
 ## Firefox 2 and higher
 overlay	chrome://browser/content/browser.xul	chrome://custombuttons/content/overlay.xul
 overlay	chrome://browser/content/browser.xul	custombutton://content/buttonsoverlay.xul
-overlay	chrome://browser/content/browser.xul	chrome://custombuttons/content/cbbutton.xul
+overlay	chrome://browser/content/browser.xul	chrome://custombuttons/content/cbbutton.xul application={ec8030f7-c20a-464f-9b0e-13a3a9e97384} appversion>1.6 appversion<3.0b1
 
 ## Firefox 3
 overlay	chrome://browser/content/browser.xul	chrome://custombuttons/content/overlay3b2.xul   application={ec8030f7-c20a-464f-9b0e-13a3a9e97384} appversion>=3.0b1
 overlay	chrome://global/content/customizeToolbar.xul	chrome://custombuttons/content/customizeToolbars.xul  application={ec8030f7-c20a-464f-9b0e-13a3a9e97384} appversion>=3.0b1
+overlay	chrome://browser/content/browser.xul	chrome://custombuttons/content/cbbutton.xul appversion>=3.0b1
 
 # Thunderbird
 ## main window
