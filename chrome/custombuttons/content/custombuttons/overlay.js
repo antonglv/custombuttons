@@ -308,10 +308,12 @@ Custombuttons. prototype =
 
  init: function ()
  {
-  var oCustomizeMenuitem = document. getElementById ("custombuttons-contextpopup-customize");
-  oCustomizeMenuitem. parentNode. appendChild (oCustomizeMenuitem);
-  oCustomizeMenuitem = document. getElementById ("custombuttons-contextpopup-customize-sub");
-  oCustomizeMenuitem. parentNode. appendChild (oCustomizeMenuitem);
+  var oMenuitem = document. getElementById ("custombuttons-contextpopup-customize");
+  oMenuitem. parentNode. appendChild (oMenuitem);
+  oMenuitem = document. getElementById ("custombuttons-contextpopup-subCall");
+  oMenuitem. parentNode. appendChild (oMenuitem);
+  oMenuitem = document. getElementById ("custombuttons-contextpopup-customize-sub");
+  oMenuitem. parentNode. appendChild (oMenuitem);
   var pref = "settings.editor.showApplyButton";
   var ps = Components. classes ["@mozilla.org/preferences-service;1"]. getService (Components. interfaces. nsIPrefService);
   ps = ps. QueryInterface (Components. interfaces. nsIPrefBranch);
