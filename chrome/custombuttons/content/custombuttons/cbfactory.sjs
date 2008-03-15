@@ -14,11 +14,11 @@ function custombuttonsFactory ()
             retobj = this. CustombuttonsFactory;
         break;
     case "Browser": // strange name for Flock
-      retobj = this. CustombuttonsFactory;
-      break;
+		retobj = this. CustombuttonsFactory;
+		break;
     case "Thunderbird": // Thunderbird
-      retobj = this. CustombuttonsTBFactory;
-      break;
+		retobj = this. CustombuttonsTBFactory;
+		break;
     case "Sunbird":
 		retobj = this. CustombuttonsSBFactory;
 		break;
@@ -27,31 +27,31 @@ function custombuttonsFactory ()
 }
 custombuttonsFactory. prototype =
 {
-  CustombuttonsFactory:
-  {
-    DEFINE_GETTER (Custombuttons, Custombuttons),
-    DEFINE_GETTER (Editor, Editor),
-    DEFINE_GETTER (Prefs, Prefs)
-  },
-
-  CustombuttonsTBFactory:
-  {
-    DEFINE_GETTER (Custombuttons, CustombuttonsTB),
-    DEFINE_GETTER (Editor, TBEditor),
-    DEFINE_GETTER (Prefs, TBPrefs)
-  },
-  
-  CustombuttonsMFFactory:
-  {
-      DEFINE_GETTER (Custombuttons, CustombuttonsMF),
-      DEFINE_GETTER (Editor, Editor),
-      DEFINE_GETTER (Prefs, Prefs)
-  },
-  
-  CustombuttonsSBFactory:
-  {
-      DEFINE_GETTER (Custombuttons, CustombuttonsSB),
-      DEFINE_GETTER (Editor, TBEditor),
-      DEFINE_GETTER (Prefs, Prefs)
-  }
+	CustombuttonsFactory:
+	{
+		DEFINE_GETTER (Custombuttons, Custombuttons),
+		DEFINE_GETTER (Editor, Editor),
+		DEFINE_GETTER (Prefs, Prefs)
+	},
+	
+	CustombuttonsTBFactory:
+	{
+		DEFINE_GETTER (Custombuttons, CustombuttonsTB),
+		DEFINE_GETTER (Editor, TBEditor),
+		DEFINE_GETTER (Prefs, TBPrefs)
+	},
+	
+	CustombuttonsMFFactory:
+	{
+		DEFINE_GETTER (Custombuttons, CustombuttonsMF),
+		DEFINE_GETTER (Editor, Editor),
+		DEFINE_GETTER (Prefs, Prefs)
+	},
+	
+	CustombuttonsSBFactory:
+	{
+		DEFINE_GETTER (Custombuttons, CustombuttonsSB),
+		DEFINE_GETTER (Editor, TBEditor),
+		DEFINE_GETTER (Prefs, Prefs)
+	}
 };
