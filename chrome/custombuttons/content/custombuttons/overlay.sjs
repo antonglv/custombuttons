@@ -297,10 +297,12 @@ Custombuttons. prototype =
 	
 	init: function ()
 	{
-		var oCustomizeMenuitem = ELEMENT ("custombuttons-contextpopup-customize");
-		oCustomizeMenuitem. parentNode. appendChild (oCustomizeMenuitem);
-		oCustomizeMenuitem = ELEMENT ("custombuttons-contextpopup-customize-sub");
-		oCustomizeMenuitem. parentNode. appendChild (oCustomizeMenuitem);
+		var oMenuitem = ELEMENT ("custombuttons-contextpopup-customize");
+		oMenuitem. parentNode. appendChild (oMenuitem);
+		oMenuitem = ELEMENT ("custombuttons-contextpopup-subCall");
+		oMenuitem. parentNode. appendChild (oMenuitem);
+		oMenuitem = ELEMENT ("custombuttons-contextpopup-customize-sub");
+		oMenuitem. parentNode. appendChild (oMenuitem);
 		var pref = "settings.editor.showApplyButton";
 		var ps = SERVICE (PREF);
 		ps = ps. QI (nsIPrefBranch);
