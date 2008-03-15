@@ -11,16 +11,16 @@
         ondialogaccept="return cbPrefs.onAccept();"
         ondialogcancel="return cbPrefs.onCancel();"
         title="&custombuttons_prefsDialog.title;"
-    persist="screenX screenY width height">
+		persist="screenX screenY">
 
-  <script type="application/x-javascript" src="chrome://custombuttons/content/cbfactory.js"/>
+	<script type="application/x-javascript" src="chrome://custombuttons/content/cbfactory.js"/>
     <script type="application/x-javascript" src="chrome://custombuttons/content/prefs.js"/>
 
-    <vbox flex="1">
+    <vbox>
         <groupbox flex="1">
             <checkbox id="modebit0" cbblocks="modebit3"
 					  label="&custombuttons.prefs.use_xml_button_format;"/>
-			<hbox flex="1" id="oldformatselector">
+			<hbox id="oldformatselector">
 				<spacer width="20"/>
 				<checkbox id="modebit3" label="&custombuttons.prefs.use_cb2_button_format;"/>
 			</hbox>
