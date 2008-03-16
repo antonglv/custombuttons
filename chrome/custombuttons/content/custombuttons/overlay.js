@@ -870,6 +870,7 @@ const custombuttons = new custombuttonsFactory (). Custombuttons;
      Add
      changed by Anton 24.02.08
      TODO: refactor it
+	 UPDATED: 16.03.08 by Anton - uChelpButton should not use global clipboard
 **/
 custombuttons.uChelpButton = function ( oBtn ) //{{{
 {
@@ -881,8 +882,8 @@ custombuttons.uChelpButton = function ( oBtn ) //{{{
   var hlpTitle = document. getElementById ("cbStrings"). getString ("ButtonHelpTitle"). replace (/%s/gi, Button. label);
   hlpTitle = hlpTitle. replace (/%y/gi, bId);
   var hlp = createMsg(hlpTitle);
-  gClipboard.write(str.replace(/\<label\>/gi,Button.label).replace(/\<id\>/gi,bId));
-  hlp.aMsg(gClipboard.read());
+  str = str. replace (/\<label\>/gi, Button. label). replace (/\<id\>/gi, bId);
+  hlp. aMsg (str);
 }; //}}} End Method uChelpButton(  )
 
 // Custombuttons utils
@@ -920,7 +921,7 @@ createMsg: function (title) //{{{
     // Properties:
     prompts: Components. classes ["@mozilla.org/embedcomp/prompt-service;1"]. getService (Components. interfaces. nsIPromptService),
     check:{value: false},
-    sTitle:"Custom Buttons²",
+    sTitle:"Custom Buttons",
     button:false,
     // Methods
     /**  aMsg( str, [title] )
