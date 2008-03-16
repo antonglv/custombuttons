@@ -1,3 +1,6 @@
+#include <project.hjs>
+#include <timer.hjs>
+
 var CB2const =    //{{{
 {
   bFieldSepHack:              "] [",      // No Translation Please
@@ -386,7 +389,7 @@ custombuttons.getCbContextObj = function ( oBtn ) //{{{
 			var ct = this;
 			var sTemp = "";
 			if ( ct.mCtxtSub ) {
-				var oRef = {}
+				var oRet = {}
 				var newItem = this. constructItem (oNew, false);
 				oRet = ct.oMenu.insertBefore(newItem, oChildNode);
 				ct.OurCount.inc();
@@ -547,14 +550,10 @@ UPDATED: 10.03.08 by Anton
 **/
 custombuttons.gQuot = { //{{{
 	// Properties:
-	dcTime: 350,    // doubleclick time
-	dcDelay: 100,   // no clicks after doubleclick
-	dcAt: 0,        // time of doubleclick
+	dcWaitFlag: false, // double click wait flag
+	oTimer: null,	   // timer object
+	dcDelay: 350,   // no clicks after doubleclick
 	savEvent: null, // save Event for handling doClick().
-	savEvtTime: 0,  // save time of click event.
-	savTO: null,    // handle of click setTimeOut
-	which: "",
-	now: null,
 	// Methods
 	/**  mHandler( evt, cButton )
 	
@@ -575,56 +574,78 @@ custombuttons.gQuot = { //{{{
 		if ((evt. button == 2) && evt. shiftKey)
 			return;
 		evt.preventDefault();
-		this.which = evt.type;
-		this.savEvent = evt;
 		if (evt.target.hasAttribute("initialized") && evt.target.getAttribute("initialized") == "false") return;
-		switch (this.which)
+		switch (evt.type)
 		{
 		case "click":
-			if (this.hadDoubleClick()) return;
+			if (this. dcWaitFlag) return;
+			this.savEvent = evt;
 			// Otherwise set timer to act.  It may be preempted by a doubleclick.
-			var d = new Date();
-			this.savEvtTime = d.getTime();
-			this.savTO = setTimeout(function(){custombuttons.gQuot.doClick();}, this.dcTime);
+			this. setTimer ();
 			break;
 		case "dblclick":
-			this.doDoubleClick(this.savEvent);
+			this.doDoubleClick(evt);
 			break;
 		default :
 			break;
 		} // End switch ( evt.type )
 	},
-	hadDoubleClick: function()
+	
+	/**
+	 * Sets timer
+	 * @author Anton
+	 * 
+	 */
+	setTimer: function ()
 	{
-		var d = new Date();
-		this.now = d.getTime();
-		if ((this.now - this.dcAt) < this.dcDelay) {
-			return true;
-		}
-		return false;
-	},
-	doClick: function()
-	{
-		// preempt if DC occurred after original click.
-		if (this.savEvtTime - this.dcAt <= 0) {
-			return false;
-		}
-		this.click(this.savEvent);
-		return true;
-	},
-	doDoubleClick: function(evt)
-	{
-		//custombuttons.gMyPrn("doDoubleClick",1);
-		var d = new Date();
-		this.dcAt = d.getTime();
-		if (this.savTO != null) {
-			clearTimeout( this.savTO );          // Clear pending Click
-			this.savTO = null;
-		}
-		this.dClick(evt)
+		this. oTimer = COMPONENT (TIMER);
+		this. oTimer. initWithCallback (this, this. dcDelay, TIMER_TYPE_ONE_SHOT);
+		this. dcWaitFlag = true;
 	},
 	
-	/*
+	/**
+	 * nsITimerCallback interface implementation
+	 * Returns this object on nsITimerCallback interface query
+	 * For possible QI's
+	 * @author Anton
+	 * @return this object
+	 *
+	 */
+	DEFINE_STD_QI (nsITimerCallback),
+	
+	/**
+	 * nsITimerCallback interface implementation
+	 * Receives timer notification
+	 * @author Anton
+	 * @arguments {nsITimer} oTimer Timer object
+	 *
+	 */
+	notify: function (oTimer)
+	{
+		this. doDoubleClick (this. savEvent);
+	},
+	
+	/**
+	 * Deletes timer
+	 * @Author Anton
+	 *
+	 */
+	deleteTimer: function ()
+	{
+		this. dcWaitFlag = false;
+		if (!this. oTimer)
+			return;
+		this. oTimer. cancel ();
+		this. oTimer = null;
+	},
+	
+	doDoubleClick: function (oEvent)
+	{
+		this. deleteTimer ();
+		this. click (oEvent)
+	},
+	
+	/**
 	* Construct callback method name for given event object
 	* @author Anton Glazatov
 	* @type {String}
@@ -660,23 +681,11 @@ custombuttons.gQuot = { //{{{
 	click: function (oEvent)
 	{
 		var oButton = oEvent. target;
-		if (oEvent. button == "undefined") // oncommand, for example ?
-		{
-			this. gShowPopup (oButton);
-			return;
-		}
-		oEvent. preventDefault ();
 		var sMethodName = this. getMethodName (oEvent);
 		if (sMethodName && oButton [sMethodName])
 			oButton [sMethodName] (oEvent);
 		else
 			this. gShowPopup (oButton);
-	},
-	
-	dClick: function(oEvent)
-	{
-		this. click (oEvent)
-		oEvent. stopPropagation ();
 	},
 	
 	/**  gShowPopup( node )
@@ -712,7 +721,7 @@ custombuttons.gQuot = { //{{{
 			popup.showPopup(node, x, y, "popup", null, null);   // Pop up the menu
 		} // End else ( typeof popup.openPopup == CB2const.FUNCTION )
 	}  //}}} End Method gShowPopup( node )
-	}; //}}} End Object   gQuot
+}; //}}} End Object   gQuot
 	
 /**  gQuot( evt, cButton )
 Author:  George Dunham aka: SCClockDr
@@ -772,3 +781,21 @@ custombuttons.getButtonParameters2 = function ( num ) //{{{
 	};
 	return ret;
 }; //}}} End Method getButtonParameters2(num )
+
+/**
+ * CB2api emulation
+ * @author Anton
+ */
+custombuttons. setButtonOpacity = function (oButton, sProperty, aValues)
+{
+	if (oButton. id. indexOf ("custombuttons-button") == 0)
+		oButton. style. opacity = aValues [oButton [sProperty]? 0: 1]
+};
+custombuttons. ButtonBrt = function (oEvent)
+{
+	this. setButtonOpacity (oEvent. target, "disabled", ["0.25", "0.99"]);
+};
+custombuttons. ButtonDim = function (oEvent)
+{
+	this. setButtonOpacity (oEvent. target, "disabled", ["0.25", "0.65"]);
+};
