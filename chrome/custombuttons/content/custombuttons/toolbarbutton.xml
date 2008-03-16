@@ -21,6 +21,7 @@
    }
    // end
    custombutton. buttonConstructor (this);
+   this. prototype = {};
   ]]>
  </constructor>
 
@@ -193,6 +194,7 @@
    }
    // end
    custombutton. buttonConstructor (this);
+   this. prototype = {};
   ]]>
  </constructor>
 
@@ -365,6 +367,7 @@
    }
    // end
    custombutton. buttonConstructor (this);
+   this. prototype = {};
   ]]>
  </constructor>
 
@@ -537,6 +540,7 @@
    }
    // end
    custombutton. buttonConstructor (this);
+   this. prototype = {};
   ]]>
  </constructor>
 
