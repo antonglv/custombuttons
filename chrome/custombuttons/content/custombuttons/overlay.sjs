@@ -215,26 +215,26 @@ Custombuttons. prototype =
 				oItem = cbpb. cloneNode (true);
 				break;
 			}
-			if (!oItem)
-				oItem = document. createElement ("toolbarbutton");
-			oItem. className = "toolbarbutton-1 chromeclass-toolbar-additional";
-			oItem. setAttribute ("context", "custombuttons-contextpopup");
-			oItem. setAttribute ("id", "custombuttons-button" + num);
-			oItem. setAttribute ("label", values. name || "");
-			oItem. setAttribute ("tooltiptext", values. name || "");
-			if (values. image && values. image. length != -1)
-				oItem. setAttribute ("image", values. image);
-			if (values. mode)
-				oItem. setAttribute ("cb-mode", values. mode);
-			if (values. accelkey)
-				oItem. setAttribute ("cb-accelkey", values. accelkey);
-			var code = values. code || "";
-			var initCode = values. initCode || "";
-			var Help = values. help || "";
-			oItem. setAttribute ("cb-oncommand", code);
-			oItem. setAttribute ("cb-init", initCode);
-            oItem. setAttribute ("Help", Help);
-			return oItem;
+		if (!oItem)
+			oItem = document. createElement ("toolbarbutton");
+		oItem. className = "toolbarbutton-1 chromeclass-toolbar-additional";
+		oItem. setAttribute ("context", "custombuttons-contextpopup");
+		oItem. setAttribute ("id", "custombuttons-button" + num);
+		oItem. setAttribute ("label", values. name || "");
+		oItem. setAttribute ("tooltiptext", values. name || "");
+		if (values. image && values. image. length != -1)
+			oItem. setAttribute ("image", values. image);
+		if (values. mode)
+			oItem. setAttribute ("cb-mode", values. mode);
+		if (values. accelkey)
+			oItem. setAttribute ("cb-accelkey", values. accelkey);
+		var code = values. code || "";
+		var initCode = values. initCode || "";
+		var Help = values. help || "";
+		oItem. setAttribute ("cb-oncommand", code);
+		oItem. setAttribute ("cb-init", initCode);
+		oItem. setAttribute ("Help", Help);
+		return oItem;
 	},
 	
 	getToolbars: function ()
@@ -910,7 +910,7 @@ createMsg: function (title) //{{{
     // Properties:
     prompts: SERVICE (PROMPT),
     check:{value: false},
-    sTitle:"Custom Buttons²",
+    sTitle:"Custom Buttons",
     button:false,
     // Methods
     /**  aMsg( str, [title] )
