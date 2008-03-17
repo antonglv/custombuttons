@@ -1,17 +1,3 @@
-    function dLOG (text)
-    {
-          var consoleService = Components. classes ["@mozilla.org/consoleservice;1"]. getService (Components. interfaces. nsIConsoleService);
-          consoleService. logStringMessage (text);
-    }
-    function dEXTLOG (aMessage, aSourceName, aSourceLine, aLineNumber,
-              aColumnNumber, aFlags, aCategory)
-    {
-      var consoleService = Components. classes ["@mozilla.org/consoleservice;1"]. getService (Components. interfaces. nsIConsoleService);
-      var scriptError = Components. classes ["@mozilla.org/scripterror;1"]. createInstance (Components. interfaces. nsIScriptError);
-      scriptError. init (aMessage, aSourceName, aSourceLine, aLineNumber,
-                 aColumnNumber, aFlags, aCategory);
-      consoleService. logMessage (scriptError);
-    }
 var custombutton =
 {
     buttonConstructor: function (oBtn)
@@ -177,7 +163,8 @@ var custombutton =
     oBtn. name,
     oBtn. image,
     oBtn. cbCommand,
-    oBtn. cbInitCode
+    oBtn. cbInitCode,
+    oBtn. Help
    ]. join ("]▲[")
   );
   return uri;
@@ -231,15 +218,6 @@ var custombutton =
    return this. buttonGetOldFormatURI (oBtn);
  },
 
- buttonCbExecuteCode: function(oBtn)
- {
-  if (oBtn. cbCommand)
-  {
-   this. checkBind ();
-   (new Function (oBtn. cbCommand)). apply (oBtn);
-  }
- },
-
  setContextMenuVisibility: function (oBtn)
  {
   if (oBtn. parentNode. nodeName != "toolbar")
@@ -286,18 +264,26 @@ var custombutton =
 
     buttonContext: function (event, oBtn)
     {
+  if ((event. button == 2) && event. shiftKey)
+  {
+   oBtn. setAttribute ("context", "custombuttons-contextpopup-pri");
+   event. stopPropagation ();
+   return;
+  }
   this. setContextMenuVisibility (oBtn);
     },
+
+ buttonCbExecuteCode: function (event, oButton, code)
+ {
+  var scode = "var event = arguments [0];\n" + code;
+  this. checkBind ();
+  (new Function (scode)). apply (oButton, [event]);
+ },
 
  // TODO: check for code evaluation construction. Carefully check.
  buttonCommand: function(event, oBtn)
  {
   if (oBtn. cbCommand)
-  {
-   var code = "var event = arguments[0];\n";
-   code += oBtn. cbCommand;
-   this. checkBind ();
-   (new Function (code)). apply (oBtn, arguments);
-  }
+   this. buttonCbExecuteCode (event, oBtn, oBtn. cbCommand);
  }
 };
