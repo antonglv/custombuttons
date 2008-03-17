@@ -1,5 +1,14 @@
 Changelog
 ==============
+0.0.2.7
+* Fixed few browser UI synchronization issues
+* Added Firefox 3b5pre support
+* Added Sunbird 0.8 support (experimental)
+* CB² custombuttons API partially implemented
+* Added JavaScript 1.8 support in Firefox3
+* Added JavaScript 1.7 support in Firefox2
+* Small UI enhacements
+* XUL code refactoring
 0.0.2.6
 * Custom buttons code execution context error fixed.
 * Version number deleted from extension's name.
