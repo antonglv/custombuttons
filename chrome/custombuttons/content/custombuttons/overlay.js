@@ -1,17 +1,3 @@
-    function dLOG (text)
-    {
-          var consoleService = Components. classes ["@mozilla.org/consoleservice;1"]. getService (Components. interfaces. nsIConsoleService);
-          consoleService. logStringMessage (text);
-    }
-    function dEXTLOG (aMessage, aSourceName, aSourceLine, aLineNumber,
-              aColumnNumber, aFlags, aCategory)
-    {
-      var consoleService = Components. classes ["@mozilla.org/consoleservice;1"]. getService (Components. interfaces. nsIConsoleService);
-      var scriptError = Components. classes ["@mozilla.org/scripterror;1"]. createInstance (Components. interfaces. nsIScriptError);
-      scriptError. init (aMessage, aSourceName, aSourceLine, aLineNumber,
-                 aColumnNumber, aFlags, aCategory);
-      consoleService. logMessage (scriptError);
-    }
 function CustombuttonsURIParser (uri)
 {
  this. parse (uri);
@@ -172,7 +158,6 @@ Custombuttons. prototype =
   var numbers = this. ps. getChildList ("", {});
   if (numbers. length > 0)
   {
-   dump ('\nfound buttons in prefs.js...');
    var buttons = new Object ();
    for (var i = 0; i < numbers. length; i++)
    {
@@ -201,7 +186,6 @@ Custombuttons. prototype =
    //deleting buttons from prefs.js, now they would be saved in the profile
    for (var i = 0; i < numbers. length; i++)
    {
-    dump ("\ndeleting button #" + i);
     this. ps. deleteBranch (numbers [i]);
    }
    this. saveButtonsToProfile ();
@@ -226,26 +210,26 @@ Custombuttons. prototype =
     oItem = cbpb. cloneNode (true);
     break;
    }
-   if (!oItem)
-    oItem = document. createElement ("toolbarbutton");
-   oItem. className = "toolbarbutton-1 chromeclass-toolbar-additional";
-   oItem. setAttribute ("context", "custombuttons-contextpopup");
-   oItem. setAttribute ("id", "custombuttons-button" + num);
-   oItem. setAttribute ("label", values. name || "");
-   oItem. setAttribute ("tooltiptext", values. name || "");
-   if (values. image && values. image. length != -1)
-    oItem. setAttribute ("image", values. image);
-   if (values. mode)
-    oItem. setAttribute ("cb-mode", values. mode);
-   if (values. accelkey)
-    oItem. setAttribute ("cb-accelkey", values. accelkey);
-   var code = values. code || "";
-   var initCode = values. initCode || "";
-   var Help = values. help || "";
-   oItem. setAttribute ("cb-oncommand", code);
-   oItem. setAttribute ("cb-init", initCode);
-            oItem. setAttribute ("Help", Help);
-   return oItem;
+  if (!oItem)
+   oItem = document. createElement ("toolbarbutton");
+  oItem. className = "toolbarbutton-1 chromeclass-toolbar-additional";
+  oItem. setAttribute ("context", "custombuttons-contextpopup");
+  oItem. setAttribute ("id", "custombuttons-button" + num);
+  oItem. setAttribute ("label", values. name || "");
+  oItem. setAttribute ("tooltiptext", values. name || "");
+  if (values. image && values. image. length != -1)
+   oItem. setAttribute ("image", values. image);
+  if (values. mode)
+   oItem. setAttribute ("cb-mode", values. mode);
+  if (values. accelkey)
+   oItem. setAttribute ("cb-accelkey", values. accelkey);
+  var code = values. code || "";
+  var initCode = values. initCode || "";
+  var Help = values. help || values. Help || "";
+  oItem. setAttribute ("cb-oncommand", code);
+  oItem. setAttribute ("cb-init", initCode);
+  oItem. setAttribute ("Help", Help);
+  return oItem;
  },
 
  getToolbars: function ()
@@ -577,8 +561,7 @@ Custombuttons. prototype =
 
  execute_oncommand_code: function (code, button)
  { //checked
-  var x = new Function (code);
-  x. apply (button);
+  custombutton. buttonCbExecuteCode ({}, button, code);
  },
 
  saveButtonsToProfile: function ()
