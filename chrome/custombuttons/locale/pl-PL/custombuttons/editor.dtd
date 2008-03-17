@@ -1,3 +1,4 @@
+<!ENTITY editor.dialog.help "Help">
 <!ENTITY editor.dialog.title "Edycja przycisku">
 <!ENTITY editor.name "Nazwa:">
 <!ENTITY editor.name.tooltiptext "Ustala etykietkę przycisku, i tekst podpowiedzi">
