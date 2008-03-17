@@ -1,17 +1,3 @@
-    function dLOG (text)
-    {
-          var consoleService = Components. classes ["@mozilla.org/consoleservice;1"]. getService (Components. interfaces. nsIConsoleService);
-          consoleService. logStringMessage (text);
-    }
-    function dEXTLOG (aMessage, aSourceName, aSourceLine, aLineNumber,
-              aColumnNumber, aFlags, aCategory)
-    {
-      var consoleService = Components. classes ["@mozilla.org/consoleservice;1"]. getService (Components. interfaces. nsIConsoleService);
-      var scriptError = Components. classes ["@mozilla.org/scripterror;1"]. createInstance (Components. interfaces. nsIScriptError);
-      scriptError. init (aMessage, aSourceName, aSourceLine, aLineNumber,
-                 aColumnNumber, aFlags, aCategory);
-      consoleService. logMessage (scriptError);
-    }
 function Prefs () {}
 Prefs. prototype =
 {
@@ -54,8 +40,10 @@ Prefs. prototype =
  sizeWindowToContent: function ()
  {
   var oDialog = document. getElementById ("custombuttonsSettingsDialog");
-  this. removeAttribute (oDialog, "width");
-  this. removeAttribute (oDialog, "height");
+  if (oDialog. hasAttribute ("width"))
+   this. removeAttribute (oDialog, "width");
+  if (oDialog. hasAttribute ("height"))
+   this. removeAttribute (oDialog, "height");
   window. sizeToContent ();
  },
 
