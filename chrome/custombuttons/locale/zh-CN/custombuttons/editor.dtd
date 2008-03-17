@@ -1,3 +1,4 @@
+<!ENTITY editor.dialog.help "Help">
 <!ENTITY editor.dialog.title "编辑按钮">
 <!ENTITY editor.name "名称:">
 <!ENTITY editor.name.tooltiptext "定制按钮的标记和弹出文字">
