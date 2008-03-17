@@ -21,7 +21,6 @@
    }
    // end
    custombutton. buttonConstructor (this);
-   this. prototype = {};
   ]]>
  </constructor>
 
@@ -168,7 +167,7 @@
   ]]>
  </handler>
 
- <handler event="mousedown">
+ <handler event="click">
   <![CDATA[
    custombutton. buttonContext (event, this);
   ]]>
@@ -194,7 +193,6 @@
    }
    // end
    custombutton. buttonConstructor (this);
-   this. prototype = {};
   ]]>
  </constructor>
 
@@ -341,7 +339,7 @@
   ]]>
  </handler>
 
- <handler event="mousedown">
+ <handler event="click">
   <![CDATA[
    custombutton. buttonContext (event, this);
   ]]>
@@ -367,7 +365,6 @@
    }
    // end
    custombutton. buttonConstructor (this);
-   this. prototype = {};
   ]]>
  </constructor>
 
@@ -514,7 +511,7 @@
   ]]>
  </handler>
 
- <handler event="mousedown">
+ <handler event="click">
   <![CDATA[
    custombutton. buttonContext (event, this);
   ]]>
@@ -540,7 +537,6 @@
    }
    // end
    custombutton. buttonConstructor (this);
-   this. prototype = {};
   ]]>
  </constructor>
 
@@ -687,7 +683,7 @@
   ]]>
  </handler>
 
- <handler event="mousedown">
+ <handler event="click">
   <![CDATA[
    custombutton. buttonContext (event, this);
   ]]>

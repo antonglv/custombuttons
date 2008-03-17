@@ -157,7 +157,7 @@
 		]]>
 	</handler>
 	
-	<handler event="mousedown">
+	<handler event="click">
 		<![CDATA[
 			custombutton. buttonContext (event, this);
 		]]>
