@@ -230,7 +230,7 @@ Custombuttons. prototype =
 			oItem. setAttribute ("cb-accelkey", values. accelkey);
 		var code = values. code || "";
 		var initCode = values. initCode || "";
-		var Help = values. help || "";
+		var Help = values. help || values. Help || "";
 		oItem. setAttribute ("cb-oncommand", code);
 		oItem. setAttribute ("cb-init", initCode);
 		oItem. setAttribute ("Help", Help);
@@ -566,8 +566,7 @@ Custombuttons. prototype =
 	
 	execute_oncommand_code: function (code, button)
 	{ //checked
-		var x = new Function (code);
-		x. apply (button);
+		custombutton. buttonCbExecuteCode ({}, button, code);
 	},
 	
 	saveButtonsToProfile: function ()
