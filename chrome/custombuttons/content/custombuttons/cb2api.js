@@ -1,17 +1,3 @@
-    function dLOG (text)
-    {
-          var consoleService = Components. classes ["@mozilla.org/consoleservice;1"]. getService (Components. interfaces. nsIConsoleService);
-          consoleService. logStringMessage (text);
-    }
-    function dEXTLOG (aMessage, aSourceName, aSourceLine, aLineNumber,
-              aColumnNumber, aFlags, aCategory)
-    {
-      var consoleService = Components. classes ["@mozilla.org/consoleservice;1"]. getService (Components. interfaces. nsIConsoleService);
-      var scriptError = Components. classes ["@mozilla.org/scripterror;1"]. createInstance (Components. interfaces. nsIScriptError);
-      scriptError. init (aMessage, aSourceName, aSourceLine, aLineNumber,
-                 aColumnNumber, aFlags, aCategory);
-      consoleService. logMessage (scriptError);
-    }
 var CB2const = //{{{
 {
   bFieldSepHack: "] [", // No Translation Please
@@ -321,7 +307,6 @@ custombuttons.getCbContextObj = function ( oBtn ) //{{{
   oId:"",
   nId:"",
   OurCount:{},
-  aElements:[],
   listener:function(){},
   aItemIdx:["id","label","image","oncommand","command","acceltext","accesskey","allowevents",
   "autocheck","checked","crop","description","disabled","key", "name",
@@ -532,7 +517,7 @@ custombuttons.getCbContextObj = function ( oBtn ) //{{{
    var ct = this;
    var sTemp = "";
    if ( ct.mCtxtSub ) {
-    var oRef = {}
+    var oRet = {}
     var newItem = this. constructItem (oNew, false);
     oRet = ct.oMenu.insertBefore(newItem, oChildNode);
     ct.OurCount.inc();

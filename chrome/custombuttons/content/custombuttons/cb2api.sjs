@@ -227,7 +227,6 @@ custombuttons.getCbContextObj = function ( oBtn ) //{{{
 		oId:"",
 		nId:"",
 		OurCount:{},
-		aElements:[],
 		listener:function(){},
 		aItemIdx:["id","label","image","oncommand","command","acceltext","accesskey","allowevents",
 		"autocheck","checked","crop","description","disabled","key", "name",
