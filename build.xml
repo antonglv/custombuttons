@@ -89,6 +89,7 @@ Define it in build.properties (don't forget about double back slashes)</fail>
 			 compress="false" level="0"> <!-- and no 7-zip needed now -->
 			<fileset dir="${basedir}/chrome/${jarname}">
 				<include name="**/*.*"/>
+				<exclude name="**/Thumbs.db"/>
 				<exclude name="**/*.sjs"/>
 				<exclude name="**/*.hjs"/>
 				<exclude name="**/*.ijs"/>
