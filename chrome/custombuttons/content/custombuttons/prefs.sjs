@@ -42,8 +42,10 @@ Prefs. prototype =
 	sizeWindowToContent: function ()
 	{
 		var oDialog = ELEMENT ("custombuttonsSettingsDialog");
-		this. removeAttribute (oDialog, "width");
-		this. removeAttribute (oDialog, "height");
+		if (oDialog. hasAttribute ("width"))
+			this. removeAttribute (oDialog, "width");
+		if (oDialog. hasAttribute ("height"))
+			this. removeAttribute (oDialog, "height");
 		window. sizeToContent ();
 	},
 
