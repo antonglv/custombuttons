@@ -153,7 +153,7 @@
  <method name="cbExecuteCode">
   <body>
    <![CDATA[
-    custombutton. buttonCbExecuteCode (this);
+    custombutton. buttonCommand ({}, this);
    ]]>
   </body>
  </method>
@@ -325,7 +325,7 @@
  <method name="cbExecuteCode">
   <body>
    <![CDATA[
-    custombutton. buttonCbExecuteCode (this);
+    custombutton. buttonCommand ({}, this);
    ]]>
   </body>
  </method>
@@ -497,7 +497,7 @@
  <method name="cbExecuteCode">
   <body>
    <![CDATA[
-    custombutton. buttonCbExecuteCode (this);
+    custombutton. buttonCommand ({}, this);
    ]]>
   </body>
  </method>
@@ -669,7 +669,7 @@
  <method name="cbExecuteCode">
   <body>
    <![CDATA[
-    custombutton. buttonCbExecuteCode (this);
+    custombutton. buttonCommand ({}, this);
    ]]>
   </body>
  </method>
