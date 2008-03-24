@@ -1,0 +1,9 @@
+@namespace url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul");
+
+.console-error-source[href^='custombutton://buttons/']{
+	-moz-binding: url(chrome://custombuttons/content/custombuttonsConsoleBindings.xml#console-error-source);
+}
+
+richlistitem[href^='custombutton://buttons/']{
+	-moz-binding: url(chrome://custombuttons/content/custombuttonsConsoleBindings.xml#console2-error-source);
+}
