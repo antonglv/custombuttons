@@ -67,11 +67,6 @@ function getWindow (node)
 }
 // end Adblock Plus code
 
-function wrapNode (insecNode)
-{
- return fakeFactory. createInstance (insecNode, Components. interfaces. nsISupports);
-}
-
 function cbContentPolicyComponent () {}
 cbContentPolicyComponent. prototype =
 {
