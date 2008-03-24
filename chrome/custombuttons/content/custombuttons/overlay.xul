@@ -14,6 +14,10 @@
 
 	<popupset id="mainPopupSet">
 		<popup id="custombuttons-contextpopup">
+			<menuitem id="custombuttons-contextpopup-customize"
+					  accesskey="&viewCustomizeToolbar.accesskey;"
+					  command="cmd_CustomizeToolbars"
+					  label="&viewCustomizeToolbar.label;"/>
 			<menu id="custombuttons-contextpopup-subCall"
 				  label="&custombuttons.buttonPopup.subCall;">
 				<menupopup id="custombuttons-contextpopup-sub">
@@ -25,12 +29,6 @@
 			</menu>
 		</popup>
 		
-		<popup id="custombuttons-contextpopup-pri">
-			<menuitem id="custombuttons-contextpopup-customize"
-					  accesskey="&viewCustomizeToolbar.accesskey;"
-					  command="cmd_CustomizeToolbars"
-					  label="&viewCustomizeToolbar.label;"/>
-		</popup>
 	</popupset>
 
 	<menupopup id="menu_viewPopup">

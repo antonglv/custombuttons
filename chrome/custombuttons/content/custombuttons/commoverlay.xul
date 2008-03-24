@@ -8,50 +8,56 @@
 
 	<popup id="custombuttons-contextpopup-sub">
 		<menuitem id="custombuttons-contextpopup-edit-sub"
-				  observes="custombuttons-contextpopup-edit-pri"/>
-		<menuitem id="custombuttons-contextpopup-remove-sub"
-				  observes="custombuttons-contextpopup-remove-pri"/>
-		<menuseparator id="custombuttons-contextpopup-separator1-sub"/>
-		<menuitem id="custombuttons-contextpopup-clone-sub"
-				  observes="custombuttons-contextpopup-clone-pri"/>
-		<menuitem id="custombuttons-contextpopup-copyURI-sub"
-				  observes="custombuttons-contextpopup-copyURI-pri"/>
-		<menuseparator id="custombuttons-contextpopup-separator2-sub"/>
-		<menuitem id="custombuttons-contextpopup-updateButton-sub"
-				  observes="custombuttons-contextpopup-updateButton-pri"/>
-		<menuitem id="custombuttons-contextpopup-bookmarkButton-sub"
-				  observes="custombuttons-contextpopup-bookmarkButton-pri"/>
-		<menuitem id="custombuttons-contextpopup-buttonHelp-sub"
-				  observes="custombuttons-contextpopup-buttonHelp-pri"/>
-		<menuseparator id="custombuttons-contextpopup-separator3-sub"
-					   observes="custombuttons-contextpopup-separator3-pri"/>
-	</popup>
-
-	<menupopup id="custombuttons-contextpopup-pri">
-		<menuitem id="custombuttons-contextpopup-edit-pri"
 				  label="&custombuttons.buttonPopup.edit;"
 				  oncommand="custombuttons.editButton();"/>
-		<menuitem id="custombuttons-contextpopup-remove-pri"
+		<menuitem id="custombuttons-contextpopup-remove-sub"
 				  label="&custombuttons.buttonPopup.remove;"
 				  oncommand="custombuttons.doButtonOperation('remove');"/>
-		<menuseparator id="custombuttons-contextpopup-separator1-pri"/>
-		<menuitem id="custombuttons-contextpopup-clone-pri"
+		<menuseparator id="custombuttons-contextpopup-separator1-sub"/>
+		<menuitem id="custombuttons-contextpopup-clone-sub"
 				  label="&custombuttons.buttonPopup.clone;"
 				  oncommand="custombuttons.doButtonOperation('clone');"/>
-		<menuitem id="custombuttons-contextpopup-copyURI-pri"
+		<menuitem id="custombuttons-contextpopup-copyURI-sub"
 				  label="&custombuttons.buttonPopup.copyURI;"
 				  oncommand="custombuttons.copyURI();"/>
-		<menuseparator id="custombuttons-contextpopup-separator2-pri"/>
-		<menuitem id="custombuttons-contextpopup-updateButton-pri"
+		<menuseparator id="custombuttons-contextpopup-separator2-sub"/>
+		<menuitem id="custombuttons-contextpopup-updateButton-sub"
 				  label="&custombuttons.buttonPopup.update;"
 				  oncommand="custombuttons.updateButton();"/>
-		<menuitem id="custombuttons-contextpopup-bookmarkButton-pri"
+		<menuitem id="custombuttons-contextpopup-bookmarkButton-sub"
 				  label="&custombuttons.buttonPopup.bookmark;"
 				  oncommand="custombuttons.bookmarkButton();"/>
-		<menuitem id="custombuttons-contextpopup-buttonHelp-pri"
+		<menuitem id="custombuttons-contextpopup-buttonHelp-sub"
 				  label="&custombuttons.buttonPopup.help;"
 				  oncommand="custombuttons.uChelpButton();"/>
-		<menuseparator id="custombuttons-contextpopup-separator3-pri"/>
+		<menuseparator id="custombuttons-contextpopup-separator3-sub"/>
+	</popup>
+
+	<menupopup id="custombuttons-contextpopup">
+		<menuitem id="custombuttons-contextpopup-edit"
+				  label="&custombuttons.buttonPopup.edit;"
+				  oncommand="custombuttons.editButton();"/>
+		<menuitem id="custombuttons-contextpopup-remove"
+				  label="&custombuttons.buttonPopup.remove;"
+				  oncommand="custombuttons.doButtonOperation('remove');"/>
+		<menuseparator id="custombuttons-contextpopup-separator1"/>
+		<menuitem id="custombuttons-contextpopup-clone"
+				  label="&custombuttons.buttonPopup.clone;"
+				  oncommand="custombuttons.doButtonOperation('clone');"/>
+		<menuitem id="custombuttons-contextpopup-copyURI"
+				  label="&custombuttons.buttonPopup.copyURI;"
+				  oncommand="custombuttons.copyURI();"/>
+		<menuseparator id="custombuttons-contextpopup-separator2"/>
+		<menuitem id="custombuttons-contextpopup-updateButton"
+				  label="&custombuttons.buttonPopup.update;"
+				  oncommand="custombuttons.updateButton();"/>
+		<menuitem id="custombuttons-contextpopup-bookmarkButton"
+				  label="&custombuttons.buttonPopup.bookmark;"
+				  oncommand="custombuttons.bookmarkButton();"/>
+		<menuitem id="custombuttons-contextpopup-buttonHelp"
+				  label="&custombuttons.buttonPopup.help;"
+				  oncommand="custombuttons.uChelpButton();"/>
+		<menuseparator id="custombuttons-contextpopup-separator3"/>
 	</menupopup>
 
     <stringbundleset id="cbStringBundleSet">

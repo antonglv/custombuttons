@@ -16,6 +16,10 @@
 	
 	<popupset id="calendar-popupset">
 		<popup id="custombuttons-contextpopup">
+			<menuitem id="custombuttons-contextpopup-customize"
+					  accesskey="&calendar.context.customize.accesskey;"
+					  command="cmd_CustomizeToolbars"
+					  label="&calendar.context.customize.label;"/>
 			<menu id="custombuttons-contextpopup-subCall"
 				  label="&custombuttons.buttonPopup.subCall;">
 				<menupopup id="custombuttons-contextpopup-sub">
@@ -27,12 +31,6 @@
 			</menu>
 		</popup>
 		
-		<popup id="custombuttons-contextpopup-pri">
-			<menuitem id="custombuttons-contextpopup-customize"
-					  accesskey="&calendar.context.customize.accesskey;"
-					  command="cmd_CustomizeToolbars"
-					  label="&calendar.context.customize.label;"/>
-		</popup>
 	</popupset>
 
 	<menupopup id="menu_viewPopup">
