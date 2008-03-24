@@ -77,25 +77,9 @@ var custombutton =
   {
    while (oBtn. hasChildNodes ())
     oBtn. removeChild (oBtn. childNodes [0]);
-   this. checkBind ();
-   try
-   {
-    (new Function (oBtn. cbInitCode)). apply (oBtn);
-   }
-   catch (e)
-   {
-    var msg = "Custom Buttons error.]" +
-    "[ Event: Initialization]" +
-    "[ Button name: " +
-    oBtn. getAttribute ("label") +
-    "]" +
-    "[ Button ID: " +
-    oBtn. getAttribute ("id") +
-    "]" +
-    "[ " +
-    e;
-    throw new Error (msg);;
-   }
+   oBtn. _initPhase = true;
+   this. buttonCbExecuteCode ({}, oBtn, oBtn. cbInitCode);
+   oBtn. _initPhase = false;
   }
   oBtn. setAttribute ("initialized", "true");
  },
@@ -218,66 +202,41 @@ var custombutton =
    return this. buttonGetOldFormatURI (oBtn);
  },
 
- setContextMenuVisibility: function (oBtn)
- {
-  if (oBtn. parentNode. nodeName != "toolbar")
-   return;
-  var nCurrentButtonNum = oBtn. id. replace (/custombuttons-button/, "");
-  var sCurrentButtonMenuitemPrefix = "Cb2-" + nCurrentButtonNum + "-";
-  var bPrimary = (!oBtn. _ctxtObj) || (!oBtn. _ctxtObj. mCtxtSub);
-  if (bPrimary)
-   oBtn. setAttribute ("context", "custombuttons-contextpopup-pri");
-  else
-   oBtn. setAttribute ("context", "custombuttons-contextpopup");
-  var oPrimaryContextMenu = document. getElementById ("custombuttons-contextpopup");
-  var aChildren = oPrimaryContextMenu. childNodes;
-  var sMenuitemId;
-  for (var i = 0; i < aChildren. length; i++)
-  {
-   if (aChildren [i]. nodeName != "menu")
-   {
-    sMenuitemId = aChildren [i]. id;
-    if (sMenuitemId. indexOf (sCurrentButtonMenuitemPrefix) == 0)
-     aChildren [i]. hidden = bPrimary;
-    else
-     aChildren [i]. hidden = true;
-   }
-  }
-        var helpButtonMenuitem = document. getElementById ("custombuttons-contextpopup-buttonHelp-pri");
-        var bHasHelp = oBtn. hasAttribute ("help") || oBtn. hasAttribute ("Help");
-        helpButtonMenuitem. setAttribute ("hidden", bHasHelp? "false": "true");
-  var updateButtonMenuitem = document. getElementById ("custombuttons-contextpopup-updateButton-pri");
-  var bShouldHideUpdateMenuitem = true;
-  try
-  {
-   var uri = new CustombuttonsURIParser (custombuttonsUtils. gClipboard. read ());
-   bShouldHideUpdateMenuitem = false;
-  }
-  catch (e) {}
-  updateButtonMenuitem. setAttribute ("hidden", bShouldHideUpdateMenuitem);
-  var bShouldHideSeparator = (!bHasHelp && bShouldHideUpdateMenuitem);
-  if (document. getElementById ("custombuttons-contextpopup-bookmarkButton-pri"))
-   bShouldHideSeparator = false;
-  var oSeparator = document. getElementById ("custombuttons-contextpopup-separator3-pri");
-  oSeparator. setAttribute ("hidden", bShouldHideSeparator);
- },
-
-    buttonContext: function (event, oBtn)
-    {
-  if ((event. button == 2) && event. shiftKey)
-  {
-   oBtn. setAttribute ("context", "custombuttons-contextpopup-pri");
-   event. stopPropagation ();
-   return;
-  }
-  this. setContextMenuVisibility (oBtn);
-    },
-
  buttonCbExecuteCode: function (event, oButton, code)
  {
   var scode = "var event = arguments [0];\n" + code;
   this. checkBind ();
-  (new Function (scode)). apply (oButton, [event]);
+  try
+  {
+   (new Function (scode)). apply (oButton, [event]);
+  }
+  catch (oError)
+  {
+   if (oError. stack)
+   {
+    var n1 = oError. lineNumber;
+    var aStack = oError. stack. split ("\n");
+    var aMatch;
+    for (var i = 0; i < aStack. length; i++)
+    {
+     aMatch = aStack [i]. match (/\(\[.*?\],\[.*?\],".*"\)@.*\:(\d+)$/);
+     if (aMatch)
+      break;
+    }
+    var n2 = aMatch? aMatch [1]: 0;
+    var oCBError = new Error ();
+    oCBError. name = oError. name;
+    oCBError. message = oError. message;
+    var sFakeFileName = "custombutton://buttons/";
+    sFakeFileName += oButton. _initPhase? "init/": "code/";
+    oCBError. fileName = sFakeFileName + oButton. id;
+    oCBError. lineNumber = n1 - n2;
+    oCBError. stack = aStack. splice (0, i? (i - 1): 0). join ("\n");
+    throw (oCBError);
+   }
+   else
+    throw (oError);
+  }
  },
 
  // TODO: check for code evaluation construction. Carefully check.
