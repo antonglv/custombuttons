@@ -354,7 +354,7 @@ custombuttons.getCbContextObj = function ( oBtn ) //{{{
 		**/
   init:function ( oBtn ) //{{{
   {
-   oBtn. _ctxtObj = this;
+   //oBtn. _ctxtObj = this;
    this. oButton = oBtn;
    var ct = this;
    ct.BtnIdNum = custombuttons. getNumber( oBtn.id );
@@ -383,8 +383,8 @@ custombuttons.getCbContextObj = function ( oBtn ) //{{{
 		**/
   setSub:function ( ) //{{{
   {
+   this. oButton. _ctxtObj = true;
    this. mCtxtSub = true;
-   this. oButton. setAttribute ("context", "custombuttons-contextpopup");
   }, //}}} End Method setSub(  )
   /**  setPri(  )
 
@@ -403,8 +403,8 @@ custombuttons.getCbContextObj = function ( oBtn ) //{{{
 		**/
   setPri:function ( ) //{{{
   {
+   this. oButton. _ctxtObj = false;
    this. mCtxtSub = false;
-   this. oButton. setAttribute ("context", "custombuttons-contextpopup-pri");
   }, //}}} End Method setPri(  )
   /**  getItem(  )
 
@@ -792,6 +792,8 @@ custombuttons.gQuot = { //{{{
  {
   if ((evt. button == 2) && evt. shiftKey)
    return;
+  if (evt. target. _cbcontext)
+   return;
   evt.preventDefault();
   if (evt.target.hasAttribute("initialized") && evt.target.getAttribute("initialized") == "false") return;
   switch (evt.type)
@@ -975,7 +977,6 @@ custombuttons.gQuot = { //{{{
   if ( typeof menuId != "string") menuId = "custombuttons-contextpopup";
   var popup = document.getElementById( menuId ); // Get the menu
   document.popupNode = node; // Post node to document.
-  custombutton. setContextMenuVisibility (node);
   if (typeof popup.openPopup == "function") { // Test for new popup function
    var x = node.boxObject.width/1.6; // Set x OffSet
    var y = node.boxObject.height/1.6; // Set y OffSet
@@ -1066,7 +1067,7 @@ custombuttons.getButtonParameters2 = function ( num ) //{{{
  var but1 = this. getButtonById (num);
  var but = document.getElementById( "custombuttons-button"+num );
  if (!but) return false;
- var sHelp = but.getAttribute("Help") || but.getAttribute("help") || ""
+ var sHelp = but.getAttribute("Help") || but.getAttribute("help") || "";
  var ret = {
   "name": but.getAttribute("label")||"",
   "image": but.getAttribute("image")||"",
