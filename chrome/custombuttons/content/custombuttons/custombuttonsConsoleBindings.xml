@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+
+<bindings id="custombuttonsConsoleBindings"
+          xmlns="http://www.mozilla.org/xbl"
+          xmlns:xul="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+          xmlns:xbl="http://www.mozilla.org/xbl">
+
+	<binding id="console-error-source" extends="xul:box">
+		<content>
+			<xul:label class="text-link" xbl:inherits="href,value=href" crop="right"/>
+		</content>
+		
+		<handlers>
+			<handler event="click" phase="capturing" button="0" preventdefault="true">
+				<![CDATA[
+					var url = this. getAttribute ("href");
+					var nButtonNumber = url. match (/(\d+)/) [0];
+					var nLineNumber = this. getAttribute ("line");
+					var sPhase = url. match (/custombutton\:\/\/buttons\/(\S+)\/.*/) [1];
+					var os = Components. classes ["@mozilla.org/observer-service;1"].
+							 getService (Components. interfaces. nsIObserverService);
+					os. notifyObservers
+					(
+						null,
+						"custombuttons:69423527-65a1-4b8f-bd7a-29593fc46d27:open",
+						nButtonNumber + ":" + nLineNumber + ":" + sPhase
+					);
+				]]>
+			</handler>
+		</handlers>
+	</binding>
+	
+	<binding id="console2-error-source" extends="chrome://console2/content/console2.xml#item">
+		<handlers>
+			<handler event="click" phase="capturing" button="0" preventdefault="true">
+				<![CDATA[
+					event. stopPropagation ();
+					var url = this. getAttribute ("href");
+					var nButtonNumber = url. match (/(\d+)/) [0];
+					var nLineNumber = this. getAttribute ("line");
+					var sPhase = url. match (/custombutton\:\/\/buttons\/(\S+)\/.*/) [1];
+					var os = Components. classes ["@mozilla.org/observer-service;1"].
+							 getService (Components. interfaces. nsIObserverService);
+					os. notifyObservers
+					(
+						null,
+						"custombuttons:69423527-65a1-4b8f-bd7a-29593fc46d27:open",
+						nButtonNumber + ":" + nLineNumber + ":" + sPhase
+					);
+				]]>
+			</handler>
+		</handlers>
+	</binding>
+
+</bindings>
