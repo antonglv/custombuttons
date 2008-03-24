@@ -121,6 +121,27 @@
      ]]>
     </body>
    </method>
+   <method name="selectLine">
+   	<parameter name="lineNumber"/>
+	<body>
+		<![CDATA[
+			var lines = this. getLines ();
+			var line = lines [lineNumber - 1];
+			this. selectionStart = line [1] - line [0]. length - 1;
+			this. selectionEnd = line [1];
+		]]>
+	</body>
+   </method>
+   <method name="scrollTo">
+   	<parameter name="lineNumber"/>
+	<body>
+		<![CDATA[
+			var lines = this. getLines (). length;
+			var sh = this. inputField. scrollHeight;
+			this. inputField. scrollTop = Math. floor (sh / lines) * (lineNumber - 1);
+		]]>
+	</body>
+   </method>
    <method name="setLines">
     <parameter name="linesArr"/>
     <body>
