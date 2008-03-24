@@ -60,17 +60,18 @@
     </rows>
   </grid>
 
-  <tabbox  flex="1">
+  <tabbox  flex="1" id="custombuttons-editbutton-tabbox">
     <tabs>
-      <tab label="&editor.code;" tooltiptext="&editor.code.tooltiptext;"/>
-      <tab label="&editor.initCode;"
+      <tab id="code-tab"
+	  	   label="&editor.code;" tooltiptext="&editor.code.tooltiptext;"/>
+      <tab id = "init-tab" label="&editor.initCode;"
          tooltiptext="&editor.initCode.tooltiptext;"/>
       <tab label="&editor.dialog.help;"
          tooltiptext="&editor.dialog.help;"/>
       <tab label="&editor.buttonSettings;"
          tooltiptext="&editor.buttonSettings.tooltiptext;"/>
     </tabs>
-    <tabpanels flex="1" >
+    <tabpanels flex="1">
       <textbox class="custombuttons-editor-codeBox"
            id="code" multiline="true" flex="1"
            value="&editor.code.defaultValue;"/>
