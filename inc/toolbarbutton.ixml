@@ -109,6 +109,7 @@
 	</property>
 	
 	<field name="_cbCommand">null</field>
+	<field name="_initPhase">false</field>
 	
 	<property name="cbCommand">
 		<getter>
@@ -148,18 +149,14 @@
 		</body>
 	</method>
 	
+	<field name="_ctxtObj">false</field>
+	
 </implementation>
 
 <handlers>
 	<handler event="command">
 		<![CDATA[
 			custombutton. buttonCommand (event, this);
-		]]>
-	</handler>
-	
-	<handler event="click">
-		<![CDATA[
-			custombutton. buttonContext (event, this);
 		]]>
 	</handler>
 </handlers>
