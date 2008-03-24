@@ -1,5 +1,8 @@
 Changelog
 ==============
+0.0.2.9
+# Fixed: user specified context menu doesn't work
++ Added: new custom buttons debug facility - js console shows correct number for error line and button editor can be opened just from js console
 0.0.2.8
 * Hotkey doesn't runs button code bug fixed
 0.0.2.7
