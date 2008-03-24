@@ -62,14 +62,37 @@ function Editor () {}
 Editor. prototype =
 {
   CB: null,
+  button: null,
 
   onLoad: function ()
   {
     this. CB = window. opener. custombuttons;
     if (window. arguments [0])
     {
-      var button = window. arguments [0];
+  var button, lineNumber, phase;
+  if (window. arguments [0] instanceof XULElement)
+  {
+   button = window. arguments [0];
+  }
+  else
+  {
+   var buttonNumber = window. arguments [0] [0];
+   button = this. CB. getButtonByNumber (buttonNumber);
+   lineNumber = window. arguments [0] [1];
+   phase = window. arguments [0] [2];
+  }
+  this. button = button;
       this. setValues (button. parameters);
+   if (lineNumber)
+   {
+    var tabbox = document. getElementById ("custombuttons-editbutton-tabbox");
+    tabbox. selectedIndex = (phase == "code")? 0: 1;
+    var textboxId = (phase == "code")? "code": "initCode";
+    var textbox = document. getElementById (textboxId);
+    textbox. focus ();
+    textbox. selectLine (lineNumber);
+    textbox. scrollTo (lineNumber);
+   }
     }
     //назначение метода bind
     if ((typeof Function. prototype. bind == "undefined") &&
@@ -93,7 +116,6 @@ Editor. prototype =
 
   setValues: function (values)
   {
-   var id = window. arguments [0]. id;
     for each (var v in this. CB. buttonParameters)
         document. getElementById (v). value = (v != "help")? values [v]: (values ["Help"] || "");
     document. getElementById ("initInCustomizeToolbarDialog"). checked = values. mode && (values. mode & 1) || false;
@@ -107,9 +129,9 @@ Editor. prototype =
       values [v] = document. getElementById (v). value;
     values ["mode"] = document. getElementById ("initInCustomizeToolbarDialog"). checked? 1: 0;
     values ["mode"] |= document. getElementById ("disableDefaultKeyBehavior"). checked? 2: 0;
-    if (window. arguments [0])
+    if (this. button)
     {
-      var button = window. arguments [0];
+      var button = this. button;
       var num = this. CB. getNumber (button. id);
       this. CB. setButtonParameters (num, values, true);
     }
@@ -147,9 +169,9 @@ Editor. prototype =
 
   execute_oncommand_code: function ()
   {
-    if (window. arguments [0])
+    if (this. button)
     {
-      var button = window. arguments [0];
+      var button = this. button;
       var box = document. getElementById ("code");
       var code = box. value;
       this. CB. execute_oncommand_code (code, button);
@@ -167,7 +189,7 @@ TBEditor. prototype =
 {
   onLoad: function ()
   {
-    if (!window. arguments [0]) // new button
+    if (!this. button) // new button
       document. getElementById ("urlfield"). removeAttribute ("hidden");
     this. __super. prototype. onLoad. apply (this, []);
   },
