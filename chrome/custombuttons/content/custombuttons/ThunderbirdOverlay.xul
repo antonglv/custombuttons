@@ -16,6 +16,10 @@
 	 	<stringbundleset id="cbStringBundleSet"/>
 
 		<popup id="custombuttons-contextpopup">
+			<menuitem id="custombuttons-contextpopup-customize"
+					  accesskey="&customizeToolbar.accesskey;"
+					  label="&customizeToolbar.label;"
+					  oncommand="CustomizeMailToolbar('mail-toolbox');"/>
 			<menu id="custombuttons-contextpopup-subCall"
 				  label="&custombuttons.buttonPopup.subCall;">
 				<menupopup id="custombuttons-contextpopup-sub">
@@ -27,12 +31,6 @@
 			</menu>
 		</popup>
 		
-		<popup id="custombuttons-contextpopup-pri">
-			<menuitem id="custombuttons-contextpopup-customize"
-					  accesskey="&customizeToolbar.accesskey;"
-					  label="&customizeToolbar.label;"
-					  oncommand="CustomizeMailToolbar('mail-toolbox');"/>
-		</popup>
 	</window>
 
 	<menupopup id="menu_View_Popup">
@@ -45,6 +43,10 @@
 		<stringbundleset id="cbStringBundleSet"/>
 
 		<popup id="custombuttons-contextpopup">
+			<menuitem id="custombuttons-contextpopup-customize"
+					  accesskey="&customizeToolbar.accesskey;"
+					  label="&customizeToolbar.label;"
+					  oncommand="CustomizeMailToolbar('compose-toolbox');"/>
 			<menu id="custombuttons-contextpopup-subCall"
 				  label="&custombuttons.buttonPopup.subCall;">
 				<menupopup id="custombuttons-contextpopup-sub">
@@ -56,12 +58,6 @@
 			</menu>
 		</popup>
 		
-		<popup id="custombuttons-contextpopup-pri">
-			<menuitem id="custombuttons-contextpopup-customize"
-					  accesskey="&customizeToolbar.accesskey;"
-					  label="&customizeToolbar.label;"
-					  oncommand="CustomizeMailToolbar('compose-toolbox');"/>
-		</popup>
 	</window>
 
 </overlay>
