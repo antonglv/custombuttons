@@ -50,7 +50,7 @@ CustombuttonsURIParser. prototype =
             } // End for
             var sep = (idx >= 0)? az[idx] : "][";
             var ar = button_code.split( sep ); // Split button
-            if (ar.length == 5 || ar.length == 4 )
+            if (ar.length >= 3) // some old buttons may have only 3 fields
             {
                 values. name = ar [0] || "";
                 values. image = ar [1] || "";
@@ -290,14 +290,22 @@ Custombuttons. prototype =
   }
  },
 
+ getMenuitem: function (sName, bPrimary)
+ {
+  var sId = "custombuttons-contextpopup-" + sName + (bPrimary? "": "-sub");
+  return document. getElementById (sId);
+ },
+
  init: function ()
  {
-  var oMenuitem = document. getElementById ("custombuttons-contextpopup-customize");
+  var oMenuitem = this. getMenuitem ("customize", true);
   oMenuitem. parentNode. appendChild (oMenuitem);
-  oMenuitem = document. getElementById ("custombuttons-contextpopup-subCall");
+  oMenuitem = this. getMenuitem ("subCall", true);
   oMenuitem. parentNode. appendChild (oMenuitem);
-  oMenuitem = document. getElementById ("custombuttons-contextpopup-customize-sub");
+  oMenuitem = this. getMenuitem ("customize", false);
   oMenuitem. parentNode. appendChild (oMenuitem);
+  var oMenu = document. getElementById ("custombuttons-contextpopup");
+  oMenu. addEventListener ("popupshowing", this, true);
   var pref = "settings.editor.showApplyButton";
   var ps = Components. classes ["@mozilla.org/preferences-service;1"]. getService (Components. interfaces. nsIPrefService);
   ps = ps. QueryInterface (Components. interfaces. nsIPrefBranch);
@@ -319,15 +327,21 @@ Custombuttons. prototype =
   os. addObserver (this, "custombuttons:69423527-65a1-4b8f-bd7a-29593fc46d27:update", false);
   os. addObserver (this, "custombuttons:69423527-65a1-4b8f-bd7a-29593fc46d27:remove", false);
   os. addObserver (this, "custombuttons:69423527-65a1-4b8f-bd7a-29593fc46d27:clone", false);
+  os. addObserver (this, "custombuttons:69423527-65a1-4b8f-bd7a-29593fc46d27:open", false);
+  os. addObserver (this, "custombuttons:69423527-65a1-4b8f-bd7a-29593fc46d27:opened", false);
  },
 
  close: function ()
  {
   var os = Components. classes ["@mozilla.org/observer-service;1"]. getService (Components. interfaces. nsIObserverService);
+  os. removeObserver (this, "custombuttons:69423527-65a1-4b8f-bd7a-29593fc46d27:opened");
+  os. removeObserver (this, "custombuttons:69423527-65a1-4b8f-bd7a-29593fc46d27:open");
   os. removeObserver (this, "custombuttons:69423527-65a1-4b8f-bd7a-29593fc46d27:clone");
   os. removeObserver (this, "custombuttons:69423527-65a1-4b8f-bd7a-29593fc46d27:remove");
   os. removeObserver (this, "custombuttons:69423527-65a1-4b8f-bd7a-29593fc46d27:update");
   os. removeObserver (this, "custombuttons:69423527-65a1-4b8f-bd7a-29593fc46d27:added");
+  var oMenu = document. getElementById ("custombuttons-contextpopup");
+  oMenu. removeEventListener ("popupshowing", this, true);
   window. removeEventListener ("load", custombuttons, false);
   window. removeEventListener ("unload", custombuttons, false);
   window. removeEventListener ("keypress", custombuttons, true);
@@ -541,6 +555,11 @@ Custombuttons. prototype =
   this. saveButtonsToProfile ();
  },
 
+ getButtonByNumber: function (num)
+ {
+  return document. getElementById ("custombuttons-button" + num);
+ },
+
  installWebButton: function (uri)
  { //checked
   try
@@ -704,6 +723,54 @@ Custombuttons. prototype =
   }
  },
 
+ onPopupShowing: function (oEvent)
+ {
+  if (oEvent. originalTarget. id != "custombuttons-contextpopup")
+   return;
+  var oPopup = oEvent. target;
+  var oButton = oEvent. explicitOriginalTarget || document. popupNode;
+  var nCurrentButtonNum = oButton. id. replace (/custombuttons-button/, "");
+  var sCurrentButtonMenuitemPrefix = "Cb2-" + nCurrentButtonNum + "-";
+  var bPrimary = !oButton. _ctxtObj;
+  var oPrimaryContextMenu = document. getElementById ("custombuttons-contextpopup");
+  var aChildren = oPrimaryContextMenu. childNodes;
+  var sMenuitemId;
+  for (var i = 0; i < aChildren. length; i++)
+  {
+   if (aChildren [i]. nodeName != "menu")
+   {
+    sMenuitemId = aChildren [i]. id;
+    if (sMenuitemId. indexOf (sCurrentButtonMenuitemPrefix) == 0)
+     aChildren [i]. hidden = bPrimary;
+    else if (sMenuitemId. indexOf ("custombuttons-contextpopup-") == 0)
+     aChildren [i]. hidden = !bPrimary;
+    else
+     aChildren [i]. hidden = true;
+   }
+   else
+   {
+    aChildren [i]. hidden = bPrimary;
+   }
+  }
+        var helpButtonMenuitem = this. getMenuitem ("buttonHelp", bPrimary);
+        var bHasHelp = oButton. hasAttribute ("help") || oButton. hasAttribute ("Help");
+        helpButtonMenuitem. setAttribute ("hidden", bHasHelp? "false": "true");
+  var updateButtonMenuitem = this. getMenuitem ("updateButton", bPrimary);
+  var bShouldHideUpdateMenuitem = true;
+  try
+  {
+   var uri = new CustombuttonsURIParser (custombuttonsUtils. gClipboard. read ());
+   bShouldHideUpdateMenuitem = false;
+  }
+  catch (e) {}
+  updateButtonMenuitem. setAttribute ("hidden", bShouldHideUpdateMenuitem);
+  var bShouldHideSeparator = (!bHasHelp && bShouldHideUpdateMenuitem);
+  if (this. getMenuitem ("bookmarkButton", bPrimary))
+   bShouldHideSeparator = false;
+  var oSeparator = this. getMenuitem ("separator3", bPrimary);
+  oSeparator. setAttribute ("hidden", bShouldHideSeparator);
+ },
+
  /* EventHandler interface */
  handleEvent: function (event)
  {
@@ -718,9 +785,32 @@ Custombuttons. prototype =
    case "keypress":
     this. onKeyPress (event);
     break;
+   case "popupshowing":
+    this. onPopupShowing (event);
+    break;
    default:
     break;
   }
+ },
+
+ nCurrentOpened: null,
+ bWasOpenNotification: false,
+
+ openButton: function (nButtonNumber, nLineNumber, sPhase)
+ {
+  if (this. nCurrentOpened == nButtonNumber)
+  { // button already opened
+   this. nCurrentOpened = null;
+   return;
+  }
+  var oButton = document. getElementById ("custombuttons-button" + nButtonNumber);
+  if (!oButton)
+  {
+   this. bWasOpenNotification = true;
+   return; // nothing to open
+  }
+  this. fireNotification (null, "custombuttons:69423527-65a1-4b8f-bd7a-29593fc46d27:opened", nButtonNumber);
+  this. editButton ([nButtonNumber, nLineNumber, sPhase]);
  },
 
  /* nsIObserver interface */
@@ -743,6 +833,16 @@ Custombuttons. prototype =
     break;
    case "custombuttons:69423527-65a1-4b8f-bd7a-29593fc46d27:clone":
     this. doButtonOperation ("clone", sData);
+    break;
+   case "custombuttons:69423527-65a1-4b8f-bd7a-29593fc46d27:open":
+    var aData = sData. split (":");
+    this. openButton (aData [0], aData [1], aData [2]);
+    break;
+   case "custombuttons:69423527-65a1-4b8f-bd7a-29593fc46d27:opened":
+    if (!this. bWasOpenNotification)
+     this. nCurrentOpened = sData;
+    else
+     this. bWasOpenNotification = false;
     break;
    default:
     break;
@@ -790,7 +890,7 @@ CustombuttonsTB. prototype =
  init: function ()
  {
   this. __super. prototype. init. apply (this, [null]);
-  var oBookmarkButtonMenuitem = document. getElementById ("custombuttons-contextpopup-bookmarkButton-pri");
+  var oBookmarkButtonMenuitem = document. getElementById ("custombuttons-contextpopup-bookmarkButton");
   oBookmarkButtonMenuitem. parentNode. removeChild (oBookmarkButtonMenuitem);
   var oBookmarkButtonMenuitem = document. getElementById ("custombuttons-contextpopup-bookmarkButton-sub");
   oBookmarkButtonMenuitem. parentNode. removeChild (oBookmarkButtonMenuitem);
