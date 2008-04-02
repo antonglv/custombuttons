@@ -1,3 +1,17 @@
+    function dLOG (text)
+    {
+          var consoleService = Components. classes ["@mozilla.org/consoleservice;1"]. getService (Components. interfaces. nsIConsoleService);
+          consoleService. logStringMessage (text);
+    }
+    function dEXTLOG (aMessage, aSourceName, aSourceLine, aLineNumber,
+              aColumnNumber, aFlags, aCategory)
+    {
+      var consoleService = Components. classes ["@mozilla.org/consoleservice;1"]. getService (Components. interfaces. nsIConsoleService);
+      var scriptError = Components. classes ["@mozilla.org/scripterror;1"]. createInstance (Components. interfaces. nsIScriptError);
+      scriptError. init (aMessage, aSourceName, aSourceLine, aLineNumber,
+                 aColumnNumber, aFlags, aCategory);
+      consoleService. logMessage (scriptError);
+    }
 function CustombuttonsURIParser (uri)
 {
  this. parse (uri);
@@ -158,6 +172,7 @@ Custombuttons. prototype =
   var numbers = this. ps. getChildList ("", {});
   if (numbers. length > 0)
   {
+   dump ('\nfound buttons in prefs.js...');
    var buttons = new Object ();
    for (var i = 0; i < numbers. length; i++)
    {
@@ -186,6 +201,7 @@ Custombuttons. prototype =
    //deleting buttons from prefs.js, now they would be saved in the profile
    for (var i = 0; i < numbers. length; i++)
    {
+    dump ("\ndeleting button #" + i);
     this. ps. deleteBranch (numbers [i]);
    }
    this. saveButtonsToProfile ();
@@ -216,6 +232,7 @@ Custombuttons. prototype =
   oItem. setAttribute ("context", "custombuttons-contextpopup");
   oItem. setAttribute ("id", "custombuttons-button" + num);
   oItem. setAttribute ("label", values. name || "");
+  oItem. setAttribute ("name", values. name || "");
   oItem. setAttribute ("tooltiptext", values. name || "");
   if (values. image && values. image. length != -1)
    oItem. setAttribute ("image", values. image);
@@ -602,6 +619,7 @@ Custombuttons. prototype =
    "id" : true,
    "label" : true,
    "image" : true,
+   "cb-name" : true,
    "cb-oncommand" : true,
    "cb-init" : true,
    "cb-mode" : true,
@@ -863,7 +881,7 @@ Custombuttons. prototype =
     bookmarkButton: function (oBtn)
     {
         var Button = (oBtn)? oBtn: document. popupNode;
-        this. makeBookmark (Button. URI, Button. label);
+        this. makeBookmark (Button. URI, Button. name);
     },
 
     makeBookmark: function (CbLink, sName)
@@ -920,7 +938,7 @@ CustombuttonsSB. prototype =
 {
  get gToolbox ()
  {
-  return document. getElementById ("calendar-toolbox"); // compose message
+  return document. getElementById ("calendar-toolbox"); // calendar
  },
 
  saveButtonsToProfile: function ()
@@ -954,6 +972,7 @@ const custombuttons = new custombuttonsFactory (). Custombuttons;
      changed by Anton 24.02.08
      TODO: refactor it
 	 UPDATED: 16.03.08 by Anton - uChelpButton should not use global clipboard
+	 UPDATED: 03.04.08 by Anton - now we have 'name' field in buttons
 **/
 custombuttons.uChelpButton = function ( oBtn ) //{{{
 {
@@ -962,10 +981,10 @@ custombuttons.uChelpButton = function ( oBtn ) //{{{
   var bId = this.getNumber(Button.id); // <---
   var str = Button.getAttribute( "Help" ).split( "[,]" )[0] || Button.getAttribute( "help" ).split( "," )[1];
 
-  var hlpTitle = document. getElementById ("cbStrings"). getString ("ButtonHelpTitle"). replace (/%s/gi, Button. label);
+  var hlpTitle = document. getElementById ("cbStrings"). getString ("ButtonHelpTitle"). replace (/%s/gi, Button. name);
   hlpTitle = hlpTitle. replace (/%y/gi, bId);
   var hlp = createMsg(hlpTitle);
-  str = str. replace (/\<label\>/gi, Button. label). replace (/\<id\>/gi, bId);
+  str = str. replace (/\<label\>/gi, Button. name). replace (/\<id\>/gi, bId);
   hlp. aMsg (str);
 }; //}}} End Method uChelpButton(  )
 

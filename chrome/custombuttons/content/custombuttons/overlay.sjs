@@ -221,6 +221,7 @@ Custombuttons. prototype =
 		oItem. setAttribute ("context", "custombuttons-contextpopup");
 		oItem. setAttribute ("id", "custombuttons-button" + num);
 		oItem. setAttribute ("label", values. name || "");
+		oItem. setAttribute ("name", values. name || "");
 		oItem. setAttribute ("tooltiptext", values. name || "");
 		if (values. image && values. image. length != -1)
 			oItem. setAttribute ("image", values. image);
@@ -607,6 +608,7 @@ Custombuttons. prototype =
 			"id"		   : true,
 			"label"		   : true,
 			"image"		   : true,
+			"cb-name"	   : true,
 			"cb-oncommand" : true,
 			"cb-init"	   : true,
 			"cb-mode"	   : true,
@@ -868,7 +870,7 @@ Custombuttons. prototype =
     bookmarkButton: function (oBtn)
     {
         var Button = (oBtn)? oBtn: document. popupNode;
-        this. makeBookmark (Button. URI, Button. label);
+        this. makeBookmark (Button. URI, Button. name);
     },
     
     makeBookmark: function (CbLink, sName)
@@ -925,7 +927,7 @@ CustombuttonsSB. prototype =
 {
 	get gToolbox ()
 	{
-		return ELEMENT ("calendar-toolbox"); // compose message
+		return ELEMENT ("calendar-toolbox"); // calendar
 	},
 	
 	saveButtonsToProfile: function ()
@@ -959,6 +961,7 @@ const custombuttons = new custombuttonsFactory (). Custombuttons;
      changed by Anton 24.02.08
      TODO: refactor it
 	 UPDATED: 16.03.08 by Anton - uChelpButton should not use global clipboard
+	 UPDATED: 03.04.08 by Anton - now we have 'name' field in buttons
 **/
 custombuttons.uChelpButton = function ( oBtn ) //{{{
 {
@@ -967,10 +970,10 @@ custombuttons.uChelpButton = function ( oBtn ) //{{{
   var bId = this.getNumber(Button.id); // <---
   var str = Button.getAttribute( "Help" ).split( "[,]" )[0] || Button.getAttribute( "help" ).split( "," )[1];
 
-  var hlpTitle = CB_STRING ("cbStrings", "ButtonHelpTitle", Button. label);
+  var hlpTitle = CB_STRING ("cbStrings", "ButtonHelpTitle", Button. name);
   hlpTitle = hlpTitle. replace (/%y/gi, bId);
   var hlp = createMsg(hlpTitle);
-  str = str. replace (/\<label\>/gi, Button. label). replace (/\<id\>/gi, bId);
+  str = str. replace (/\<label\>/gi, Button. name). replace (/\<id\>/gi, bId);
   hlp. aMsg (str);
 }; //}}} End Method uChelpButton(  )
 
