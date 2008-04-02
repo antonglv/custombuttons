@@ -1,9 +1,28 @@
+    function dLOG (text)
+    {
+          var consoleService = Components. classes ["@mozilla.org/consoleservice;1"]. getService (Components. interfaces. nsIConsoleService);
+          consoleService. logStringMessage (text);
+    }
+    function dEXTLOG (aMessage, aSourceName, aSourceLine, aLineNumber,
+              aColumnNumber, aFlags, aCategory)
+    {
+      var consoleService = Components. classes ["@mozilla.org/consoleservice;1"]. getService (Components. interfaces. nsIConsoleService);
+      var scriptError = Components. classes ["@mozilla.org/scripterror;1"]. createInstance (Components. interfaces. nsIScriptError);
+      scriptError. init (aMessage, aSourceName, aSourceLine, aLineNumber,
+                 aColumnNumber, aFlags, aCategory);
+      consoleService. logMessage (scriptError);
+    }
 var custombutton =
 {
     buttonConstructor: function (oBtn)
  {
   var cbd = Components. classes ["@xsms.nm.ru/custombuttons/cbkeymap;1"]. getService (Components. interfaces. cbIKeyMapService);
   cbd. Delete (oBtn. getAttribute ("id"));
+  if (!oBtn. hasAttribute ("cb-name"))
+  {
+   if (oBtn. hasAttribute ("label"))
+    oBtn. name = oBtn. getAttribute ("label");
+  }
   if (oBtn. hasAttribute ("cb-accelkey"))
   {
    cbd. Add

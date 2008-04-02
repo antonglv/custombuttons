@@ -6,6 +6,11 @@ var custombutton =
 	{
 		var cbd = SERVICE (CB_KEYMAP);
 		cbd. Delete (oBtn. getAttribute ("id"));
+		if (!oBtn. hasAttribute ("cb-name"))
+		{
+			if (oBtn. hasAttribute ("label"))
+				oBtn. name = oBtn. getAttribute ("label");
+		}
 		if (oBtn. hasAttribute ("cb-accelkey"))
 		{
 			cbd. Add
