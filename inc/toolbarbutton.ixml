@@ -100,12 +100,28 @@
 		</getter>
 	</property>
 	
+	<field name="_name">""</field>
+	
 	<property name="name">
 		<getter>
 			<![CDATA[
-				return this. getAttribute ("label");
+				if (this. hasAttribute ("cb-name"))
+					return this. getAttribute ("cb-name");
+				else
+					return this. _name;
 			]]>
 		</getter>
+		<setter>
+			<![CDATA[
+				if (!val)
+					return;
+				if (!this. hasAttribute ("label") ||
+					!this. getAttribute ("label"))
+					this. setAttribute ("label", val);
+				this. _name = val;
+				this. setAttribute ("cb-name", val);
+			]]>
+		</setter>
 	</property>
 	
 	<field name="_cbCommand">null</field>
