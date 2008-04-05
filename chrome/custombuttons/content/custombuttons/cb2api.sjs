@@ -231,7 +231,9 @@ custombuttons.getCbContextObj = function ( oBtn ) //{{{
 		aItemIdx:["id","label","image","oncommand","command","acceltext","accesskey","allowevents",
 		"autocheck","checked","crop","description","disabled","key", "name",
 		"tabindex","type","validate","value"],
-
+		
+		broadcasterId: "",
+		
 		/**
 		 * @author Anton
 		 */
@@ -252,6 +254,28 @@ custombuttons.getCbContextObj = function ( oBtn ) //{{{
 			return [];
 		},
 		
+		/**
+		 * @author Anton
+		 * this method calls only once, when gCtxtObject created
+		 */
+		createBroadcaster: function (nSuffix)
+		{
+			var sBroadcasterId = "custombuttons-buttonbroadcaster" + nSuffix;
+			this. broadcasterId = sBroadcasterId;
+			var sBroadcastersetId = "custombuttons-buttons-broadcasterset";
+			var oBroadcasterset = ELEMENT (sBroadcastersetId);
+			if (!oBroadcasterset) // maybe overlay don't loaded yet ?
+			{
+				oBroadcasterset = document. createElement ("broadcasterset");
+				oBroadcasterset. setAttribute ("id", sBroadcastersetId);
+				document. documentElement. appendChild (oBroadcasterset);
+			}
+			var oBroadcaster = document. createElement ("broadcaster");
+			oBroadcaster. setAttribute ("id", sBroadcasterId);
+			oBroadcaster. setAttribute ("observes", "custombuttons-contextbroadcaster-root");
+			oBroadcasterset. appendChild (oBroadcaster);
+		},
+		
 		// Methods
 		/**  init(   )
 		
@@ -267,6 +291,7 @@ custombuttons.getCbContextObj = function ( oBtn ) //{{{
 			this. oButton = oBtn;
 			var ct = this;
 			ct.BtnIdNum = custombuttons. getNumber( oBtn.id );
+			this. createBroadcaster (this. BtnIdNum);
 			ct.sIdPrefix = ct. ItemIdPre + ct. BtnIdNum + "-";
 			ct.OurCount = custombuttons. gCounter();
 			ct.oMenu = document. getElementById ("custombuttons-contextpopup");
@@ -345,6 +370,7 @@ custombuttons.getCbContextObj = function ( oBtn ) //{{{
 			var sIdPre = this. sIdPrefix;
 			var sTagName = oNew. label? "menuitem": "menuseparator";
 			var oNewItem = document. createElement (sTagName);
+			oNewItem. setAttribute ("observes", this. broadcasterId);
 			sIdPre += oNew. id || oNew. label || "separator";
 			sIdPre += this. OurCount [bInc? "inc": "get"] () [0];
 			oNew. id = sIdPre;
@@ -706,6 +732,8 @@ custombuttons.gQuot = { //{{{
 	**/
 	gShowPopup:function ( node, menuId ) //{{{
 	{
+		if (node. id. indexOf ("custombuttons-button") == 0)
+			custombutton. setContextMenuVisibility (node);
 		var position = "overlap";
 		if ( typeof menuId != "string") menuId = "custombuttons-contextpopup";
 		var popup = document.getElementById( menuId );        // Get the menu
