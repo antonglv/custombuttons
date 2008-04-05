@@ -185,6 +185,12 @@
    custombutton. buttonCommand (event, this);
   ]]>
  </handler>
+
+ <handler event="mousedown" phase="capturing">
+  <![CDATA[
+   custombutton. onMouseDown (event, this);
+  ]]>
+ </handler>
 </handlers>
 
   </binding>
@@ -368,6 +374,12 @@
  <handler event="command">
   <![CDATA[
    custombutton. buttonCommand (event, this);
+  ]]>
+ </handler>
+
+ <handler event="mousedown" phase="capturing">
+  <![CDATA[
+   custombutton. onMouseDown (event, this);
   ]]>
  </handler>
 </handlers>
@@ -555,6 +567,12 @@
    custombutton. buttonCommand (event, this);
   ]]>
  </handler>
+
+ <handler event="mousedown" phase="capturing">
+  <![CDATA[
+   custombutton. onMouseDown (event, this);
+  ]]>
+ </handler>
 </handlers>
 
   </binding>
@@ -738,6 +756,12 @@
  <handler event="command">
   <![CDATA[
    custombutton. buttonCommand (event, this);
+  ]]>
+ </handler>
+
+ <handler event="mousedown" phase="capturing">
+  <![CDATA[
+   custombutton. onMouseDown (event, this);
   ]]>
  </handler>
 </handlers>
