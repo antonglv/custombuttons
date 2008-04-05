@@ -14,14 +14,19 @@
 
 	 <window id="messengerWindow">
 	 	<stringbundleset id="cbStringBundleSet"/>
+		
+		<broadcasterset id="custombuttons-broadcasterset"/>
+		<broadcasterset id="custombuttons-buttons-broadcasterset"/>
 
 		<popup id="custombuttons-contextpopup">
 			<menuitem id="custombuttons-contextpopup-customize"
 					  accesskey="&customizeToolbar.accesskey;"
 					  label="&customizeToolbar.label;"
+					  observes="custombuttons-contextbroadcaster-primary"
 					  oncommand="CustomizeMailToolbar('mail-toolbox');"/>
 			<menu id="custombuttons-contextpopup-subCall"
-				  label="&custombuttons.buttonPopup.subCall;">
+				  label="&custombuttons.buttonPopup.subCall;"
+				  observes="custombuttons-contextbroadcaster-secondary">
 				<menupopup id="custombuttons-contextpopup-sub">
 					<menuitem id="custombuttons-contextpopup-customize-sub"
 							  accesskey="&customizeToolbar.accesskey;"
@@ -41,14 +46,19 @@
 
 	<window id="msgcomposeWindow">
 		<stringbundleset id="cbStringBundleSet"/>
+		
+		<broadcasterset id="custombuttons-broadcasterset"/>
+		<broadcasterset id="custombuttons-buttons-broadcasterset"/>
 
 		<popup id="custombuttons-contextpopup">
 			<menuitem id="custombuttons-contextpopup-customize"
 					  accesskey="&customizeToolbar.accesskey;"
 					  label="&customizeToolbar.label;"
+					  observes="custombuttons-contextbroadcaster-primary"
 					  oncommand="CustomizeMailToolbar('compose-toolbox');"/>
 			<menu id="custombuttons-contextpopup-subCall"
-				  label="&custombuttons.buttonPopup.subCall;">
+				  label="&custombuttons.buttonPopup.subCall;"
+				  observes="custombuttons-contextbroadcaster-secondary">
 				<menupopup id="custombuttons-contextpopup-sub">
 					<menuitem id="custombuttons-contextpopup-customize-sub"
 							  accesskey="&customizeToolbar.accesskey;"
