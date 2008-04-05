@@ -310,8 +310,6 @@ Custombuttons. prototype =
 		oMenuitem. parentNode. appendChild (oMenuitem);
 		oMenuitem = this. getMenuitem ("customize", false);
 		oMenuitem. parentNode. appendChild (oMenuitem);
-		var oMenu = ELEMENT ("custombuttons-contextpopup");
-		oMenu. addEventListener ("popupshowing", this, true);
 		var pref = "settings.editor.showApplyButton";
 		var ps = SERVICE (PREF);
 		ps = ps. QI (nsIPrefBranch);
@@ -346,8 +344,6 @@ Custombuttons. prototype =
 		os. removeObserver (this, CB_NOTIFICATION (REMOVE));
 		os. removeObserver (this, CB_NOTIFICATION (UPDATE));
 		os. removeObserver (this, CB_NOTIFICATION (ADDED));
-		var oMenu = ELEMENT ("custombuttons-contextpopup");
-		oMenu. removeEventListener ("popupshowing", this, true);
 		window. removeEventListener ("load", custombuttons, false);
 		window. removeEventListener ("unload", custombuttons, false);
 		window. removeEventListener ("keypress", custombuttons, true);
@@ -730,54 +726,6 @@ Custombuttons. prototype =
 		}
 	},
 	
-	onPopupShowing: function (oEvent)
-	{
-		if (oEvent. originalTarget. id != "custombuttons-contextpopup")
-			return;
-		var oPopup = oEvent. target;
-		var oButton = oEvent. explicitOriginalTarget || document. popupNode;
-		var nCurrentButtonNum = oButton. id. replace (/custombuttons-button/, "");
-		var sCurrentButtonMenuitemPrefix = "Cb2-" + nCurrentButtonNum + "-";
-		var bPrimary = !oButton. _ctxtObj;
-		var oPrimaryContextMenu = ELEMENT ("custombuttons-contextpopup");
-		var aChildren = oPrimaryContextMenu. childNodes;
-		var sMenuitemId;
-		for (var i = 0; i < aChildren. length; i++)
-		{
-			if (aChildren [i]. nodeName != "menu")
-			{
-				sMenuitemId = aChildren [i]. id;
-				if (sMenuitemId. indexOf (sCurrentButtonMenuitemPrefix) == 0)
-					aChildren [i]. hidden = bPrimary;
-				else if (sMenuitemId. indexOf ("custombuttons-contextpopup-") == 0)
-					aChildren [i]. hidden = !bPrimary;
-				else
-					aChildren [i]. hidden = true;
-			}
-			else
-			{
-				aChildren [i]. hidden = bPrimary;
-			}
-		}
-        var helpButtonMenuitem = this. getMenuitem ("buttonHelp", bPrimary);
-        var bHasHelp = oButton. hasAttribute ("help") || oButton. hasAttribute ("Help");
-        helpButtonMenuitem. setAttribute ("hidden", bHasHelp? "false": "true");
-		var updateButtonMenuitem = this. getMenuitem ("updateButton", bPrimary);
-		var bShouldHideUpdateMenuitem = true;
-		try
-		{
-			var uri = new CustombuttonsURIParser (custombuttonsUtils. gClipboard. read ());
-			bShouldHideUpdateMenuitem = false;
-		}
-		catch (e) {}
-		updateButtonMenuitem. setAttribute ("hidden", bShouldHideUpdateMenuitem);
-		var bShouldHideSeparator = (!bHasHelp && bShouldHideUpdateMenuitem);
-		if (this. getMenuitem ("bookmarkButton", bPrimary))
-			bShouldHideSeparator = false;
-		var oSeparator = this. getMenuitem ("separator3", bPrimary);
-		oSeparator. setAttribute ("hidden", bShouldHideSeparator);
-	},
-	
 	/* EventHandler interface */
 	handleEvent: function (event)
 	{
@@ -791,9 +739,6 @@ Custombuttons. prototype =
 				break;
 			case "keypress":
 				this. onKeyPress (event);
-				break;
-			case "popupshowing":
-				this. onPopupShowing (event);
 				break;
 			default:
 				break;

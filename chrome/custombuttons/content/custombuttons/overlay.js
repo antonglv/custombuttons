@@ -321,8 +321,6 @@ Custombuttons. prototype =
   oMenuitem. parentNode. appendChild (oMenuitem);
   oMenuitem = this. getMenuitem ("customize", false);
   oMenuitem. parentNode. appendChild (oMenuitem);
-  var oMenu = document. getElementById ("custombuttons-contextpopup");
-  oMenu. addEventListener ("popupshowing", this, true);
   var pref = "settings.editor.showApplyButton";
   var ps = Components. classes ["@mozilla.org/preferences-service;1"]. getService (Components. interfaces. nsIPrefService);
   ps = ps. QueryInterface (Components. interfaces. nsIPrefBranch);
@@ -357,8 +355,6 @@ Custombuttons. prototype =
   os. removeObserver (this, "custombuttons:69423527-65a1-4b8f-bd7a-29593fc46d27:remove");
   os. removeObserver (this, "custombuttons:69423527-65a1-4b8f-bd7a-29593fc46d27:update");
   os. removeObserver (this, "custombuttons:69423527-65a1-4b8f-bd7a-29593fc46d27:added");
-  var oMenu = document. getElementById ("custombuttons-contextpopup");
-  oMenu. removeEventListener ("popupshowing", this, true);
   window. removeEventListener ("load", custombuttons, false);
   window. removeEventListener ("unload", custombuttons, false);
   window. removeEventListener ("keypress", custombuttons, true);
@@ -741,54 +737,6 @@ Custombuttons. prototype =
   }
  },
 
- onPopupShowing: function (oEvent)
- {
-  if (oEvent. originalTarget. id != "custombuttons-contextpopup")
-   return;
-  var oPopup = oEvent. target;
-  var oButton = oEvent. explicitOriginalTarget || document. popupNode;
-  var nCurrentButtonNum = oButton. id. replace (/custombuttons-button/, "");
-  var sCurrentButtonMenuitemPrefix = "Cb2-" + nCurrentButtonNum + "-";
-  var bPrimary = !oButton. _ctxtObj;
-  var oPrimaryContextMenu = document. getElementById ("custombuttons-contextpopup");
-  var aChildren = oPrimaryContextMenu. childNodes;
-  var sMenuitemId;
-  for (var i = 0; i < aChildren. length; i++)
-  {
-   if (aChildren [i]. nodeName != "menu")
-   {
-    sMenuitemId = aChildren [i]. id;
-    if (sMenuitemId. indexOf (sCurrentButtonMenuitemPrefix) == 0)
-     aChildren [i]. hidden = bPrimary;
-    else if (sMenuitemId. indexOf ("custombuttons-contextpopup-") == 0)
-     aChildren [i]. hidden = !bPrimary;
-    else
-     aChildren [i]. hidden = true;
-   }
-   else
-   {
-    aChildren [i]. hidden = bPrimary;
-   }
-  }
-        var helpButtonMenuitem = this. getMenuitem ("buttonHelp", bPrimary);
-        var bHasHelp = oButton. hasAttribute ("help") || oButton. hasAttribute ("Help");
-        helpButtonMenuitem. setAttribute ("hidden", bHasHelp? "false": "true");
-  var updateButtonMenuitem = this. getMenuitem ("updateButton", bPrimary);
-  var bShouldHideUpdateMenuitem = true;
-  try
-  {
-   var uri = new CustombuttonsURIParser (custombuttonsUtils. gClipboard. read ());
-   bShouldHideUpdateMenuitem = false;
-  }
-  catch (e) {}
-  updateButtonMenuitem. setAttribute ("hidden", bShouldHideUpdateMenuitem);
-  var bShouldHideSeparator = (!bHasHelp && bShouldHideUpdateMenuitem);
-  if (this. getMenuitem ("bookmarkButton", bPrimary))
-   bShouldHideSeparator = false;
-  var oSeparator = this. getMenuitem ("separator3", bPrimary);
-  oSeparator. setAttribute ("hidden", bShouldHideSeparator);
- },
-
  /* EventHandler interface */
  handleEvent: function (event)
  {
@@ -802,9 +750,6 @@ Custombuttons. prototype =
     break;
    case "keypress":
     this. onKeyPress (event);
-    break;
-   case "popupshowing":
-    this. onPopupShowing (event);
     break;
    default:
     break;
@@ -868,15 +813,25 @@ Custombuttons. prototype =
  },
 
     /**  bookmarkButton(  )
+
       Author George Dunham
+
     
+
       Args:
+
       Returns: Nothing
+
       Scope:	 private
+
       Called:   from overlay.xul
+
       Purpose: Allows one to save a button as a bookmark
+
       UPDATED: 11/12/2007 to improve stability.
+
       changed by Anton 24.02.08
+
     **/
     bookmarkButton: function (oBtn)
     {
@@ -956,23 +911,41 @@ const custombuttons = new custombuttonsFactory (). Custombuttons;
 
 // add-ons
 /**  uChelpButton(  )
+
   Author Yan, George Dunham
 
+
+
   Args:
+
   Returns: Nothing
+
   Scope:	 private
+
   Called:	 By:
+
      1. Custom buttons context menu.
+
   Purpose: To:
+
      1. Display the button's help text.
+
      2. Insert the help data into the clipboard.
+
      TODO: Provide a means to display help in the form of
+
            web page.
+
      Add
+
      changed by Anton 24.02.08
+
      TODO: refactor it
+
 	 UPDATED: 16.03.08 by Anton - uChelpButton should not use global clipboard
+
 	 UPDATED: 03.04.08 by Anton - now we have 'name' field in buttons
+
 **/
 custombuttons.uChelpButton = function ( oBtn ) //{{{
 {
@@ -993,31 +966,54 @@ const custombuttonsUtils =
 {
 
     /**  createMsg( [title] )
+
  Author:	George Dunham aka: SCClockDr
 
+
+
  Scope:		global
+
  Args:		title - Optional Title to init the object with.
+
  Returns:	Msg
+
  Called by:	1. Any process wanting to instance this message object.
+
  Purpose: 	1. Create a message object and return it to the caller process.
+
  How it works:	gMsg uses the constructor method to create an object gMsg
+
  Setup:		MyObj = new gMsg();
+
  Use:		MyObj.aMsg("Any string", ["Optional Title"]);
+
  changed by Anton 24.02.08
+
  TODO: refactor it
+
 **/
 createMsg: function (title) //{{{
 {
   /**  Object Msg
+
    Author:	George Dunham aka: SCClockDr
 
+
+
    Scope:		Public
+
    Properties:	prompts - nsIPromptService
+
       check - Provides a check box if value = true.
+
       sTitle - Retains the default/assigned title for the
+
          Dialog box.
+
    Methods:	aMsg - Displays the dialog box.
+
    Purpose:	1. Provide a better means to alert the operator.
+
   **/
   var Msg = { //{{{
     // Properties:
@@ -1028,13 +1024,22 @@ createMsg: function (title) //{{{
     // Methods
     /**  aMsg( str, [title] )
 
+
+
      Scope:		global
+
      Args:		str - String to display
+
         title - Optional title of the dialog
+
      Returns:	Nothing
+
      Called by:	1. Any process which has the aMsg object
+
            available
+
      Purpose: 	1. Present a confirm dialog.
+
     **/
     aMsg:function ( str, title ) //{{{
     {
@@ -1057,20 +1062,35 @@ get ps ()
 /*--------------------------- Preference Utilities ---------------------------*/
 
 /**  isPref( sPrefId, aDefault )
+
   Author	 George Dunham
 
+
+
   Args:	 aprefId - Preference ID string
+
      aDefault - Default Preference Value
+
   Returns: lRet - Boolean, true if the preference exists.
+
   Scope:	 public
+
   Called:	 By:
+
      1. Any process which passes aprefId and will accept
+
         a boolean return.
+
      2. Passing the optional [Default] will cause the pref
+
         to be created if not defined.
+
   Purpose: To:
+
      1. Test for the presence of a specified pref.
+
      NOTE: Inserted with ver. 2.0.02a
+
 **/
 isPref: function ( sPrefId, aDefault ) //{{{
 {
@@ -1087,18 +1107,31 @@ isPref: function ( sPrefId, aDefault ) //{{{
   return lRet;
 }, //}}} End Method isPref( sPrefId, aDefault )
 /**  getPrefs( sPrefId )
+
   Author	 George Dunham
 
+
+
   Args:	 sPrefId - Preference ID string
+
   Returns: rRet - Preference value in the correct type.
+
      1. null if Preference ID not in about:config list.
+
   Scope:	 public
+
   Called:	 By:
+
      1. Any process passing a prefid string and accepting
+
         its value.
+
   Purpose: To:
+
      1. Return the pref specified in sPrefId
+
      NOTE: Inserted with ver. 2.0.02a
+
 **/
 getPrefs: function ( sPrefId ) //{{{
 {
@@ -1120,17 +1153,29 @@ getPrefs: function ( sPrefId ) //{{{
   return rRet;
 }, //}}} End Method getPrefs( sPrefId )
 /**  setPrefs( sPrefId, prefValue )
+
   Author	 George Dunham
 
+
+
   Args:	 sPrefId - Preference ID string
+
      prefValue - Value to set into the Preference ID.
+
   Returns: Nothing
+
   Scope:	 public
+
   Called by:
+
      1. Any process which passes a pref id and it's new value.
+
   Purpose: To:
+
      1. Modify the specified pref to the passed value.
+
      NOTE: Inserted with ver. 2.0.02a
+
 **/
 setPrefs: function ( sPrefId, prefValue ) //{{{
 {
@@ -1155,14 +1200,23 @@ setPrefs: function ( sPrefId, prefValue ) //{{{
 }, //}}} End Method setPrefs( sPrefId, prefValue )
 
 /**  clearPrefs( sPrefId )
+
  Author:    George Dunham aka: SCClockDr
+
  Scope:	    global
+
  Args:	    sPrefId - Preference ID string
 
+
+
  Returns:   Nothing
+
  Called by: 1.
+
  Purpose:   1. Clear specified User preference
+
  changed by Anton 25.02.08
+
  */
  clearPrefs: function(sPrefId) //{{{
 {
@@ -1172,14 +1226,23 @@ setPrefs: function ( sPrefId, prefValue ) //{{{
 }, //}}} End Method clearPrefs( sPrefId )
 
 /**  readFile( fPath )
+
  Author:    George Dunham aka: SCClockDr
+
  Scope:	    private
+
  Args:	    fPath -
+
  Returns:   sRet
+
  Called by: 1.
+
  Purpose:   1.
+
  TODO:	    1.
+
  changed by Anton 25.02.08
+
  */
  readFile: function(fPath) //{{{
 {
@@ -1202,14 +1265,23 @@ setPrefs: function ( sPrefId, prefValue ) //{{{
 }, //}}} End Method readFile( fPath )
 
 /**  writeFile( fPath, sData )
+
  Author:    George Dunham aka: SCClockDr
+
  Scope:	    private
+
  Args:	    fPath -
+
             sData -
+
  Returns:   Nothing
+
  Called by: 1.
+
  Purpose:   1.
+
  TODO:	    1.
+
  */
  writeFile: function(fPath, sData) //{{{
 {
@@ -1232,24 +1304,44 @@ setPrefs: function ( sPrefId, prefValue ) //{{{
 },
 
 /**  Object gClipboard
+
  Author:  George Dunham aka: SCClockDr
+
  Date:    2007-02-11
+
  Scope:    Public
+
  Properties:
+
     sRead - An array which holds the local clipboard data.
+
  Methods:
+
     write - Stuffs data into the system clipboard.
+
     clear - Clears the system clipboard.
+
     Clear - Clears the local clipboard.
+
     read - Retrieves the system clipboard data.
+
     Write - Stuffs data into the local clipboard.
+
     Read - Retrieves the local clipboard data.
+
  Purpose:  1. Provide a simple means to access the system clipboard
+
     2. Provid an alternate clipboard for storing a buffer of
+
        copied strings.
+
  TODO:    1. gClipboard.ClearHist sets sRead.length to 0
+
  TODO:    2. gClipboard.History offers a context menu of up to 10 past clips to paste
+
  TODO:    3. gClipboard.SystoI adds the sys Clipboard to the internal clipboard
+
+
 
 **/
 gClipboard: { //{{{
@@ -1258,12 +1350,20 @@ gClipboard: { //{{{
  // Methods
  /**  write( str )
 
+
+
   Scope:    public
+
   Args:    sToCopy
+
   Returns:  Nothing
+
   Called by:  1. Any process wanting to place a string in the clipboard.
+
   Purpose:  1.Stuff and Retrieve data from the system clipboard.
+
   UPDATED:  9/18/2007 Modified to conform to the MDC suggested process.
+
  **/
  write:function ( sToCopy ) //{{{
  {
@@ -1281,15 +1381,26 @@ gClipboard: { //{{{
 
  /**  clear(  )
 
+
+
   Scope:    public
+
   Args:
+
   Returns:  Nothing
+
   Called by:
+
      1. Any process wanting to clear the clipboard
+
   Purpose:
+
      1. Clear the system cllipboard
+
   TODO:
+
      1.
+
  **/
  clear:function ( ) //{{{
  {
@@ -1297,15 +1408,26 @@ gClipboard: { //{{{
  }, //}}} End Method clear(  )
  /**  Clear(  )
 
+
+
   Scope:    public
+
   Args:
+
   Returns:  Nothing
+
   Called by:
+
      1. Any process wanting to clear the local clipboard
+
   Purpose:
+
      1. Clear the local cllipboard
+
   TODO:
+
      1.
+
  **/
  Clear:function ( ) //{{{
  {
@@ -1313,15 +1435,26 @@ gClipboard: { //{{{
  }, //}}} End Method Clear(  )
  /**  read(  )
 
+
+
   Scope:    public
+
   Args:
+
   Returns:  sRet
+
   Called by:
+
      1.
+
   Purpose:
+
      1.
+
   TODO:
+
      1.
+
  **/
  read:function ( ) //{{{
  {
@@ -1342,15 +1475,26 @@ gClipboard: { //{{{
 
  /**  Write( str )
 
+
+
   Scope:    public
+
   Args:    str
+
   Returns:  Nothing
+
   Called by:
+
      1.
+
   Purpose:
+
      1.
+
   TODO:
+
      1.
+
  **/
  Write:function ( str ) //{{{
  {
@@ -1359,15 +1503,26 @@ gClipboard: { //{{{
 
  /**  Read(  )
 
+
+
   Scope:    public
+
   Args:
+
   Returns:  sRet
+
   Called by:
+
      1.
+
   Purpose:
+
      1.
+
   TODO:
+
      1.
+
  **/
  Read:function ( ) //{{{
  {
