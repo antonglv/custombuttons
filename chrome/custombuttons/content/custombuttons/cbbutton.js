@@ -263,5 +263,63 @@ var custombutton =
  {
   if (oBtn. cbCommand)
    this. buttonCbExecuteCode (event, oBtn, oBtn. cbCommand);
+ },
+
+ canUpdate: function ()
+ {
+  var bCanUpdate = false;
+  try
+  {
+   var uri = new CustombuttonsURIParser (custombuttonsUtils. gClipboard. read ());
+   bCanUpdate = true;
+  }
+  catch (e) {}
+  return bCanUpdate;
+ },
+
+ showElement: function (oElement, bShowFlag)
+ {
+  if (oElement. hasAttribute ("hidden"))
+   oElement. removeAttribute ("hidden");
+  if (!bShowFlag)
+   oElement. setAttribute ("hidden", "true");
+ },
+
+ showBroadcast: function (sIdSuffix, bShowFlag)
+ {
+  var sBroadcasterId = "custombuttons-contextbroadcaster-" + sIdSuffix;
+  var oBroadcaster = document. getElementById (sBroadcasterId);
+  if (oBroadcaster)
+   this. showElement (oBroadcaster, bShowFlag);
+ },
+
+ setContextMenuVisibility: function (oButton)
+ {
+  this. showBroadcast ("root", false); // hide all buttons menuitems
+  this. showBroadcast ("update", true);
+  this. showBroadcast ("help", true);
+  this. showBroadcast ("customizeseparator", true);
+  var bPrimary = !oButton. _ctxtObj;
+  this. showBroadcast ("primary", bPrimary);
+  this. showBroadcast ("secondary", !bPrimary);
+  var nCurrentNum = oButton. id. replace (/custombuttons-button/, "");
+  var sCurrentBroadcasterId = "custombuttons-buttonbroadcaster" + nCurrentNum;
+  var oCurrentBroadcaster = document. getElementById (sCurrentBroadcasterId);
+  var bHideUpdate = !this. canUpdate ();
+  var bHideHelp = !this. buttonGetHelp (oButton);
+  var bHideSeparator = bHideUpdate && bHideHelp && !document. getElementById ("custombuttons-contextpopup-bookmarkButton");
+  if (oCurrentBroadcaster)
+   this. showElement (oCurrentBroadcaster, !bPrimary);
+  if (bHideUpdate)
+   this. showBroadcast ("update", false);
+  if (bHideHelp)
+   this. showBroadcast ("help", false);
+  if (bHideSeparator)
+   this. showBroadcast ("customizeseparator", false);
+ },
+
+ onMouseDown: function (oEvent, oButton)
+ {
+  this. setContextMenuVisibility (oButton);
  }
 };
