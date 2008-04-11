@@ -48,10 +48,14 @@ style	chrome://browser/content/browser.xul	chrome://custombuttons/skin/custombut
 style	chrome://global/content/customizeToolbar.xul	chrome://custombuttons/skin/custombuttons.css
 
 style	chrome://messenger/content/messenger.xul	chrome://custombuttons/skin/custombuttons.css
+style	chrome://messenger/content/messenger.xul	chrome://custombuttons/content/overlay.css
 style	chrome://messenger/content/messengercompose/messengercompose.xul chrome://custombuttons/skin/custombuttons.css
-style	chrome://messenger/content/messageWindow.xul chrome://custombuttons/skin/custombuttons.css
+style	chrome://messenger/content/messengercompose/messengercompose.xul chrome://custombuttons/content/overlay.css
+style	chrome://messenger/content/messageWindow.xul chrome://custombuttons/content/custombuttons.css
+style	chrome://messenger/content/messageWindow.xul chrome://custombuttons/skin/overlay.css
 
 style	chrome://calendar/content/calendar.xul	chrome://custombuttons/skin/custombuttons.css
+style	chrome://calendar/content/calendar.xul	chrome://custombuttons/content/overlay.css
 
 style	chrome://browser/content/browser.xul	chrome://custombuttons/content/overlay.css
 style	chrome://browser/content/browser.xul	chrome://custombuttons/content/overlay1.5.css application={ec8030f7-c20a-464f-9b0e-13a3a9e97384} appversion<=1.6
