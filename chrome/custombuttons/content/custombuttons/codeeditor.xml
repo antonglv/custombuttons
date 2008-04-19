@@ -177,6 +177,21 @@
    </method>
   </implementation>
   <handlers>
+   <handler event="keypress" key="g" modifiers="control">
+   	<![CDATA[
+		var lineNum = prompt ("Go To Line", "", "Go To Line");
+		if (isFinite (lineNum) && lineNum)
+		{
+			lineNum = Math. abs (lineNum);
+			var maxLineNum = this. getLines (). length;
+			lineNum = (lineNum > maxLineNum)? maxLineNum: lineNum;
+			lineNum = lineNum || 1;
+			this. selectLine (lineNum);
+			this. selectionEnd = this. selectionStart;
+			this. scrollTo (lineNum);
+		}
+	]]>
+   </handler>
    <handler event="keypress" preventdefault="true" key="a"
       modifiers="control,shift">
     <![CDATA[
