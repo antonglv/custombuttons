@@ -423,6 +423,7 @@ Custombuttons. prototype =
 		var oPaletteButtonInstance = this. getButtonById (this. button. id);
 		if (oPaletteButtonInstance)
 			this. palette. removeChild (oPaletteButtonInstance);
+		this. button. destroy ();
 		this. toolbar. removeChild (this. button);
 		this. finalizeButtonOperation (null);
 	},
