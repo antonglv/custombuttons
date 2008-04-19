@@ -28,6 +28,14 @@
 		</body>
 	</method>
 	
+	<method name="destroy">
+		<body>
+			<![CDATA[
+				custombutton. buttonDestroy (this);
+			]]>
+		</body>
+	</method>
+	
 	<property name="parameters">
 		<getter>
 			<![CDATA[
