@@ -14,6 +14,7 @@
 		<em:developer>Anton</em:developer>
 		<em:developer>Dark-Demon</em:developer>
 		<em:developer>SCClockDr</em:developer>
+		<em:contributor>Infocatcher: useful remarks</em:contributor>
 		<em:contributor>Lain_13: useful remarks</em:contributor>
 		<em:contributor>Dimanish: useful remarks</em:contributor>
 		<em:contributor>Other users of forum.mozilla.ru: useful remarks and testing</em:contributor>
@@ -29,7 +30,7 @@
 			<Description>
 				<em:id>{ec8030f7-c20a-464f-9b0e-13a3a9e97384}</em:id>
 				<em:minVersion>1.5</em:minVersion>
-                <em:maxVersion>3.0b5pre</em:maxVersion>
+                <em:maxVersion>3.0pre</em:maxVersion>
 			</Description>
 		</em:targetApplication>
 		
