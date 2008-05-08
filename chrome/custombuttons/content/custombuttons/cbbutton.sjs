@@ -183,7 +183,14 @@ var custombutton =
 			return;
 		if (make_CDATASection)
 		{
-			cds = doc. createCDATASection (text || "");
+			try
+			{
+				cds = doc. createCDATASection (text || "");
+			}
+			catch (e)
+			{
+				cds = doc. createTextNode (text || "");
+			}
 			node. appendChild (cds);
 		}
 		else
