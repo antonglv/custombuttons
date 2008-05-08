@@ -10,7 +10,6 @@ toolbarbutton[id^="custombuttons-button"]{
 }
 
 toolbarbutton[id^='custombuttons-button']{
-	-moz-binding: url("chrome://custombuttons/content/toolbarbutton.xml#toolbarbutton");
 	opacity:0.5;
 }
 
