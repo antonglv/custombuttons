@@ -51,8 +51,8 @@ style	chrome://messenger/content/messenger.xul	chrome://custombuttons/skin/custo
 style	chrome://messenger/content/messenger.xul	chrome://custombuttons/content/overlay.css
 style	chrome://messenger/content/messengercompose/messengercompose.xul chrome://custombuttons/skin/custombuttons.css
 style	chrome://messenger/content/messengercompose/messengercompose.xul chrome://custombuttons/content/overlay.css
-style	chrome://messenger/content/messageWindow.xul chrome://custombuttons/content/custombuttons.css
-style	chrome://messenger/content/messageWindow.xul chrome://custombuttons/skin/overlay.css
+style	chrome://messenger/content/messageWindow.xul chrome://custombuttons/skin/custombuttons.css
+style	chrome://messenger/content/messageWindow.xul chrome://custombuttons/content/overlay.css
 
 style	chrome://calendar/content/calendar.xul	chrome://custombuttons/skin/custombuttons.css
 style	chrome://calendar/content/calendar.xul	chrome://custombuttons/content/overlay.css
