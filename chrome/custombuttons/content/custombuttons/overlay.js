@@ -1,17 +1,3 @@
-    function dLOG (text)
-    {
-          var consoleService = Components. classes ["@mozilla.org/consoleservice;1"]. getService (Components. interfaces. nsIConsoleService);
-          consoleService. logStringMessage (text);
-    }
-    function dEXTLOG (aMessage, aSourceName, aSourceLine, aLineNumber,
-              aColumnNumber, aFlags, aCategory)
-    {
-      var consoleService = Components. classes ["@mozilla.org/consoleservice;1"]. getService (Components. interfaces. nsIConsoleService);
-      var scriptError = Components. classes ["@mozilla.org/scripterror;1"]. createInstance (Components. interfaces. nsIScriptError);
-      scriptError. init (aMessage, aSourceName, aSourceLine, aLineNumber,
-                 aColumnNumber, aFlags, aCategory);
-      consoleService. logMessage (scriptError);
-    }
 function CustombuttonsURIParser (uri)
 {
  this. parse (uri);
@@ -172,7 +158,6 @@ Custombuttons. prototype =
   var numbers = this. ps. getChildList ("", {});
   if (numbers. length > 0)
   {
-   dump ('\nfound buttons in prefs.js...');
    var buttons = new Object ();
    for (var i = 0; i < numbers. length; i++)
    {
@@ -201,7 +186,6 @@ Custombuttons. prototype =
    //deleting buttons from prefs.js, now they would be saved in the profile
    for (var i = 0; i < numbers. length; i++)
    {
-    dump ("\ndeleting button #" + i);
     this. ps. deleteBranch (numbers [i]);
    }
    this. saveButtonsToProfile ();
