@@ -13,7 +13,7 @@ Prefs. prototype =
 		}
 		return this. _ps;
 	},
-	
+
 	handleCheckboxes: function (mode)
 	{
 		var setCheckboxesFlag = (mode || (mode == 0));
@@ -32,13 +32,13 @@ Prefs. prototype =
 		}
 		return result;
 	},
-	
+
 	removeAttribute: function (oElement, sAttributeName)
 	{
 		if (oElement. hasAttribute (sAttributeName))
 			oElement. removeAttribute (sAttributeName);
 	},
-	
+
 	sizeWindowToContent: function ()
 	{
 		var oDialog = ELEMENT ("custombuttonsSettingsDialog");
@@ -74,7 +74,7 @@ Prefs. prototype =
 		window. removeEventListener ("command", this, false);
 		return true;
 	},
-	
+
 	onCommand: function (oEvent)
 	{
 		var oTarget = oEvent. target;
@@ -89,7 +89,7 @@ Prefs. prototype =
 			}
 		}
 	},
-	
+
 	// EventListener interface
 	handleEvent: function (oEvent)
 	{
@@ -102,7 +102,7 @@ function TBPrefs () {}
 TBPrefs. prototype =
 {
 	pn: "network.protocol-handler.expose.custombutton",
-	
+
 	_checkbox: null,
 	get checkbox ()
 	{
@@ -110,7 +110,7 @@ TBPrefs. prototype =
 			this. _checkbox = ELEMENT ("cbEnableCBProtocol");
 		return this. _checkbox;
 	},
-	
+
 	onLoad: function ()
 	{
 		SUPER (onLoad);
@@ -120,7 +120,7 @@ TBPrefs. prototype =
 		this. checkbox. removeAttribute ("hidden"); // checkbox visible only in Thunderbird
 		return true;
 	},
-	
+
 	onAccept: function ()
 	{
 		SUPER (onAccept);
