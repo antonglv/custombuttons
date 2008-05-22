@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<!DOCTYPE overlay [
+<!ENTITY % custombuttonsDTD SYSTEM "chrome://custombuttons/locale/custombuttons.dtd" >
+%custombuttonsDTD;
+]>
+<overlay id="custombuttonsAboutOverlay"
+		 xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+	
+	<script type="application/x-javascript">
+		<![CDATA[
+			window. addEventListener
+			(
+				"load",
+				function (event)
+				{
+					var sul = document. getElementById ("supportPageURL");
+					sul. parentNode. appendChild (sul);
+				},
+				false
+			);
+		]]>
+	</script>
+
+	<vbox id="developersBox">
+		<label id="supportPageURL"
+			   class="text-link contributor"
+			   homepageURL="http://custombuttons.mozdev.org/drupal/forum"
+			   onclick="loadHomepage(event);"
+			   tooltiptext="http://custombuttons.mozdev.org/drupal/forum"
+			   value="&custombuttons.about.supportPageURL;"/>
+	</vbox>
+
+</overlay>
