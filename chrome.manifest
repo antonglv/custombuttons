@@ -42,6 +42,9 @@ overlay chrome://calendar/content/calendar.xul	custombutton://content/buttonsove
 overlay	chrome://calendar/content/calendar.xul	chrome://custombuttons/content/cbbutton.xul
 overlay	chrome://calendar/content/customizeToolbar.xul	chrome://custombuttons/content/cbbutton.xul
 
+#about
+overlay	chrome://mozapps/content/extensions/about.xul	chrome://custombuttons/content/aboutOverlay.xul
+
 skin	custombuttons	classic/1.0	jar:chrome/custombuttons.jar!/skin/classic/
 
 style	chrome://browser/content/browser.xul	chrome://custombuttons/skin/custombuttons.css
