@@ -58,7 +58,7 @@ CustombuttonProtocol. prototype =
 	newURI: function (spec, charset, baseURI)
 	{
 		var uri = CC [kSIMPLEURI_CONTRACTID]. createInstance (nsIURI);
-		uri. spec = spec;
+		uri. spec = encodeURI (spec); // NoScript URI fixup workaround start point
 		return uri;
 	},
 	
@@ -107,8 +107,8 @@ CustombuttonProtocol. prototype =
 		var currentWindow = windowService. getMostRecentWindow ("navigator:browser");
 		if (!currentWindow)
 			currentWindow = windowService. getMostRecentWindow ("mail:3pane");
-		ButtonUri = aURI. spec;
-		ButtonUri = ButtonUri. substring (ButtonUri. indexOf (":") + 1);    
+		ButtonUri = decodeURI (aURI. spec); // NoScript URI fixup workaround end point
+		ButtonUri = ButtonUri. substring (ButtonUri. indexOf (":") + 1);
 		currentWindow. custombuttons. installWebButton (ButtonUri);
 		return false;
 	}
