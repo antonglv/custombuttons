@@ -14,3 +14,5 @@
 <!ENTITY custombuttons.prefs.show_apply_button "Show &quot;Apply&quot; button in code editor">
 <!ENTITY custombuttons.prefs.disable_init_in_customize_toolbar "Disable initialization in &quot;Customize Toolbar&quot; dialog">
 <!ENTITY custombuttons.prefs.enable_custombutton_protocol "Enable install buttons from mail messages">
+
+<!ENTITY custombuttons.about.supportPageURL "Visit support page">
