@@ -89,7 +89,7 @@ CustombuttonProtocol. prototype =
  newURI: function (spec, charset, baseURI)
  {
   var uri = Components. classes [kSIMPLEURI_CONTRACTID]. createInstance (nsIURI);
-  uri. spec = spec;
+  uri. spec = encodeURI (spec);
   return uri;
  },
 
@@ -138,7 +138,7 @@ CustombuttonProtocol. prototype =
   var currentWindow = windowService. getMostRecentWindow ("navigator:browser");
   if (!currentWindow)
    currentWindow = windowService. getMostRecentWindow ("mail:3pane");
-  ButtonUri = aURI. spec;
+  ButtonUri = decodeURI (aURI. spec);
   ButtonUri = ButtonUri. substring (ButtonUri. indexOf (":") + 1);
   currentWindow. custombuttons. installWebButton (ButtonUri);
   return false;
