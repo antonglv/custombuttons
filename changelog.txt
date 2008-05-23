@@ -1,5 +1,8 @@
 Changelog
 ==============
+0.0.3.1
+# Fixed: NoScript xss filter incompatibility
++ Added: support page link into about extension dialog
 0.0.3
 # Fixed: bug with creating cb links for buttons, which contain ']]>' character sequence in code
 # Fixed: "menu" and "menu-button" custom buttons styling in Thunderbird/Sunbird
