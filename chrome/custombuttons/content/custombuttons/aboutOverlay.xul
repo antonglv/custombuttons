@@ -8,16 +8,14 @@
 	
 	<script type="application/x-javascript">
 		<![CDATA[
-			window. addEventListener
-			(
-				"load",
-				function (event)
-				{
-					var sul = document. getElementById ("supportPageURL");
+			function custombuttonsAddSupportInfo (event)
+			{
+				var sul = document. getElementById ("supportPageURL");
+				if (sul)
 					sul. parentNode. appendChild (sul);
-				},
-				false
-			);
+				window. removeEventListener ("load", custombuttonsAddSupportInfo, false);
+			}
+			window. addEventListener ("load", custombuttonsAddSupportInfo, false);
 		]]>
 	</script>
 
