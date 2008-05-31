@@ -50,17 +50,16 @@ CustombuttonProtocol. prototype =
 	protocolFlags: URI_NORELATIVE | URI_NOAUTH | URI_LOADABLE_BY_ANYONE |
 				   URI_NON_PERSISTABLE | URI_DOES_NOT_RETURN_DATA,
 	
+	scheme: "custombutton",
+	
 	allowPort: function (port, scheme)
 	{
 		return false;
 	},
 	
-	_buttonURI: "",
-	
 	newURI: function (spec, charset, baseURI)
 	{
 		var uri = CC [kSIMPLEURI_CONTRACTID]. createInstance (nsIURI);
-		this. _buttonURI = spec; // NoScript URI fixup workaround start point
 		uri. spec = spec;
 		return uri;
 	},
@@ -110,7 +109,6 @@ CustombuttonProtocol. prototype =
 		var currentWindow = windowService. getMostRecentWindow ("navigator:browser");
 		if (!currentWindow)
 			currentWindow = windowService. getMostRecentWindow ("mail:3pane");
-		ButtonUri = this. _buttonURI; // NoScript URI fixup workaround end point
 		ButtonUri = ButtonUri. substring (ButtonUri. indexOf (":") + 1);
 		currentWindow. custombuttons. installWebButton (ButtonUri);
 		return false;
