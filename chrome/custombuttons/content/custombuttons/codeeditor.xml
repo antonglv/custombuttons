@@ -42,7 +42,41 @@
      ]]>
     </body>
    </method>
-
+   
+   <property name="value">
+   	<getter>
+		<![CDATA[
+			return this. inputField. value;
+		]]>
+	</getter>
+	
+	<setter>
+		<![CDATA[
+			if (this. hasAttribute ("cbCommandUpdate"))
+			 {
+				var cmd = document. getElementById (this. getAttribute ("cbCommandUpdate"));
+				if (val == "")
+				{
+					cmd. setAttribute ("disabled", "true");
+				}
+				else
+				{
+					if (cmd. hasAttribute ("disabled"))
+						cmd. removeAttribute ("disabled");
+				}
+			 }
+			 this. inputField. value = val;
+		]]>
+	</setter>
+   </property>
+   
+   <method name="cbUpdateCommand">
+   	<body>
+		<![CDATA[
+		]]>
+	</body>
+   </method>
+   
   </implementation>
 
   <handlers>
