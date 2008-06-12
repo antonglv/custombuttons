@@ -116,7 +116,7 @@ Editor. prototype =
         setAttribute ("hidden", "true");
     }
   },
-
+  
   setValues: function (values)
   {
     for each (var v in this. CB. buttonParameters)
@@ -184,6 +184,10 @@ Editor. prototype =
     {
       alert ("Error! The button doesn't exist!");
     }
+  },
+  
+  openMoreKeysDialog: function ()
+  {
   }
 };
 
