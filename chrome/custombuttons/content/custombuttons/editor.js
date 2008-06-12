@@ -1,3 +1,17 @@
+    function dLOG (text)
+    {
+          var consoleService = Components. classes ["@mozilla.org/consoleservice;1"]. getService (Components. interfaces. nsIConsoleService);
+          consoleService. logStringMessage (text);
+    }
+    function dEXTLOG (aMessage, aSourceName, aSourceLine, aLineNumber,
+              aColumnNumber, aFlags, aCategory)
+    {
+      var consoleService = Components. classes ["@mozilla.org/consoleservice;1"]. getService (Components. interfaces. nsIConsoleService);
+      var scriptError = Components. classes ["@mozilla.org/scripterror;1"]. createInstance (Components. interfaces. nsIScriptError);
+      scriptError. init (aMessage, aSourceName, aSourceLine, aLineNumber,
+                 aColumnNumber, aFlags, aCategory);
+      consoleService. logMessage (scriptError);
+    }
 function ImageLoader (channel)
 {
   this. mChannel = channel;
@@ -181,6 +195,10 @@ Editor. prototype =
     {
       alert ("Error! The button doesn't exist!");
     }
+  },
+
+  openMoreKeysDialog: function ()
+  {
   }
 };
 
