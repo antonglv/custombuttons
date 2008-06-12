@@ -21,3 +21,4 @@
 <!ENTITY editor.buttonSettings.disableDefaultKeyBehavior "Disable default action for specified hotkey">
 <!ENTITY editor.buttonSettings.initializationGroupbox "Initialization">
 <!ENTITY editor.buttonSettings.initInCustomizeToolbarDialog "Enable initialization in &quot;Customize Toolbar&quot; dialog">
+<!ENTITY editor.buttonSettings.addMoreKeys "More...">
