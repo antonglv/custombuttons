@@ -20,6 +20,11 @@
 
   <script type="application/x-javascript" src="chrome://custombuttons/content/cbfactory.js"/>
   <script type="application/x-javascript" src="editor.js"/>
+  
+  <commandset id="cbEditorCommandSet">
+  	<command id="cbed:OpenMoreKeysDialog" disabled="true"
+			 oncommand="editor.openMoreKeysDialog();"/>
+  </commandset>
 
   <grid id="urlfield" hidden="true">
     <columns>
@@ -97,12 +102,15 @@
             <rows>
               <row align="center">
                 <label value="&editor.buttonSettings.accelkey;"/>
-                <textbox id="accelkey" flex="1"/>
+                <textbox id="accelkey" flex="1"
+						 cbCommandUpdate="cbed:OpenMoreKeysDialog"/>
               </row>
             </rows>
           </grid>
           <checkbox id="disableDefaultKeyBehavior"
                 label="&editor.buttonSettings.disableDefaultKeyBehavior;"/>
+		  <button id="moreAccelKeys" label="&editor.buttonSettings.addMoreKeys;"
+		  		  command="cbed:OpenMoreKeysDialog"/>
         </groupbox>
       </vbox>
     </tabpanels>
