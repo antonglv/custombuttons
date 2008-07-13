@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <project name="Custom Buttons"
 		 default="buildxpi"
 		 basedir=".">
@@ -8,8 +8,7 @@
 	</description>
 	
 	<!-- set global properties for this build -->
-	<property name="geckosdkpath"
-			  location="Q:\tmp\Mozilla\gecko-sdk-i586-pc-msvc-1.8a6\gecko-sdk"/>
+	<property file="build.properties"/>
 	<property name="xpidlpath" location="${geckosdkpath}\BIN"/>
 	<property name="idlpath" location="${geckosdkpath}\IDL"/>
 	
@@ -20,7 +19,7 @@
 	<property name="appname" value="custombuttons"/>
 	<property name="jarname" value="custombuttons"/>
 	<property name="xpiname" value="custombuttons"/>
-	<property name="extensionversion" value="0.0.2"/>
+	<property name="extensionversion" value="0.0.3.3"/>
 	
 	<property name="keep_jar" value="true"/>
 	
@@ -56,7 +55,7 @@
 			<arg value="-P"/>
 			<arg value="-CC"/>
 			<srcfile/>
-			<redirector>
+			<redirector inputencoding="UTF-8" outputencoding="UTF-8">
 				<outputfilterchain>
 					<linecontains negate="true"> <!-- and no grep needed now -->
 						<contains value="{--exclude-this-line}"/>
@@ -68,6 +67,8 @@
 	</target>
 	
 	<target name="buildxpt" depends="init,preprocess">
+				<fail unless="geckosdkpath">The path to gecko sdk (geckosdkpath property) not defined.
+Define it in build.properties (don't forget about double back slashes)</fail>
 		<apply executable="xpidl.exe" dir="${xpidlpath}"
 			   resolveExecutable="true" dest="${basedir}/components"
 			   failonerror="true"> <!-- and no pack.bat needed now -->
@@ -88,6 +89,7 @@
 			 compress="false" level="0"> <!-- and no 7-zip needed now -->
 			<fileset dir="${basedir}/chrome/${jarname}">
 				<include name="**/*.*"/>
+				<exclude name="**/Thumbs.db"/>
 				<exclude name="**/*.sjs"/>
 				<exclude name="**/*.hjs"/>
 				<exclude name="**/*.ijs"/>
