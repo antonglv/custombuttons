@@ -1,5 +1,33 @@
 Changelog
 ==============
+0.0.3.3
+# Fixed: support page link appears in other's extensions about dialog
+0.0.3.2
+# Fixed: custombutton:// protocol handler bug
+0.0.3.1
+# Fixed: NoScript xss filter incompatibility
++ Added: support page link into about extension dialog
+0.0.3
+# Fixed: bug with creating cb links for buttons, which contain ']]>' character sequence in code
+# Fixed: "menu" and "menu-button" custom buttons styling in Thunderbird/Sunbird
+! Changed: the way to keep context menu in actual state
+0.0.2.9
+# Fixed: user specified context menu doesn't work
++ Added: new custom buttons debug facility - js console shows correct number for error line and button editor can be opened just from js console
+0.0.2.8
+* Hotkey doesn't runs button code bug fixed
+0.0.2.7
+* Fixed few browser UI synchronization issues
+* Added Firefox 3b5pre support
+* Added Sunbird 0.8 support (experimental)
+* CB² custombuttons API partially implemented
+* Added JavaScript 1.8 support in Firefox3
+* Added JavaScript 1.7 support in Firefox2
+* Small UI enhacements
+* XUL code refactoring
+0.0.2.6
+* Custom buttons code execution context error fixed.
+* Version number deleted from extension's name.
 0.0.2.5
 * Security fix to prevent local disk access (security issues created by Firefox bug #413250)
 0.0.2.4
