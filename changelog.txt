@@ -1,5 +1,9 @@
 Changelog
 ==============
+0.0.3.3
+# Fixed: support page link appears in other's extensions about dialog
+0.0.3.2
+# Fixed: custombutton:// protocol handler bug
 0.0.3.1
 # Fixed: NoScript xss filter incompatibility
 + Added: support page link into about extension dialog
