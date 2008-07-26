@@ -10,10 +10,22 @@
 		<![CDATA[
 			function custombuttonsAddSupportInfo (event)
 			{
+				window. removeEventListener ("load", custombuttonsAddSupportInfo, false);
+				var extName = document. getElementById ("extensionName"). getAttribute ("value");
 				var sul = document. getElementById ("supportPageURL");
 				if (sul)
-					sul. parentNode. appendChild (sul);
-				window. removeEventListener ("load", custombuttonsAddSupportInfo, false);
+				{
+					if (extName == "Custom Buttons")
+					{
+						sul. parentNode. appendChild (sul);
+						sul. removeAttribute ("hidden");
+						window. sizeToContent ();
+					}
+					else
+					{
+						sul. parentNode. removeChild (sul);
+					}
+				}
 			}
 			window. addEventListener ("load", custombuttonsAddSupportInfo, false);
 		]]>
