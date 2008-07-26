@@ -109,6 +109,7 @@ CustombuttonProtocol. prototype =
 		var currentWindow = windowService. getMostRecentWindow ("navigator:browser");
 		if (!currentWindow)
 			currentWindow = windowService. getMostRecentWindow ("mail:3pane");
+		var ButtonUri = aURI. spec;
 		ButtonUri = ButtonUri. substring (ButtonUri. indexOf (":") + 1);
 		currentWindow. custombuttons. installWebButton (ButtonUri);
 		return false;
