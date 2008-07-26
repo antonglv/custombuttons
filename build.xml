@@ -19,7 +19,7 @@
 	<property name="appname" value="custombuttons"/>
 	<property name="jarname" value="custombuttons"/>
 	<property name="xpiname" value="custombuttons"/>
-	<property name="extensionversion" value="0.0.3"/>
+	<property name="extensionversion" value="0.0.3.3"/>
 	
 	<property name="keep_jar" value="true"/>
 	
