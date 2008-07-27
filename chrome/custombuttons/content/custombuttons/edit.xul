@@ -30,7 +30,7 @@
     <rows>
       <row align="center">
         <label value="&editor.urlfield;"/>
-        <textbox id="urlfield-textbox" flex="1"/>
+        <textbox id="urlfield-textbox" flex="1"/><!--test-->
       </row><!--test-->
     </rows>
   </grid>
