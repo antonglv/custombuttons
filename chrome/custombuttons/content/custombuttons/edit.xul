@@ -24,7 +24,7 @@
   <grid id="urlfield" hidden="true">
     <columns>
       <column/>
-      <column flex="1"/>
+      <column flex="1"/><!--test-->
     </columns>
 
     <rows>
