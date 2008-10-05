@@ -351,19 +351,41 @@ Custombuttons. prototype =
    "chrome://custombuttons/content/edit.xul",
    "custombuttons-edit",
    "chrome,resizable,dependent,dialog=no",
-   (typeof (vArg) == "boolean")?
-    (vArg? document. popupNode: null): vArg
+   vArg
   );
  },
 
- editButton: function (oBtn)
+ editButtonLink: function (oCBtn)
  {
-  this. openButtonDialog (oBtn || true);
+  var oWArgs =
+  {
+   button: oCBtn,
+   lineNumber: 0,
+   phase: ""
+  };
+  this. openButtonDialog (oWArgs);
+ },
+
+ editButton: function (oBtn, nLineNumber, sPhase)
+ {
+  var oWArgs =
+  {
+   button: oBtn || document. popupNode || null,
+   lineNumber: nLineNumber,
+   phase: sPhase
+  };
+  this. openButtonDialog (oWArgs);
  },
 
  addButton: function ()
  {
-  this. openButtonDialog (false);
+  var oWArgs =
+  {
+   button: null,
+   lineNumber: 0,
+   phase: ""
+  };
+  this. openButtonDialog (oWArgs);
  },
 
  prepareButtonOperation: function (oButton)
@@ -571,9 +593,23 @@ Custombuttons. prototype =
    return false;
   }
   var str = document. getElementById ("cbStrings"). getString ("InstallConfirm"). replace (/%s/gi, button. parameters. name);
-  if (confirm (str))
+  var sEditButtonLabel = document. getElementById ("cbStrings"). getString ("OpenInEditor");
+  var ps = Components. classes ["@mozilla.org/embedcomp/prompt-service;1"]. getService (Components. interfaces. nsIPromptService);
+  var psi = Components. interfaces. nsIPromptService;
+  var buttonFlags = (psi. BUTTON_POS_0 * psi. BUTTON_TITLE_OK) |
+        (psi. BUTTON_POS_2 * psi. BUTTON_TITLE_IS_STRING) |
+        (psi. BUTTON_POS_1 * psi. BUTTON_TITLE_CANCEL);
+  var checkState = { value: false };
+  var res = ps. confirmEx (window, null, str, buttonFlags, "", "", sEditButtonLabel, null, checkState);
+  if (res == 0) // Ok pressed
    this. setButtonParameters (null, button. parameters, false);
-  return true;
+  else if (res == 2) // Edit... pressed
+   this. editButtonLink (button);
+  /* --- if (confirm (str))
+
+			this. setButtonParameters (null, button. parameters, false);
+
+		return true; */
  },
 
  execute_oncommand_code: function (code, button)
@@ -758,7 +794,7 @@ Custombuttons. prototype =
    return; // nothing to open
   }
   this. fireNotification (null, "custombuttons:69423527-65a1-4b8f-bd7a-29593fc46d27:opened", nButtonNumber);
-  this. editButton ([nButtonNumber, nLineNumber, sPhase]);
+  this. editButton (this. getButtonByNumber (nButtonNumber), nLineNumber, sPhase);
  },
 
  /* nsIObserver interface */
