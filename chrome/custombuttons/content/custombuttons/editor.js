@@ -1,17 +1,3 @@
-    function dLOG (text)
-    {
-          var consoleService = Components. classes ["@mozilla.org/consoleservice;1"]. getService (Components. interfaces. nsIConsoleService);
-          consoleService. logStringMessage (text);
-    }
-    function dEXTLOG (aMessage, aSourceName, aSourceLine, aLineNumber,
-              aColumnNumber, aFlags, aCategory)
-    {
-      var consoleService = Components. classes ["@mozilla.org/consoleservice;1"]. getService (Components. interfaces. nsIConsoleService);
-      var scriptError = Components. classes ["@mozilla.org/scripterror;1"]. createInstance (Components. interfaces. nsIScriptError);
-      scriptError. init (aMessage, aSourceName, aSourceLine, aLineNumber,
-                 aColumnNumber, aFlags, aCategory);
-      consoleService. logMessage (scriptError);
-    }
 function ImageLoader (channel)
 {
   this. mChannel = channel;
@@ -80,52 +66,41 @@ Editor. prototype =
 
   onLoad: function ()
   {
-    this. CB = window. opener. custombuttons;
-    if (window. arguments [0])
-    {
-  var button, lineNumber, phase;
-  if (window. arguments [0] instanceof XULElement)
-  {
-   button = window. arguments [0];
-  }
-  else
-  {
-   var buttonNumber = window. arguments [0] [0];
-   button = this. CB. getButtonByNumber (buttonNumber);
-   lineNumber = window. arguments [0] [1];
-   phase = window. arguments [0] [2];
-  }
-  this. button = button;
-      this. setValues (button. parameters);
-   if (lineNumber)
+   this. CB = window. opener. custombuttons;
+   var oWArgs = window. arguments [0];
+   if (oWArgs. button)
    {
-    var tabbox = document. getElementById ("custombuttons-editbutton-tabbox");
-    tabbox. selectedIndex = (phase == "code")? 0: 1;
-    var textboxId = (phase == "code")? "code": "initCode";
-    var textbox = document. getElementById (textboxId);
-    textbox. focus ();
-    textbox. selectLine (lineNumber);
-    textbox. scrollTo (lineNumber);
+    this. button = oWArgs. button;
+    this. setValues (this. button. parameters);
+    if (oWArgs. lineNumber)
+    {
+     var tabbox = document. getElementById ("custombuttons-editbutton-tabbox");
+     tabbox. selectedIndex = (oWArgs. phase == "code")? 0: 1;
+     var textboxId = (oWArgs. phase == "code")? "code": "initCode";
+     var textbox = document. getElementById (textboxId);
+     textbox. focus ();
+     textbox. selectLine (oWArgs. lineNumber);
+     textbox. scrollTo (oWArgs. lineNumber);
+    }
    }
-    }
-    //назначение метода bind
-    if ((typeof Function. prototype. bind == "undefined") &&
-      window. opener. Function. prototype. bind)
-    {
-      Function. prototype. bind = window. opener. Function. prototype. bind;
-    }
-    var ps = Components. classes ["@mozilla.org/preferences-service;1"]. getService (Components. interfaces. nsIPrefService). getBranch ("custombuttons.");
-    var mode = ps. getIntPref ("mode");
-    var sab = (ps. getIntPref ("mode") & 2);
-    if (sab)
-    {
-      // nothing to do.
-    }
-    else
-    {
-      document. documentElement. getButton ("extra2").
-        setAttribute ("hidden", "true");
-    }
+   // назначение метода bind
+   if ((typeof Function. prototype. bind == "undefined") &&
+    window. opener. Function. prototype. bind)
+   {
+    Function. prototype. bind = window. opener. Function. prototype. bind;
+   }
+   var ps = Components. classes ["@mozilla.org/preferences-service;1"]. getService (Components. interfaces. nsIPrefService). getBranch ("custombuttons.");
+   var mode = ps. getIntPref ("mode");
+   var sab = (ps. getIntPref ("mode") & 2);
+   if (sab)
+   {
+    // nothing to do
+   }
+   else
+   {
+    document. documentElement. getButton ("extra2").
+       setAttribute ("hidden", "true");
+   }
   },
 
   setValues: function (values)
@@ -143,14 +118,16 @@ Editor. prototype =
       values [v] = document. getElementById (v). value;
     values ["mode"] = document. getElementById ("initInCustomizeToolbarDialog"). checked? 1: 0;
     values ["mode"] |= document. getElementById ("disableDefaultKeyBehavior"). checked? 2: 0;
-    if (this. button)
+    if (this. button && this. button. id)
     {
       var button = this. button;
       var num = this. CB. getNumber (button. id);
       this. CB. setButtonParameters (num, values, true);
     }
     else
+ {
       this. CB. setButtonParameters (null, values);
+ }
   },
 
   select_image: function ()
