@@ -66,57 +66,46 @@ Editor. prototype =
 {
   CB: null,
   button: null,
-
+  
   onLoad: function ()
   {
-    this. CB = window. opener. custombuttons;
-    if (window. arguments [0])
-    {
-		var button, lineNumber, phase;
-		if (window. arguments [0] instanceof XULElement)
-		{
-			button = window. arguments [0];
-		}
-		else
-		{
-			var buttonNumber = window. arguments [0] [0];
-			button = this. CB. getButtonByNumber (buttonNumber);
-			lineNumber = window. arguments [0] [1];
-			phase = window. arguments [0] [2];
-		}
-		this. button = button;
-      this. setValues (button. parameters);
-	  if (lineNumber)
+	  this. CB = window. opener. custombuttons;
+	  var oWArgs = window. arguments [0];
+	  if (oWArgs. button)
 	  {
-		  var tabbox = ELEMENT ("custombuttons-editbutton-tabbox");
-		  tabbox. selectedIndex = (phase == "code")? 0: 1;
-		  var textboxId = (phase == "code")? "code": "initCode";
-		  var textbox = ELEMENT (textboxId);
-		  textbox. focus ();
-		  textbox. selectLine (lineNumber);
-		  textbox. scrollTo (lineNumber);
+		  this. button = oWArgs. button;
+		  this. setValues (this. button. parameters);
+		  if (oWArgs. lineNumber)
+		  {
+			  var tabbox = ELEMENT ("custombuttons-editbutton-tabbox");
+			  tabbox. selectedIndex = (oWArgs. phase == "code")? 0: 1;
+			  var textboxId = (oWArgs. phase == "code")? "code": "initCode";
+			  var textbox = ELEMENT (textboxId);
+			  textbox. focus ();
+			  textbox. selectLine (oWArgs. lineNumber);
+			  textbox. scrollTo (oWArgs. lineNumber);
+		  }
 	  }
-    }
-    //назначение метода bind
-    if ((typeof Function. prototype. bind == "undefined") &&
-      window. opener. Function. prototype. bind)
-    {
-      Function. prototype. bind = window. opener. Function. prototype. bind;
-    }
-    var ps = SERVICE (PREF). getBranch ("custombuttons.");
-    var mode = ps. getIntPref ("mode");
-    var sab = (ps. getIntPref ("mode") & CB_MODE_SHOW_APPLY_BUTTON);
-    if (sab)
-    {
-      // nothing to do.
-    }
-    else
-    {
-      document. documentElement. getButton ("extra2").
-        setAttribute ("hidden", "true");
-    }
+	  // назначение метода bind
+	  if ((typeof Function. prototype. bind == "undefined") &&
+		  window. opener. Function. prototype. bind)
+	  {
+		  Function. prototype. bind = window. opener. Function. prototype. bind;
+	  }
+	  var ps = SERVICE (PREF). getBranch ("custombuttons.");
+	  var mode = ps. getIntPref ("mode");
+	  var sab = (ps. getIntPref ("mode") & CB_MODE_SHOW_APPLY_BUTTON);
+	  if (sab)
+	  {
+		  // nothing to do
+	  }
+	  else
+	  {
+		  document. documentElement. getButton ("extra2").
+		  	  setAttribute ("hidden", "true");
+	  }
   },
-  
+
   setValues: function (values)
   {
     for each (var v in this. CB. buttonParameters)
@@ -132,14 +121,16 @@ Editor. prototype =
       values [v] = ELEMENT (v). value;
     values ["mode"] = ELEMENT ("initInCustomizeToolbarDialog"). checked? CB_MODE_ENABLE_INIT_IN_CTDIALOG: 0;
     values ["mode"] |= ELEMENT ("disableDefaultKeyBehavior"). checked? CB_MODE_DISABLE_DEFAULT_KEY_BEHAVIOR: 0;
-    if (this. button)
+    if (this. button && this. button. id)
     {
       var button = this. button;
       var num = this. CB. getNumber (button. id);
       this. CB. setButtonParameters (num, values, true);
     }
     else
+	{
       this. CB. setButtonParameters (null, values);
+	}
   },
 
   select_image: function ()
