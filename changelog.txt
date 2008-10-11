@@ -1,5 +1,8 @@
 Changelog
 ==============
+0.0.3.4
++ Added: edit button code feature before install
+# Fixed: some cb2api support bugs
 0.0.3.3
 # Fixed: support page link appears in other's extensions about dialog
 0.0.3.2
