@@ -610,9 +610,7 @@ Custombuttons. prototype =
 			this. setButtonParameters (null, button. parameters, false);
 		else if (res == 2) // Edit... pressed
 			this. editButtonLink (button);
-		/* --- if (confirm (str))
-			this. setButtonParameters (null, button. parameters, false);
-		return true; */
+		return true;
 	},
 	
 	execute_oncommand_code: function (code, button)
@@ -960,6 +958,16 @@ custombuttons.uChelpButton = function ( oBtn ) //{{{
 // Custombuttons utils
 const custombuttonsUtils =
 {
+	addMethodGate: function (srcObject, sMethodName, dstObject)
+	{
+		dstObject [sMethodName] = function ()
+		{
+			return function ()
+			{
+				return srcObject [sMethodName]. apply (srcObject, arguments);
+			}
+		} ();
+	},
 
     /**  createMsg( [title] )
  Author:	George Dunham aka: SCClockDr
@@ -1351,12 +1359,20 @@ gClipboard: { //{{{
 
 const createMsg = custombuttonsUtils. createMsg;
 const gClipboard = custombuttonsUtils. gClipboard;
+/*
 custombuttons. isPref = custombuttonsUtils. isPref;
 custombuttons. getPrefs = custombuttonsUtils. getPrefs;
 custombuttons. setPrefs = custombuttonsUtils. setPrefs;
 custombuttons. clearPrefs = custombuttonsUtils. clearPrefs;
 custombuttons. readFile = custombuttonsUtils. readFile;
 custombuttons. writeFile = custombuttonsUtils. writeFile;
+*/
+custombuttonsUtils. addMethodGate (custombuttonsUtils, "isPref", custombuttons);
+custombuttonsUtils. addMethodGate (custombuttonsUtils, "getPrefs", custombuttons);
+custombuttonsUtils. addMethodGate (custombuttonsUtils, "setPrefs", custombuttons);
+custombuttonsUtils. addMethodGate (custombuttonsUtils, "clearPrefs", custombuttons);
+custombuttonsUtils. addMethodGate (custombuttonsUtils, "readFile", custombuttons);
+custombuttonsUtils. addMethodGate (custombuttonsUtils, "writeFile", custombuttons);
 
 window. addEventListener ("load", custombuttons, false);
 window. addEventListener ("unload", custombuttons, false);
