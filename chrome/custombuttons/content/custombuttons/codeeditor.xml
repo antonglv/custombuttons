@@ -10,38 +10,7 @@
 
  <binding id="accelkeytextboxbinding" extends="chrome://global/content/bindings/textbox.xml#textbox">
   <implementation>
-   <constructor>
-    <![CDATA[
-     this. keymap = new Array ();
-     var prefix = "DOM_VK_";
-     for (var i in KeyEvent)
-     {
-      if (i. indexOf (prefix) == 0)
-       this. keymap [KeyEvent [i]] = i. substr (prefix. length);
-     }
-    ]]>
-   </constructor>
-
-   <destructor>
-    <![CDATA[
-     this. keymap = null;
-    ]]>
-   </destructor>
-
-   <field name="keymap">null</field>
    <field name="bExtendedMode">false</field>
-   
-   <method name="getKey">
-    <parameter name="event"/>
-    <body>
-     <![CDATA[
-      if (event. which)
-       return String. fromCharCode (event. which);
-      else
-       return this. keymap [event. keyCode];
-     ]]>
-    </body>
-   </method>
    
    <property name="value">
    	<getter>
@@ -82,7 +51,9 @@
   <handlers>
    <handler event="keypress" phase="capturing">
     <![CDATA[
-     var key = this. getKey (event);
+	 var cbd = Components. classes ["@xsms.nm.ru/custombuttons/cbkeymap;1"].
+	 		   getService (Components. interfaces. cbIKeyMapService);
+     var key = cbd. getKey (event);
 	 if (key == "ESCAPE")
 	 {
 	 	event. preventDefault ();
@@ -108,14 +79,8 @@
 		event. preventDefault ();
 	 }
 	 this. bExtendedMode = false;
-     var alt = event. altKey;
-     var ctrl = event. ctrlKey;
-     var shift = event. shiftKey;
-     var text = "";
-     if (alt) text = "Alt+";
-     if (ctrl) text += "Ctrl+";
-     if (shift) text += "Shift+";
-     this. value = text + key;
+     var prefix = cbd. getKeyPrefix (event);
+     this. value = prefix + key;
 	 event. preventDefault ();
      event. stopPropagation ();
 	

@@ -715,32 +715,11 @@ Custombuttons. prototype =
 		foStream. close ();
 	},
 	
-	_eventKeymap: [],
-	getKey: function (event)
-	{
-		if (event. which)
-			return String. fromCharCode (event. which);
-		if (this. _eventKeymap. length == 0)
-		{
-			var prefix = "DOM_VK_";
-			for (i in event)
-				if (i. indexOf (prefix) == 0)
-					this. _eventKeymap [event [i]] = i. substr (prefix. length);
-		}
-		return this. _eventKeymap [event. keyCode];
-	},
-	
 	onKeyPress: function (event)
 	{
-		var prefixedKey = "";
-		if (event. altKey) prefixedKey += "Alt+";
-		if (event. ctrlKey) prefixedKey += "Ctrl+";
-		if (event. shiftKey) prefixedKey += "Shift+";
-		var key = this. getKey (event);
-		prefixedKey += key;
 		var cbd = SERVICE (CB_KEYMAP);
 		var lenobj = {};
-		var ids = cbd. Get (prefixedKey, lenobj);
+		var ids = cbd. Get (event, /*prefixedKey,*/ lenobj);
 		if (ids. length == 0)
 			return;
 		var mode = (ids. shift () == "true");
