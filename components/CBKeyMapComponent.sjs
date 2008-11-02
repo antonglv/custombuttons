@@ -43,8 +43,44 @@ cbKeyMapService. prototype =
 			delete this. keymap [id];
 	},
 	
-	Get: function (key, count)
+	getKeyPrefix: function (event)
 	{
+		var prefix = "";
+		if (event. altKey) prefix += "Alt+";
+		if (event. ctrlKey) prefix += "Ctrl+";
+		if (event. shiftKey) prefix += "Shift+";
+		return prefix;
+	},
+	
+	_eventKeymap: [],
+	get eventKeymap ()
+	{
+		if (this. _eventKeymap. length == 0)
+		{
+			var prefix = "DOM_VK_";
+			var ikey = Components. interfaces. nsIDOMKeyEvent;
+			for (i in ikey)
+			{
+				if (i. indexOf (prefix) == 0)
+					this. _eventKeymap [ikey [i]] = i. substr (prefix. length);
+			}
+		}
+		return this. _eventKeymap;
+	},
+	
+	getKey: function (event)
+	{
+		var key = "";
+		if (event. which)
+			key = String. fromCharCode (event. which);
+		else
+			key = this. eventKeymap [event. keyCode];
+		return key;
+	},
+	
+	Get: function (event, count)
+	{
+		var key = this. getKeyPrefix (event) + this. getKey (event);
 		var values = new Array ();
 		var mode = false;
 		for (var i in this. keymap)
