@@ -71,10 +71,11 @@ cbKeyMapService. prototype =
 	getKey: function (event)
 	{
 		var key = "";
-		if (event. which)
+		var keyCode = this. eventKeymap [event. keyCode];
+		if (event. which && (keyCode != "RETURN"))
 			key = String. fromCharCode (event. which);
 		else
-			key = this. eventKeymap [event. keyCode];
+			key = keyCode || ("UNKNOWN_" + event. keyCode);
 		return key;
 	},
 	
