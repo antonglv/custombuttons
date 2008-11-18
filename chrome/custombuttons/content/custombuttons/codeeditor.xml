@@ -10,6 +10,11 @@
 
  <binding id="accelkeytextboxbinding" extends="chrome://global/content/bindings/textbox.xml#textbox">
   <implementation>
+   <constructor>
+   	<![CDATA[
+		this. inputField. setAttribute ("oncontextmenu", "event.preventDefault()");
+	]]>
+   </constructor>
    <field name="bExtendedMode">false</field>
    
    <property name="value">
