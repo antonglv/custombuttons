@@ -14,14 +14,14 @@ ImageLoader. prototype =
     mStream: null,
     callBackFunction: null,
 
-    // nsISupports
-  QueryInterface: function (iid)
+	// nsISupports
+	QueryInterface: function (iid)
     {
         if (!iid. equals (CI. nsISupports) &&
             !iid. equals (CI. nsIInterfaceRequestor) &&
             !iid. equals (CI. nsIRequestObserver) &&
             !iid. equals (CI. nsIStreamListener) &&
-      !iid. equals (CI. nsIProgressEventSink))
+			!iid. equals (CI. nsIProgressEventSink))
         {
             throw NS_ERROR (NO_INTERFACE);
         }
@@ -40,12 +40,12 @@ ImageLoader. prototype =
         this. mStream = COMPONENT (BINARY_INPUT_STREAM);
     },
 
-  onStopRequest: function (aRequest, aContext, aStatusCode)
+	onStopRequest: function (aRequest, aContext, aStatusCode)
     {
-    this. mData = "data:" + this. mChannel. contentType + ";base64," +
-            btoa (String. fromCharCode. apply (null, this. mBytes));
-    this. callBackFunction (this. mData);
-    this. mChannel = null;
+		this. mData = "data:" + this. mChannel. contentType + ";base64," +
+					  btoa (String. fromCharCode. apply (null, this. mBytes));
+		this. callBackFunction (this. mData);
+		this. mChannel = null;
     },
 
     // nsIStreamListener
@@ -198,7 +198,17 @@ TBEditor. prototype =
     if (uri && (uri. indexOf ("custombutton:") == 0))
     {
       uri = uri. substring ("custombutton:". length);
-      this. CB. installWebButton (uri);
+	  // delayed install
+	  var CB = this. CB;
+	  window. opener. setTimeout
+	  (
+		  	function ()
+			{
+				CB. installWebButton (uri);
+			},
+			0
+	  );
+	  // end delayed install
       return;
     }
     SUPER (setButtonParameters);
