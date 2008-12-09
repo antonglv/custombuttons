@@ -26,46 +26,65 @@
 // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 // 
 // ***** END LICENSE BLOCK *****
-// Adblock Plus code
-//HACKHACK: need a way to get an implicit wrapper for nodes because of bug 337095 (fixed in Gecko 1.8.0.5)
-var fakeFactory =
+    function dLOG (text)
+    {
+          var consoleService = Components. classes ["@mozilla.org/consoleservice;1"]. getService (Components. interfaces. nsIConsoleService);
+          consoleService. logStringMessage (text);
+    }
+    function dEXTLOG (aMessage, aSourceName, aSourceLine, aLineNumber,
+              aColumnNumber, aFlags, aCategory)
+    {
+      var consoleService = Components. classes ["@mozilla.org/consoleservice;1"]. getService (Components. interfaces. nsIConsoleService);
+      var scriptError = Components. classes ["@mozilla.org/scripterror;1"]. createInstance (Components. interfaces. nsIScriptError);
+      scriptError. init (aMessage, aSourceName, aSourceLine, aLineNumber,
+                 aColumnNumber, aFlags, aCategory);
+      consoleService. logMessage (scriptError);
+    }
+var info = Components. classes ["@mozilla.org/xre/app-info;1"]. getService (Components. interfaces. nsIXULAppInfo);
+var oVC = Components. classes ["@mozilla.org/xpcom/version-comparator;1"]. createInstance (Components. interfaces. nsIVersionComparator);
+if (oVC. compare ("3.1", info. version) < 0)
 {
- createInstance: function (outer, iid)
+ // Adblock Plus code
+ //HACKHACK: need a way to get an implicit wrapper for nodes because of bug 337095 (fixed in Gecko 1.8.0.5)
+ var fakeFactory =
  {
-  return outer;
- },
+  createInstance: function (outer, iid)
+  {
+   return outer;
+  },
 
- QueryInterface: function (iid)
+  QueryInterface: function (iid)
+  {
+   if (iid. equals (Components. interfaces. nsISupports) ||
+    iid. equals (Components. interfaces. nsIFactory))
+   return this;
+
+   throw Components. results. NS_ERROR_NO_INTERFACE;
+  }
+ };
+ var array = Components. classes ["@mozilla.org/supports-array;1"]. createInstance (Components. interfaces. nsISupportsArray);
+ array. AppendElement (fakeFactory);
+ fakeFactory = array. GetElementAt (0). QueryInterface (Components. interfaces. nsIFactory);
+ array = null;
+
+ function wrapNode (insecNode)
  {
-  if (iid. equals (Components. interfaces. nsISupports) ||
-   iid. equals (Components. interfaces. nsIFactory))
-  return this;
-
-  throw Components. results. NS_ERROR_NO_INTERFACE;
+  return fakeFactory. createInstance (insecNode, Components. interfaces. nsISupports);
  }
-};
-var array = Components. classes ["@mozilla.org/supports-array;1"]. createInstance (Components. interfaces. nsISupportsArray);
-array. AppendElement (fakeFactory);
-fakeFactory = array. GetElementAt (0). QueryInterface (Components. interfaces. nsIFactory);
-array = null;
 
-function wrapNode (insecNode)
-{
- return fakeFactory. createInstance (insecNode, Components. interfaces. nsISupports);
+ // Retrieves the window object for a node or returns null if it isn't possible
+ function getWindow (node)
+ {
+  if (node && node. nodeType != 9)
+   node = node. ownerDocument;
+
+  if (!node || node. nodeType != 9)
+   return null;
+
+  return node. defaultView;
+ }
+ // end Adblock Plus code
 }
-
-// Retrieves the window object for a node or returns null if it isn't possible
-function getWindow (node)
-{
- if (node && node. nodeType != 9)
-  node = node. ownerDocument;
-
- if (!node || node. nodeType != 9)
-  return null;
-
- return node. defaultView;
-}
-// end Adblock Plus code
 
 function cbContentPolicyComponent () {}
 cbContentPolicyComponent. prototype =
@@ -124,6 +143,10 @@ var Module =
  FIRST_TIME: true,
  registerSelf: function (componentManager, fileSpec, location, type)
  {
+  var info = Components. classes ["@mozilla.org/xre/app-info;1"]. getService (Components. interfaces. nsIXULAppInfo);
+  var oVC = Components. classes ["@mozilla.org/xpcom/version-comparator;1"]. createInstance (Components. interfaces. nsIVersionComparator);
+  if (oVC. compare ("3.1", info. version) >= 0)
+   return;
   if (this. FIRST_TIME)
          this. FIRST_TIME = false;
      else
