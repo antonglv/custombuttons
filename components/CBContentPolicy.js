@@ -26,20 +26,6 @@
 // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 // 
 // ***** END LICENSE BLOCK *****
-    function dLOG (text)
-    {
-          var consoleService = Components. classes ["@mozilla.org/consoleservice;1"]. getService (Components. interfaces. nsIConsoleService);
-          consoleService. logStringMessage (text);
-    }
-    function dEXTLOG (aMessage, aSourceName, aSourceLine, aLineNumber,
-              aColumnNumber, aFlags, aCategory)
-    {
-      var consoleService = Components. classes ["@mozilla.org/consoleservice;1"]. getService (Components. interfaces. nsIConsoleService);
-      var scriptError = Components. classes ["@mozilla.org/scripterror;1"]. createInstance (Components. interfaces. nsIScriptError);
-      scriptError. init (aMessage, aSourceName, aSourceLine, aLineNumber,
-                 aColumnNumber, aFlags, aCategory);
-      consoleService. logMessage (scriptError);
-    }
 var info = Components. classes ["@mozilla.org/xre/app-info;1"]. getService (Components. interfaces. nsIXULAppInfo);
 var oVC = Components. classes ["@mozilla.org/xpcom/version-comparator;1"]. createInstance (Components. interfaces. nsIVersionComparator);
 if (oVC. compare ("3.1", info. version) < 0)
@@ -117,7 +103,8 @@ cbContentPolicyComponent. prototype =
   if (wndType != Components. interfaces. nsIDocShellTreeItem. typeContent)
    return 1;
 
-  if (contentLocation. spec. indexOf ("custombutton://content/") == 0)
+  if ((contentLocation. spec. indexOf ("custombutton://content/") == 0) ||
+   (contentLocation. spec. indexOf ("custombuttons://content/") == 0))
    return -1;
 
   return 1;
