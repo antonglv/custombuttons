@@ -38,7 +38,7 @@
 	<menupopup id="menu_viewPopup">
     	<menuseparator/>
 		<menuitem label="&custombuttons.viewMenu_Item;"
-				  oncommand="custombuttons.addButton()"/>
+				  oncommand="custombuttons.OpenEditor(null,null,null,'add')"/>
 	</menupopup>
 
 	<window id="calendar-window">
