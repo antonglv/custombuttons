@@ -8,14 +8,26 @@ function custombuttonsFactory ()
         var oVC = Components. classes ["@mozilla.org/xpcom/version-comparator;1"]. createInstance (Components. interfaces. nsIVersionComparator);
         if (oVC. compare ("3.0a1", info. version) <= 0)
             retobj = this. CustombuttonsMFFactory;
-        else
+        else if (oVC. compare ("3.1b3", info. version) <= 0)
+   retobj = this. CustombuttonsSTFactory;
+  else
             retobj = this. CustombuttonsFactory;
         break;
     case "Browser": // strange name for Flock
   retobj = this. CustombuttonsFactory;
   break;
     case "Thunderbird": // Thunderbird
-  retobj = this. CustombuttonsTBFactory;
+  switch (document. documentURI)
+  {
+   case "chrome://messenger/content/messenger.xul":
+    retobj = this. CustombuttonsTBFactory;
+    break;
+   case "chrome://messenger/content/messageWindow.xul":
+    retobj = this. CustombuttonsTBMWFactory;
+    break;
+   default: // message compose window
+    retobj = this. CustombuttonsTBMCFactory;
+  }
   break;
     case "Sunbird":
   retobj = this. CustombuttonsSBFactory;
@@ -39,9 +51,30 @@ custombuttonsFactory. prototype =
   get Prefs () { return new TBPrefs (); }
  },
 
+ CustombuttonsTBMWFactory:
+ {
+  get Custombuttons () { return new CustombuttonsTBMW (); },
+  get Editor () { return new TBEditor (); },
+  get Prefs () { return new TBPrefs (); }
+ },
+
+ CustombuttonsTBMCFactory:
+ {
+  get Custombuttons () { return new CustombuttonsTBMC (); },
+  get Editor () { return new TBEditor (); },
+  get Prefs () { return new TBPrefs (); }
+ },
+
  CustombuttonsMFFactory:
  {
   get Custombuttons () { return new CustombuttonsMF (); },
+  get Editor () { return new Editor (); },
+  get Prefs () { return new Prefs (); }
+ },
+
+ CustombuttonsSTFactory:
+ {
+  get Custombuttons () { return new CustombuttonsST (); },
   get Editor () { return new Editor (); },
   get Prefs () { return new Prefs (); }
  },

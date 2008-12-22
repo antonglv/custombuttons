@@ -10,14 +10,26 @@ function custombuttonsFactory ()
         var oVC = COMPONENT (VERSION_COMPARATOR);
         if (oVC. compare ("3.0a1", info. version) <= 0)
             retobj = this. CustombuttonsMFFactory;
-        else
+        else if (oVC. compare ("3.1b3", info. version) <= 0)
+			retobj = this. CustombuttonsSTFactory;
+		else
             retobj = this. CustombuttonsFactory;
         break;
     case "Browser": // strange name for Flock
 		retobj = this. CustombuttonsFactory;
 		break;
     case "Thunderbird": // Thunderbird
-		retobj = this. CustombuttonsTBFactory;
+		switch (document. documentURI)
+		{
+			case "chrome://messenger/content/messenger.xul":
+				retobj = this. CustombuttonsTBFactory;
+				break;
+			case "chrome://messenger/content/messageWindow.xul":
+				retobj = this. CustombuttonsTBMWFactory;
+				break;
+			default: // message compose window
+				retobj = this. CustombuttonsTBMCFactory;
+		}
 		break;
     case "Sunbird":
 		retobj = this. CustombuttonsSBFactory;
@@ -41,9 +53,30 @@ custombuttonsFactory. prototype =
 		DEFINE_GETTER (Prefs, TBPrefs)
 	},
 	
+	CustombuttonsTBMWFactory:
+	{
+		DEFINE_GETTER (Custombuttons, CustombuttonsTBMW),
+		DEFINE_GETTER (Editor, TBEditor),
+		DEFINE_GETTER (Prefs, TBPrefs)
+	},
+	
+	CustombuttonsTBMCFactory:
+	{
+		DEFINE_GETTER (Custombuttons, CustombuttonsTBMC),
+		DEFINE_GETTER (Editor, TBEditor),
+		DEFINE_GETTER (Prefs, TBPrefs)
+	},
+	
 	CustombuttonsMFFactory:
 	{
 		DEFINE_GETTER (Custombuttons, CustombuttonsMF),
+		DEFINE_GETTER (Editor, Editor),
+		DEFINE_GETTER (Prefs, Prefs)
+	},
+	
+	CustombuttonsSTFactory:
+	{
+		DEFINE_GETTER (Custombuttons, CustombuttonsST),
 		DEFINE_GETTER (Editor, Editor),
 		DEFINE_GETTER (Prefs, Prefs)
 	},
