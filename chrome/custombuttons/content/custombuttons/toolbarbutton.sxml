@@ -31,5 +31,12 @@
 #include <toolbarbutton.ixml>
 
   </binding>
+  
+  <binding id="menu-vertical"
+       extends="chrome://global/content/bindings/toolbarbutton.xml#menu-vertical">
+
+#include <toolbarbutton.ixml>
+
+  </binding>
 
 </bindings>
