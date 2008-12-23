@@ -72,7 +72,15 @@
 const kSIMPLEURI_CONTRACTID = "@mozilla.org/network/simple-uri;1";
 const nsIURI = Components. interfaces. nsIURI;
 
-function CustombuttonProtocol () {}
+function CustombuttonProtocol (sProtocolName)
+{
+ this. scheme = sProtocolName;
+ this. protocolFlags = 1 | 2 | 64 |
+        1024 | 2048;
+ if (sProtocolName == "custombuttons")
+  this. protocolFlags |= 4096;
+ return this;
+}
 CustombuttonProtocol. prototype =
 {
  QueryInterface: function (iid) { if (!iid. equals (Components. interfaces. nsIProtocolHandler) && !iid. equals (Components. interfaces. nsISupports)) throw Components. results. NS_ERROR_NO_INTERFACE; return this; },
@@ -107,11 +115,11 @@ CustombuttonProtocol. prototype =
   return chromeProtocolHandler. newChannel (chromeURI);
  },
 
- sCbPrefix: "custombutton://content/",
+ sCbPrefix: "custombuttons://content/",
 
  newChannel: function (aURI)
  {
-  if (aURI. spec. indexOf (this. sCbPrefix) == 0)
+  if (this. scheme == "custombuttons")
   {
    var sFileName = aURI. spec. substring (this. sCbPrefix. length);
    if (!this. _system_principal)
@@ -126,9 +134,9 @@ CustombuttonProtocol. prototype =
     return this. fakeOverlayChannel ();
    dir. append ("custombuttons");
    var file = dir. clone ();
+   file. append (sFileName);
    if (!file. exists ())
     return this. fakeOverlayChannel ();
-   file. append (sFileName);
    var ios = Components. classes ["@mozilla.org/network/io-service;1"]. getService (Components. interfaces. nsIIOService);
    var uri = ios. newFileURI (file);
    var channel = ios. newChannelFromURI (uri);
@@ -145,28 +153,83 @@ CustombuttonProtocol. prototype =
   currentWindow. custombuttons. installWebButton (ButtonUri);
   return false;
  }
+};
+
+function CustombuttonsProtocolClassFactory (sProtocolName)
+{
+ this. protocol = sProtocolName;
+ return this;
 }
+CustombuttonsProtocolClassFactory. prototype =
+{
+ protocol: "",
+
+ createInstance: function (outer, iid)
+ {
+  if (outer != null)
+   throw Components. results. NS_ERROR_NO_AGGREGATION;
+  if (!iid. equals (Components. interfaces. nsIProtocolHandler) &&
+   !iid. equals (Components. interfaces. nsISupports))
+   throw Components. results. NS_ERROR_NO_INTERFACE;
+  return new CustombuttonProtocol (this. protocol);
+ }
+};
 
 var Module =
 {
-    CLSID: Components. ID ("{78D452B8-2CE8-4a7b-8A59-DA3C0960DAE7}"),
-    ContractID: "@mozilla.org/network/protocol;1?name=custombutton",
-    ComponentName: "Custombutton Protocol",
+    CLSID: [Components. ID ("{78D452B8-2CE8-4a7b-8A59-DA3C0960DAE7}"),
+   Components. ID ("{1c796f9e-9a22-4604-84e4-fa7c4b8d80a4}")],
+    ContractID: ["@mozilla.org/network/protocol;1?name=custombutton",
+     "@mozilla.org/network/protocol;1?name=custombuttons"],
+    ComponentName: ["Custombutton Protocol", "Custombuttons Extension Protocol"],
+ protocolName: ["custombutton", "custombuttons"],
 
-    canUnload: function (componentManager) { return true; }, getClassObject: function (componentManager, cid, iid) { if (!cid. equals (this. CLSID)) throw Components. results. NS_ERROR_NO_INTERFACE; if (!iid. equals (Components. interfaces. nsIFactory)) throw Components. results. NS_ERROR_NOT_IMPLEMENTED; return this. CLASS_FACTORY; }, FIRST_TIME: true, registerSelf: function (componentManager, fileSpec, location, type) { if (this. FIRST_TIME) this. FIRST_TIME = false; else throw Components. results. NS_ERROR_FACTORY_REGISTER_AGAIN; componentManager = componentManager. QueryInterface (Components. interfaces. nsIComponentRegistrar); componentManager. registerFactoryLocation ( this. CLSID, this. ComponentName, this. ContractID, fileSpec, location, type ); }, unregisterSelf: function (componentManager, location, loaderStr) {},
-
-    CLASS_FACTORY:
+    canUnload: function (componentManager)
  {
-     createInstance: function (outer, iid)
-     {
-         if (outer != null)
-             throw Components. results. NS_ERROR_NO_AGGREGATION;
-         if (!iid. equals (Components. interfaces. nsIProtocolHandler) &&
-          !iid. equals (Components. interfaces. nsISupports))
-          throw Components. results. NS_ERROR_NO_INTERFACE;
-         return new CustombuttonProtocol ();
-     }
- }
+  return true;
+ },
+
+ getClassObject: function (componentManager, cid, iid)
+ {
+  if (!cid. equals (this. CLSID [0]) &&
+   !cid. equals (this. CLSID [1]))
+   throw Components. results. NS_ERROR_NO_INTERFACE;
+  if (!iid. equals (Components. interfaces. nsIFactory))
+   throw Components. results. NS_ERROR_NOT_IMPLEMENTED;
+  var protocol;
+  for (var i = 0; i < this. CLSID. length; i++)
+  {
+   if (cid. equals (this. CLSID [i]))
+   {
+    protocol = this. protocolName [i];
+    break;
+   }
+  }
+  return new CustombuttonsProtocolClassFactory (protocol);
+ },
+
+ FIRST_TIME: true,
+
+ registerSelf: function (componentManager, fileSpec, location, type)
+ {
+  if (this. FIRST_TIME)
+   this. FIRST_TIME = false;
+  else
+   throw Components. results. NS_ERROR_FACTORY_REGISTER_AGAIN;
+  componentManager = componentManager. QueryInterface (Components. interfaces. nsIComponentRegistrar);
+  for (var i = 0; i < this. CLSID. length; i++)
+   componentManager. registerFactoryLocation
+   (
+    this. CLSID [i],
+    this. ComponentName [i],
+    this. ContractID [i],
+    fileSpec,
+    location,
+    type
+   );
+ },
+
+ unregisterSelf: function (componentManager, location, loaderStr) {}
 };
 
 function NSGetModule (componentManager, fileSpec) { return Module; }
