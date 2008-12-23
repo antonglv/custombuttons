@@ -77,6 +77,11 @@ Custombuttons. prototype =
  toolbar: null,
  notificationSender: false,
  _palette: null,
+ notificationPrefix: "custombuttons:69423527-65a1-4b8f-bd7a-29593fc46d27:",
+ toolbarpaletteName: "BrowserToolbarPalette",
+ overlayFileName: "buttonsoverlay.xul",
+ shouldAddToPalette: true,
+
  get palette ()
  {
   if (!this. _palette)
@@ -170,7 +175,10 @@ Custombuttons. prototype =
     }
    }
    for (var but in buttons)
+   {
     this. palette. appendChild (buttons [but]);
+    this. saveButtonToOverlay (buttons [but], false);
+   }
    var places = this. getButtonsPlacesOnToolbars ();
    for (var i = places. length - 1; i >= 0; i--)
    {
@@ -188,7 +196,6 @@ Custombuttons. prototype =
    {
     this. ps. deleteBranch (numbers [i]);
    }
-   this. saveButtonsToProfile ();
   }
   //reinit buttons that for some reasons were not initialized in xbl
   this. reInitializeButtons ();
@@ -297,6 +304,18 @@ Custombuttons. prototype =
   return document. getElementById (sId);
  },
 
+ addObserver: function (sNotificationName)
+ {
+  var os = Components. classes ["@mozilla.org/observer-service;1"]. getService (Components. interfaces. nsIObserverService);
+  os. addObserver (this, this. notificationPrefix + sNotificationName, false);
+ },
+
+ removeObserver: function (sNotificationName)
+ {
+  var os = Components. classes ["@mozilla.org/observer-service;1"]. getService (Components. interfaces. nsIObserverService);
+  os. removeObserver (this, this. notificationPrefix + sNotificationName);
+ },
+
  init: function ()
  {
   var oMenuitem = this. getMenuitem ("customize", true);
@@ -321,24 +340,22 @@ Custombuttons. prototype =
   }
   cbps. setIntPref ("mode", mode);
   setTimeout ("custombuttons.makeButtons()", 200);
-  var os = Components. classes ["@mozilla.org/observer-service;1"]. getService (Components. interfaces. nsIObserverService);
-  os. addObserver (this, "custombuttons:69423527-65a1-4b8f-bd7a-29593fc46d27:added", false);
-  os. addObserver (this, "custombuttons:69423527-65a1-4b8f-bd7a-29593fc46d27:update", false);
-  os. addObserver (this, "custombuttons:69423527-65a1-4b8f-bd7a-29593fc46d27:remove", false);
-  os. addObserver (this, "custombuttons:69423527-65a1-4b8f-bd7a-29593fc46d27:clone", false);
-  os. addObserver (this, "custombuttons:69423527-65a1-4b8f-bd7a-29593fc46d27:open", false);
-  os. addObserver (this, "custombuttons:69423527-65a1-4b8f-bd7a-29593fc46d27:opened", false);
+  this. addObserver ("open");
+  this. addObserver ("opened");
+  this. addObserver ("INSTALL");
+  this. addObserver ("CLONE");
+  this. addObserver ("UPDATE");
+  this. addObserver ("REMOVE");
  },
 
  close: function ()
  {
-  var os = Components. classes ["@mozilla.org/observer-service;1"]. getService (Components. interfaces. nsIObserverService);
-  os. removeObserver (this, "custombuttons:69423527-65a1-4b8f-bd7a-29593fc46d27:opened");
-  os. removeObserver (this, "custombuttons:69423527-65a1-4b8f-bd7a-29593fc46d27:open");
-  os. removeObserver (this, "custombuttons:69423527-65a1-4b8f-bd7a-29593fc46d27:clone");
-  os. removeObserver (this, "custombuttons:69423527-65a1-4b8f-bd7a-29593fc46d27:remove");
-  os. removeObserver (this, "custombuttons:69423527-65a1-4b8f-bd7a-29593fc46d27:update");
-  os. removeObserver (this, "custombuttons:69423527-65a1-4b8f-bd7a-29593fc46d27:added");
+  this. removeObserver ("REMOVE");
+  this. removeObserver ("UPDATE");
+  this. removeObserver ("CLONE");
+  this. removeObserver ("INSTALL");
+  this. removeObserver ("opened");
+  this. removeObserver ("open");
   window. removeEventListener ("load", custombuttons, false);
   window. removeEventListener ("unload", custombuttons, false);
   window. removeEventListener ("keypress", custombuttons, true);
@@ -366,26 +383,320 @@ Custombuttons. prototype =
   this. openButtonDialog (oWArgs);
  },
 
- editButton: function (oBtn, nLineNumber, sPhase)
+ /**************************************************************************/
+ GetNewID: function ()
+ {
+  return "custombuttons-button" + this. min_button_number ();
+ },
+
+ CreateNewButton: function ()
+ {
+  var oNewButton = document. createElement ("toolbarbutton");
+  var sId = this. GetNewID ();
+  oNewButton. setAttribute ("id", sId);
+  oNewButton. setAttribute ("class", "toolbarbutton-1 chromeclass-toolbar-additional");
+  oNewButton. setAttribute ("context", "custombuttons-contextpopup");
+  return oNewButton;
+ },
+
+ SetButtonParameters: function (oButton, vParameters)
+ {
+  oButton. setAttribute ("label", vParameters. name || "");
+  oButton. setAttribute ("name", vParameters. name || "");
+  oButton. setAttribute ("tooltiptext", vParameters. name || "");
+  if (vParameters. image && vParameters. image. length != -1)
+   oButton. setAttribute ("image", vParameters. image);
+  if (vParameters. mode)
+   oButton. setAttribute ("cb-mode", vParameters. mode);
+  if (vParameters. accelkey)
+   oButton. setAttribute ("cb-accelkey", vParameters. accelkey);
+  oButton. setAttribute ("cb-oncommand", vParameters. code || "");
+  oButton. setAttribute ("cb-init", vParameters. initCode || "");
+  oButton. setAttribute ("Help", vParameters. help || vParameters. Help || "");
+ },
+
+ CopyAttributes: function (oSrcButton, oDstButton)
+ {
+  var attributesToCopy =
+  {
+   "class" : true,
+   "id" : true,
+   "label" : true,
+   "image" : true,
+   "cb-name" : true,
+   "cb-oncommand" : true,
+   "cb-init" : true,
+   "cb-mode" : true,
+   "cb-accelkey" : true,
+   "context" : true,
+   "tooltiptext" : true,
+   "Help" : true
+  };
+  for (var attr in attributesToCopy)
+  {
+   if (oSrcButton. hasAttribute (attr))
+    oDstButton. setAttribute (attr, oSrcButton. getAttribute (attr));
+  }
+ },
+
+ RemoveButtonFromPalette: function (oButton)
+ {
+  var sId = oButton. getAttribute ("id");
+  var oPaletteButton = this. palette. getElementsByAttribute ("id", sId) [0];
+  if (oPaletteButton)
+   this. palette. removeChild (oPaletteButton);
+ },
+
+ AddButtonToPalette: function (oButton)
+ {
+  this. RemoveButtonFromPalette (oButton);
+  var sId = "custombuttons-template-button";
+  var oPaletteButton;
+  var cbpb = this. palette. getElementsByAttribute ("id", sId) [0];
+  if (cbpb)
+   oPaletteButton = cbpb. cloneNode (true);
+  else
+   oPaletteButton = document. createElement (oButton. nodeName);
+  this. CopyAttributes (oButton, oPaletteButton);
+  this. palette. appendChild (oPaletteButton);
+ },
+
+ RemoveButtonFromOverlay: function (oButton)
+ {
+  var doc = this. getOverlayDocument ();
+  var palette = doc. getElementById (this. toolbarpaletteName);
+  var sId = oButton. getAttribute ("id");
+  var overlayButton = palette. getElementsByAttribute ("id", sId) [0];
+  if (overlayButton)
+   palette. removeChild (overlayButton);
+  this. saveOverlayToProfile (doc, this. overlayFileName);
+ },
+
+ AddButtonToOverlay: function (oButton)
+ {
+  this. RemoveButtonFromOverlay (oButton);
+  var doc = this. getOverlayDocument ();
+  var palette = doc. getElementById (this. toolbarpaletteName);
+  var overlayButton = doc. createElement (oButton. nodeName);
+  this. CopyAttributes (oButton, overlayButton);
+  palette. appendChild (overlayButton);
+  this. saveOverlayToProfile (doc, this. overlayFileName);
+ },
+
+ NotifyWindows: function (oSubject, sNotification, sData)
+ {
+  this. fireNotification (oSubject, sNotification, sData);
+ },
+
+ _InstallButton: function (sURI)
+ {
+  var oNewButton = this. CreateNewButton ();
+  var vParameters = new CustombuttonsURIParser (sURI). parameters;
+  this. SetButtonParameters (oNewButton, vParameters);
+  this. AddButtonToPalette (oNewButton);
+  return oNewButton;
+ },
+
+ InstallButton: function (sURI)
+ {
+  var oNewButton = this. _InstallButton (sURI);
+  this. NotifyWindows (null, "INSTALL", sURI);
+  this. AddButtonToOverlay (oNewButton);
+  var str = document. getElementById ("cbStrings"). getString ("ButtonAddedAlert");
+  alert (str);
+ },
+
+ OpenEditor: function (oButton, nLineNumber, sPhase, sReason)
  {
   var oWArgs =
   {
-   button: oBtn || document. popupNode || null,
+   button: oButton,
    lineNumber: nLineNumber,
-   phase: sPhase
+   phase: sPhase,
+   reason: sReason
   };
   this. openButtonDialog (oWArgs);
  },
 
- addButton: function ()
+ SetParametersFromEditor: function (oWArgs)
  {
-  var oWArgs =
+  switch (oWArgs. reason)
   {
-   button: null,
-   lineNumber: 0,
-   phase: ""
-  };
-  this. openButtonDialog (oWArgs);
+   case "add":
+   case "install":
+    this. AddButton (oWArgs. parameters);
+    break;
+   case "edit":
+   case "open":
+    var sURI = this. MakeButtonURI (oWArgs. parameters);
+    this. UpdateButton (oWArgs. button, sURI);
+    break;
+   default:
+    break;
+  }
+ },
+
+ SetText: function (oDocument, sFieldName, sValue, bMakeCdata)
+ {
+  var oNode = oDocument. getElementsByTagName (sFieldName) [0];
+  var cds;
+  if (!oNode)
+   return;
+  if (bMakeCdata)
+  {
+   try
+   {
+    cds = oDocument. createCDATASection (sValue || "");
+   }
+   catch (e)
+   {
+    cds = oDocument. createTextNode (sValue || "");
+   }
+   oNode. appendChild (cds);
+  }
+  else
+  {
+   oNode. textContent = sValue;
+  }
+ },
+
+ MakeButtonURI: function (oParameters)
+ {
+  var doc = document. implementation. createDocument ("", "", null);
+  doc. async = false;
+  doc. load ("chrome://custombuttons/content/nbftemplate.xml");
+  this. SetText (doc, "name", oParameters. name, false);
+  this. SetText (doc, "mode", oParameters. mode, false);
+  this. SetText (doc, "image", oParameters. image, true);
+  this. SetText (doc, "code", oParameters. code, true);
+  this. SetText (doc, "initcode", oParameters. initCode, true);
+  this. SetText (doc, "accelkey", oParameters. accelkey, true);
+  this. SetText (doc, "help", oParameters. help, true);
+  var ser = new XMLSerializer ();
+  var data = ser. serializeToString (doc);
+  return "custombutton://" + escape (data);
+ },
+
+ AddButton: function (oParameters)
+ {
+  var sURI = this. MakeButtonURI (oParameters);
+  this. InstallButton (sURI);
+ },
+
+ _CloneButton: function (sClonedButtonID)
+ {
+  var oClonedButton = document. getElementById (sClonedButtonID);
+  if (!oClonedButton)
+   return null;
+  var oClone = this. CreateNewButton ();
+  var sId = oClone. getAttribute ("id");
+  this. CopyAttributes (oClonedButton, oClone);
+  oClone. setAttribute ("id", sId);
+  if (this. shouldAddToPalette)
+   this. AddButtonToPalette (oClone);
+  oClonedButton. parentNode. insertBefore (oClone, oClonedButton. nextSibling);
+  return oClone;
+ },
+
+ CloneButton: function (oClonedButton)
+ {
+  var sClonedButtonId = oClonedButton. getAttribute ("id");
+  var oClone = this. _CloneButton (sClonedButtonId);
+  if (!oClone)
+   return;
+  this. NotifyWindows (null, "CLONE", sClonedButtonId);
+  this. AddButtonToOverlay (oClone);
+  this. finalizeButtonOperation (oClone. getAttribute ("id"));
+ },
+
+ _UpdateButton: function (sUpdatedButtonId, sURI)
+ {
+  var oButtonToUpdate = document. getElementById (sUpdatedButtonId);
+  if (!oButtonToUpdate)
+   return null;
+  var oUpdatedButton = this. CreateNewButton ();
+  oUpdatedButton. setAttribute ("id", sUpdatedButtonId);
+  var oParameters = new CustombuttonsURIParser (sURI). parameters;
+  this. SetButtonParameters (oUpdatedButton, oParameters);
+  oButtonToUpdate. parentNode. replaceChild (oUpdatedButton, oButtonToUpdate);
+  if (this. shouldAddToPalette)
+   this. AddButtonToPalette (oUpdatedButton);
+  return oUpdatedButton;
+ },
+
+ UpdateButton: function (oButtonToUpdate, sURI)
+ {
+  var sUpdatedButtonId = oButtonToUpdate. getAttribute ("id");
+  var oUpdatedButton = this. _UpdateButton (sUpdatedButtonId, sURI);
+  this. NotifyWindows (oUpdatedButton, "UPDATE", sURI);
+  this. AddButtonToOverlay (oUpdatedButton);
+ },
+
+ _RemoveButton: function (sRemovedButtonId)
+ {
+  var oRemovedButton = document. getElementById (sRemovedButtonId);
+  if (!oRemovedButton)
+   return;
+  this. RemoveButtonFromPalette (oRemovedButton);
+  try
+  {
+   oRemovedButton. destroy ();
+  }
+  catch (oErr) {}
+  oRemovedButton. parentNode. removeChild (oRemovedButton);
+ },
+
+ RemoveButton: function (oRemovedButton)
+ {
+  var str = document. getElementById ("cbStrings"). getString ("RemoveConfirm"). replace (/%s/gi, this. values. name);
+  if (!confirm (str))
+   return;
+  var sRemovedButtonId = oRemovedButton. getAttribute ("id");
+  this. _RemoveButton (sRemovedButtonId);
+  this. NotifyWindows (null, "REMOVE", sRemovedButtonId);
+  this. RemoveButtonFromOverlay (oRemovedButton);
+  this. finalizeButtonOperation (null);
+ },
+
+ // nsIObserver interface
+ observe: function (oSubject, sTopic, sData)
+ {
+  if (this. notificationSender)
+   return;
+  var topic = sTopic. replace (this. notificationPrefix, "");
+  switch (topic)
+  {
+   case "INSTALL":
+    this. _InstallButton (sData);
+    break;
+   case "CLONE":
+    this. _CloneButton (sData);
+    break;
+   case "UPDATE":
+    var sUpdatedButtonId = oSubject. getAttribute ("id");
+    this. _UpdateButton (sUpdatedButtonId, sData);
+    break;
+   case "REMOVE":
+    this. _RemoveButton (sData);
+    break;
+   case "open":
+    var aData = sData. split (":");
+    this. openButton (aData [0], aData [1], aData [2]);
+    break;
+   case "opened":
+    if (!this. bWasOpenNotification)
+     this. nCurrentOpened = sData;
+    else
+     this. bWasOpenNotification = false;
+    break;
+  }
+ },
+ /**************************************************************************/
+
+ editButton: function (oBtn, nLineNumber, sPhase)
+ {
+  var oButton = oBtn || document. popupNode || null;
+  this. OpenEditor (oButton, 0, "", "edit");
  },
 
  prepareButtonOperation: function (oButton)
@@ -426,35 +737,6 @@ Custombuttons. prototype =
   //Исправления для AIOS
   if (document. getElementById ("aiostbx-belowtabs-toolbox"))
    persistCurrentSets ();
-  this. saveButtonsToProfile ();
- },
-
- removeButton: function (sId)
- {
-  if (!sId) // context menu
-  {
-   var str = document. getElementById ("cbStrings"). getString ("RemoveConfirm"). replace (/%s/gi, this. values. name);
-   if (!confirm (str))
-    return;
-  }
-  var oPaletteButtonInstance = this. getButtonById (this. button. id);
-  if (oPaletteButtonInstance)
-   this. palette. removeChild (oPaletteButtonInstance);
-  this. button. destroy ();
-  this. toolbar. removeChild (this. button);
-  this. finalizeButtonOperation (null);
- },
-
- cloneButton: function (sId)
- {
-  var newNum = this. min_button_number ();
-  var newButton = this. createButton (newNum, this. values);
-  var newButton2 = this. createButton (newNum, this. values);
-  var newButtonId = newButton. id;
-  this. palette. appendChild (newButton2);
-  var aBefore = this. button. nextSibling;
-  this. insertToToolbar (this. toolbar, newButton, aBefore);
-  this. finalizeButtonOperation (newButtonId);
  },
 
  updateButton: function ()
@@ -468,8 +750,7 @@ Custombuttons. prototype =
   str = str. replace (/%n/, oParameters. name);
   if (!confirm (str))
    return;
-  var nButtonNum = this. getNumber (oButton. id);
-  this. setButtonParameters (nButtonNum, oParameters, true);
+  this. UpdateButton (oButton, sURI);
  },
 
  doButtonOperation: function (sOperation, sId)
@@ -485,16 +766,11 @@ Custombuttons. prototype =
   switch (sOperation)
   {
    case "clone":
-    this. cloneButton (sId);
+    this. CloneButton (oButton);
     break;
    case "remove":
-    this. removeButton (sId);
+    this. RemoveButton (oButton);
     break;
-  }
-  if (!sId) // context menu
-  {
-   var nButtonNum = this. getNumber (oButton. id);
-   this. fireNotification (oButton, "custombuttons:69423527-65a1-4b8f-bd7a-29593fc46d27:" + sOperation, nButtonNum);
   }
  },
 
@@ -514,12 +790,16 @@ Custombuttons. prototype =
 
  min_button_number: function ()
  { //updated
+  var doc = this. getOverlayDocument ();
+  var palette = doc. getElementById (this. toolbarpaletteName);
   var bt = new Object ();
-  var buts = this. palette. childNodes;
+  var buts = palette. childNodes;
   var butscount = buts. length;
   var n, id;
   for (var j = 0; j < butscount; j++)
   {
+   if (buts [j]. nodeName == "#text")
+    continue;
    id = buts [j]. getAttribute ("id");
    n = this. getNumber (id);
    if (n)
@@ -535,44 +815,8 @@ Custombuttons. prototype =
  {
   this. notificationSender = true;
   var os = Components. classes ["@mozilla.org/observer-service;1"]. getService (Components. interfaces. nsIObserverService);
-  os. notifyObservers (oSubject, sNotification, sData);
+  os. notifyObservers (oSubject, this. notificationPrefix + sNotification, sData);
   this. notificationSender = false;
- },
-
- setButtonParameters: function (num, values, bShouldNotify)
- { //updated
-  if (num) // edit button
-  {
-   //заменяем button в Palette и на панели на обновленную
-   var newButton = this. createButton (num, values);
-   var newButton2 = this. createButton (num, values);
-   var buts;
-   //toolbar
-   buts = document. getElementsByAttribute ("id", newButton2. id);
-   if (buts [0])
-    buts [0]. parentNode. replaceChild (newButton2, buts [0]);
-   var toolbar = newButton2. parentNode;
-   if (toolbar)
-    document. persist (toolbar. id, "currentset");
-   //palette
-   buts = this. getButtonById (newButton. id);
-   if (buts)
-    buts. parentNode. replaceChild (newButton, buts);
-   if (bShouldNotify)
-    this. fireNotification (newButton2, "custombuttons:69423527-65a1-4b8f-bd7a-29593fc46d27:update", num);
-  }
-  else // install web button or add new button
-  { //checked
-   num = this. min_button_number ();
-   var newButton = this. createButton (num, values);
-   /*вставляем button в Palette и выдаем алерт об успешном создании*/
-   //palette
-   this. palette. appendChild (newButton);
-   this. fireNotification (newButton, "custombuttons:69423527-65a1-4b8f-bd7a-29593fc46d27:added", num);
-   var str = document. getElementById ("cbStrings"). getString ("ButtonAddedAlert");
-   alert (str);
-  }
-  this. saveButtonsToProfile ();
  },
 
  getButtonByNumber: function (num)
@@ -602,9 +846,13 @@ Custombuttons. prototype =
   var checkState = { value: false };
   var res = ps. confirmEx (window, null, str, buttonFlags, "", "", sEditButtonLabel, null, checkState);
   if (res == 0) // Ok pressed
-   this. setButtonParameters (null, button. parameters, false);
+  {
+   this. InstallButton (uri);
+  }
   else if (res == 2) // Edit... pressed
-   this. editButtonLink (button);
+  {
+   this. OpenEditor (button, null, "", "install");
+  }
   return true;
  },
 
@@ -613,51 +861,34 @@ Custombuttons. prototype =
   custombutton. buttonCbExecuteCode ({}, button, code);
  },
 
- saveButtonsToProfile: function ()
+ getOverlayDocument: function ()
  {
-  var doc;
-  doc = this. makeOverlay ("BrowserToolbarPalette");
-  this. saveOverlayToProfile (doc, "buttonsoverlay.xul");
+  var xhr = new XMLHttpRequest ();
+  xhr. open ("GET", "custombuttons://content/" + this. overlayFileName, false);
+  xhr. send (null);
+  return xhr. responseXML;
  },
 
- makeOverlay: function (paletteId)
+ saveButtonToOverlay: function (oButton, bRemoveFlag)
  {
-  var doc = document. implementation. createDocument ("", "", null);
-  doc. async = false;
-  doc. load ("chrome://custombuttons/content/buttonsoverlay.xul");
-  var palette = doc. getElementById (paletteId);
-  var copiedAttributes =
+  var doc = this. getOverlayDocument ();
+  var palette = doc. getElementById (this. toolbarpaletteName);
+  var sId = oButton. getAttribute ("id");
+  var overlayButton = palette. getElementsByAttribute ("id", sId) [0];
+  if (overlayButton)
+   palette. removeChild (overlayButton);
+  if (!bRemoveFlag)
   {
-   "class" : true,
-   "id" : true,
-   "label" : true,
-   "image" : true,
-   "cb-name" : true,
-   "cb-oncommand" : true,
-   "cb-init" : true,
-   "cb-mode" : true,
-   "cb-accelkey" : true,
-   "context" : true,
-   "tooltiptext" : true,
-   "Help" : true
-  };
-
-  //adding buttons from palette to new doc
-  for (var j = 0; j < this. palette. childNodes. length; j++)
-  {
-   var but = this. palette. childNodes [j];
-   if (but. getAttribute ("id"). indexOf ("custombuttons-button") != -1)
+   var oNewButton = doc. createElement (oButton. nodeName);
+   var attr;
+   for (var i = 0; i < oButton. attributes. length; i++)
    {
-    var newButton = doc. createElement (but. nodeName);
-    for (a in copiedAttributes)
-    {
-     if (but. hasAttribute (a))
-      newButton. setAttribute (a, but. getAttribute (a));
-    }
-    palette. appendChild (newButton);
+    attr = oButton. attributes. item (i);
+    oNewButton. setAttribute (attr. name, attr. value);
    }
+   palette. appendChild (oNewButton);
   }
-  return doc;
+  this. saveOverlayToProfile (doc, this. overlayFileName);
  },
 
  saveOverlayToProfile: function (doc, fileName)
@@ -768,44 +999,8 @@ Custombuttons. prototype =
    this. bWasOpenNotification = true;
    return; // nothing to open
   }
-  this. fireNotification (null, "custombuttons:69423527-65a1-4b8f-bd7a-29593fc46d27:opened", nButtonNumber);
-  this. editButton (this. getButtonByNumber (nButtonNumber), nLineNumber, sPhase);
- },
-
- /* nsIObserver interface */
- observe: function (oSubject, sTopic, sData)
- {
-  if (this. notificationSender)
-   return;
-  switch (sTopic)
-  {
-   case "custombuttons:69423527-65a1-4b8f-bd7a-29593fc46d27:added":
-    var oButton = oSubject. cloneNode (true);
-    oButton = document. importNode (oButton, true);
-    this. palette. appendChild (oButton);
-    break;
-   case "custombuttons:69423527-65a1-4b8f-bd7a-29593fc46d27:update":
-    this. setButtonParameters (sData, oSubject. parameters, false);
-    break;
-   case "custombuttons:69423527-65a1-4b8f-bd7a-29593fc46d27:remove":
-    this. doButtonOperation ("remove", sData);
-    break;
-   case "custombuttons:69423527-65a1-4b8f-bd7a-29593fc46d27:clone":
-    this. doButtonOperation ("clone", sData);
-    break;
-   case "custombuttons:69423527-65a1-4b8f-bd7a-29593fc46d27:open":
-    var aData = sData. split (":");
-    this. openButton (aData [0], aData [1], aData [2]);
-    break;
-   case "custombuttons:69423527-65a1-4b8f-bd7a-29593fc46d27:opened":
-    if (!this. bWasOpenNotification)
-     this. nCurrentOpened = sData;
-    else
-     this. bWasOpenNotification = false;
-    break;
-   default:
-    break;
-  }
+  this. fireNotification (null, "opened", nButtonNumber);
+  this. OpenEditor (this. getButtonByNumber (nButtonNumber), nLineNumber, sPhase, "open");
  },
 
     /**  bookmarkButton(  )
@@ -853,9 +1048,26 @@ CustombuttonsMF. prototype =
 };
 CustombuttonsMF. prototype. __proto__ = Custombuttons. prototype;
 
+function CustombuttonsST () {}
+CustombuttonsST. prototype =
+{
+ shouldAddToPalette: false,
+
+    makeBookmark: function (CbLink, sName)
+    {
+  var uri = Components. classes ["@mozilla.org/network/simple-uri;1"]. createInstance (Components. interfaces. nsIURI); // since there was 'bookmarkLink' execution problem
+  uri. spec = CbLink; // it seems nsIURI spec re-passing solves it
+  PlacesCommandHook. bookmarkLink (PlacesUtils. bookmarksMenuFolderId, uri. spec, sName);
+    }
+};
+CustombuttonsST. prototype. __proto__ = Custombuttons. prototype;
+
 function CustombuttonsTB () {}
 CustombuttonsTB. prototype =
 {
+ toolbarpaletteName: "MailToolbarPalette",
+ overlayFileName: "buttonsoverlay.xul",
+
  init: function ()
  {
   this. __super. prototype. init. apply (this, [null]);
@@ -871,32 +1083,38 @@ CustombuttonsTB. prototype =
       document. getElementById ("compose-toolbox"); // compose message
  },
 
- saveButtonsToProfile: function ()
- {
-  var doc;
-  doc = this. makeOverlay ("MailToolbarPalette");
-  this. saveOverlayToProfile (doc, "buttonsoverlay.xul");
-  doc = this. makeOverlay ("MsgComposeToolbarPalette");
-  this. saveOverlayToProfile (doc, "mcbuttonsoverlay.xul");
- },
-
     makeBookmark: function (CbLink, sName) {}
 };
 CustombuttonsTB. prototype. __proto__ = Custombuttons. prototype; CustombuttonsTB. prototype. __super = Custombuttons;
 
+function CustombuttonsTBMW () {}
+CustombuttonsTBMW. prototype =
+{
+ notificationPrefix: "custombuttons:69423527-65a1-4b8f-bd7a-29593fc46d28:",
+ toolbarpaletteName: "MailToolbarPalette",
+ overlayFileName: "mwbuttonsoverlay.xul"
+};
+CustombuttonsTBMW. prototype. __proto__ = CustombuttonsTB. prototype;
+
+function CustombuttonsTBMC () {}
+CustombuttonsTBMC. prototype =
+{
+ notificationPrefix: "custombuttons:69423527-65a1-4b8f-bd7a-29593fc46d29:",
+ toolbarpaletteName: "MsgComposeToolbarPalette",
+ overlayFileName: "mcbuttonsoverlay.xul"
+};
+CustombuttonsTBMC. prototype. __proto__ = CustombuttonsTB. prototype;
+
 function CustombuttonsSB () {}
 CustombuttonsSB. prototype =
 {
+ toolbarpaletteName: "calendarToolbarPalette",
+ overlayFileName: "buttonsoverlay.xul",
+ shouldAddToPalette: true,
+
  get gToolbox ()
  {
   return document. getElementById ("calendar-toolbox"); // calendar
- },
-
- saveButtonsToProfile: function ()
- {
-  var doc;
-  doc = this. makeOverlay ("calendarToolbarPalette");
-  this. saveOverlayToProfile (doc, "buttonsoverlay.xul");
  },
 
     makeBookmark: function (CbLink, sName) {}
@@ -1543,21 +1761,7 @@ gClipboard: { //{{{
 
 const createMsg = custombuttonsUtils. createMsg;
 const gClipboard = custombuttonsUtils. gClipboard;
-/*
 
-custombuttons. isPref = custombuttonsUtils. isPref;
-
-custombuttons. getPrefs = custombuttonsUtils. getPrefs;
-
-custombuttons. setPrefs = custombuttonsUtils. setPrefs;
-
-custombuttons. clearPrefs = custombuttonsUtils. clearPrefs;
-
-custombuttons. readFile = custombuttonsUtils. readFile;
-
-custombuttons. writeFile = custombuttonsUtils. writeFile;
-
-*/
 custombuttonsUtils. addMethodGate (custombuttonsUtils, "isPref", custombuttons);
 custombuttonsUtils. addMethodGate (custombuttonsUtils, "getPrefs", custombuttons);
 custombuttonsUtils. addMethodGate (custombuttonsUtils, "setPrefs", custombuttons);
