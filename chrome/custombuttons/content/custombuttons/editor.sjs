@@ -121,17 +121,16 @@ Editor. prototype =
       values [v] = ELEMENT (v). value;
     values ["mode"] = ELEMENT ("initInCustomizeToolbarDialog"). checked? CB_MODE_ENABLE_INIT_IN_CTDIALOG: 0;
     values ["mode"] |= ELEMENT ("disableDefaultKeyBehavior"). checked? CB_MODE_DISABLE_DEFAULT_KEY_BEHAVIOR: 0;
+	window. arguments [0]. parameters = values;
     if (this. button && this. button. id)
     {
       var button = this. button;
       var num = this. CB. getNumber (button. id);
-      this. CB. setButtonParameters (num, values, true);
     }
-    else
-	{
-      this. CB. setButtonParameters (null, values);
-	}
+	this. CB. SetParametersFromEditor (window. arguments [0]);
   },
+  
+  getOverlayDocument: function () { alert ("getOverlayDocument"); },
 
   select_image: function ()
   {

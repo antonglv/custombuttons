@@ -11,14 +11,14 @@ ImageLoader. prototype =
     mStream: null,
     callBackFunction: null,
 
-    // nsISupports
-  QueryInterface: function (iid)
+ // nsISupports
+ QueryInterface: function (iid)
     {
         if (!iid. equals (Components. interfaces. nsISupports) &&
             !iid. equals (Components. interfaces. nsIInterfaceRequestor) &&
             !iid. equals (Components. interfaces. nsIRequestObserver) &&
             !iid. equals (Components. interfaces. nsIStreamListener) &&
-      !iid. equals (Components. interfaces. nsIProgressEventSink))
+   !iid. equals (Components. interfaces. nsIProgressEventSink))
         {
             throw Components. results. NS_ERROR_NO_INTERFACE;
         }
@@ -37,12 +37,12 @@ ImageLoader. prototype =
         this. mStream = Components. classes ["@mozilla.org/binaryinputstream;1"]. createInstance (Components. interfaces. nsIBinaryInputStream);
     },
 
-  onStopRequest: function (aRequest, aContext, aStatusCode)
+ onStopRequest: function (aRequest, aContext, aStatusCode)
     {
-    this. mData = "data:" + this. mChannel. contentType + ";base64," +
-            btoa (String. fromCharCode. apply (null, this. mBytes));
-    this. callBackFunction (this. mData);
-    this. mChannel = null;
+  this. mData = "data:" + this. mChannel. contentType + ";base64," +
+       btoa (String. fromCharCode. apply (null, this. mBytes));
+  this. callBackFunction (this. mData);
+  this. mChannel = null;
     },
 
     // nsIStreamListener
@@ -118,17 +118,16 @@ Editor. prototype =
       values [v] = document. getElementById (v). value;
     values ["mode"] = document. getElementById ("initInCustomizeToolbarDialog"). checked? 1: 0;
     values ["mode"] |= document. getElementById ("disableDefaultKeyBehavior"). checked? 2: 0;
+ window. arguments [0]. parameters = values;
     if (this. button && this. button. id)
     {
       var button = this. button;
       var num = this. CB. getNumber (button. id);
-      this. CB. setButtonParameters (num, values, true);
     }
-    else
- {
-      this. CB. setButtonParameters (null, values);
- }
+ this. CB. SetParametersFromEditor (window. arguments [0]);
   },
+
+  getOverlayDocument: function () { alert ("getOverlayDocument"); },
 
   select_image: function ()
   {
@@ -195,7 +194,17 @@ TBEditor. prototype =
     if (uri && (uri. indexOf ("custombutton:") == 0))
     {
       uri = uri. substring ("custombutton:". length);
-      this. CB. installWebButton (uri);
+   // delayed install
+   var CB = this. CB;
+   window. opener. setTimeout
+   (
+     function ()
+   {
+    CB. installWebButton (uri);
+   },
+   0
+   );
+   // end delayed install
       return;
     }
     this. __super. prototype. setButtonParameters. apply (this, []);
