@@ -41,7 +41,15 @@
 const kSIMPLEURI_CONTRACTID = "@mozilla.org/network/simple-uri;1";
 const nsIURI = CI. nsIURI;
 
-function CustombuttonProtocol () {}
+function CustombuttonProtocol (sProtocolName)
+{
+	this. scheme = sProtocolName;
+	this. protocolFlags = URI_NORELATIVE | URI_NOAUTH | URI_LOADABLE_BY_ANYONE |
+						  URI_NON_PERSISTABLE | URI_DOES_NOT_RETURN_DATA;
+	if (sProtocolName == "custombuttons")
+		this. protocolFlags |= URI_IS_LOCAL_RESOURCE;
+	return this;
+}
 CustombuttonProtocol. prototype =
 {
 	DEFINE_STD_QI (nsIProtocolHandler),
@@ -76,11 +84,11 @@ CustombuttonProtocol. prototype =
 		return chromeProtocolHandler. newChannel (chromeURI);
 	},
 	
-	sCbPrefix: "custombutton://content/",
+	sCbPrefix: "custombuttons://content/",
 	
 	newChannel: function (aURI)
 	{
-		if (aURI. spec. indexOf (this. sCbPrefix) == 0)
+		if (this. scheme == "custombuttons")
 		{
 			var sFileName = aURI. spec. substring (this. sCbPrefix. length);
 			if (!this. _system_principal)
@@ -95,9 +103,9 @@ CustombuttonProtocol. prototype =
 				return this. fakeOverlayChannel ();
 			dir. append ("custombuttons");
 			var file = dir. clone ();
+			file. append (sFileName);
 			if (!file. exists ())
 				return this. fakeOverlayChannel ();
-			file. append (sFileName);
 			var ios = SERVICE (IO);
 			var uri = ios. newFileURI (file);
 			var channel = ios. newChannelFromURI (uri);
@@ -114,28 +122,83 @@ CustombuttonProtocol. prototype =
 		currentWindow. custombuttons. installWebButton (ButtonUri);
 		return false;
 	}
+};
+
+function CustombuttonsProtocolClassFactory (sProtocolName)
+{
+	this. protocol = sProtocolName;
+	return this;
 }
+CustombuttonsProtocolClassFactory. prototype =
+{
+	protocol: "",
+	
+	createInstance: function (outer, iid)
+	{
+		if (outer != null)
+			throw NS_ERROR (NO_AGGREGATION);
+		if (!iid. equals (CI. nsIProtocolHandler) &&
+			!iid. equals (CI. nsISupports))
+			throw NS_ERROR (NO_INTERFACE);
+		return new CustombuttonProtocol (this. protocol);
+	}
+};
 
 var Module =
 {
-    CLSID: CID ("{78D452B8-2CE8-4a7b-8A59-DA3C0960DAE7}"),
-    ContractID: "@mozilla.org/network/protocol;1?name=custombutton",
-    ComponentName: "Custombutton Protocol",
-    
-    DEFINE_STD_MODULE_INTERFACE,
+    CLSID: [CID ("{78D452B8-2CE8-4a7b-8A59-DA3C0960DAE7}"),
+			CID ("{1c796f9e-9a22-4604-84e4-fa7c4b8d80a4}")],
+    ContractID: ["@mozilla.org/network/protocol;1?name=custombutton",
+				 "@mozilla.org/network/protocol;1?name=custombuttons"],
+    ComponentName: ["Custombutton Protocol", "Custombuttons Extension Protocol"],
+	protocolName: ["custombutton", "custombuttons"],
 
-    CLASS_FACTORY:
+    canUnload: function (componentManager)
 	{
-	    createInstance: function (outer, iid)
-	    {
-	        if (outer != null)
-	            throw NS_ERROR (NO_AGGREGATION);
-	        if (!iid. equals (CI. nsIProtocolHandler) &&
-	        	!iid. equals (CI. nsISupports))
-	        	throw NS_ERROR (NO_INTERFACE);
-	        return new CustombuttonProtocol ();
-	    }
-	}
+		return true;
+	},
+
+	getClassObject: function (componentManager, cid, iid)
+	{
+		if (!cid. equals (this. CLSID [0]) &&
+			!cid. equals (this. CLSID [1]))
+			throw NS_ERROR (NO_INTERFACE);
+		if (!iid. equals (CI. nsIFactory))
+			throw NS_ERROR (NOT_IMPLEMENTED);
+		var protocol;
+		for (var i = 0; i < this. CLSID. length; i++)
+		{
+			if (cid. equals (this. CLSID [i]))
+			{
+				protocol = this. protocolName [i];
+				break;
+			}
+		}
+		return new CustombuttonsProtocolClassFactory (protocol);
+	},
+	
+	FIRST_TIME: true,
+	
+	registerSelf: function (componentManager, fileSpec, location, type)
+	{
+		if (this. FIRST_TIME)
+			this. FIRST_TIME = false;
+		else
+			throw NS_ERROR (FACTORY_REGISTER_AGAIN);
+		componentManager = componentManager. QI (nsIComponentRegistrar);
+		for (var i = 0; i < this. CLSID. length; i++)
+			componentManager. registerFactoryLocation
+			(
+				this. CLSID [i],
+				this. ComponentName [i],
+				this. ContractID [i],
+				fileSpec,
+				location,
+				type
+			);
+	},
+	
+	unregisterSelf: function (componentManager, location, loaderStr) {}
 };
 
 DEFINE_STD_NS_GET_MODULE (Module)
