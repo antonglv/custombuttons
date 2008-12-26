@@ -40,7 +40,7 @@ var custombutton =
 			{
 				var ps = SERVICE (PREF). getBranch ("custombuttons.");
 				var mode = ps. getIntPref ("mode");
-				if ((oBtn. parentNode. nodeName != "toolbar") &&
+				if (oBtn. parentNode && (oBtn. parentNode. nodeName != "toolbar") &&
 					((mode & CB_MODE_DISABLE_INIT_IN_CTDIALOG_GLOBAL) ||
 					!(oBtn. cbMode & CB_MODE_ENABLE_INIT_IN_CTDIALOG)))
 				return;
@@ -230,6 +230,23 @@ var custombutton =
 		else
 			return this. buttonGetOldFormatURI (oBtn);
 	},
+	
+	/**
+	 * for custombuttonsConsoleBindings in Thunderbird
+	 */
+	getWindowIdentifier: function ()
+	{
+		var res = "main/";
+		var info = SERVICE (XUL_APP_INFO);
+		if (info. name == "Thunderbird")
+		{
+			if (document. documentURI == "chrome://messenger/content/messageWindow.xul")
+				res = "mailWindow/";
+			else if (document. documentURI == "chrome://messenger/content/messengercompose/messengercompose.xul")
+				res = "composeWindow/";
+		}
+		return res;
+	},
 		
 	buttonCbExecuteCode: function (event, oButton, code)
 	{
@@ -256,7 +273,7 @@ var custombutton =
 				var oCBError = new Error ();
 				oCBError. name = oError. name;
 				oCBError. message = oError. message;
-				var sFakeFileName = "custombutton://buttons/";
+				var sFakeFileName = "custombutton://buttons/" + this. getWindowIdentifier ();
 				sFakeFileName += oButton. _initPhase? "init/": "code/";
 				oCBError. fileName = sFakeFileName + oButton. id;
 				oCBError. lineNumber = n1 - n2;
