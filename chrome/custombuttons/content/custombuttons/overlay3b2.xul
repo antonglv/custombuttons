@@ -1,7 +1,5 @@
 <?xml version="1.0"?>
 <!DOCTYPE overlay [
-<!ENTITY % browserDTD SYSTEM "chrome://browser/locale/browser.dtd" >
-%browserDTD;
 <!ENTITY % custombuttonsDTD SYSTEM "chrome://custombuttons/locale/custombuttons.dtd" >
 %custombuttonsDTD;
 ]>
