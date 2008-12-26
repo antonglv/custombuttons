@@ -23,7 +23,7 @@
 					  accesskey="&customizeToolbar.accesskey;"
 					  label="&customizeToolbar.label;"
 					  observes="custombuttons-contextbroadcaster-primary"
-					  oncommand="CustomizeMailToolbar('mail-toolbox');"/>
+					  oncommand="CustomizeMailToolbar('mail-toolbox','toolbar-context-menu');"/>
 			<menu id="custombuttons-contextpopup-subCall"
 				  label="&custombuttons.buttonPopup.subCall;"
 				  observes="custombuttons-contextbroadcaster-secondary">
@@ -31,7 +31,7 @@
 					<menuitem id="custombuttons-contextpopup-customize-sub"
 							  accesskey="&customizeToolbar.accesskey;"
 							  label="&customizeToolbar.label;"
-							  oncommand="CustomizeMailToolbar('mail-toolbox');"/>
+							  oncommand="CustomizeMailToolbar('mail-toolbox','toolbar-context-menu');"/>
 				</menupopup>
 			</menu>
 		</popup>
@@ -55,7 +55,7 @@
 					  accesskey="&customizeToolbar.accesskey;"
 					  label="&customizeToolbar.label;"
 					  observes="custombuttons-contextbroadcaster-primary"
-					  oncommand="CustomizeMailToolbar('compose-toolbox');"/>
+					  oncommand="CustomizeMailToolbar('compose-toolbox','toolbar-context-menu');"/>
 			<menu id="custombuttons-contextpopup-subCall"
 				  label="&custombuttons.buttonPopup.subCall;"
 				  observes="custombuttons-contextbroadcaster-secondary">
@@ -63,7 +63,7 @@
 					<menuitem id="custombuttons-contextpopup-customize-sub"
 							  accesskey="&customizeToolbar.accesskey;"
 							  label="&customizeToolbar.label;"
-							  oncommand="CustomizeMailToolbar('compose-toolbox');"/>
+							  oncommand="CustomizeMailToolbar('compose-toolbox','toolbar-context-menu');"/>
 				</menupopup>
 			</menu>
 		</popup>
