@@ -1,5 +1,8 @@
 Changelog
 ==============
+0.0.3.7
++ Added: Thunderbird 3.01b2pre support
+# Fixed: JavaScript console binding opened buttons only in main Thunderbird window
 0.0.3.6
 + Added: Firefox 3.1 support
 + Added: Sunbird 0.9 support
