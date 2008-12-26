@@ -19,28 +19,55 @@
 	<property name="appname" value="custombuttons"/>
 	<property name="jarname" value="custombuttons"/>
 	<property name="xpiname" value="custombuttons"/>
-	<property name="extensionversion" value="0.0.3.6"/>
+	<xmlproperty file="install.rdf" keepRoot="false"/>
 	
 	<property name="keep_jar" value="true"/>
 	
 	<target name="init">
 		<!-- Create the time stamp -->
 		<tstamp/>
+		<uptodate property="checkLibs.js" targetfile="build.number">
+			<srcfiles dir="${basedir}" includes="**/*.ijs"/>
+			<srcfiles dir="${basedir}" includes="**/*.hjs"/>
+		</uptodate>
+		<uptodate property="checkLibs.xml" targetfile="build.number">
+			<srcfiles dir="${basedir}" includes="**/*.ixml"/>
+		</uptodate>
+		<buildnumber/>
+		<echo>Builds ${appname}-${Description.em:version}-${DSTAMP}</echo>
+		<echo>Build No. ${build.number}</echo>
 	</target>
+	
+	<target name="checkjslibs" unless="checkLibs.js">
+		<touch>
+			<fileset dir="${basedir}">
+				<include name="**/*.sjs"/>
+			</fileset>
+		</touch>
+	</target>
+	
+	<target name="checkxmllibs" unless="checkLibs.xml">
+		<touch>
+			<fileset dir="${basedir}">
+				<include name="**/*.sxml"/>
+			</fileset>
+		</touch>
+	</target>
+	
+	<target name="checklibs" depends="checkjslibs,checkxmllibs"/>
 	
 	<!--
 		************************************************************************
 		* preprocess *.s* files
 		************************************************************************
 	-->
-	<target name="preprocess" depends="init" description="preprocess files">
+	<target name="preprocess" depends="init,checklibs" description="preprocess files">
 		<mapper id="preprocessormapper">
 			<mapper type="glob" from="*.sjs" to="*.js"/>
 			<mapper type="glob" from="*.sxml" to="*.xml"/>
 		</mapper>
 		<apply executable="cpp.exe"
-			   failonerror="true"
-			   force="true"> <!-- and no jpp.bat needed now -->
+			   failonerror="true"> <!-- and no jpp.bat needed now -->
 			<fileset dir="${basedir}">
 				<include name="**/*.sjs"/>
 				<include name="**/*.sxml"/>
@@ -113,7 +140,7 @@ Define it in build.properties (don't forget about double back slashes)</fail>
   			<substitution expression="\1\2chrome/${jarname}\3"/>
 		</replaceregexp>
 			-->
-		<zip destfile="${xpiname}-${extensionversion}-${DSTAMP}.xpi"
+		<zip destfile="${xpiname}-${Description.em:version}-${DSTAMP}.xpi"
 			 compress="true" level="9"> <!-- and no 7-zip, pack.bat needed now -->
 			<fileset dir="${basedir}">
 				<include name="chrome.manifest"/>
@@ -124,6 +151,7 @@ Define it in build.properties (don't forget about double back slashes)</fail>
 				<include name="chrome/**/*.*"/>
 				<include name="defaults/**/*.*"/>
 				<include name="components/**/*.*"/>
+				<exclude name="build.number"/>
 				<exclude name="chrome/*.jar"/>
 				<exclude name="**/*.sjs"/>
 				<exclude name="**/*.hjs"/>
@@ -148,7 +176,7 @@ Define it in build.properties (don't forget about double back slashes)</fail>
   			<substitution expression="\1\2jar:chrome\/${jarname}\.jar!\3"/>
 		</replaceregexp>
 			-->
-		<zip destfile="${xpiname}-${extensionversion}-${DSTAMP}.xpi"
+		<zip destfile="${xpiname}-${Description.em:version}-${DSTAMP}.xpi"
 			 compress="true" level="9"> <!-- and no 7-zip, pack.bat needed now -->
 			<fileset dir="${basedir}">
 				<include name="chrome.manifest"/>
@@ -158,6 +186,7 @@ Define it in build.properties (don't forget about double back slashes)</fail>
 				<include name="chrome/${jarname}.jar"/>
 				<include name="defaults/**/*.*"/>
 				<include name="components/**/*.*"/>
+				<exclude name="build.number"/>
 				<exclude name="**/*.sjs"/>
 				<exclude name="**/*.hjs"/>
 				<exclude name="**/*.ijs"/>
