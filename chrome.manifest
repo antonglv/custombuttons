@@ -36,6 +36,12 @@ overlay chrome://messenger/content/messengercompose/messengercompose.xul	chrome:
 overlay chrome://messenger/content/messengercompose/messengercompose.xul	custombuttons://content/mcbuttonsoverlay.xul application={3550f703-e582-4d05-9a08-453d09bdfdc6}
 overlay chrome://messenger/content/messengercompose/messengercompose.xul	chrome://custombuttons/content/cbbutton.xul
 
+## Thunderbird 3.0b1
+overlay	chrome://messenger/content/messenger.xul	chrome://custombuttons/content/overlay3b2.xul   application={3550f703-e582-4d05-9a08-453d09bdfdc6} appversion>=3.0b1
+overlay	chrome://messenger/content/messageWindow.xul	chrome://custombuttons/content/overlay3b2.xul   application={3550f703-e582-4d05-9a08-453d09bdfdc6} appversion>=3.0b1
+overlay	chrome://messenger/content/messengercompose.xul	chrome://custombuttons/content/overlay3b2.xul   application={3550f703-e582-4d05-9a08-453d09bdfdc6} appversion>=3.0b1
+overlay	chrome://global/content/customizeToolbar.xul	chrome://custombuttons/content/customizeToolbars.xul  application={3550f703-e582-4d05-9a08-453d09bdfdc6} appversion>=3.0b1
+
 # Sunbird
 overlay	chrome://calendar/content/calendar.xul	chrome://custombuttons/content/SunbirdOverlay.xul
 overlay chrome://calendar/content/calendar.xul	custombuttons://content/buttonsoverlay.xul application={718e30fb-e89b-41dd-9da7-e25a45638b28}
