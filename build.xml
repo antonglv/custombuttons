@@ -26,48 +26,37 @@
 	<target name="init">
 		<!-- Create the time stamp -->
 		<tstamp/>
-		<uptodate property="checkLibs.js" targetfile="build.number">
+		<uptodate property="checkLibs.forcedJSPreprocess" targetfile="build.number">
 			<srcfiles dir="${basedir}" includes="**/*.ijs"/>
 			<srcfiles dir="${basedir}" includes="**/*.hjs"/>
 		</uptodate>
-		<uptodate property="checkLibs.xml" targetfile="build.number">
+		<uptodate property="checkLibs.forcedXMLPreprocess" targetfile="build.number">
 			<srcfiles dir="${basedir}" includes="**/*.ixml"/>
 		</uptodate>
+		<condition property="checkLibs.forcedPreprocess" value="false" else="true">
+			<and>
+				<istrue value="${checkLibs.forcedJSPreprocess}"/>
+				<istrue value="${checkLibs.forcedXMLPreprocess}"/>
+			</and>
+		</condition>
 		<buildnumber/>
 		<echo>Builds ${appname}-${Description.em:version}-${DSTAMP}</echo>
 		<echo>Build No. ${build.number}</echo>
 	</target>
-	
-	<target name="checkjslibs" unless="checkLibs.js">
-		<touch>
-			<fileset dir="${basedir}">
-				<include name="**/*.sjs"/>
-			</fileset>
-		</touch>
-	</target>
-	
-	<target name="checkxmllibs" unless="checkLibs.xml">
-		<touch>
-			<fileset dir="${basedir}">
-				<include name="**/*.sxml"/>
-			</fileset>
-		</touch>
-	</target>
-	
-	<target name="checklibs" depends="checkjslibs,checkxmllibs"/>
 	
 	<!--
 		************************************************************************
 		* preprocess *.s* files
 		************************************************************************
 	-->
-	<target name="preprocess" depends="init,checklibs" description="preprocess files">
+	<target name="preprocess" depends="init" description="preprocess files">
 		<mapper id="preprocessormapper">
 			<mapper type="glob" from="*.sjs" to="*.js"/>
 			<mapper type="glob" from="*.sxml" to="*.xml"/>
 		</mapper>
 		<apply executable="cpp.exe"
-			   failonerror="true"> <!-- and no jpp.bat needed now -->
+			   failonerror="true"
+			   force="${checkLibs.forcedPreprocess}"> <!-- and no jpp.bat needed now -->
 			<fileset dir="${basedir}">
 				<include name="**/*.sjs"/>
 				<include name="**/*.sxml"/>
