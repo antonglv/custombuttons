@@ -19,7 +19,6 @@ var nButtonNumber = url. match (/(\d+)/) [0];
 var nLineNumber = this. getAttribute ("line");
 var sPhase = url. match (/custombutton\:\/\/buttons\/(\S+)\/(\S+)\/.*/) [2];
 var winId = url. match (/custombutton\:\/\/buttons\/(\S+)\/(\S+)\/.*/) [1];
-alert (winId + ": " + sPhase);
 var sNotificationPrefix = "custombuttons:69423527-65a1-4b8f-bd7a-29593fc46d27:";
 if (winId == "mailWindow")
  sNotificationPrefix = "custombuttons:69423527-65a1-4b8f-bd7a-29593fc46d28:";
@@ -50,7 +49,6 @@ var nButtonNumber = url. match (/(\d+)/) [0];
 var nLineNumber = this. getAttribute ("line");
 var sPhase = url. match (/custombutton\:\/\/buttons\/(\S+)\/(\S+)\/.*/) [2];
 var winId = url. match (/custombutton\:\/\/buttons\/(\S+)\/(\S+)\/.*/) [1];
-alert (winId + ": " + sPhase);
 var sNotificationPrefix = "custombuttons:69423527-65a1-4b8f-bd7a-29593fc46d27:";
 if (winId == "mailWindow")
  sNotificationPrefix = "custombuttons:69423527-65a1-4b8f-bd7a-29593fc46d28:";
