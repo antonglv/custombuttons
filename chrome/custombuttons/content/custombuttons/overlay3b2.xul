@@ -10,4 +10,10 @@
   <toolbarpalette id="BrowserToolbarPalette">
     <toolbarbutton id="custombuttons-template-button"/>
   </toolbarpalette>
+  <toolbarpalette id="MailToolbarPalette">
+    <toolbarbutton id="custombuttons-template-button"/>
+  </toolbarpalette>
+  <toolbarpalette id="MsgComposeToolbarPalette">
+    <toolbarbutton id="custombuttons-template-button"/>
+  </toolbarpalette>
 </overlay>
