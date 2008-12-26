@@ -23,7 +23,8 @@ var cbCustomizeToolbarHandler =
 
   restoreTemplateButton: function ()
   {
-    this. palette. appendChild (this. templateButton);
+	if (this. templateButton)
+		this. palette. appendChild (this. templateButton);
   }
 };
 
