@@ -27,6 +27,7 @@ function custombuttonsFactory ()
 			case "chrome://messenger/content/messageWindow.xul":
 				retobj = this. CustombuttonsTBMWFactory;
 				break;
+			case "chrome://messenger/content/messengercompose/messengercompose.xul":
 			default: // message compose window
 				retobj = this. CustombuttonsTBMCFactory;
 		}
