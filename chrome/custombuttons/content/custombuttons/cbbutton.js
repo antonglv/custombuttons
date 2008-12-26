@@ -38,7 +38,7 @@ var custombutton =
    {
     var ps = Components. classes ["@mozilla.org/preferences-service;1"]. getService (Components. interfaces. nsIPrefService). getBranch ("custombuttons.");
     var mode = ps. getIntPref ("mode");
-    if ((oBtn. parentNode. nodeName != "toolbar") &&
+    if (oBtn. parentNode && (oBtn. parentNode. nodeName != "toolbar") &&
      ((mode & 4) ||
      !(oBtn. cbMode & 1)))
     return;
@@ -229,6 +229,25 @@ var custombutton =
    return this. buttonGetOldFormatURI (oBtn);
  },
 
+ /**
+
+	 * for custombuttonsConsoleBindings in Thunderbird
+
+	 */
+ getWindowIdentifier: function ()
+ {
+  var res = "main/";
+  var info = Components. classes ["@mozilla.org/xre/app-info;1"]. getService (Components. interfaces. nsIXULAppInfo);
+  if (info. name == "Thunderbird")
+  {
+   if (document. documentURI == "chrome://messenger/content/messageWindow.xul")
+    res = "mailWindow/";
+   else if (document. documentURI == "chrome://messenger/content/messengercompose/messengercompose.xul")
+    res = "composeWindow/";
+  }
+  return res;
+ },
+
  buttonCbExecuteCode: function (event, oButton, code)
  {
   var scode = "var event = arguments [0];\n" + code;
@@ -254,7 +273,7 @@ var custombutton =
     var oCBError = new Error ();
     oCBError. name = oError. name;
     oCBError. message = oError. message;
-    var sFakeFileName = "custombutton://buttons/";
+    var sFakeFileName = "custombutton://buttons/" + this. getWindowIdentifier ();
     sFakeFileName += oButton. _initPhase? "init/": "code/";
     oCBError. fileName = sFakeFileName + oButton. id;
     oCBError. lineNumber = n1 - n2;
