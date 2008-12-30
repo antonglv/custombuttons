@@ -28,7 +28,7 @@
 // ***** END LICENSE BLOCK *****
 var info = Components. classes ["@mozilla.org/xre/app-info;1"]. getService (Components. interfaces. nsIXULAppInfo);
 var oVC = Components. classes ["@mozilla.org/xpcom/version-comparator;1"]. createInstance (Components. interfaces. nsIVersionComparator);
-if (oVC. compare ("3.1", info. version) < 0)
+if (oVC. compare (info. version, "3.1b2") < 0)
 {
  // Adblock Plus code
  //HACKHACK: need a way to get an implicit wrapper for nodes because of bug 337095 (fixed in Gecko 1.8.0.5)
@@ -132,7 +132,7 @@ var Module =
  {
   var info = Components. classes ["@mozilla.org/xre/app-info;1"]. getService (Components. interfaces. nsIXULAppInfo);
   var oVC = Components. classes ["@mozilla.org/xpcom/version-comparator;1"]. createInstance (Components. interfaces. nsIVersionComparator);
-  if (oVC. compare ("3.1", info. version) >= 0)
+  if (oVC. compare (info. version, "3.1b2") >= 0)
    return;
   if (this. FIRST_TIME)
          this. FIRST_TIME = false;
