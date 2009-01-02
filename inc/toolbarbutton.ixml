@@ -13,6 +13,83 @@
 			custombutton. buttonConstructor (this);
 		]]>
 	</constructor>
+	
+	<!-- stubs to resolve AIOS 0.7.7 incompatibility -->
+	<method name="_callNativeMethod">
+		<parameter name="name"/>
+		<parameter name="arguments"/>
+		<body>
+			<![CDATA[
+				var res;
+				try
+				{
+					var nativeMethod = Components. lookupMethod (this, name);
+					res = nativeMethod. apply (this, arguments);
+				} catch (err) {}
+				return res;
+			]]>
+		</body>
+	</method>
+	
+	<property name="id">
+		<getter>
+			return this. _callNativeMethod ("id", []);
+		</getter>
+		
+		<setter>
+			return this. _callNativeMethod ("id", [val]);
+		</setter>
+	</property>
+	
+	<property name="localName">
+		<getter>
+			return this. _callNativeMethod ("localName", []);
+		</getter>
+		
+		<setter>
+			return this. _callNativeMethod ("localName", [val]);
+		</setter>
+	</property>
+	
+	<property name="title">
+		<getter>
+			return this. _callNativeMethod ("title", []);
+		</getter>
+		
+		<setter>
+			return this. _callNativeMethod ("title", [val]);
+		</setter>
+	</property>
+	
+	<method name="getAttribute">
+		<parameter name="name"/>
+		<body>
+			return this. _callNativeMethod ("getAttribute", [name]);
+		</body>
+	</method>
+	
+	<method name="hasAttribute">
+		<parameter name="name"/>
+		<body>
+			return this. _callNativeMethod ("hasAttribute", [name]);
+		</body>
+	</method>
+	
+	<method name="removeAttribute">
+		<parameter name="name"/>
+		<body>
+			return this. _callNativeMethod ("removeAttribute", [name]);
+		</body>
+	</method>
+	
+	 <method name="setAttribute">
+		 <parameter name="name"/>
+		 <parameter name="value"/>
+		 <body>
+		 	return this. _callNativeMethod ("setAttribute", [name, value]);
+		 </body>
+	 </method>
+	 <!-- stubs to resolve AIOS 0.7.7 incompatibility -->
 
 	<destructor>
     	<![CDATA[
@@ -190,3 +267,4 @@
 		]]>
 	</handler>
 </handlers>
+
