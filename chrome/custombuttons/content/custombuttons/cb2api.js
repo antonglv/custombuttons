@@ -116,27 +116,27 @@ custombuttons.gCounter = function ( nC, nS ) //{{{
   {
    this.count = ( typeof nCt == "number")? nCt : 0;
    this.step = ( typeof nSt == "number")? nSt : 1;
-  }, // End Method init(  )
+  }, // End Method init( )
   dec:function ( )
   {
    var a = this.count;
    this.count -= this.step;
    return [a, this.count];
-  }, // End Method dec(  )
+  }, // End Method dec( )
   inc:function ( )
   {
    var a = this.count;
    this.count += this.step;
    return [a, this.count];
-  }, // End Method inc(  )
+  }, // End Method inc( )
   get:function ( )
   {
    return this.count;
-  } // End Method get(  )
+  } // End Method get( )
  }
  oRet.init( nC, nS );
  return oRet;
-}; //}}} End Method gCounter(  )
+}; //}}} End Method gCounter( )
 
 /**  getCbContextObj( oBtn )
 
@@ -393,7 +393,7 @@ custombuttons.getCbContextObj = function ( oBtn ) //{{{
    ct.oId = ct.oMenu.id;
    ct.nId = ct.nMenu.id;
    ct.remItem();
-  }, //}}} End Method init(  )
+  }, //}}} End Method init( )
   /**  setSub(  )
 
 		
@@ -413,7 +413,7 @@ custombuttons.getCbContextObj = function ( oBtn ) //{{{
   {
    this. oButton. _ctxtObj = true;
    this. mCtxtSub = true;
-  }, //}}} End Method setSub(  )
+  }, //}}} End Method setSub( )
   /**  setPri(  )
 
 		
@@ -433,7 +433,7 @@ custombuttons.getCbContextObj = function ( oBtn ) //{{{
   {
    this. oButton. _ctxtObj = false;
    this. mCtxtSub = false;
-  }, //}}} End Method setPri(  )
+  }, //}}} End Method setPri( )
   /**  getItem(  )
 
 		
@@ -475,7 +475,7 @@ custombuttons.getCbContextObj = function ( oBtn ) //{{{
     return oItem;
    } // End if ( mCtxtSub )
    return null;
-  }, //}}} End Method getItem(  )
+  }, //}}} End Method getItem( )
 
   /*
 
@@ -696,7 +696,7 @@ custombuttons.getCbContextObj = function ( oBtn ) //{{{
   {
    this.setPri();
    this.listener = function(){};
-  } //}}} End Method deInit(  )
+  } //}}} End Method deInit( )
 
 }; //}}} End Object mObj
 
@@ -830,7 +830,7 @@ custombuttons.gQuot = { //{{{
   case "click":
    if (this. dcWaitFlag) return;
    this.savEvent = evt;
-   // Otherwise set timer to act.  It may be preempted by a doubleclick.
+   // Otherwise set timer to act. It may be preempted by a doubleclick.
    this. setTimer ();
    break;
   case "dblclick":
@@ -1019,7 +1019,7 @@ custombuttons.gQuot = { //{{{
    popup.showPopup(node, x, y, "popup", null, null); // Pop up the menu
   } // End else ( typeof popup.openPopup == CB2const.FUNCTION )
  } //}}} End Method gShowPopup( node )
-}; //}}} End Object   gQuot
+}; //}}} End Object gQuot
 
 /**  gQuot( evt, cButton )
 
@@ -1043,7 +1043,7 @@ Purpose: 1. Handle mouse click events.
 var gQuot = function( evt, cButton ) //{{{
 {
  custombuttons.gQuot.mHandler( evt, cButton );
-} //}}} End Function gQuot( evt, cButton ) 
+} //}}} End Function gQuot( evt, cButton )
 
 /**  gShowPopup( node )
 
