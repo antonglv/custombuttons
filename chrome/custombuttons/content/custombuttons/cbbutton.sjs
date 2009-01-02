@@ -4,7 +4,8 @@ var custombutton =
 {
     buttonConstructor: function (oBtn)
 	{
-		oBtn. destroy (); // to call onDestroy method, if exists
+		if (oBtn. destroy)
+			oBtn. destroy (); // to call onDestroy method, if exists
 		var cbd = SERVICE (CB_KEYMAP);
 		cbd. Delete (oBtn. getAttribute ("id"));
 		if (!oBtn. hasAttribute ("cb-name"))
@@ -62,7 +63,8 @@ var custombutton =
 			var cbd = SERVICE (CB_KEYMAP);
 			cbd. Delete (oBtn. getAttribute ("id"));
 		}
-		oBtn. destroy ();
+		if (oBtn. destroy)
+			oBtn. destroy ();
 	},
 	
 	checkBind: function()
