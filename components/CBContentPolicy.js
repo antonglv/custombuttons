@@ -1,30 +1,30 @@
 // ***** BEGIN LICENSE BLOCK *****
 // Version: MPL 1.1
-// 
+//
 // The contents of this file are subject to the Mozilla Public License Version
 // 1.1 (the "License"); you may not use this file except in compliance with
 // the License. You may obtain a copy of the License at
 // http://www.mozilla.org/MPL/
-// 
+//
 // Software distributed under the License is distributed on an "AS IS" basis,
 // WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License
 // for the specific language governing rights and limitations under the
 // License.
-// 
+//
 // Custom Buttons:
 // - Gives a possibility to create custom toolbarbuttons.
 // - This component is intended to prevent local disk access vulnerability
 // - via chrome://custombuttons-profilefolder/%2e%2e%2f...
 // - (see bug #413250: https://bugzilla.mozilla.org/show_bug.cgi?id=413250)
-// 
+//
 // Author: Anton Glazatov (c) 2008
-// 
+//
 // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 // Portions of this code have been based upon
 // Adblock Plus - http://adblockplus.org/
 // Copyright (c) 2006-2007 Wladimir Palant
 // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-// 
+//
 // ***** END LICENSE BLOCK *****
 var info = Components. classes ["@mozilla.org/xre/app-info;1"]. getService (Components. interfaces. nsIXULAppInfo);
 var oVC = Components. classes ["@mozilla.org/xpcom/version-comparator;1"]. createInstance (Components. interfaces. nsIVersionComparator);
@@ -83,7 +83,7 @@ cbContentPolicyComponent. prototype =
   return this;
  },
 
- // Adblock Plus code	
+ // Adblock Plus code
  shouldLoad: function (contentType, contentLocation, requestOrigin, context,
         mimeTypeGuess, extra)
  {
