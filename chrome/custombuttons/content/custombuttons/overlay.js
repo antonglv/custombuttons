@@ -583,9 +583,12 @@ Custombuttons. prototype =
   this. InstallButton (sURI);
  },
 
- _CloneButton: function (sClonedButtonID)
+ _CloneButton: function (sClonedButtonId, sParentToolbarId)
  {
-  var oClonedButton = document. getElementById (sClonedButtonID);
+  var oParentToolbar = document. getElementById (sParentToolbarId);
+  var oClonedButton = oParentToolbar. getElementsByAttribute ("id", sClonedButtonId) [0];
+  if (!oClonedButton)
+   oClonedButton = document. getElementById (sClonedButtonId);
   if (!oClonedButton)
    return null;
   var oClone = this. CreateNewButton ();
@@ -600,27 +603,34 @@ Custombuttons. prototype =
 
  CloneButton: function (oClonedButton)
  {
+  var sParentToolbarId = oClonedButton. parentNode. id;
   var sClonedButtonId = oClonedButton. getAttribute ("id");
-  var oClone = this. _CloneButton (sClonedButtonId);
+  var oClone = this. _CloneButton (sClonedButtonId, sParentToolbarId);
   if (!oClone)
    return;
-  this. NotifyWindows (null, "CLONE", sClonedButtonId);
+  this. NotifyWindows (null, "CLONE", sClonedButtonId + ":" + sParentToolbarId);
   this. AddButtonToOverlay (oClone);
   this. finalizeButtonOperation (oClone. getAttribute ("id"));
  },
 
  _UpdateButton: function (sUpdatedButtonId, sURI)
  {
-  var oButtonToUpdate = document. getElementById (sUpdatedButtonId);
-  if (!oButtonToUpdate)
+  var cButtonsToUpdate = document. getElementsByAttribute ("id", sUpdatedButtonId);
+  if (cButtonsToUpdate. length == 0)
    return null;
   var oUpdatedButton = this. CreateNewButton ();
   oUpdatedButton. setAttribute ("id", sUpdatedButtonId);
   var oParameters = new CustombuttonsURIParser (sURI). parameters;
   this. SetButtonParameters (oUpdatedButton, oParameters);
-  oButtonToUpdate. parentNode. replaceChild (oUpdatedButton, oButtonToUpdate);
   if (this. shouldAddToPalette)
    this. AddButtonToPalette (oUpdatedButton);
+  var oButtonToUpdate;
+  for (var i = 0; i < cButtonsToUpdate. length; i++)
+  {
+   oButtonToUpdate = cButtonsToUpdate [i];
+   oButtonToUpdate. parentNode. replaceChild (oUpdatedButton, oButtonToUpdate);
+   oUpdatedButton = oUpdatedButton. cloneNode (true);
+  }
   return oUpdatedButton;
  },
 
@@ -632,17 +642,23 @@ Custombuttons. prototype =
   this. AddButtonToOverlay (oUpdatedButton);
  },
 
- _RemoveButton: function (sRemovedButtonId)
+ _RemoveButton: function (sRemovedButtonId, sParentToolbarId)
  {
-  var oRemovedButton = document. getElementById (sRemovedButtonId);
+  var cButtonsToRemove = document. getElementsByAttribute ("id", sRemovedButtonId);
+  var bRemoveFromOverlay = (cButtonsToRemove. length == 1);
+  var oParentToolbar = document. getElementById (sParentToolbarId);
+  var oRemovedButton = oParentToolbar. getElementsByAttribute ("id", sRemovedButtonId) [0];
+  if (!oRemovedButton)
+   oRemovedButton = document. getElementById (sRemovedButtonId);
   if (!oRemovedButton)
    return;
-  this. RemoveButtonFromPalette (oRemovedButton);
   try
   {
    oRemovedButton. destroy ();
   }
   catch (oErr) {}
+  if (bRemoveFromOverlay)
+   this. RemoveButtonFromPalette (oRemovedButton);
   oRemovedButton. parentNode. removeChild (oRemovedButton);
  },
 
@@ -651,10 +667,14 @@ Custombuttons. prototype =
   var str = document. getElementById ("cbStrings"). getString ("RemoveConfirm"). replace (/%s/gi, this. values. name);
   if (!confirm (str))
    return;
+  var sParentToolbarId = oRemovedButton. parentNode. id;
   var sRemovedButtonId = oRemovedButton. getAttribute ("id");
-  this. _RemoveButton (sRemovedButtonId);
-  this. NotifyWindows (null, "REMOVE", sRemovedButtonId);
-  this. RemoveButtonFromOverlay (oRemovedButton);
+  var cButtonsToRemove = document. getElementsByAttribute ("id", sRemovedButtonId);
+  var bRemoveFromOverlay = (cButtonsToRemove. length == 1);
+  this. _RemoveButton (sRemovedButtonId, sParentToolbarId);
+  this. NotifyWindows (null, "REMOVE", sRemovedButtonId + ":" + sParentToolbarId);
+  if (bRemoveFromOverlay)
+   this. RemoveButtonFromOverlay (oRemovedButton);
   this. finalizeButtonOperation (null);
  },
 
@@ -663,6 +683,7 @@ Custombuttons. prototype =
  {
   if (this. notificationSender)
    return;
+  var ta = sData. split (":");
   var topic = sTopic. replace (this. notificationPrefix, "");
   switch (topic)
   {
@@ -670,14 +691,14 @@ Custombuttons. prototype =
     this. _InstallButton (sData);
     break;
    case "CLONE":
-    this. _CloneButton (sData);
+    this. _CloneButton (ta [0], ta [1]);
     break;
    case "UPDATE":
     var sUpdatedButtonId = oSubject. getAttribute ("id");
     this. _UpdateButton (sUpdatedButtonId, sData);
     break;
    case "REMOVE":
-    this. _RemoveButton (sData);
+    this. _RemoveButton (ta [0], ta [1]);
     break;
    case "open":
     var aData = sData. split (":");
@@ -1173,7 +1194,7 @@ custombuttons.uChelpButton = function ( oBtn ) //{{{
   var hlp = createMsg(hlpTitle);
   str = str. replace (/\<label\>/gi, Button. name). replace (/\<id\>/gi, bId);
   hlp. aMsg (str);
-}; //}}} End Method uChelpButton(  )
+}; //}}} End Method uChelpButton( )
 
 // Custombuttons utils
 const custombuttonsUtils =
@@ -1368,7 +1389,7 @@ getPrefs: function ( sPrefId ) //{{{
   case 64: // number
     rRet = nsIPrefBranchObj.getIntPref( sPrefId );
     break;
-  case 128: //  boolean
+  case 128: // boolean
     rRet = nsIPrefBranchObj.getBoolPref( sPrefId );
     break;
   default:
@@ -1629,7 +1650,7 @@ gClipboard: { //{{{
  clear:function ( ) //{{{
  {
    this.write("");
- }, //}}} End Method clear(  )
+ }, //}}} End Method clear( )
  /**  Clear(  )
 
 
@@ -1656,7 +1677,7 @@ gClipboard: { //{{{
  Clear:function ( ) //{{{
  {
    this.sRead[0] = "";
- }, //}}} End Method Clear(  )
+ }, //}}} End Method Clear( )
  /**  read(  )
 
 
@@ -1695,7 +1716,7 @@ gClipboard: { //{{{
    if (str) str = str.value.QueryInterface(Components.interfaces.nsISupportsString);
    if (str) pastetext = str.data.substring(0, strLength.value / 2);
    return pastetext;
- }, //}}} End Method read(  )
+ }, //}}} End Method read( )
 
  /**  Write( str )
 
@@ -1752,7 +1773,7 @@ gClipboard: { //{{{
  {
    var sRet = this.sRead[0];
    return sRet;
- } //}}} End Method Read(  )
+ } //}}} End Method Read( )
 
 } //}}} End Object gClipboard
 }; // -- custombuttonsUtils
