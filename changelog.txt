@@ -1,5 +1,8 @@
 Changelog
 ==============
+0.0.3.8
+! Changed: ui code logic
+# Fixed: 'custombuttons' protocol vulnerability
 0.0.3.7
 + Added: Thunderbird 3.0b2pre support
 # Fixed: JavaScript console binding opened buttons only in main Thunderbird window
