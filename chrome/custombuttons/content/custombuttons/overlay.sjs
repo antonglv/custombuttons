@@ -588,9 +588,12 @@ Custombuttons. prototype =
 		this. InstallButton (sURI);
 	},
 	
-	_CloneButton: function (sClonedButtonID)
+	_CloneButton: function (sClonedButtonId, sParentToolbarId)
 	{
-		var oClonedButton = ELEMENT (sClonedButtonID);
+		var oParentToolbar = ELEMENT (sParentToolbarId);
+		var oClonedButton = oParentToolbar. getElementsByAttribute ("id", sClonedButtonId) [0];
+		if (!oClonedButton)
+			oClonedButton = ELEMENT (sClonedButtonId);
 		if (!oClonedButton)
 			return null;
 		var oClone = this. CreateNewButton ();
@@ -605,27 +608,34 @@ Custombuttons. prototype =
 	
 	CloneButton: function (oClonedButton)
 	{
+		var sParentToolbarId = oClonedButton. parentNode. id;
 		var sClonedButtonId = oClonedButton. getAttribute ("id");
-		var oClone = this. _CloneButton (sClonedButtonId);
+		var oClone = this. _CloneButton (sClonedButtonId, sParentToolbarId);
 		if (!oClone)
 			return;
-		this. NotifyWindows (null, "CLONE", sClonedButtonId);
+		this. NotifyWindows (null, "CLONE", sClonedButtonId + ":" + sParentToolbarId);
 		this. AddButtonToOverlay (oClone);
 		this. finalizeButtonOperation (oClone. getAttribute ("id"));
 	},
 	
 	_UpdateButton: function (sUpdatedButtonId, sURI)
 	{
-		var oButtonToUpdate = ELEMENT (sUpdatedButtonId);
-		if (!oButtonToUpdate)
+		var cButtonsToUpdate = document. getElementsByAttribute ("id", sUpdatedButtonId);
+		if (cButtonsToUpdate. length == 0)
 			return null;
 		var oUpdatedButton = this. CreateNewButton ();
 		oUpdatedButton. setAttribute ("id", sUpdatedButtonId);
 		var oParameters = new CustombuttonsURIParser (sURI). parameters;
 		this. SetButtonParameters (oUpdatedButton, oParameters);
-		oButtonToUpdate. parentNode. replaceChild (oUpdatedButton, oButtonToUpdate);
 		if (this. shouldAddToPalette)
 			this. AddButtonToPalette (oUpdatedButton);
+		var oButtonToUpdate;
+		for (var i = 0; i < cButtonsToUpdate. length; i++)
+		{
+			oButtonToUpdate = cButtonsToUpdate [i];
+			oButtonToUpdate. parentNode. replaceChild (oUpdatedButton, oButtonToUpdate);
+			oUpdatedButton = oUpdatedButton. cloneNode (true);
+		}
 		return oUpdatedButton;
 	},
 	
@@ -637,17 +647,23 @@ Custombuttons. prototype =
 		this. AddButtonToOverlay (oUpdatedButton);
 	},
 	
-	_RemoveButton: function (sRemovedButtonId)
+	_RemoveButton: function (sRemovedButtonId, sParentToolbarId)
 	{
-		var oRemovedButton = ELEMENT (sRemovedButtonId);
+		var cButtonsToRemove = document. getElementsByAttribute ("id", sRemovedButtonId);
+		var bRemoveFromOverlay = (cButtonsToRemove. length == 1);
+		var oParentToolbar = ELEMENT (sParentToolbarId);
+		var oRemovedButton = oParentToolbar. getElementsByAttribute ("id", sRemovedButtonId) [0];
+		if (!oRemovedButton)
+			oRemovedButton = ELEMENT (sRemovedButtonId);
 		if (!oRemovedButton)
 			return;
-		this. RemoveButtonFromPalette (oRemovedButton);
 		try
 		{
 			oRemovedButton. destroy ();
 		}
 		catch (oErr) {}
+		if (bRemoveFromOverlay)
+			this. RemoveButtonFromPalette (oRemovedButton);
 		oRemovedButton. parentNode. removeChild (oRemovedButton);
 	},
 	
@@ -656,10 +672,14 @@ Custombuttons. prototype =
 		var str = CB_STRING ("cbStrings", "RemoveConfirm", this. values. name);
 		if (!confirm (str))
 			return;
+		var sParentToolbarId = oRemovedButton. parentNode. id;
 		var sRemovedButtonId = oRemovedButton. getAttribute ("id");
-		this. _RemoveButton (sRemovedButtonId);
-		this. NotifyWindows (null, "REMOVE", sRemovedButtonId);
-		this. RemoveButtonFromOverlay (oRemovedButton);
+		var cButtonsToRemove = document. getElementsByAttribute ("id", sRemovedButtonId);
+		var bRemoveFromOverlay = (cButtonsToRemove. length == 1);
+		this. _RemoveButton (sRemovedButtonId, sParentToolbarId);
+		this. NotifyWindows (null, "REMOVE", sRemovedButtonId + ":" + sParentToolbarId);
+		if (bRemoveFromOverlay)
+			this. RemoveButtonFromOverlay (oRemovedButton);
 		this. finalizeButtonOperation (null);
 	},
 	
@@ -668,6 +688,7 @@ Custombuttons. prototype =
 	{
 		if (this. notificationSender)
 			return;
+		var ta = sData. split (":");
 		var topic = sTopic. replace (this. notificationPrefix, "");
 		switch (topic)
 		{
@@ -675,14 +696,14 @@ Custombuttons. prototype =
 				this. _InstallButton (sData);
 				break;
 			case "CLONE":
-				this. _CloneButton (sData);
+				this. _CloneButton (ta [0], ta [1]);
 				break;
 			case "UPDATE":
 				var sUpdatedButtonId = oSubject. getAttribute ("id");
 				this. _UpdateButton (sUpdatedButtonId, sData);
 				break;
 			case "REMOVE":
-				this. _RemoveButton (sData);
+				this. _RemoveButton (ta [0], ta [1]);
 				break;
 			case "open":
 				var aData = sData. split (":");
