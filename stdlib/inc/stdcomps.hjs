@@ -26,6 +26,7 @@
 #define PROMPT_SERVICE_CID "@mozilla.org/embedcomp/prompt-service;1"
 #define PROPERTIES_SERVICE_CID "@mozilla.org/file/directory_service;1"
 #define RDF_SERVICE_CID "@mozilla.org/rdf/rdf-service;1"
+#define SCRIPT_SECURITY_MANAGER_SERVICE_CID "@mozilla.org/scriptsecuritymanager;1"
 #define STRING_BUNDLE_SERVICE_CID "@mozilla.org/intl/stringbundle;1"
 #define XUL_APP_INFO_SERVICE_CID "@mozilla.org/xre/app-info;1"
 #define WINDOW_SERVICE_CID "@mozilla.org/appshell/window-mediator;1"
@@ -74,6 +75,7 @@
 #define PREF_SERVICE_IID nsIPrefService
 #define PROMPT_SERVICE_IID nsIPromptService
 #define PROPERTIES_SERVICE_IID nsIProperties
+#define SCRIPT_SECURITY_MANAGER_SERVICE_IID nsIScriptSecurityManager
 #define RDF_SERVICE_IID nsIRDFService
 #define STRING_BUNDLE_SERVICE_IID nsIStringBundleService
 #define XUL_APP_INFO_SERVICE_IID nsIXULAppInfo
