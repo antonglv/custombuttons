@@ -76,7 +76,9 @@ function CustombuttonProtocol (sProtocolName)
 {
  this. scheme = sProtocolName;
  this. protocolFlags = 1 | 2 | 64 |
-        1024 | 2048;
+        1024;
+ if (sProtocolName == "custombutton")
+  this. protocolFlags |= 2048;
  if (sProtocolName == "custombuttons")
   this. protocolFlags |= 4096;
  return this;
@@ -103,32 +105,47 @@ CustombuttonProtocol. prototype =
   return uri;
  },
 
- _system_principal: null,
-
- fakeOverlayChannel: function ()
+ get chromeProtocolHandler ()
  {
   var chromeProtocolHandler = Components. classes ["@mozilla.org/network/protocol;1?name=chrome"].
          getService ();
   chromeProtocolHandler = chromeProtocolHandler. QueryInterface (Components. interfaces. nsIProtocolHandler);
+  return chromeProtocolHandler;
+ },
+
+ get fakeOverlayURI ()
+ {
   var fakeOverlayURI = "chrome://custombuttons/content/buttonsoverlay.xul";
-  var chromeURI = chromeProtocolHandler. newURI (fakeOverlayURI, null, null);
-  return chromeProtocolHandler. newChannel (chromeURI);
+  return this. chromeProtocolHandler. newURI (fakeOverlayURI, null, null);
+ },
+
+ fakeOverlayChannel: function ()
+ {
+  return this. chromeProtocolHandler. newChannel (this. fakeOverlayURI);
  },
 
  sCbPrefix: "custombuttons://content/",
+
+ getChromePrincipal: function ()
+ {
+  var ssm = Components. classes ["@mozilla.org/scriptsecuritymanager;1"]. getService (Components. interfaces. nsIScriptSecurityManager);
+  var res;
+  try
+  {
+   res = ssm. getCodebasePrincipal (this. fakeOverlayURI);
+  }
+  catch (e)
+  {
+   res = this. fakeOverlayChannel (). owner;
+  }
+  return res;
+ },
 
  newChannel: function (aURI)
  {
   if (this. scheme == "custombuttons")
   {
    var sFileName = aURI. spec. substring (this. sCbPrefix. length);
-   if (!this. _system_principal)
-   {
-    var chromeChannel = this. fakeOverlayChannel ();
-    this. _system_principal = chromeChannel. owner;
-    var chromeRequest = chromeChannel. QueryInterface (Components. interfaces. nsIRequest);
-    chromeRequest. cancel (0x804b0002);
-   }
    var dir = Components. classes ["@mozilla.org/file/directory_service;1"]. getService (Components. interfaces. nsIProperties). get ("ProfD", Components. interfaces. nsIFile); // get profile folder
    if (!dir. exists ())
     return this. fakeOverlayChannel ();
@@ -141,7 +158,7 @@ CustombuttonProtocol. prototype =
    var uri = ios. newFileURI (file);
    var channel = ios. newChannelFromURI (uri);
    channel. originalURI = aURI;
-   channel. owner = this. _system_principal;
+   channel. owner = this. getChromePrincipal ();
    return channel;
   }
   var windowService = Components. classes ["@mozilla.org/appshell/window-mediator;1"]. getService (Components. interfaces. nsIWindowMediator);
