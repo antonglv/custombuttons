@@ -2,7 +2,8 @@ var custombutton =
 {
     buttonConstructor: function (oBtn)
  {
-  oBtn. destroy (); // to call onDestroy method, if exists
+  if (oBtn. destroy)
+   oBtn. destroy (); // to call onDestroy method, if exists
   var cbd = Components. classes ["@xsms.nm.ru/custombuttons/cbkeymap;1"]. getService (Components. interfaces. cbIKeyMapService);
   cbd. Delete (oBtn. getAttribute ("id"));
   if (!oBtn. hasAttribute ("cb-name"))
@@ -60,7 +61,8 @@ var custombutton =
    var cbd = Components. classes ["@xsms.nm.ru/custombuttons/cbkeymap;1"]. getService (Components. interfaces. cbIKeyMapService);
    cbd. Delete (oBtn. getAttribute ("id"));
   }
-  oBtn. destroy ();
+  if (oBtn. destroy)
+   oBtn. destroy ();
  },
 
  checkBind: function()
