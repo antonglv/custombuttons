@@ -32,7 +32,7 @@
 
 var info = SERVICE (XUL_APP_INFO);
 var oVC = COMPONENT (VERSION_COMPARATOR);
-if (oVC. compare (info. version, "3.1b2") < 0)
+if (oVC. compare (info. platformVersion, "1.8.0.5") < 0)
 {
 	// Adblock Plus code
 	//HACKHACK: need a way to get an implicit wrapper for nodes because of bug 337095 (fixed in Gecko 1.8.0.5)
@@ -136,7 +136,7 @@ var Module =
 	{
 		var info = SERVICE (XUL_APP_INFO);
 		var oVC = COMPONENT (VERSION_COMPARATOR);
-		if (oVC. compare (info. version, "3.1b2") >= 0)
+		if (oVC. compare (info. platformVersion, "1.8.0.5") >= 0)
 			return;
 		if (this. FIRST_TIME)
 	        this. FIRST_TIME = false;
