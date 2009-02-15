@@ -47,6 +47,7 @@ cbKeyMapService. prototype =
   if (event. altKey) prefix += "Alt+";
   if (event. ctrlKey) prefix += "Ctrl+";
   if (event. shiftKey) prefix += "Shift+";
+  if (event. metaKey) prefix += "Meta+";
   return prefix;
  },
 
@@ -70,7 +71,7 @@ cbKeyMapService. prototype =
  {
   var key = "";
   var keyCode = this. eventKeymap [event. keyCode];
-  if (event. which && (keyCode != "RETURN"))
+  if (event. which && (keyCode != "RETURN") && (keyCode != "BACK_SPACE"))
    key = String. fromCharCode (event. which);
   else
    key = keyCode || ("UNKNOWN_" + event. keyCode);
