@@ -34,16 +34,20 @@
 
 #define ALERT_SERVICE_COMPONENT_CID "@mozilla.org/alerts-service;1"
 #define BINARY_INPUT_STREAM_COMPONENT_CID "@mozilla.org/binaryinputstream;1"
+#define BINARY_OUTPUT_STREAM_COMPONENT_CID "@mozilla.org/binaryoutputstream;1"
 #define CONTAINER_UTILS_COMPONENT_CID "@mozilla.org/rdf/container-utils;1"
 #define CONVERTER_INPUT_STREAM_COMPONENT_CID "@mozilla.org/network/converter-input-stream;1"
 #define DOM_DOCUMENT_COMPONENT_CID "@mozilla.org/xul/xul-document;1"
 #define DOM_PARSER_COMPONENT_CID "@mozilla.org/xmlextras/domparser;1"
+#define DOM_SERIALIZER_COMPONENT_CID "@mozilla.org/xmlextras/xmlserializer;1"
 #define DOM_XML_DOCUMENT_COMPONENT_CID "@mozilla.org/xml/xml-document;1"
 #define EXTERNAL_APP_LAUNCHER_COMPONENT_CID "@mozilla.org/uriloader/external-helper-app-service;1"
 #define FILE_INPUT_STREAM_COMPONENT_CID "@mozilla.org/network/file-input-stream;1"
 #define FILE_OUTPUT_STREAM_COMPONENT_CID "@mozilla.org/network/file-output-stream;1"
 #define FILE_PICKER_COMPONENT_CID "@mozilla.org/filepicker;1"
+#define INPUT_STREAM_CHANNEL_COMPONENT_CID "@mozilla.org/network/input-stream-channel;1"
 #define LOCAL_FILE_COMPONENT_CID "@mozilla.org/file/local;1"
+#define PIPE_COMPONENT_CID "@mozilla.org/pipe;1"
 #define PREF_COMPONENT_CID "@mozilla.org/preferences;1"
 #define SCRIPTABLE_INPUT_STREAM_COMPONENT_CID "@mozilla.org/scriptableinputstream;1"
 #define SCRIPTABLE_UNICODE_CONVERTER_COMPONENT_CID "@mozilla.org/intl/scriptableunicodeconverter"
@@ -84,16 +88,20 @@
 
 #define ALERT_SERVICE_COMPONENT_IID nsIAlertsService
 #define BINARY_INPUT_STREAM_COMPONENT_IID nsIBinaryInputStream
+#define BINARY_OUTPUT_STREAM_COMPONENT_IID nsIBinaryOutputStream
 #define CONTAINER_UTILS_COMPONENT_IID nsIRDFContainerUtils
 #define CONVERTER_INPUT_STREAM_COMPONENT_IID nsIConverterInputStream
 #define DOM_DOCUMENT_COMPONENT_IID nsIDOMDocument
 #define DOM_PARSER_COMPONENT_IID nsIDOMParser
+#define DOM_SERIALIZER_COMPONENT_IID nsIDOMSerializer
 #define DOM_XML_DOCUMENT_COMPONENT_IID nsIDOMXMLDocument
 #define EXTERNAL_APP_LAUNCHER_COMPONENT_IID nsPIExternalAppLauncher
 #define FILE_INPUT_STREAM_COMPONENT_IID nsIFileInputStream
 #define FILE_OUTPUT_STREAM_COMPONENT_IID nsIFileOutputStream
 #define FILE_PICKER_COMPONENT_IID nsIFilePicker
+#define INPUT_STREAM_CHANNEL_COMPONENT_IID nsIInputStreamChannel
 #define LOCAL_FILE_COMPONENT_IID nsILocalFile
+#define PIPE_COMPONENT_IID nsIPipe
 #define PREF_COMPONENT_IID nsIPref
 #define SCRIPTABLE_INPUT_STREAM_COMPONENT_IID nsIScriptableInputStream
 #define SCRIPTABLE_UNICODE_CONVERTER_COMPONENT_IID nsIScriptableUnicodeConverter
