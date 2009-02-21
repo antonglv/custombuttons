@@ -19,3 +19,8 @@ toolbarbutton[id^='custombuttons-button'][type="menu-vertical"],
 toolbarbutton[id^='wrapper-custombuttons-button'][type="menu-vertical"]{
   -moz-binding: url("chrome://custombuttons/content/toolbarbutton.xml#menu-vertical");
 }
+
+toolbarbutton[id^="custombuttons-button"][cb-style~="hidelabel"]>label
+{
+	display: none;
+}
