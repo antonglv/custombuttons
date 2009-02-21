@@ -20,6 +20,9 @@
 #define CB_KEYMAP_SERVICE_CID "@xsms.nm.ru/custombuttons/cbkeymap;1"
 #define CB_KEYMAP_SERVICE_IID cbIKeyMapService
 
+#define CB_SERVICE_CID "@xsms.nm.ru/custombuttons/cbservice;1"
+#define CB_SERVICE_IID cbICustombuttonsService
+
 #define CB_CONTENT_POLICY_COMPONENT_CID "@xsms.nm.ru/custombuttons/cbcontentpolicy;1"
 #define CB_CONTENT_POLICY_COMPONENT_IID cbIContentPolicyComponent
 
