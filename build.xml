@@ -144,6 +144,18 @@ Define it in build.properties (don't forget about double back slashes)</fail>
 				<exclude name="content/custombuttons/editor.html"/>
 				<exclude name="content/custombuttons/addMoreKeysDialog.xul"/>
 				<exclude name="content/custombuttons/addMoreKeysDialog.js"/>
+				<exclude name="content/custombuttons/jsVer1.js"/>
+				<exclude name="content/custombuttons/jsVer2.js"/>
+				<exclude name="content/custombuttons/jsVer3.js"/>
+				<exclude name="content/custombuttons/jsVer4.js"/>
+				<exclude name="content/custombuttons/codeeditor2.xml"/>
+				<!-- 0.0.3.9 excludes -->
+				
+				<exclude name="content/custombuttons/cbbutton1.5.xul"/>
+				<exclude name="content/custombuttons/cbbutton.xul"/>
+				<exclude name="content/custombuttons/cbbutton3.xul"/>
+				<exclude name="content/custombuttons/loader.js"/>
+				
 			</fileset>
 		</zip>
 	</target>
