@@ -116,11 +116,13 @@ Editor. prototype =
 
   setButtonParameters: function ()
   {
-    var values = {};
+    var values = window. arguments [0] ["parameters"] || {};
     for each (var v in this. CB. buttonParameters)
       values [v] = ELEMENT (v). value;
     values ["mode"] = ELEMENT ("initInCustomizeToolbarDialog"). checked? CB_MODE_ENABLE_INIT_IN_CTDIALOG: 0;
     values ["mode"] |= ELEMENT ("disableDefaultKeyBehavior"). checked? CB_MODE_DISABLE_DEFAULT_KEY_BEHAVIOR: 0;
+	if (this. button && this. button. parameters && this. button. parameters. attributes)
+		values. attributes = this. button. parameters. attributes;
 	window. arguments [0]. parameters = values;
     if (this. button && this. button. id)
     {

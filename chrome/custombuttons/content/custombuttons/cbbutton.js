@@ -108,7 +108,7 @@ var custombutton =
 
  buttonGetParameters: function(oBtn)
  {
-  return {
+  var parameters = {
    name: oBtn. name,
    image: oBtn. image,
    code: oBtn. cbCommand,
@@ -117,6 +117,12 @@ var custombutton =
    mode: oBtn. cbMode,
    Help: oBtn. Help
   };
+  if (custombuttons. lightning && oBtn. hasAttribute ("mode"))
+  {
+   parameters. attributes = {};
+   parameters. attributes ["mode"] = oBtn. getAttribute ("mode");
+  }
+  return parameters;
  },
 
  buttonGetCbAccelKey: function(oBtn)
@@ -199,6 +205,14 @@ var custombutton =
   }
  },
 
+ setAttribute: function (oDocument, sName, sValue)
+ {
+  var attsNode = oDocument. getElementsByTagName ("attributes") [0];
+  var attr = oDocument. createElement ("attribute");
+  attr. setAttribute ("name", sName);
+  attr. setAttribute ("value", sValue);
+  attsNode. appendChild (attr);
+ },
 
  xmlFormatURI: function(oBtn)
  {
@@ -212,6 +226,12 @@ var custombutton =
   oBtn. setText (doc, "initcode", oBtn. cbInitCode, true);
   oBtn. setText (doc, "accelkey", oBtn. cbAccelKey, true);
   oBtn. setText (doc, "help", oBtn. Help, true);
+  if (oBtn. parameters. attributes)
+  {
+   var atts = oBtn. parameters. attributes;
+   for (var i in atts)
+    this. setAttribute (doc, i, atts [i]);
+  }
   var ser = new XMLSerializer ();
   var data = ser. serializeToString (doc);
   return "custombutton://" + escape (data);
