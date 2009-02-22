@@ -141,11 +141,61 @@ CustombuttonProtocol. prototype =
   return res;
  },
 
+ getJSVersion: function ()
+ {
+  var info = Components. classes ["@mozilla.org/xre/app-info;1"]. getService (Components. interfaces. nsIXULAppInfo);
+  var pv = info. platformVersion;
+  var oVC = Components. classes ["@mozilla.org/xpcom/version-comparator;1"]. createInstance (Components. interfaces. nsIVersionComparator);
+  if (oVC. compare (pv, "1.9") >= 0) return ";version=1.8";
+  if (oVC. compare (pv, "1.8.1") >= 0) return ";version=1.7";
+  if (oVC. compare (pv, "1.8") >= 0) return ";version=1.6";
+  return "";
+ },
+
+ getXULTemplate: function ()
+ {
+  var ios = Components. classes ["@mozilla.org/network/io-service;1"]. getService (Components. interfaces. nsIIOService);
+  var xulchan = ios. newChannel ("chrome://custombuttons/content/tcbbutton.xul", null, null);
+  var instr = xulchan. open ();
+  var dp = Components. classes ["@mozilla.org/xmlextras/domparser;1"]. createInstance (Components. interfaces. nsIDOMParser);
+  var doc = dp. parseFromStream (instr, null, instr. available (), "application/xml");
+  var script = doc. getElementsByTagName ("script") [0];
+  script. setAttribute ("type", "application/x-javascript" + this. getJSVersion ());
+  return doc;
+ },
+
+ pumpDocumentToPipe: function (doc, pipe)
+ {
+  var bos = Components. classes ["@mozilla.org/binaryoutputstream;1"]. createInstance (Components. interfaces. nsIBinaryOutputStream);
+  bos. setOutputStream (pipe. outputStream);
+  var xs = Components. classes ["@mozilla.org/xmlextras/xmlserializer;1"]. createInstance (Components. interfaces. nsIDOMSerializer);
+  xs. serializeToStream (doc, bos, "");
+  bos. close ();
+ },
+
+ cbbuttonxulchannel: function (aURI)
+ {
+  var pipe = Components. classes ["@mozilla.org/pipe;1"]. createInstance (Components. interfaces. nsIPipe);
+  pipe. init (true, true, 0, 0, null);
+  var doc = this. getXULTemplate ();
+  this. pumpDocumentToPipe (doc, pipe);
+  pipe. outputStream. close ();
+  var chan = Components. classes ["@mozilla.org/network/input-stream-channel;1"]. createInstance (Components. interfaces. nsIInputStreamChannel);
+  chan. contentStream = pipe. inputStream;
+  chan. QueryInterface (Components. interfaces. nsIChannel);
+  chan. setURI (aURI);
+  chan. owner = this. getChromePrincipal ();
+  chan. contentType = "application/vnd.mozilla.xul+xml";
+  return chan;
+ },
+
  newChannel: function (aURI)
  {
   if (this. scheme == "custombuttons")
   {
    var sFileName = aURI. spec. substring (this. sCbPrefix. length);
+   if (sFileName == "cbbutton.xul")
+    return this. cbbuttonxulchannel (aURI);
    var dir = Components. classes ["@mozilla.org/file/directory_service;1"]. getService (Components. interfaces. nsIProperties). get ("ProfD", Components. interfaces. nsIFile); // get profile folder
    if (!dir. exists ())
     return this. fakeOverlayChannel ();

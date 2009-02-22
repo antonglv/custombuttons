@@ -110,11 +110,61 @@ CustombuttonProtocol. prototype =
 		return res;
 	},
 	
+	getJSVersion: function ()
+	{
+		var info = SERVICE (XUL_APP_INFO);
+		var pv = info. platformVersion;
+		var oVC = COMPONENT (VERSION_COMPARATOR);
+		if (oVC. compare (pv, "1.9")   >= 0) return ";version=1.8";
+		if (oVC. compare (pv, "1.8.1") >= 0) return ";version=1.7";
+		if (oVC. compare (pv, "1.8")   >= 0) return ";version=1.6";
+		return "";
+	},
+	
+	getXULTemplate: function ()
+	{
+		var ios = SERVICE (IO);
+		var xulchan = ios. newChannel ("chrome://custombuttons/content/tcbbutton.xul", null, null);
+		var instr = xulchan. open ();
+		var dp = COMPONENT (DOM_PARSER);
+		var doc = dp. parseFromStream (instr, null, instr. available (), "application/xml");
+		var script = doc. getElementsByTagName ("script") [0];
+		script. setAttribute ("type", "application/x-javascript" + this. getJSVersion ());
+		return doc;
+	},
+	
+	pumpDocumentToPipe: function (doc, pipe)
+	{
+		var bos = COMPONENT (BINARY_OUTPUT_STREAM);
+		bos. setOutputStream (pipe. outputStream);
+		var xs = COMPONENT (DOM_SERIALIZER);
+		xs. serializeToStream (doc, bos, "");
+		bos. close ();
+	},
+	
+	cbbuttonxulchannel: function (aURI)
+	{
+		var pipe = COMPONENT (PIPE);
+		pipe. init (true, true, 0, 0, null);
+		var doc = this. getXULTemplate ();
+		this. pumpDocumentToPipe (doc, pipe);
+		pipe. outputStream. close ();
+		var chan = COMPONENT (INPUT_STREAM_CHANNEL);
+		chan. contentStream = pipe. inputStream;
+		chan. QI (nsIChannel);
+		chan. setURI (aURI);
+		chan. owner = this. getChromePrincipal ();
+		chan. contentType = "application/vnd.mozilla.xul+xml";
+		return chan;
+	},
+	
 	newChannel: function (aURI)
 	{
 		if (this. scheme == "custombuttons")
 		{
 			var sFileName = aURI. spec. substring (this. sCbPrefix. length);
+			if (sFileName == "cbbutton.xul")
+				return this. cbbuttonxulchannel (aURI);
 			var dir = SERVICE (PROPERTIES). get ("ProfD", CI. nsIFile); // get profile folder
 			if (!dir. exists ())
 				return this. fakeOverlayChannel ();

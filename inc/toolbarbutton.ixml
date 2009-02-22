@@ -4,11 +4,11 @@
     	<![CDATA[
 			// to avoid errors in JS console when we are trying to
 			// initialize in Customize Toolbar dialog
-			if (!window. custombutton)
-			{
-			  Components. classes ["@mozilla.org/moz/jssubscript-loader;1"]. getService (Components. interfaces. mozIJSSubScriptLoader).
-				loadSubScript ("chrome://custombuttons/content/cbbutton.js");
-			}
+			//if (!window. custombutton)
+			//{
+			  //Components. classes ["@mozilla.org/moz/jssubscript-loader;1"]. getService (Components. interfaces. mozIJSSubScriptLoader).
+				//loadSubScript ("chrome://custombuttons/content/cbbutton.js");
+			//}
 			// end
 			custombutton. buttonConstructor (this);
 		]]>
