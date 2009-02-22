@@ -19,6 +19,9 @@
 		<broadcasterset id="custombuttons-buttons-broadcasterset"/>
 
 		<popup id="custombuttons-contextpopup">
+			<menuitem id="custombuttons-contextpopup-addnewbutton"
+					  label="&custombuttons.viewMenu_Item;"
+					  oncommand="custombuttons.addButton()"/>
 			<menuitem id="custombuttons-contextpopup-customize"
 					  accesskey="&customizeToolbar.accesskey;"
 					  label="&customizeToolbar.label;"
@@ -28,6 +31,9 @@
 				  label="&custombuttons.buttonPopup.subCall;"
 				  observes="custombuttons-contextbroadcaster-secondary">
 				<menupopup id="custombuttons-contextpopup-sub">
+					<menuitem id="custombuttons-contextpopup-addnewbutton-sub"
+							  label="&custombuttons.viewMenu_Item;"
+							  oncommand="custombuttons.addButton()"/>
 					<menuitem id="custombuttons-contextpopup-customize-sub"
 							  accesskey="&customizeToolbar.accesskey;"
 							  label="&customizeToolbar.label;"
@@ -41,7 +47,7 @@
 	<menupopup id="menu_View_Popup">
 		<menuseparator/>
 		<menuitem label="&custombuttons.viewMenu_Item;"
-				  oncommand="custombuttons.OpenEditor(null,null,null,'add')"/>
+				  oncommand="custombuttons.addButton()"/>
 	</menupopup>
 
 	<window id="msgcomposeWindow">
@@ -51,6 +57,9 @@
 		<broadcasterset id="custombuttons-buttons-broadcasterset"/>
 
 		<popup id="custombuttons-contextpopup">
+			<menuitem id="custombuttons-contextpopup-addnewbutton"
+					  label="&custombuttons.viewMenu_Item;"
+					  oncommand="custombuttons.addButton()"/>
 			<menuitem id="custombuttons-contextpopup-customize"
 					  accesskey="&customizeToolbar.accesskey;"
 					  label="&customizeToolbar.label;"
@@ -60,6 +69,9 @@
 				  label="&custombuttons.buttonPopup.subCall;"
 				  observes="custombuttons-contextbroadcaster-secondary">
 				<menupopup id="custombuttons-contextpopup-sub">
+					<menuitem id="custombuttons-contextpopup-addnewbutton-sub"
+							  label="&custombuttons.viewMenu_Item;"
+							  oncommand="custombuttons.addButton()"/>
 					<menuitem id="custombuttons-contextpopup-customize-sub"
 							  accesskey="&customizeToolbar.accesskey;"
 							  label="&customizeToolbar.label;"

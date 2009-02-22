@@ -87,7 +87,7 @@
           <checkbox id="initInCustomizeToolbarDialog"
               label="&editor.buttonSettings.initInCustomizeToolbarDialog;"/>
         </groupbox>
-        <groupbox>
+        <groupbox flex="1">
           <caption label="&editor.buttonSettings.hotKeyGroupbox;"/>
           <grid>
             <columns>
