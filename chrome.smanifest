@@ -6,49 +6,39 @@ content	custombuttons	jar:chrome/custombuttons.jar!/content/custombuttons/
 overlay	BROWSER/browser.xul	CBCONTENT/overlay.xul
 overlay	BROWSER/browser.xul	CBOVERLAY/buttonsoverlay.xul
 
-## Firefox 1.5
-overlay	BROWSER/browser.xul			CBCONTENT/cbbutton1.5.xul FIREFOX appversion<=1.6
-overlay	GLOBAL/customizeToolbar.xul	CBCONTENT/cbbutton1.5.xul FIREFOX appversion<=3.0b1
-
-## Firefox 2 and higher
-overlay	BROWSER/browser.xul			CBCONTENT/cbbutton.xul FIREFOX appversion>1.6 appversion<3.0b1
-overlay	GLOBAL/customizeToolbar.xul	CBCONTENT/cbbutton.xul FIREFOX appversion>1.6 appversion<3.0b1
+## Browser
+overlay	BROWSER/browser.xul				CBOVERLAY/cbbutton.xul
+overlay GLOBAL/customizeToolbar.xul		CBOVERLAY/cbbutton.xul
 
 ## Firefox 3
-overlay	BROWSER/browser.xul			CBCONTENT/overlay3b2.xul   		 FIREFOX appversion>=3.0b1
-overlay	GLOBAL/customizeToolbar.xul	CBCONTENT/customizeToolbars.xul  FIREFOX appversion>=3.0b1
-overlay	BROWSER/browser.xul			CBCONTENT/cbbutton3.xul 		 appversion>=3.0b1
-overlay	GLOBAL/customizeToolbar.xul	CBCONTENT/cbbutton3.xul			 appversion>=3.0b1
-
-## Flock
-overlay	BROWSER/browser.xul	CBCONTENT/cbbutton.xul			FLOCK
-overlay	GLOBAL/customizeToolbar.xul	CBCONTENT/cbbutton.xul	FLOCK
+overlay	BROWSER/browser.xul			CBCONTENT/overlay3b2.xul   		 FIREFOXAPP appversion>=3.0b1
+overlay	GLOBAL/customizeToolbar.xul	CBCONTENT/customizeToolbars.xul  FIREFOXAPP appversion>=3.0b1
 
 ## Thunderbird
 ## main window
 overlay	MESSENGER/messenger.xul	CBCONTENT/ThunderbirdOverlay.xul
-overlay	MESSENGER/messenger.xul	CBOVERLAY/buttonsoverlay.xul		THUNDERBIRD
-overlay	MESSENGER/messenger.xul	CBCONTENT/cbbutton.xul
+overlay	MESSENGER/messenger.xul	CBOVERLAY/buttonsoverlay.xul		THUNDERBIRDAPP
+overlay	MESSENGER/messenger.xul	CBOVERLAY/cbbutton.xul
 ## message window
 overlay MESSENGER/messageWindow.xul	CBCONTENT/ThunderbirdOverlay.xul
-overlay MESSENGER/messageWindow.xul	CBOVERLAY/mwbuttonsoverlay.xul	THUNDERBIRD
-overlay MESSENGER/messageWindow.xul	CBCONTENT/cbbutton.xul
+overlay MESSENGER/messageWindow.xul	CBOVERLAY/mwbuttonsoverlay.xul	THUNDERBIRDAPP
+overlay MESSENGER/messageWindow.xul	CBOVERLAY/cbbutton.xul
 ## message compose
 overlay MESSENGERCOMPOSE/messengercompose.xul	CBCONTENT/ThunderbirdOverlay.xul
-overlay MESSENGERCOMPOSE/messengercompose.xul	CBOVERLAY/mcbuttonsoverlay.xul THUNDERBIRD
-overlay MESSENGERCOMPOSE/messengercompose.xul	CBCONTENT/cbbutton.xul
+overlay MESSENGERCOMPOSE/messengercompose.xul	CBOVERLAY/mcbuttonsoverlay.xul THUNDERBIRDAPP
+overlay MESSENGERCOMPOSE/messengercompose.xul	CBOVERLAY/cbbutton.xul
 
 ## Thunderbird 3.0b1
-##overlay	MESSENGER/messenger.xul		CBCONTENT/overlay3b2.xul   		THUNDERBIRD appversion>=3.0b1
-##overlay	MESSENGER/messageWindow.xul	CBCONTENT/overlay3b2.xul   		THUNDERBIRD appversion>=3.0b1
-##overlay	MESSENGERCOMPOSE.xul		CBCONTENT/overlay3b2.xul	   	THUNDERBIRD appversion>=3.0b1
-##overlay	GLOBAL/customizeToolbar.xul	CBCONTENT/customizeToolbars.xul THUNDERBIRD appversion>=3.0b1
+##overlay	MESSENGER/messenger.xul		CBCONTENT/overlay3b2.xul   		THUNDERBIRDAPP appversion>=3.0b1
+##overlay	MESSENGER/messageWindow.xul	CBCONTENT/overlay3b2.xul   		THUNDERBIRDAPP appversion>=3.0b1
+##overlay	MESSENGERCOMPOSE.xul		CBCONTENT/overlay3b2.xul	   	THUNDERBIRDAPP appversion>=3.0b1
+##overlay	GLOBAL/customizeToolbar.xul	CBCONTENT/customizeToolbars.xul THUNDERBIRDAPP appversion>=3.0b1
 
 ## Sunbird
-overlay	CALENDAR/calendar.xul	CBCONTENT/SunbirdOverlay.xul
-overlay CALENDAR/calendar.xul	CBOVERLAY/buttonsoverlay.xul SUNBIRD
-overlay	CALENDAR/calendar.xul	CBCONTENT/cbbutton.xul
-overlay	CALENDAR/customizeToolbar.xul	CBCONTENT/cbbutton.xul
+overlay	SUNBIRD/calendar.xul	CBCONTENT/SunbirdOverlay.xul
+overlay SUNBIRD/calendar.xul	CBOVERLAY/buttonsoverlay.xul
+overlay	SUNBIRD/calendar.xul	CBOVERLAY/cbbutton.xul
+overlay	SUNBIRD/customizeToolbar.xul	CBOVERLAY/cbbutton.xul
 
 ##about dialog
 overlay	EXTENSIONS/about.xul	CBCONTENT/aboutOverlay.xul
@@ -56,10 +46,13 @@ overlay	EXTENSIONS/about.xul	CBCONTENT/aboutOverlay.xul
 skin	custombuttons	classic/1.0	jar:chrome/custombuttons.jar!/skin/classic/
 
 style	BROWSER/browser.xul			CBSKIN/custombuttons.css
+style	BROWSER/browser.xul	CBCONTENT/overlay.css appversion>1.6
+style	BROWSER/browser.xul	CBCONTENT/overlay1.5.css FIREFOXAPP appversion<=1.6
+
 style	GLOBAL/customizeToolbar.xul	CBSKIN/custombuttons.css
 ##style	GLOBAL/customizeToolbar.xul	CBCONTENT/overlay.css appversion>1.6
 style	GLOBAL/customizeToolbar.xul	CBCONTENT/customizeToolbar.css
-style	GLOBAL/customizeToolbar.xul	CBCONTENT/overlay1.5.css FIREFOX appversion<=1.6
+style	GLOBAL/customizeToolbar.xul	CBCONTENT/overlay1.5.css FIREFOXAPP appversion<=1.6
 
 style	MESSENGER/messenger.xul					CBSKIN/custombuttons.css
 style	MESSENGER/messenger.xul					CBCONTENT/overlay.css
@@ -68,11 +61,11 @@ style	MESSENGERCOMPOSE/messengercompose.xul	CBCONTENT/overlay.css
 style	MESSENGER/messageWindow.xul				CBSKIN/custombuttons.css
 style	MESSENGER/messageWindow.xul				CBCONTENT/overlay.css
 
+style	SUNBIRD/calendar.xul	CBSKIN/custombuttons.css
+style	SUNBIRD/calendar.xul	CBCONTENT/overlay.css
+
 style	CALENDAR/calendar.xul	CBSKIN/custombuttons.css
 style	CALENDAR/calendar.xul	CBCONTENT/overlay.css
-
-style	BROWSER/browser.xul	CBCONTENT/overlay.css appversion>1.6
-style	BROWSER/browser.xul	CBCONTENT/overlay1.5.css FIREFOX appversion<=1.6
 
 style	GLOBAL/console.xul	CBCONTENT/console.css
 
