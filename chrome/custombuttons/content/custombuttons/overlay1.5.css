@@ -18,3 +18,8 @@ toolbarbutton[id^='custombuttons-button'][type="menu-button"],
 toolbarbutton[id^='wrapper-custombuttons-button'][type="menu-button"]{
   -moz-binding: url("chrome://custombuttons/content/toolbarbutton.xml#menu-button");
 }
+
+toolbarbutton[id^="custombuttons-button"][cb-style~="hidelabel"]>label
+{
+	display: none;
+}
