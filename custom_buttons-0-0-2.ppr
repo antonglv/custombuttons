@@ -122,15 +122,13 @@ custom_buttons-0-0-2
 1=chrome\custombuttons\content\custombuttons\overlay.sjs
 2=install.rdf
 3=build.xml
-4=H:\Program Files\Firefox2\chrome\toolkit\content\global\customizeToolbar.js
-5=H:\Program Files\Firefox2\chrome\toolkit\content\global\bindings\toolbar.xml
-6=chrome\custombuttons\locale\zh-CN\custombuttons\editor.dtd
-7=chrome\custombuttons\content\custombuttons\editor.sjs
-8=chrome\custombuttons\content\custombuttons\overlay.js
-9=inc\toolbarbutton.ixml
-10=chrome\custombuttons\content\custombuttons\toolbarbutton.sxml
-11=chrome\custombuttons\content\custombuttons\toolbarbutton.xml
-12=changelog.txt
+4=chrome\custombuttons\locale\zh-CN\custombuttons\editor.dtd
+5=chrome\custombuttons\content\custombuttons\editor.sjs
+6=chrome\custombuttons\content\custombuttons\overlay.js
+7=inc\toolbarbutton.ixml
+8=chrome\custombuttons\content\custombuttons\toolbarbutton.sxml
+9=chrome\custombuttons\content\custombuttons\toolbarbutton.xml
+10=changelog.txt
 [Selected Project Files]
 Main=
 Selected=build.xml
@@ -138,7 +136,7 @@ Selected=build.xml
 TopLine=1
 Caret=11,29
 [chrome\custombuttons\content\custombuttons\overlay.sjs]
-TopLine=49
+TopLine=302
 Caret=25,352
 Mark1=21,133
 Mark2=26,229
@@ -154,13 +152,6 @@ Caret=17,32
 [build.xml]
 TopLine=1
 Caret=17,12
-[H:\Program Files\Firefox2\chrome\toolkit\content\global\customizeToolbar.js]
-TopLine=428
-Caret=1,452
-Mark1=45,936
-[H:\Program Files\Firefox2\chrome\toolkit\content\global\bindings\toolbar.xml]
-TopLine=36
-Caret=31,107
 [chrome\custombuttons\locale\zh-CN\custombuttons\editor.dtd]
 TopLine=1
 Caret=1,1
