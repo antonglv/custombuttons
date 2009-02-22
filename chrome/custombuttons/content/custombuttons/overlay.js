@@ -41,6 +41,19 @@ CustombuttonsURIParser. prototype =
    values. initCode = this. getText ("initcode");
    values. accelkey = this. getText ("accelkey");
             values. help = this. getText ("help");
+   var attsNode = this. doc. getElementsByTagName ("attributes") [0];
+   if (attsNode)
+   {
+    values. attributes = {};
+    var attr, aName, aValue;
+    for (var i = 0; i < attsNode. childNodes. length; i++)
+    {
+     attr = attsNode. childNodes [i];
+     aName = attr. getAttribute ("name");
+     aValue = attr. getAttribute ("value");
+     values. attributes [aName] = aValue;
+    }
+   }
   }
   else
   {
@@ -320,9 +333,13 @@ Custombuttons. prototype =
  {
   var oMenuitem = this. getMenuitem ("customize", true);
   oMenuitem. parentNode. appendChild (oMenuitem);
-  oMenuitem = this. getMenuitem ("subCall", true);
+  oMenuitem = this. getMenuitem ("addnewbutton", true);
   oMenuitem. parentNode. appendChild (oMenuitem);
   oMenuitem = this. getMenuitem ("customize", false);
+  oMenuitem. parentNode. appendChild (oMenuitem);
+  oMenuitem = this. getMenuitem ("addnewbutton", false);
+  oMenuitem. parentNode. appendChild (oMenuitem);
+  oMenuitem = this. getMenuitem ("subCall", true);
   oMenuitem. parentNode. appendChild (oMenuitem);
   var pref = "settings.editor.showApplyButton";
   var ps = Components. classes ["@mozilla.org/preferences-service;1"]. getService (Components. interfaces. nsIPrefService);
@@ -413,12 +430,16 @@ Custombuttons. prototype =
   oButton. setAttribute ("cb-oncommand", vParameters. code || "");
   oButton. setAttribute ("cb-init", vParameters. initCode || "");
   oButton. setAttribute ("Help", vParameters. help || vParameters. Help || "");
+  if (vParameters. attributes)
+  {
+   for (var i in vParameters. attributes)
+    oButton. setAttribute (i, vParameters. attributes [i]);
+  }
  },
 
- CopyAttributes: function (oSrcButton, oDstButton)
+ attributesToCopy: function ()
  {
-  var attributesToCopy =
-  {
+  return {
    "class" : true,
    "id" : true,
    "label" : true,
@@ -430,12 +451,24 @@ Custombuttons. prototype =
    "cb-accelkey" : true,
    "context" : true,
    "tooltiptext" : true,
-   "Help" : true
+   "Help" : true,
+   "cb-style" : true
   };
+ },
+
+ CopyAttributes: function (oSrcButton, oDstButton)
+ {
+  var attributesToCopy = this. attributesToCopy ();
   for (var attr in attributesToCopy)
   {
    if (oSrcButton. hasAttribute (attr))
     oDstButton. setAttribute (attr, oSrcButton. getAttribute (attr));
+  }
+  if (oSrcButton. parameters && oSrcButton. parameters. attributes)
+  {
+   var atts = oSrcButton. parameters. attributes;
+   for (var i in atts)
+    oDstButton. setAttribute (i, atts [i]);
   }
  },
 
@@ -560,6 +593,15 @@ Custombuttons. prototype =
   }
  },
 
+ setAttribute: function (oDocument, sName, sValue)
+ {
+  var attsNode = oDocument. getElementsByTagName ("attributes") [0];
+  var attr = oDocument. createElement ("attribute");
+  attr. setAttribute ("name", sName);
+  attr. setAttribute ("value", sValue);
+  attsNode. appendChild (attr);
+ },
+
  MakeButtonURI: function (oParameters)
  {
   var doc = document. implementation. createDocument ("", "", null);
@@ -572,6 +614,11 @@ Custombuttons. prototype =
   this. SetText (doc, "initcode", oParameters. initCode, true);
   this. SetText (doc, "accelkey", oParameters. accelkey, true);
   this. SetText (doc, "help", oParameters. help, true);
+  if (oParameters. attributes)
+  {
+   for (var i in oParameters. attributes)
+    this. setAttribute (doc, i, oParameters. attributes [i]);
+  }
   var ser = new XMLSerializer ();
   var data = ser. serializeToString (doc);
   return "custombutton://" + escape (data);
@@ -713,6 +760,11 @@ Custombuttons. prototype =
   }
  },
  /**************************************************************************/
+
+ addButton: function ()
+ {
+  this. OpenEditor (null, null, null, 'add');
+ },
 
  editButton: function (oBtn, nLineNumber, sPhase)
  {
@@ -1089,6 +1141,27 @@ CustombuttonsTB. prototype =
  toolbarpaletteName: "MailToolbarPalette",
  overlayFileName: "buttonsoverlay.xul",
 
+ checkLightning: function ()
+ {
+  var result = false;
+  var rs = Components. classes ["@mozilla.org/rdf/rdf-service;1"].
+     getService (Components. interfaces. nsIRDFService);
+  var res = rs. GetResource ("urn:mozilla:item:{e2fda1a4-762b-4020-b5ad-a41df1933103}");
+  if (res instanceof Components. interfaces. nsIRDFResource)
+  {
+   var em = Components. classes ["@mozilla.org/extensions/manager;1"].
+      getService (Components. interfaces. nsIExtensionManager);
+   var ds = em. datasource;
+   var res2 = rs. GetResource ("http://www.mozilla.org/2004/em-rdf#isDisabled");
+   var t = ds. GetTarget (res, res2, true);
+   if (t instanceof Components. interfaces. nsIRDFLiteral)
+    result = (t. Value != "true");
+  }
+  return result;
+ },
+
+ lightning: false,
+
  init: function ()
  {
   this. __super. prototype. init. apply (this, [null]);
@@ -1096,12 +1169,54 @@ CustombuttonsTB. prototype =
   oBookmarkButtonMenuitem. parentNode. removeChild (oBookmarkButtonMenuitem);
   var oBookmarkButtonMenuitem = document. getElementById ("custombuttons-contextpopup-bookmarkButton-sub");
   oBookmarkButtonMenuitem. parentNode. removeChild (oBookmarkButtonMenuitem);
+  this. lightning = this. checkLightning ();
  },
 
  get gToolbox ()
  {
   return document. getElementById ("mail-toolbox") || // main window and message window
       document. getElementById ("compose-toolbox"); // compose message
+ },
+
+ OpenEditor: function (oButton, nLineNumber, sPhase, sReason)
+ {
+  var oWArgs =
+  {
+   button: oButton,
+   lineNumber: nLineNumber,
+   phase: sPhase,
+   reason: sReason
+  };
+  var mode = "";
+  if (this. lightning)
+  {
+   var mode = window ["gCurrentMode"];
+   var mb = document. getElementById ("modeBroadcaster");
+   mode = mode || (mb? mb. getAttribute ("mode"): "");
+   if (document. popupNode && (document. popupNode. nodeName == "toolbar"))
+   {
+    if (document. popupNode. id == "mode-toolbar")
+     mode = "mode";
+    else if (document. popupNode. id == "calendar-toolbar")
+     mode = "calendar";
+    else if (document. popupNode. id == "task-toolbar")
+     mode = "task";
+   }
+  }
+  if (mode)
+  {
+   oWArgs ["parameters"] = {};
+   oWArgs. parameters ["attributes"] = {};
+   oWArgs. parameters. attributes ["mode"] = mode;
+  }
+  this. openButtonDialog (oWArgs);
+ },
+
+ attributesToCopy: function ()
+ {
+  var attributesToCopy = this. __super. prototype. attributesToCopy. apply (this, [null]);
+  if (this. lightning)
+   attributesToCopy ["mode"] = true;
  },
 
     makeBookmark: function (CbLink, sName) {}
