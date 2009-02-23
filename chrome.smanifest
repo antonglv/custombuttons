@@ -28,17 +28,17 @@ overlay MESSENGERCOMPOSE/messengercompose.xul	CBCONTENT/ThunderbirdOverlay.xul
 overlay MESSENGERCOMPOSE/messengercompose.xul	CBOVERLAY/mcbuttonsoverlay.xul THUNDERBIRDAPP
 overlay MESSENGERCOMPOSE/messengercompose.xul	CBOVERLAY/cbbutton.xul
 
-## Thunderbird 3.0b1
-##overlay	MESSENGER/messenger.xul		CBCONTENT/overlay3b2.xul   		THUNDERBIRDAPP appversion>=3.0b1
-##overlay	MESSENGER/messageWindow.xul	CBCONTENT/overlay3b2.xul   		THUNDERBIRDAPP appversion>=3.0b1
-##overlay	MESSENGERCOMPOSE.xul		CBCONTENT/overlay3b2.xul	   	THUNDERBIRDAPP appversion>=3.0b1
-##overlay	GLOBAL/customizeToolbar.xul	CBCONTENT/customizeToolbars.xul THUNDERBIRDAPP appversion>=3.0b1
-
 ## Sunbird
 overlay	SUNBIRD/calendar.xul	CBCONTENT/SunbirdOverlay.xul
 overlay SUNBIRD/calendar.xul	CBOVERLAY/buttonsoverlay.xul
 overlay	SUNBIRD/calendar.xul	CBOVERLAY/cbbutton.xul
 overlay	SUNBIRD/customizeToolbar.xul	CBOVERLAY/cbbutton.xul
+
+## Calendar
+overlay	CALENDAR/calendar.xul	CBCONTENT/CalendarOverlay.xul
+overlay CALENDAR/calendar.xul	CBOVERLAY/buttonsoverlay.xul
+overlay	CALENDAR/calendar.xul	CBOVERLAY/cbbutton.xul
+overlay	CALENDAR/customizeToolbar.xul	CBOVERLAY/cbbutton.xul
 
 ##about dialog
 overlay	EXTENSIONS/about.xul	CBCONTENT/aboutOverlay.xul
