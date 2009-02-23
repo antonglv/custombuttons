@@ -1217,6 +1217,7 @@ CustombuttonsTB. prototype =
   var attributesToCopy = this. __super. prototype. attributesToCopy. apply (this, [null]);
   if (this. lightning)
    attributesToCopy ["mode"] = true;
+  return attributesToCopy;
  },
 
     makeBookmark: function (CbLink, sName) {}
