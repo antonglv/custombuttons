@@ -2,7 +2,9 @@ Changelog
 ==============
 0.0.3.9
 + Added: Thunderbird 3.0b3pre support
-+ Added: 'hidelabel' value for 'cb-style' attribute to hide button's label in menubar
++ Added: Calendar 1.0pre support
++ Added: Lightning extension support (experimental)
++ Added: 'hidelabel' value for 'cb-style' attribute (to hide button's label)
 + Added: "Add new button..." menu item for toolbars context menu
 0.0.3.8
 ! Changed: ui code logic
