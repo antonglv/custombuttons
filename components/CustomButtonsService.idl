@@ -1,0 +1,28 @@
+#include "nsISupports.idl"
+#include "nsIDOMWindow.idl"
+#include "nsIDOMNode.idl"
+
+[scriptable, uuid (64d03940-83bc-4ac6-afc5-3cbf6a7147c5)]
+interface cbICustomButtonsService: nsISupports
+{
+	void editButton (in nsIDOMWindow opener, in string buttonLink, in nsISupports param);
+	string cloneButton (in nsIDOMNode clonedButton);
+	void removeButton (in nsIDOMNode removedButton, in boolean removeFromOverlay);
+	boolean updateButton (in string buttonLink, in string buttonId);
+	nsISupports getButtonParameters (in string buttonLink);
+	nsISupports parseButtonURI (in AUTF8String uri);
+	boolean installWebButton (in nsISupports parameters, in AUTF8String buttonURI, in boolean showConfirmDialog);
+	AUTF8String convertImageToRawData (in AUTF8String windowId, in string buttonId, in AUTF8String imageURL);
+	AUTF8String getLocaleString (in string stringId);
+	string getWindowId (in AUTF8String documentURI);
+	AUTF8String getNotificationPrefix (in AUTF8String windowId);
+	void register (in nsIDOMWindow window);
+	void unregister ();
+	void installButton (in nsISupports param);
+	void makeOverlay ();
+	boolean canUpdate ();
+	AUTF8String readFromClipboard ();
+	void writeToClipboard (in AUTF8String str);
+	string makeButtonLink (in AUTF8String documentURI, in string action, in string buttonId);
+	void alert (in string msgId);
+};
