@@ -7,7 +7,7 @@
 #define GLOBAL				chrome://global/content
 #define MESSENGER			chrome://messenger/content
 #define MESSENGERCOMPOSE	MESSENGER/messengercompose 		
-#define CALENDAR			chrome://calendar/content
-#define SUNBIRD				chrome://sunbird/content
+#define CALENDAR			chrome://sunbird/content
+#define SUNBIRD				chrome://calendar/content
 #define	MOZAPPS				chrome://mozapps/content
 #define EXTENSIONS			MOZAPPS/extensions
