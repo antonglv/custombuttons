@@ -13,6 +13,7 @@
 #define CB_MODE_SHOW_APPLY_BUTTON 2
 #define CB_MODE_DISABLE_INIT_IN_CTDIALOG_GLOBAL 4
 #define CB_MODE_USE_CB2_OLD_BUTTON_FORMAT 8
+#define CB_MODE_DO_NOT_CLOSE_EDITORS_ON_APPLICATION_CLOSE 16
 
 #define CB_MODE_ENABLE_INIT_IN_CTDIALOG 1
 #define CB_MODE_DISABLE_DEFAULT_KEY_BEHAVIOR 2
@@ -21,7 +22,11 @@
 #define CB_KEYMAP_SERVICE_IID cbIKeyMapService
 
 #define CB_SERVICE_CID "@xsms.nm.ru/custombuttons/cbservice;1"
-#define CB_SERVICE_IID cbICustombuttonsService
+#define CB_SERVICE_IID cbICustomButtonsService
+
+#define CB_CONTENT_MANAGER_SERVICE_UUID 2f1e1474-f302-4cf6-9437-968e2a68242f
+#define CB_CONTENT_MANAGER_SERVICE_CID "@xsms.nm.ru/custombuttons/cbcontentmanager;1"
+#define CB_CONTENT_MANAGER_SERVICE_IID cbICBContentManager
 
 #define CB_CONTENT_POLICY_COMPONENT_CID "@xsms.nm.ru/custombuttons/cbcontentpolicy;1"
 #define CB_CONTENT_POLICY_COMPONENT_IID cbIContentPolicyComponent
@@ -46,6 +51,8 @@
 
 #define BT(X,Y) (((X) & (Y)) == Y)
 #define SET(X,Y) if (!X) X = Y
+
+#define MAKE_DATA_URI(contentType,dataString) "data:" + contentType + ";base64," + btoa (dataString)
 
 #define DEFINE_ATTRIBUTE_GETTER(ATTR_NAME,PROP_NAME,DEFAULT_VALUE,EXPRESSION)  \
 PROP_NAME: DEFAULT_VALUE,                            \
