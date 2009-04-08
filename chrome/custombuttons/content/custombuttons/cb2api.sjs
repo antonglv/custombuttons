@@ -827,3 +827,12 @@ custombuttons. ButtonDim = function (oEvent)
 {
 	this. setButtonOpacity (oEvent. target, "disabled", ["0.25", "0.65"]);
 };
+custombuttons. getLocalString = function (oBtn, strId)
+{
+	var ln = this. getPrefs ("general.useragent.locale"). replace ("-", "_");
+	var props = oBtn. properties;
+	if (!props)
+		return "";
+	var loc = props [ln];
+	return loc? loc [strId]: props ["en-US"] [strId];
+};
