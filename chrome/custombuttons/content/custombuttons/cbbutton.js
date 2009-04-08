@@ -1,5 +1,7 @@
 var custombutton =
 {
+ cbService: Components. classes ["@xsms.nm.ru/custombuttons/cbservice;1"]. getService (Components. interfaces. cbICustomButtonsService),
+
     buttonConstructor: function (oBtn)
  {
   if (oBtn. destroy)
@@ -33,6 +35,7 @@ var custombutton =
    if (!oBtn. getAttribute ("Help"))
     oBtn. removeAttribute ("Help");
   }
+
   if (!oBtn. hasAttribute ("initialized"))
   {
    if (oBtn. hasAttribute ("cb-init"))
@@ -42,7 +45,7 @@ var custombutton =
     if (oBtn. parentNode && (oBtn. parentNode. nodeName != "toolbar") &&
      ((mode & 4) ||
      !(oBtn. cbMode & 1)))
-    return;
+     return;
     oBtn. cbInitCode = oBtn. getAttribute ("cb-init");
     oBtn. init ();
    }
@@ -87,10 +90,18 @@ var custombutton =
    while (oBtn. hasChildNodes ())
     oBtn. removeChild (oBtn. childNodes [0]);
    oBtn. _initPhase = true;
-   this. buttonCbExecuteCode ({}, oBtn, oBtn. cbInitCode);
-   oBtn. _initPhase = false;
+   oBtn. setAttribute ("initializeerror");
+   try
+   {
+    this. buttonCbExecuteCode ({}, oBtn, oBtn. cbInitCode);
+    oBtn. setAttribute ("initialized", "true");
+    oBtn. removeAttribute ("initializeerror");
+   }
+   finally
+   {
+    oBtn. _initPhase = false;
+   }
   }
-  oBtn. setAttribute ("initialized", "true");
  },
 
  buttonDestroy: function (oBtn)
@@ -115,7 +126,8 @@ var custombutton =
    initCode: oBtn. cbInitCode,
    accelkey: oBtn. cbAccelKey,
    mode: oBtn. cbMode,
-   Help: oBtn. Help
+   Help: oBtn. Help,
+   stdIcon: oBtn. cbStdIcon
   };
   if (custombuttons. lightning && oBtn. hasAttribute ("mode"))
   {
@@ -221,7 +233,7 @@ var custombutton =
   doc. load ("chrome://custombuttons/content/nbftemplate.xml");
   oBtn. setText (doc, "name", oBtn. name, false);
   oBtn. setText (doc, "mode", oBtn. cbMode, false);
-  oBtn. setText (doc, "image", oBtn. image, true);
+  oBtn. setText (doc, "image", oBtn. image || oBtn. cbStdIcon, true);
   oBtn. setText (doc, "code", oBtn. cbCommand, true);
   oBtn. setText (doc, "initcode", oBtn. cbInitCode, true);
   oBtn. setText (doc, "accelkey", oBtn. cbAccelKey, true);
@@ -251,25 +263,6 @@ var custombutton =
    return this. buttonGetOldFormatURI (oBtn);
  },
 
- /**
-
-	 * for custombuttonsConsoleBindings in Thunderbird
-
-	 */
- getWindowIdentifier: function ()
- {
-  var res = "main/";
-  var info = Components. classes ["@mozilla.org/xre/app-info;1"]. getService (Components. interfaces. nsIXULAppInfo);
-  if (info. name == "Thunderbird")
-  {
-   if (document. documentURI == "chrome://messenger/content/messageWindow.xul")
-    res = "mailWindow/";
-   else if (document. documentURI == "chrome://messenger/content/messengercompose/messengercompose.xul")
-    res = "composeWindow/";
-  }
-  return res;
- },
-
  buttonCbExecuteCode: function (event, oButton, code)
  {
   var scode = "var event = arguments [0];\n" + code;
@@ -295,9 +288,8 @@ var custombutton =
     var oCBError = new Error ();
     oCBError. name = oError. name;
     oCBError. message = oError. message;
-    var sFakeFileName = "custombutton://buttons/" + this. getWindowIdentifier ();
-    sFakeFileName += oButton. _initPhase? "init/": "code/";
-    oCBError. fileName = sFakeFileName + oButton. id;
+    var phase = oButton. _initPhase? "init": "code";
+    oCBError. fileName = this. cbService. makeButtonLink (document. documentURI, phase, oButton. id);
     oCBError. lineNumber = n1 - n2;
     oCBError. stack = aStack. splice (0, i? (i - 1): 0). join ("\n");
     throw (oCBError);
@@ -316,14 +308,7 @@ var custombutton =
 
  canUpdate: function ()
  {
-  var bCanUpdate = false;
-  try
-  {
-   var uri = new CustombuttonsURIParser (custombuttonsUtils. gClipboard. read ());
-   bCanUpdate = true;
-  }
-  catch (e) {}
-  return bCanUpdate;
+  return this. cbService. canUpdate ();
  },
 
  showElement: function (oElement, bShowFlag)
