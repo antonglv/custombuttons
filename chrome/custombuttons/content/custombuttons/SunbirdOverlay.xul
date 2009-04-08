@@ -12,8 +12,6 @@
 <overlay id="custombuttonsOverlay"
 		 xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
-	<script type="application/x-javascript" src="chrome://custombuttons/content/loader.js"/>
-	
 	<popupset id="calendar-popupset">
 		<popup id="custombuttons-contextpopup">
 			<menuitem id="custombuttons-contextpopup-addnewbutton"
