@@ -5,16 +5,28 @@
 * (http://www.cutemenuproject.com/)
 */
 
-toolbarbutton[id^="custombuttons-button"]{
+toolbarbutton[id^="custombuttons-button"],
+toolbarbutton[cb-stdicon="custombuttons-stdicon-1"] {
   list-style-image: url("chrome://custombuttons/skin/button.png") !important;
 }
 
-toolbarbutton[id^='custombuttons-button']{
-	opacity:0.5;
+toolbarbutton[cb-stdicon="custombuttons-stdicon-2"]
+{
+	list-style-image: url("chrome://custombuttons/skin/stdicons/rbutton.png") !important;
 }
 
-toolbarbutton[id^='custombuttons-button'][initialized]{
-	opacity:1;
+toolbarbutton[cb-stdicon="custombuttons-stdicon-3"]
+{
+	list-style-image: url("chrome://custombuttons/skin/stdicons/gbutton.png") !important;
+}
+
+toolbarbutton[cb-stdicon="custombuttons-stdicon-4"]
+{
+	list-style-image: url("chrome://custombuttons/skin/stdicons/bbutton.png") !important;
+}
+
+toolbarbutton[id^='custombuttons-button'][initializeerror]{
+	opacity:0.5;
 }
 
 menuitem[id^="custombuttons-contextpopup-"] {
