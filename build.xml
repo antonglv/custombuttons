@@ -155,6 +155,11 @@ Define it in build.properties (don't forget about double back slashes)</fail>
 				<exclude name="content/custombuttons/cbbutton.xul"/>
 				<exclude name="content/custombuttons/cbbutton3.xul"/>
 				<exclude name="content/custombuttons/loader.js"/>
+				<!-- 0.0.4.0a excludes -->
+				
+				<exclude name="content/custombuttons/editor.js"/>
+				<exclude name="content/custombuttons/edit.xul"/>
+				<exclude name="skin/classic/button1.png"/>
 				
 			</fileset>
 		</zip>
