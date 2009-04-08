@@ -20,6 +20,7 @@
 #define INTERNET_SEARCH_SERVICE_CID "@mozilla.org/rdf/datasource;1?name=internetsearch"
 #define IO_SERVICE_CID "@mozilla.org/network/io-service;1"
 #define JS_SUBSCRIPT_LOADER_SERVICE_CID "@mozilla.org/moz/jssubscript-loader;1"
+#define LOCALE_SERVICE_CID "@mozilla.org/intl/nslocaleservice;1"
 #define NAV_BOOKMARKS_SERVICE_CID "@mozilla.org/browser/nav-bookmarks-service;1"
 #define OBSERVER_SERVICE_CID "@mozilla.org/observer-service;1"
 #define PREF_SERVICE_CID "@mozilla.org/preferences-service;1"
@@ -47,6 +48,7 @@
 #define FILE_PICKER_COMPONENT_CID "@mozilla.org/filepicker;1"
 #define INPUT_STREAM_CHANNEL_COMPONENT_CID "@mozilla.org/network/input-stream-channel;1"
 #define LOCAL_FILE_COMPONENT_CID "@mozilla.org/file/local;1"
+#define MUTABLE_ARRAY_COMPONENT_CID "@mozilla.org/array;1"
 #define PIPE_COMPONENT_CID "@mozilla.org/pipe;1"
 #define PREF_COMPONENT_CID "@mozilla.org/preferences;1"
 #define SCRIPTABLE_INPUT_STREAM_COMPONENT_CID "@mozilla.org/scriptableinputstream;1"
@@ -56,6 +58,7 @@
 #define SUPPORTS_ARRAY_COMPONENT_CID "@mozilla.org/supports-array;1"
 #define STRING_INPUT_STREAM_COMPONENT_CID "@mozilla.org/io/string-input-stream;1"
 #define SUPPORTS_STRING_COMPONENT_CID "@mozilla.org/supports-string;1"
+#define SUPPORTS_CSTRING_COMPONENT_CID "@mozilla.org/supports-cstring;1"
 #define TEXT_TO_SUB_URI_COMPONENT_CID "@mozilla.org/intl/texttosuburi;1"
 #define TIMER_COMPONENT_CID "@mozilla.org/timer;1"
 #define TRANSFERABLE_COMPONENT_CID "@mozilla.org/widget/transferable;1"
@@ -74,6 +77,7 @@
 #define INTERNET_SEARCH_SERVICE_IID nsIInternetSearchService
 #define IO_SERVICE_IID nsIIOService
 #define JS_SUBSCRIPT_LOADER_SERVICE_IID mozIJSSubScriptLoader
+#define LOCALE_SERVICE_IID nsILocaleService
 #define NAV_BOOKMARKS_SERVICE_IID nsINavBookmarksService
 #define OBSERVER_SERVICE_IID nsIObserverService
 #define PREF_SERVICE_IID nsIPrefService
@@ -101,6 +105,7 @@
 #define FILE_PICKER_COMPONENT_IID nsIFilePicker
 #define INPUT_STREAM_CHANNEL_COMPONENT_IID nsIInputStreamChannel
 #define LOCAL_FILE_COMPONENT_IID nsILocalFile
+#define MUTABLE_ARRAY_COMPONENT_IID nsIMutableArray
 #define PIPE_COMPONENT_IID nsIPipe
 #define PREF_COMPONENT_IID nsIPref
 #define SCRIPTABLE_INPUT_STREAM_COMPONENT_IID nsIScriptableInputStream
@@ -110,6 +115,7 @@
 #define STRING_INPUT_STREAM_COMPONENT_IID nsIStringInputStream
 #define SUPPORTS_ARRAY_COMPONENT_IID nsISupportsArray
 #define SUPPORTS_STRING_COMPONENT_IID nsISupportsString
+#define SUPPORTS_CSTRING_COMPONENT_IID nsISupportsCString
 #define TEXT_TO_SUB_URI_COMPONENT_IID nsITextToSubURI
 #define TIMER_COMPONENT_IID nsITimer
 #define TRANSFERABLE_COMPONENT_IID nsITransferable
