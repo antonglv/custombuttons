@@ -158,6 +158,35 @@ CustombuttonProtocol. prototype =
 		return chan;
 	},
 	
+	getCustomButtonsFile: function (aURI, sFileName)
+	{
+		var cbs = SERVICE (CB);
+		var dir = SERVICE (PROPERTIES). get ("ProfD", CI. nsIFile); // get profile folder
+		dir. append ("custombuttons");
+		if (!dir. exists ())
+		{
+			if (sFileName == "buttonsoverlay.xul")
+				cbs. makeOverlay ();
+			else
+				return this. fakeOverlayChannel ();
+		}
+		var file = dir. clone ();
+		file. append (sFileName);
+		if (!file. exists ())
+		{
+			if (sFileName == "buttonsoverlay.xul")
+				cbs. makeOverlay ();
+			else
+				return this. fakeOverlayChannel ();
+		}
+		var ios = SERVICE (IO);
+		var uri = ios. newFileURI (file);
+		var channel = ios. newChannelFromURI (uri);
+		channel. originalURI = aURI;
+		channel. owner = this. getChromePrincipal ();
+		return channel;
+	},
+	
 	newChannel: function (aURI)
 	{
 		if (this. scheme == "custombuttons")
@@ -165,28 +194,11 @@ CustombuttonProtocol. prototype =
 			var sFileName = aURI. spec. substring (this. sCbPrefix. length);
 			if (sFileName == "cbbutton.xul")
 				return this. cbbuttonxulchannel (aURI);
-			var dir = SERVICE (PROPERTIES). get ("ProfD", CI. nsIFile); // get profile folder
-			if (!dir. exists ())
-				return this. fakeOverlayChannel ();
-			dir. append ("custombuttons");
-			var file = dir. clone ();
-			file. append (sFileName);
-			if (!file. exists ())
-				return this. fakeOverlayChannel ();
-			var ios = SERVICE (IO);
-			var uri = ios. newFileURI (file);
-			var channel = ios. newChannelFromURI (uri);
-			channel. originalURI = aURI;
-			channel. owner = this. getChromePrincipal ();
-			return channel;
+			else
+				return this. getCustomButtonsFile (aURI, sFileName);
 		}
-		var windowService = SERVICE (WINDOW);
-		var currentWindow = windowService. getMostRecentWindow ("navigator:browser");
-		if (!currentWindow)
-			currentWindow = windowService. getMostRecentWindow ("mail:3pane");
-		var ButtonUri = aURI. spec;
-		ButtonUri = ButtonUri. substring (ButtonUri. indexOf (":") + 1);
-		currentWindow. custombuttons. installWebButton (ButtonUri);
+		var cbs = SERVICE (CB);
+		cbs. installWebButton (null, aURI. spec, true);
 		return false;
 	}
 };

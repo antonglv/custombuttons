@@ -189,6 +189,35 @@ CustombuttonProtocol. prototype =
   return chan;
  },
 
+ getCustomButtonsFile: function (aURI, sFileName)
+ {
+  var cbs = Components. classes ["@xsms.nm.ru/custombuttons/cbservice;1"]. getService (Components. interfaces. cbICustomButtonsService);
+  var dir = Components. classes ["@mozilla.org/file/directory_service;1"]. getService (Components. interfaces. nsIProperties). get ("ProfD", Components. interfaces. nsIFile); // get profile folder
+  dir. append ("custombuttons");
+  if (!dir. exists ())
+  {
+   if (sFileName == "buttonsoverlay.xul")
+    cbs. makeOverlay ();
+   else
+    return this. fakeOverlayChannel ();
+  }
+  var file = dir. clone ();
+  file. append (sFileName);
+  if (!file. exists ())
+  {
+   if (sFileName == "buttonsoverlay.xul")
+    cbs. makeOverlay ();
+   else
+    return this. fakeOverlayChannel ();
+  }
+  var ios = Components. classes ["@mozilla.org/network/io-service;1"]. getService (Components. interfaces. nsIIOService);
+  var uri = ios. newFileURI (file);
+  var channel = ios. newChannelFromURI (uri);
+  channel. originalURI = aURI;
+  channel. owner = this. getChromePrincipal ();
+  return channel;
+ },
+
  newChannel: function (aURI)
  {
   if (this. scheme == "custombuttons")
@@ -196,28 +225,11 @@ CustombuttonProtocol. prototype =
    var sFileName = aURI. spec. substring (this. sCbPrefix. length);
    if (sFileName == "cbbutton.xul")
     return this. cbbuttonxulchannel (aURI);
-   var dir = Components. classes ["@mozilla.org/file/directory_service;1"]. getService (Components. interfaces. nsIProperties). get ("ProfD", Components. interfaces. nsIFile); // get profile folder
-   if (!dir. exists ())
-    return this. fakeOverlayChannel ();
-   dir. append ("custombuttons");
-   var file = dir. clone ();
-   file. append (sFileName);
-   if (!file. exists ())
-    return this. fakeOverlayChannel ();
-   var ios = Components. classes ["@mozilla.org/network/io-service;1"]. getService (Components. interfaces. nsIIOService);
-   var uri = ios. newFileURI (file);
-   var channel = ios. newChannelFromURI (uri);
-   channel. originalURI = aURI;
-   channel. owner = this. getChromePrincipal ();
-   return channel;
+   else
+    return this. getCustomButtonsFile (aURI, sFileName);
   }
-  var windowService = Components. classes ["@mozilla.org/appshell/window-mediator;1"]. getService (Components. interfaces. nsIWindowMediator);
-  var currentWindow = windowService. getMostRecentWindow ("navigator:browser");
-  if (!currentWindow)
-   currentWindow = windowService. getMostRecentWindow ("mail:3pane");
-  var ButtonUri = aURI. spec;
-  ButtonUri = ButtonUri. substring (ButtonUri. indexOf (":") + 1);
-  currentWindow. custombuttons. installWebButton (ButtonUri);
+  var cbs = Components. classes ["@xsms.nm.ru/custombuttons/cbservice;1"]. getService (Components. interfaces. cbICustomButtonsService);
+  cbs. installWebButton (null, aURI. spec, true);
   return false;
  }
 };
