@@ -15,7 +15,19 @@
 		this. inputField. setAttribute ("oncontextmenu", "event.preventDefault()");
 	]]>
    </constructor>
-   <field name="bExtendedMode">false</field>
+   
+   <field name="_bExtendedMode">false</field>
+   <property name="bExtendedMode">
+   	<getter>
+		return this. _bExtendedMode;
+	</getter>
+	
+	<setter>
+		this. setAttribute ("bExtendedMode", val);
+		this. _bExtendedMode = val;
+		return this. _bExtendedMode;
+	</setter>
+   </property>
    
    <property name="value">
    	<getter>
@@ -323,13 +335,14 @@
     ]]>
    </handler>
 
-  <!--Executing code from the "Code" field-->
+  <!--Executing code from the "Code" field -->
    <handler event="keydown" keycode="VK_F9">
     <![CDATA[
      if (this. getAttribute ("id") == "code")
       window. editor. execute_oncommand_code ();
     ]]>
    </handler>
+
   </handlers>
  </binding>
 
