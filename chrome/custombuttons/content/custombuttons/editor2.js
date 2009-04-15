@@ -38,7 +38,7 @@ Editor. prototype =
    if (windowId. indexOf (info. name) != 0)
     windowId = info. name;
    buttonId = buttonId? buttonId [1]: "";
-   var link = "custombutton://buttons/" + windowId + "/none/" + buttonId;
+   var link = "custombutton://buttons/" + windowId + "/edit/" + buttonId;
    this. param = this. cbService. getButtonParameters (link). wrappedJSObject;
   }
   else
@@ -155,6 +155,19 @@ Editor. prototype =
   var box = document. getElementById ("code");
   var code = box. value;
   var opener = window. opener;
+  if (!opener)
+  {
+   try
+   {
+    opener = window. QueryInterface (Components. interfaces. nsIInterfaceRequestor).
+       getInterface (Components. interfaces. nsIWebNavigation).
+       QueryInterface (Components. interfaces. nsIDocShellTreeItem).
+       rootTreeItem. QueryInterface (Components. interfaces. nsIInterfaceRequestor).
+       getInterface (Components. interfaces. nsIDOMWindow);
+   }
+   catch (e) {};
+
+  }
   if (opener)
   {
    var CB = opener. custombuttons;
