@@ -92,6 +92,8 @@ Editor. prototype =
 			if (field && this. param [v])
 				field. value = this. param [v];
 		}
+		ELEMENT ("code"). editor. transactionManager. clear ();
+		ELEMENT ("initCode"). editor. transactionManager. clear ();
 		var mode = this. param. mode;
 		ELEMENT ("initInCustomizeToolbarDialog"). checked = mode && (mode & CB_MODE_ENABLE_INIT_IN_CTDIALOG) || false;
 		ELEMENT ("disableDefaultKeyBehavior"). checked = mode && (mode & CB_MODE_DISABLE_DEFAULT_KEY_BEHAVIOR) || false;

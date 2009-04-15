@@ -89,6 +89,8 @@ Editor. prototype =
    if (field && this. param [v])
     field. value = this. param [v];
   }
+  document. getElementById ("code"). editor. transactionManager. clear ();
+  document. getElementById ("initCode"). editor. transactionManager. clear ();
   var mode = this. param. mode;
   document. getElementById ("initInCustomizeToolbarDialog"). checked = mode && (mode & 1) || false;
   document. getElementById ("disableDefaultKeyBehavior"). checked = mode && (mode & 2) || false;
