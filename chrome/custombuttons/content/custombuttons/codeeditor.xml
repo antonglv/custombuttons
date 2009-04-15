@@ -119,6 +119,13 @@
        catch (e) {}
       ]]>
    </constructor>
+   <property name="editor" readonly="true">
+   	<getter>
+		<![CDATA[
+			return this. inputField. QueryInterface (Components. interfaces. nsIDOMNSEditableElement). editor;
+		]]>
+	</getter>
+   </property>
    <field name="currentIndent"/>
    <method name="getLines">
     <body>
