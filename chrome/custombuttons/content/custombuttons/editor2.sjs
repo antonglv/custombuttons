@@ -28,7 +28,7 @@ Editor. prototype =
 	init: function ()
 	{
 		this. cbService = SERVICE (CB);
-		if (!window. arguments [0])
+		if (!window. arguments || !window. arguments [0])
 		{
 			var ios = SERVICE (IO);
 			var url = ios. newURI (document. documentURI, null, null);
