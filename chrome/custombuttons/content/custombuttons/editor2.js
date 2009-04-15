@@ -25,7 +25,7 @@ Editor. prototype =
  init: function ()
  {
   this. cbService = Components. classes ["@xsms.nm.ru/custombuttons/cbservice;1"]. getService (Components. interfaces. cbICustomButtonsService);
-  if (!window. arguments [0])
+  if (!window. arguments || !window. arguments [0])
   {
    var ios = Components. classes ["@mozilla.org/network/io-service;1"]. getService (Components. interfaces. nsIIOService);
    var url = ios. newURI (document. documentURI, null, null);
