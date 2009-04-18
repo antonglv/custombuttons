@@ -8,6 +8,7 @@
 #define USE_GLOBAL_COMPONENTS_VARIABLES
 #endif
 
+#define ALERTS_SERVICE_CID "@mozilla.org/alerts-service;1"
 #define APP_SHELL_SERVICE_CID "@mozilla.org/appshell/appShellService;1"
 #define CATEGORY_MANAGER_SERVICE_CID "@mozilla.org/categorymanager;1"
 #define CLIPBOARD_HELPER_SERVICE_CID "@mozilla.org/widget/clipboardhelper;1"
@@ -33,7 +34,6 @@
 #define WINDOW_SERVICE_CID "@mozilla.org/appshell/window-mediator;1"
 #define WINDOW_WATCHER_SERVICE_CID "@mozilla.org/embedcomp/window-watcher;1"
 
-#define ALERT_SERVICE_COMPONENT_CID "@mozilla.org/alerts-service;1"
 #define BINARY_INPUT_STREAM_COMPONENT_CID "@mozilla.org/binaryinputstream;1"
 #define BINARY_OUTPUT_STREAM_COMPONENT_CID "@mozilla.org/binaryoutputstream;1"
 #define CONTAINER_UTILS_COMPONENT_CID "@mozilla.org/rdf/container-utils;1"
@@ -65,6 +65,7 @@
 #define VERSION_COMPARATOR_COMPONENT_CID "@mozilla.org/xpcom/version-comparator;1"
 #define XML_HTTP_REQUEST_COMPONENT_CID "@mozilla.org/xmlextras/xmlhttprequest;1"
 
+#define ALERTS_SERVICE_IID nsIAlertsService
 #define APP_SHELL_SERVICE_IID nsIAppShellService
 #define CATEGORY_MANAGER_SERVICE_IID nsICategoryManager
 #define CLIPBOARD_HELPER_SERVICE_IID nsIClipboardHelper
@@ -90,7 +91,6 @@
 #define WINDOW_SERVICE_IID nsIWindowMediator
 #define WINDOW_WATCHER_SERVICE_IID nsIWindowWatcher
 
-#define ALERT_SERVICE_COMPONENT_IID nsIAlertsService
 #define BINARY_INPUT_STREAM_COMPONENT_IID nsIBinaryInputStream
 #define BINARY_OUTPUT_STREAM_COMPONENT_IID nsIBinaryOutputStream
 #define CONTAINER_UTILS_COMPONENT_IID nsIRDFContainerUtils
