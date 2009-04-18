@@ -13,7 +13,7 @@
 <!ENTITY editor.code.defaultValue "/*CODE*/">
 <!ENTITY editor.initCode.defaultValue "/*Initialization Code*/">
 <!ENTITY editor.Apply "Применить">
-<!ENTITY editor.urlfield "Код:">
+<!ENTITY editor.urlfield "URL кнопки:">
 <!ENTITY editor.buttonSettings "Настройки кнопки">
 <!ENTITY editor.buttonSettings.tooltiptext "Панель настроек кнопки">
 <!ENTITY editor.buttonSettings.hotKeyGroupbox "&quot;Горячая&quot; клавиша">

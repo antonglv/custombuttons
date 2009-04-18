@@ -13,7 +13,7 @@
 <!ENTITY editor.code.defaultValue "/*CÓDIGO*/">
 <!ENTITY editor.initCode.defaultValue "/*Código de inicialização*/">
 <!ENTITY editor.Apply "Apply">
-<!ENTITY editor.urlfield "Code:">
+<!ENTITY editor.urlfield "Button URL:">
 <!ENTITY editor.buttonSettings "Button settings">
 <!ENTITY editor.buttonSettings.tooltiptext "Button settings panel">
 <!ENTITY editor.buttonSettings.hotKeyGroupbox "&quot;Hot&quot; key">
