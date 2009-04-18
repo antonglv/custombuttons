@@ -265,7 +265,9 @@ var custombutton =
 
  buttonCbExecuteCode: function (event, oButton, code)
  {
-  var scode = "var event = arguments [0];\n" + code;
+  var scode = "var event = arguments [0];";
+  scode += " var createDebug = custombuttonsUtils. createDebug;"
+  scode += " var createMsg = custombuttonsUtils. createMsg;\n" + code;
   this. checkBind ();
   try
   {
