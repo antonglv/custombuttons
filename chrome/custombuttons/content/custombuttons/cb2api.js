@@ -1136,5 +1136,177 @@ custombuttons. getLocalString = function (oBtn, strId)
  if (!props)
   return "";
  var loc = props [ln];
- return loc? loc [strId]: props ["en-US"] [strId];
+ return loc? loc [strId]: props ["en_US"] [strId];
+};
+custombuttons. openPromptDialog = function (type, dialogId, args)
+{
+ var i, s, ci, index, valueAttr;
+ if (type == "checkbox")
+  valueAttr = "checked";
+ else
+  valueAttr = "selected";
+ var uri = "chrome://custombuttons/content/promptdialog/cbpromptdialog.xul?type=" + type;
+ var param =
+ {
+  inn: null,
+  out: null
+ };
+ var arg0 = [uri, dialogId, "chrome,dialog,centerscreen,modal,resizable=yes", param];
+ var arg1 = [];
+ for (i = 1; i < args. length; i++)
+  arg1 [i - 1] = args [i];
+ var arg = arg0. concat (arg1);
+ window. openDialog. apply (window, arg);
+ if (param. out)
+ {
+  var ch = param. out. chosen;
+  var arr = arg1 [0];
+  for (i = 0; i < ch. length; i++)
+  {
+   ci = ch [i];
+   index = ci. index;
+   if (typeof (arr [index]) == "string")
+   {
+    s = arr [index];
+    arr [index] = [s, false];
+   }
+   arr [index] [1] = ch [i] [valueAttr];
+  }
+ }
+ return param. out;
+};
+custombuttons. checkboxDialog = function (button)
+{
+ return custombuttons. openPromptDialog ("checkbox", button. id, arguments);
+};
+custombuttons. radioboxDialog = function (button)
+{
+ return custombuttons. openPromptDialog ("radiobox", button. id, arguments);
+};
+custombuttons. promptBox = function (sTitle, sMsg, sDefaultText, checkMsg)
+{
+ checkMsg = checkMsg || { prompt: null, value: false };
+ var value = { value: sDefaultText || "" };
+ var ps = custombuttonsUtils. createMsg (sTitle). prompts;
+ var res = ps. prompt (null, sTitle, sMsg, value, checkMsg. prompt, checkMsg);
+ return [res, value. value, checkMsg. value];
+};
+custombuttons. confirmBox3 = function (sTitle, sMsg, sButton1Label, sButton2Label, sButton3Label)
+{
+ var ps = custombuttonsUtils. createMsg (sTitle). prompts;
+ var flags = ps. BUTTON_POS_0 * ps. BUTTON_TITLE_IS_STRING;
+ if (sButton2Label)
+  flags += ps. BUTTON_POS_1 * ps. BUTTON_TITLE_IS_STRING;
+ if (sButton3Label)
+  flags += ps. BUTTON_POS_2 * ps. BUTTON_TITLE_IS_STRING;
+ var res = ps. confirmEx (null, sTitle, sMsg, flags, sButton1Label, sButton2Label, sButton3Label, "", {});
+ return res;
+};
+custombuttons. confirmBox = function (sTitle, sMsg, sButton1Label, sButton2Label)
+{
+ var res = custombuttons. confirmBox3 (sTitle, sMsg, sButton1Label, sButton2Label);
+ return (res == 0);
+};
+custombuttons. selectBox = function (sTitle, sMsg, aItems, oSelected)
+{
+ var ps = custombuttonsUtils. createMsg (sTitle). prompts;
+ oSelected = oSelected || { value: null };
+ var res = [false, oSelected];
+ if (aItems. length > 0 )
+  res [0] = ps. select (null, sTitle, sMsg, aItems. length, aItems, oSelected);
+ return res;
+};
+custombuttons. alertBox = function (sTitle, sMsg)
+{
+ var ps = custombuttonsUtils. createMsg (sTitle). prompts;
+ ps. alert (null, sTitle, sMsg);
+};
+custombuttons. alertSlide = function (sTitle, sMsg)
+{
+ var as = Components. classes ["@mozilla.org/alerts-service;1"]. getService (Components. interfaces. nsIAlertsService);
+ as. showAlertNotification ("chrome://custombuttons/skin/button.png", sTitle, sMsg, false, "", null);
+};
+custombuttons. uCbuttonButes = function (oBtn) {}
+custombuttons. getPref = custombuttons. getPrefs;
+custombuttonsUtils. createDebug = function (btn)
+{
+ var debugMessageObject =
+ {
+  prompts: Components. classes ["@mozilla.org/embedcomp/prompt-service;1"]. getService (Components. interfaces. nsIPromptService),
+  strs: [],
+  sdebug: "       ---------- Debug message ----------\n\n",
+  swarn: "   +++++ WARNING +++++\n\n",
+  strerr: ["Unknown error"],
+  mode: 0,
+  check: { value: false },
+  bugon: { value: true },
+  bugonlp: { value: true },
+  Func: "",
+  Name: "",
+
+  finit: function (btn)
+  {
+   this. sVer = btn. getAttribute ("version");
+   this. Name = btn. name;
+   this. id = btn. getAttribute ("id");
+   this. title = "Button - [" + this. Name + "]";
+  },
+
+  setErr: function (estr)
+  {
+   this. strerr. push ([estr]);
+  },
+
+  confirm: function (msg, third)
+  {
+   custombuttons. confirmBox3 (this. title, msg, "Continue", "Stop", third);
+  },
+
+  bug: function (str)
+  {
+   var msg = "";
+   this. bugonlp. value = true;
+   if (this. bugon. value)
+   {
+    msg = this. sdebug + str;
+    var button = this. confirm (msg);
+    this. bugon. value = (button != 1);
+   }
+  },
+
+  bugloop: function (str)
+  {
+   var msg = "";
+   if (this. bugonlp. value && this. bugon. value)
+   {
+    msg = this. sdebug + str;
+    var button = this. confirm (msg, "Finish");
+    this. bugonlp. value = (button < 1);
+    this. bugon. value = (button != 1);
+   }
+  },
+
+  alert: function (msg)
+  {
+   this. prompts. alert (null, this. title, msg);
+  },
+
+  warn: function (str)
+  {
+   var msg = this. swarn + str;
+   this. alert (msg);
+  },
+
+  err: function (nerr)
+  {
+   var msg = "Error " + nerr + " ";
+   if ((nerr >= 0) && (nerr <= this. strerr. length))
+    msg += this. strerr [nerr];
+   else
+    msg += "Out of range";
+   this. alert (msg);
+  }
+ };
+ debugMessageObject. finit (btn);
+ return debugMessageObject;
 };
