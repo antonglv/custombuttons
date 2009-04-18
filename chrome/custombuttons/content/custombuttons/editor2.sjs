@@ -133,13 +133,17 @@ Editor. prototype =
 		return true;
 	},
 	
+	get canClose ()
+	{
+		if (!window. opener && !window. arguments)
+			return false;
+		return true;
+	},
+	
 	onAccept: function ()
 	{
 		if (this. updateButton ())
-		{
-			this. destroy ();
-			return true;
-		}
+			return this. canClose;
 		return false;
 	},
 	
@@ -239,6 +243,11 @@ Editor. prototype =
 		var os = SERVICE (OBSERVER);
 		os. removeObserver (this, this. notificationPrefix + "setEditorParameters");
 		os. removeObserver (this, this. notificationPrefix + "updateImage");
+	},
+	
+	onCancel: function ()
+	{
+		return this. canClose;
 	}
 };
 
