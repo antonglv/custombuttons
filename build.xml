@@ -160,6 +160,9 @@ Define it in build.properties (don't forget about double back slashes)</fail>
 				<exclude name="content/custombuttons/editor.js"/>
 				<exclude name="content/custombuttons/edit.xul"/>
 				<exclude name="skin/classic/button1.png"/>
+				<!-- 0.0.4.1 excludes -->
+				
+				<exclude name="content/custombuttons/buttonsoverlay.js"/>
 				
 			</fileset>
 		</zip>
@@ -212,6 +215,7 @@ Define it in build.properties (don't forget about double back slashes)</fail>
 				<exclude name="components/customhttpprotocol3.xpt"/>
 				<exclude name="components/customhttpprotocol2.js"/>
 				<exclude name="components/customhttpprotocol3.js"/>
+				<exclude name="components/CBRDFService.js"/>
 			</fileset>
 		</zip>
 	</target>

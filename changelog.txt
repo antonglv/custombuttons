@@ -1,5 +1,7 @@
 Changelog
 ==============
+0.0.4.1
+# Fixed: undo sequence sets default value in editor's code sections
 0.0.4.0
 + Added: three predefined icons for new buttons
 + Added: more than one code editor can be opened at same time
