@@ -13,7 +13,7 @@
 		ondialogextra2="cbPromptDialog.onExtra2()"
 		onunload="cbPromptDialog.destroy();">
 
-	<script type="application/x-javascript" src="chrome://custombuttons/content/promptdialog/cbpromptdialog.js"/>
+	<script type="application/x-javascript" src="chrome://custombuttons/content/dialogs/cbpromptdialog.js"/>
 
 	<dialogheader id="dialogheader"/>
 
