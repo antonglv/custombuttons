@@ -66,6 +66,7 @@ style chrome://sunbird/content/calendar.xul chrome://custombuttons/skin/custombu
 style chrome://sunbird/content/calendar.xul chrome://custombuttons/content/overlay.css
 
 style chrome://global/content/console.xul chrome://custombuttons/content/console.css
+style chrome://console2/content/console2.xul chrome://custombuttons/content/console.css
 
 locale custombuttons en-US jar:chrome/custombuttons.jar!/locale/en-US/custombuttons/
 locale custombuttons ru-RU jar:chrome/custombuttons.jar!/locale/ru-RU/custombuttons/
