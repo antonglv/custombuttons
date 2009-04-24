@@ -1,15 +1,40 @@
-.custombuttons-editor-codeBox
+@namespace url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul");
+/*.custombuttons-editor-codeBox
 {
     -moz-binding: url("chrome://custombuttons/content/codeeditor.xml#code_editor_binding");
 }
+*/
+cbeditor
+{
+	-moz-binding: url(chrome://custombuttons/content/cbeditor.xml#custombuttons-codeeditor);
+}
+
+cbeditor > *
+{
+	font-family: Tahoma;
+}
+
+.cbeditor-textbox
+{
+	font-family: -moz-fixed;
+	font-size: 12px;
+	padding: 0px;
+	margin: 0px;
+}
 #accelkey
 {
-  -moz-binding: url("chrome://custombuttons/content/codeeditor.xml#accelkeytextboxbinding");
+  -moz-binding: url("chrome://custombuttons/content/cbeditor.xml#accelkeytextboxbinding");
 }
 #accelkey[bExtendedMode="true"] > .textbox-input-box
 {
 	background-color: red;
 	opacity: 0.3;
+}
+
+tabpanels
+{
+	padding: 1px;
+	margin: 1px;
 }
 
 .menulist-iconic
