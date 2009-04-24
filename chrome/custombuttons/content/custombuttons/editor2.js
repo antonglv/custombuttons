@@ -76,7 +76,7 @@ Editor. prototype =
    var textbox = document. getElementById (textboxId);
    textbox. focus ();
    textbox. selectLine (lineNumber);
-   textbox. scrollTo (lineNumber);
+   //textbox. scrollTo (lineNumber);
   }
  },
 
@@ -156,7 +156,10 @@ Editor. prototype =
 
  execute_oncommand_code: function ()
  {
+  var fe = document. commandDispatcher. focusedElement;
   var box = document. getElementById ("code");
+  if (fe != box. textbox. inputField)
+   return;
   var code = box. value;
   var opener = window. opener;
   if (!opener)
