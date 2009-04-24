@@ -458,7 +458,7 @@ CustombuttonsTB. prototype =
 	{
 		var mode = "";
 		var param;
-		if (this. lightning)
+		if (this. lightning && window ["gCurrentMode"])
 		{
 			var mode = window ["gCurrentMode"];
 			var mb = ELEMENT ("modeBroadcaster");
