@@ -1145,7 +1145,7 @@ custombuttons. openPromptDialog = function (type, dialogId, args)
   valueAttr = "checked";
  else
   valueAttr = "selected";
- var uri = "chrome://custombuttons/content/promptdialog/cbpromptdialog.xul?type=" + type;
+ var uri = "chrome://custombuttons/content/dialogs/cbpromptdialog.xul?type=" + type;
  var param =
  {
   inn: null,
