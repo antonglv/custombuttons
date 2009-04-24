@@ -22,3 +22,20 @@
 <!ENTITY editor.buttonSettings.initializationGroupbox "Initialization">
 <!ENTITY editor.buttonSettings.initInCustomizeToolbarDialog "Enable initialization in &quot;Customize Toolbar&quot; dialog">
 <!ENTITY editor.buttonSettings.addMoreKeys "More...">
+
+<!ENTITY cbeditor.quickfindtextbox "Quick Find: ">
+
+<!ENTITY finddialog.findtextbox "Find: ">
+<!ENTITY finddialog.replacetextbox "Replace: ">
+<!ENTITY finddialog.optionscaption "Options">
+<!ENTITY finddialog.casesensitive "Case sensitive">
+<!ENTITY finddialog.prompteachreplace "Prompt each replace">
+<!ENTITY finddialog.directioncaption "Direction">
+<!ENTITY finddialog.forward "Forward">
+<!ENTITY finddialog.backward "Backward">
+
+<!ENTITY repprompt.replace "Replace">
+<!ENTITY repprompt.cancel "Cancel">
+<!ENTITY repprompt.skip "Skip">
+<!ENTITY repprompt.replaceall "Replace All">
+<!ENTITY repprompt.msg "Replace ?">
