@@ -68,6 +68,7 @@ style	CALENDAR/calendar.xul	CBSKIN/custombuttons.css
 style	CALENDAR/calendar.xul	CBCONTENT/overlay.css
 
 style	GLOBAL/console.xul	CBCONTENT/console.css
+style	chrome://console2/content/console2.xul CBCONTENT/console.css
 
 locale	custombuttons	en-US	jar:chrome/custombuttons.jar!/locale/en-US/custombuttons/
 locale	custombuttons	ru-RU	jar:chrome/custombuttons.jar!/locale/ru-RU/custombuttons/
