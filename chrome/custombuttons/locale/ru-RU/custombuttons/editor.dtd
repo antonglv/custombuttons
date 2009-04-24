@@ -22,3 +22,20 @@
 <!ENTITY editor.buttonSettings.initializationGroupbox "Инициализация">
 <!ENTITY editor.buttonSettings.initInCustomizeToolbarDialog "Разрешить инициализацию в диалоговом окне &quot;Настройка панелей инструментов&quot;">
 <!ENTITY editor.buttonSettings.addMoreKeys "Дополнительно...">
+
+<!ENTITY cbeditor.quickfindtextbox "Быстрый поиск: ">
+
+<!ENTITY finddialog.findtextbox "Найти: ">
+<!ENTITY finddialog.replacetextbox "Заменить: ">
+<!ENTITY finddialog.optionscaption "Настройки">
+<!ENTITY finddialog.casesensitive "С учетом регистра">
+<!ENTITY finddialog.prompteachreplace "Переспрашивать каждый раз">
+<!ENTITY finddialog.directioncaption "Направление">
+<!ENTITY finddialog.forward "Вперед">
+<!ENTITY finddialog.backward "Назад">
+
+<!ENTITY repprompt.replace "Заменить">
+<!ENTITY repprompt.cancel "Отмена">
+<!ENTITY repprompt.skip "Пропустить">
+<!ENTITY repprompt.replaceall "Заменить все">
+<!ENTITY repprompt.msg "Заменить ?">
