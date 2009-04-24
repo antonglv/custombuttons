@@ -1,5 +1,13 @@
 Changelog
 ==============
+0.0.4.2
++ Added: new features in code editor component:
+	- search ([Shift+]Ctrl+F / [Shift+]F3)
+	- search and replace ([Shift+]Ctrl+H)
+	- type ahead find (Ctrl+/)
+	- go to line (Ctrl+G)
+	- toggle word wrapping (Ctrl+W)
+# Fixed: "open button by link" feature doesn't work in console2 window
 0.0.4.1
 # Fixed: undo sequence sets default value in editor's code sections
 0.0.4.0
