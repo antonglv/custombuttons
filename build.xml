@@ -162,6 +162,9 @@ Define it in build.properties (don't forget about double back slashes)</fail>
 				<exclude name="skin/classic/button1.png"/>
 				<!-- 0.0.4.1 excludes -->
 				
+				<exclude name="content/custombuttons/codeeditor.xml"/>
+				<!-- 0.0.4.2a excludes -->
+				
 				<exclude name="content/custombuttons/buttonsoverlay.js"/>
 				
 			</fileset>
