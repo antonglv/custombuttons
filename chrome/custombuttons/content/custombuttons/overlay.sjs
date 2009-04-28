@@ -547,7 +547,7 @@ const custombuttons = new custombuttonsFactory (). Custombuttons;
   Purpose: To:
      1. Display the button's help text.
      2. Insert the help data into the clipboard.
-     TODO: Provide a means to display help in a the form of
+     TODO: Provide a means to display help in the form of
            web page.
      Add
      changed by Anton 24.02.08
