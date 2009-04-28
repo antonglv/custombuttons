@@ -517,6 +517,22 @@ CustombuttonsSB. prototype =
 };
 EXTEND (CustombuttonsSB, CustombuttonsTB);
 
+function CustombuttonsNVU () {}
+CustombuttonsNVU. prototype =
+{
+	toolbarpaletteName: "NvuToolbarPalette",
+	shouldAddToPalette: true,
+	
+	get gToolbox ()
+	{
+		return ELEMENT ("EditorToolbox"); // calendar
+	},
+    
+    makeBookmark: function (CbLink, sName) {}
+};
+EXTEND (CustombuttonsNVU, CustombuttonsTB);
+
+
 const custombuttons = new custombuttonsFactory (). Custombuttons;
 
 // add-ons
