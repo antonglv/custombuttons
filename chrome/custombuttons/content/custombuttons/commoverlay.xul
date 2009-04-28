@@ -110,5 +110,10 @@
 	    <menuitem label="&custombuttons.viewMenu_Item;"
 				  oncommand="custombuttons.addButton()"/>
 	</menupopup>
+	
+	<menupopup id="main-toolbar-context-menu">
+	    <menuitem label="&custombuttons.viewMenu_Item;"
+				  oncommand="custombuttons.addButton()"/>
+	</menupopup>
 
 </overlay>
