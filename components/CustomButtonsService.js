@@ -272,6 +272,10 @@ AppObject. prototype =
     this. paletteId = "calendarToolbarPalette";
     this. notificationPrefix = "custombuttons:69423527-65a1-4b8f-bd7a-29593fc46d27:";
     break;
+   case "KompoZer":
+    this. overlayFileName = "buttonsoverlay.xul";
+    this. paletteId = "NvuToolbarPalette";
+    this. notificationPrefix = "custombuttons:69423527-65a1-4b8f-bd7a-29593fc46d27:";
   }
   this. overlay = new Overlay (this. overlayPath, this. overlayFileName);
  },
