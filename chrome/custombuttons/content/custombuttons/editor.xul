@@ -1,7 +1,6 @@
 <?xml version="1.0"?>
 
 <?xml-stylesheet href="chrome://global/skin/"?>
-<?xml-stylesheet href="chrome://custombuttons/skin/editor.css" type="text/css"?>
 <?xml-stylesheet href="chrome://custombuttons/content/codeeditor.css" type="text/css"?>
 
 <!DOCTYPE dialog SYSTEM "chrome://custombuttons/locale/editor.dtd">
