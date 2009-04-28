@@ -1121,13 +1121,13 @@ custombuttons. setButtonOpacity = function (oButton, sProperty, aValues)
  if (oButton. id. indexOf ("custombuttons-button") == 0)
   oButton. style. opacity = aValues [oButton [sProperty]? 0: 1]
 };
-custombuttons. ButtonBrt = function (oEvent)
+custombuttons. ButtonBrt = function (oEvent, opacity)
 {
- this. setButtonOpacity (oEvent. target, "disabled", ["0.25", "0.99"]);
+ this. setButtonOpacity (oEvent. target, "disabled", ["0.25", opacity || "0.99"]);
 };
 custombuttons. ButtonDim = function (oEvent)
 {
- this. setButtonOpacity (oEvent. target, "disabled", ["0.25", "0.65"]);
+ this. setButtonOpacity (oEvent. target, "disabled", ["0.25", opacity || "0.65"]);
 };
 custombuttons. getLocalString = function (oBtn, strId)
 {
