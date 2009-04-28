@@ -1,5 +1,8 @@
 Changelog
 ==============
+0.0.4.3
++ Added: KompoZer 0.8a2 (0.7.99) support
+# Fixed: 'toggle comments' feature doesn't work
 0.0.4.2
 + Added: new features in code editor component:
 	- search ([Shift+]Ctrl+F / [Shift+]F3)

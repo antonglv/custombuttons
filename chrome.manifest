@@ -38,7 +38,7 @@ overlay chrome://sunbird/content/calendar.xul custombuttons://content/buttonsove
 overlay chrome://sunbird/content/calendar.xul custombuttons://content/cbbutton.xul
 overlay chrome://sunbird/content/customizeToolbar.xul custombuttons://content/cbbutton.xul
 
-## Editor (Nvu / KompoZer)
+## Editor (KompoZer)
 overlay chrome://editor/content/editor.xul chrome://custombuttons/content/EditorOverlay.xul
 overlay chrome://editor/content/editor.xul custombuttons://content/buttonsoverlay.xul
 overlay chrome://editor/content/editor.xul custombuttons://content/cbbutton.xul
