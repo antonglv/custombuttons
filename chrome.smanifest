@@ -40,7 +40,7 @@ overlay CALENDAR/calendar.xul	CBOVERLAY/buttonsoverlay.xul
 overlay	CALENDAR/calendar.xul	CBOVERLAY/cbbutton.xul
 overlay	CALENDAR/customizeToolbar.xul	CBOVERLAY/cbbutton.xul
 
-## Editor (Nvu / KompoZer)
+## Editor (KompoZer)
 overlay	EDITOR/editor.xul		CBCONTENT/EditorOverlay.xul
 overlay	EDITOR/editor.xul		CBOVERLAY/buttonsoverlay.xul
 overlay	EDITOR/editor.xul		CBOVERLAY/cbbutton.xul
