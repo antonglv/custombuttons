@@ -61,6 +61,15 @@
 				<em:maxVersion>1.0pre</em:maxVersion>
 			</Description>
 		</em:targetApplication>
+		
+		<!-- KompoZer -->
+		<em:targetApplication>
+			<Description>
+				<em:id>{136c295a-4a5a-41cf-bf24-5cee526720d5}</em:id>
+				<em:minVersion>0.7.10</em:minVersion>
+				<em:maxVersion>0.8a2</em:maxVersion>
+			</Description>
+		</em:targetApplication>
 
 	</Description>
 
