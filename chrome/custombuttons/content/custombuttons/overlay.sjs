@@ -525,7 +525,7 @@ CustombuttonsNVU. prototype =
 	
 	get gToolbox ()
 	{
-		return ELEMENT ("EditorToolbox"); // calendar
+		return ELEMENT ("EditorToolbox");
 	},
     
     makeBookmark: function (CbLink, sName) {}
