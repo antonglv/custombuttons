@@ -11,3 +11,4 @@
 #define SUNBIRD				chrome://calendar/content
 #define	MOZAPPS				chrome://mozapps/content
 #define EXTENSIONS			MOZAPPS/extensions
+#define EDITOR				chrome://editor/content
