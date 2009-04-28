@@ -4,6 +4,12 @@
 * Использованы кнопки из расширения "CuteMenus - Crystal SVG"
 * (http://www.cutemenuproject.com/)
 */
+toolbarbutton[id^="custombuttons-button"],
+toolbarbutton[id^="custombuttons-button"]:hover,
+toolbarbutton[id^="custombuttons-button"]:hover:active
+{
+	-moz-image-region: auto !important;
+}
 
 toolbarbutton[id^="custombuttons-button"],
 toolbarbutton[cb-stdicon="custombuttons-stdicon-1"] {
