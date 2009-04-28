@@ -1125,7 +1125,7 @@ custombuttons. ButtonBrt = function (oEvent, opacity)
 {
  this. setButtonOpacity (oEvent. target, "disabled", ["0.25", opacity || "0.99"]);
 };
-custombuttons. ButtonDim = function (oEvent)
+custombuttons. ButtonDim = function (oEvent, opacity)
 {
  this. setButtonOpacity (oEvent. target, "disabled", ["0.25", opacity || "0.65"]);
 };
