@@ -1,3 +1,17 @@
+    function dLOG (text)
+    {
+          var consoleService = Components. classes ["@mozilla.org/consoleservice;1"]. getService (Components. interfaces. nsIConsoleService);
+          consoleService. logStringMessage (text);
+    }
+    function dEXTLOG (aMessage, aSourceName, aSourceLine, aLineNumber,
+              aColumnNumber, aFlags, aCategory)
+    {
+      var consoleService = Components. classes ["@mozilla.org/consoleservice;1"]. getService (Components. interfaces. nsIConsoleService);
+      var scriptError = Components. classes ["@mozilla.org/scripterror;1"]. createInstance (Components. interfaces. nsIScriptError);
+      scriptError. init (aMessage, aSourceName, aSourceLine, aLineNumber,
+                 aColumnNumber, aFlags, aCategory);
+      consoleService. logMessage (scriptError);
+    }
 function Custombuttons () {}
 Custombuttons. prototype =
 {
@@ -76,10 +90,12 @@ Custombuttons. prototype =
   this. addObserver ("updateButton");
   this. addObserver ("cloneButton");
   this. addObserver ("removeButton");
+  window. addEventListener ("dragdrop", this, true);
  },
 
  close: function ()
  {
+  window. removeEventListener ("dragdrop", this, true);
   this. cbService. unregister ();
   this. removeObserver ("removeButton");
   this. removeObserver ("cloneButton");
@@ -343,11 +359,19 @@ Custombuttons. prototype =
   }
  },
 
+ onDragDrop: function (event)
+ {
+  dLOG ("onDragDrop: " + event. target. nodeName);
+ },
+
  /* EventHandler interface */
  handleEvent: function (event)
  {
   switch (event. type)
   {
+   case "dragdrop":
+    this. onDragDrop (event);
+    break;
    case "load":
     this. init ();
     break;

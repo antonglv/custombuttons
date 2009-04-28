@@ -69,6 +69,20 @@
  *
 
  * ***** END LICENSE BLOCK ***** */
+    function dLOG (text)
+    {
+          var consoleService = Components. classes ["@mozilla.org/consoleservice;1"]. getService (Components. interfaces. nsIConsoleService);
+          consoleService. logStringMessage (text);
+    }
+    function dEXTLOG (aMessage, aSourceName, aSourceLine, aLineNumber,
+              aColumnNumber, aFlags, aCategory)
+    {
+      var consoleService = Components. classes ["@mozilla.org/consoleservice;1"]. getService (Components. interfaces. nsIConsoleService);
+      var scriptError = Components. classes ["@mozilla.org/scripterror;1"]. createInstance (Components. interfaces. nsIScriptError);
+      scriptError. init (aMessage, aSourceName, aSourceLine, aLineNumber,
+                 aColumnNumber, aFlags, aCategory);
+      consoleService. logMessage (scriptError);
+    }
 const kSIMPLEURI_CONTRACTID = "@mozilla.org/network/simple-uri;1";
 const nsIURI = Components. interfaces. nsIURI;
 

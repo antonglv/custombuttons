@@ -1,7 +1,7 @@
 #ifndef PROJECT_HEADER_JS
 #define PROJECT_HEADER_JS
 
-#define NODEBUG
+#define DEBUG
 
 #include <debug.hjs>
 #include <stdcomps.hjs>
