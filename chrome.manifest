@@ -38,6 +38,11 @@ overlay chrome://sunbird/content/calendar.xul custombuttons://content/buttonsove
 overlay chrome://sunbird/content/calendar.xul custombuttons://content/cbbutton.xul
 overlay chrome://sunbird/content/customizeToolbar.xul custombuttons://content/cbbutton.xul
 
+## Editor (Nvu / KompoZer)
+overlay chrome://editor/content/editor.xul chrome://custombuttons/content/EditorOverlay.xul
+overlay chrome://editor/content/editor.xul custombuttons://content/buttonsoverlay.xul
+overlay chrome://editor/content/editor.xul custombuttons://content/cbbutton.xul
+
 ##about dialog
 overlay chrome://mozapps/content/extensions/about.xul chrome://custombuttons/content/aboutOverlay.xul
 
@@ -64,6 +69,9 @@ style chrome://calendar/content/calendar.xul chrome://custombuttons/content/over
 
 style chrome://sunbird/content/calendar.xul chrome://custombuttons/skin/custombuttons.css
 style chrome://sunbird/content/calendar.xul chrome://custombuttons/content/overlay.css
+
+style chrome://editor/content/editor.xul chrome://custombuttons/skin/custombuttons.css
+style chrome://editor/content/editor.xul chrome://custombuttons/content/overlay.css
 
 style chrome://global/content/console.xul chrome://custombuttons/content/console.css
 style chrome://console2/content/console2.xul chrome://custombuttons/content/console.css
