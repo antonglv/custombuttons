@@ -10,5 +10,8 @@
 	
 	<!-- Sunbird -->
 	<toolbarpalette id="calendarToolbarPalette"/>
+	
+	<!-- KompoZer -->
+	<toolbarpalette id="NvuToolbarPalette"/>
 
 </overlay>
