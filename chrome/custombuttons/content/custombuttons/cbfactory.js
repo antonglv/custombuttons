@@ -33,6 +33,9 @@ function custombuttonsFactory ()
     case "Sunbird":
   retobj = this. CustombuttonsSBFactory;
   break;
+ case "KompoZer":
+  retobj = this. CustombuttonsNVUFactory;
+  break;
   }
   return retobj;
 }
@@ -83,6 +86,13 @@ custombuttonsFactory. prototype =
  CustombuttonsSBFactory:
  {
   get Custombuttons () { return new CustombuttonsSB (); },
+  get Editor () { return new TBEditor (); },
+  get Prefs () { return new Prefs (); }
+ },
+
+ CustombuttonsNVUFactory:
+ {
+  get Custombuttons () { return new CustombuttonsNVU (); },
   get Editor () { return new TBEditor (); },
   get Prefs () { return new Prefs (); }
  }
