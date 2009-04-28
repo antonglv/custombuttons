@@ -21,7 +21,7 @@ Custombuttons. prototype =
 	
 	get gToolbox ()
 	{
-		return ELEMENT ("navigator-toolbox") || // FF3b2 and lower;
+		return ELEMENT ("navigator-toolbox") || // FF3b2 and lower
 			   ELEMENT ("browser-toolbox"); // see https://bugzilla.mozilla.org/show_bug.cgi?id=415099
 	},
 	
