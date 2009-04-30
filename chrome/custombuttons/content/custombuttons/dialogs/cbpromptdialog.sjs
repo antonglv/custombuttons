@@ -6,6 +6,7 @@ var cbPromptDialog =
 	valueAttr: "",
 	itemName: "",
 	itemIndex: 0,
+	groupCounter: -1,
 	
 	getParameterByName: function (name)
 	{
@@ -115,6 +116,7 @@ var cbPromptDialog =
 	
 	makeGroup: function (index)
 	{
+		this. groupCounter++;
 		var group = document. createElement ("groupbox");
 		var caption = document. createElement ("caption");
 		var captionLabel = this. getParameterByName ("label");
@@ -139,7 +141,7 @@ var cbPromptDialog =
 		item. setAttribute ("label", label);
 		if (value)
 			item. setAttribute (this. valueAttr, value);
-		item. setAttribute ("value", this. itemIndex++);
+		item. setAttribute ("value", this. groupCounter + this. itemIndex++);
 		return item;
 	},
 	
