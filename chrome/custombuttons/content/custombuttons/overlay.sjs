@@ -79,16 +79,10 @@ Custombuttons. prototype =
 		this. addObserver ("updateButton");
 		this. addObserver ("cloneButton");
 		this. addObserver ("removeButton");
-		window. addEventListener ("dragdrop", this, true);
-		window. addEventListener ("dragover", this, true);
-		window. addEventListener ("dragexit", this, true);
 	},
 	
 	close: function ()
 	{
-		window. removeEventListener ("dragexit", this, true);
-		window. removeEventListener ("dragover", this, true);
-		window. removeEventListener ("dragdrop", this, true);
 		this. cbService. unregister ();
 		this. removeObserver ("removeButton");
 		this. removeObserver ("cloneButton");
@@ -352,19 +346,11 @@ Custombuttons. prototype =
 		}
 	},
 	
-	onDragDrop: function (event)
-	{
-		LOG ("onDragDrop: " + event. target. nodeName);
-	},
-	
 	/* EventHandler interface */
 	handleEvent: function (event)
 	{
 		switch (event. type)
 		{
-			case "dragdrop":
-				this. onDragDrop (event);
-				break;
 			case "load":
 				this. init ();
 				break;
