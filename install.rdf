@@ -14,16 +14,18 @@
 		<em:developer>Anton (custombuttonsextension@gmail.com)</em:developer>
 		<em:developer>Dark-Demon</em:developer>
 		<em:developer>SCClockDr</em:developer>
+		<em:contributor>Ragnaar: extension's icons</em:contributor>
 		<em:contributor>Infocatcher: useful remarks</em:contributor>
 		<em:contributor>Lain_13: useful remarks</em:contributor>
 		<em:contributor>Dimanish: useful remarks</em:contributor>
-		<em:contributor>Other users of forum.mozilla.ru: useful remarks and testing</em:contributor>
+		<em:contributor>Other users of forum.mozilla-russia.org (forum.mozilla.ru): useful remarks and testing</em:contributor>
 		<em:translator>Piotrek (Sullei): Polish localization</em:translator>
 		<em:translator>fang5566: Chinese (Simplified) localization</em:translator>
 		<em:translator>peguca: Portuguese (Brazilian) localization</em:translator>
 		<em:translator>wladow: Slovak localization</em:translator>
 		<em:homepageURL>http://xsms.nm.ru/custombuttons/en/</em:homepageURL>
 		<em:optionsURL>chrome://custombuttons/content/prefs.xul</em:optionsURL>
+		<em:iconURL>chrome://custombuttons/skin/cbicon.png</em:iconURL>
 		<em:updateURL>https://www.mozdev.org/p/updates/custombuttons/custombuttons@xsms.org/update.rdf</em:updateURL>
 		
 		<!-- Firefox -->
