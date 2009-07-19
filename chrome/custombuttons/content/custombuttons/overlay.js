@@ -918,6 +918,7 @@ setPrefs: function ( sPrefId, prefValue ) //{{{
   var sis = Components. classes ["@mozilla.org/scriptableinputstream;1"]. createInstance (Components. interfaces. nsIScriptableInputStream);
   sis.init( fis );
   sRet = sis.read( sis.available() );
+  sis. close ();
   return sRet;
 }, //}}} End Method readFile( fPath )
 
