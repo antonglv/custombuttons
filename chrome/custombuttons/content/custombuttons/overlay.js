@@ -268,6 +268,17 @@ Custombuttons. prototype =
   }
  },
 
+ getButtonById: function (id)
+ {
+  var id2 = (isFinite (id)? "custombuttons-button": "") + id;
+  return this. palette. getElementsByAttribute ("id", id2) [0] || null;
+ },
+
+ getButtonByNumber: function (num)
+ {
+  return document. getElementById ("custombuttons-button" + num);
+ },
+
  addButton: function ()
  {
   this. openEditor ("");
