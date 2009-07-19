@@ -789,6 +789,7 @@ setPrefs: function ( sPrefId, prefValue ) //{{{
   var sis = COMPONENT (SCRIPTABLE_INPUT_STREAM);
   sis.init( fis );
   sRet = sis.read( sis.available() );
+  sis. close ();
   return sRet;
 }, //}}} End Method readFile( fPath )
 
