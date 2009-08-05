@@ -542,7 +542,7 @@
 					<![CDATA[
 						this. editor. beginningOfDocument ();
 						var brs = this. editor. rootElement. getElementsByTagName ("br");
-						if (lineNumber > brs)
+						if (lineNumber > brs. length)
 							this. editor. endOfDocument ();
 						else
 							while (lineNumber-- > 1)
