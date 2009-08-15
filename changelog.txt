@@ -1,5 +1,82 @@
 Changelog
 ==============
+0.0.4.4
++ Added: Firefox 3.7a1pre support
++ Added: Thunderbird 3.0b4pre support
+# Fixed: Bug 21391 "ABP 1.1.1 breaks Custom Buttons extension"
+# Fixed: CB doesn't preserve XML.prettyPrinting field value
+# Fixed: readFile doesn't close input stream
+! Changed: error line number definition code
+0.0.4.3
++ Added: KompoZer 0.8a2 (0.7.99) support
+# Fixed: 'toggle comments' feature doesn't work
+0.0.4.2
++ Added: new features in code editor component:
+	- search ([Shift+]Ctrl+F / [Shift+]F3)
+	- search and replace ([Shift+]Ctrl+H)
+	- type ahead find (Ctrl+/)
+	- go to line (Ctrl+G)
+	- toggle word wrapping (Ctrl+W)
+# Fixed: "open button by link" feature doesn't work in console2 window
+0.0.4.1
+# Fixed: undo sequence sets default value in editor's code sections
+0.0.4.0
++ Added: three predefined icons for new buttons
++ Added: more than one code editor can be opened at same time
++ Added: code editor doesn't depends on main window
++ Added: Firefox 3.6a1pre support
+! Changed: code architecture
+0.0.3.10
++ Added: more than one code editor can be opened
+0.0.3.9
++ Added: Thunderbird 3.0b3pre support
++ Added: Calendar 1.0pre support
++ Added: Lightning extension support (experimental)
++ Added: 'hidelabel' value for 'cb-style' attribute (to hide button's label)
++ Added: "Add new button..." menu item for toolbars context menu
+0.0.3.8
+! Changed: ui code logic
+# Fixed: 'custombuttons' protocol vulnerability
+0.0.3.7
++ Added: Thunderbird 3.0b2pre support
+# Fixed: JavaScript console binding opened buttons only in main Thunderbird window
+0.0.3.6
++ Added: Firefox 3.1 support
++ Added: Sunbird 0.9 support
+# Fixed: some Thunderbird/Sunbird ui bugs
+0.0.3.5
+# Fixed: "Ctrl+Enter cannot be bound to a button" bug
+0.0.3.4
++ Added: edit button code feature before install
+# Fixed: some cb2api support bugs
+0.0.3.3
+# Fixed: support page link appears in other's extensions about dialog
+0.0.3.2
+# Fixed: custombutton:// protocol handler bug
+0.0.3.1
+# Fixed: NoScript xss filter incompatibility
++ Added: support page link into about extension dialog
+0.0.3
+# Fixed: bug with creating cb links for buttons, which contain ']]>' character sequence in code
+# Fixed: "menu" and "menu-button" custom buttons styling in Thunderbird/Sunbird
+! Changed: the way to keep context menu in actual state
+0.0.2.9
+# Fixed: user specified context menu doesn't work
++ Added: new custom buttons debug facility - js console shows correct number for error line and button editor can be opened just from js console
+0.0.2.8
+* Hotkey doesn't runs button code bug fixed
+0.0.2.7
+* Fixed few browser UI synchronization issues
+* Added Firefox 3b5pre support
+* Added Sunbird 0.8 support (experimental)
+* CB² custombuttons API partially implemented
+* Added JavaScript 1.8 support in Firefox3
+* Added JavaScript 1.7 support in Firefox2
+* Small UI enhacements
+* XUL code refactoring
+0.0.2.6
+* Custom buttons code execution context error fixed.
+* Version number deleted from extension's name.
 0.0.2.5
 * Security fix to prevent local disk access (security issues created by Firefox bug #413250)
 0.0.2.4
