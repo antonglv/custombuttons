@@ -179,8 +179,13 @@ Overlay. prototype =
 		var data = serializer. serializeToString (this. overlayDocument);
 		
 		//beautifull output
-		XML. prettyPrinting = true;
-		data = (new XML (data)). toXMLString ();
+		try
+		{
+			var oldPrettyPrinting = XML. prettyPrinting;
+			XML. prettyPrinting = true;
+			data = (new XML (data)). toXMLString ();
+			XML. prettyPrinting = oldPrettyPrinting;
+		} catch (e) {}
 		
 		var uniConv = COMPONENT (SCRIPTABLE_UNICODE_CONVERTER);
 		uniConv. charset = "utf-8";
