@@ -1,0 +1,87 @@
+#include <defs.inc>
+#include <manifest.inc>
+content	custombuttons	jar:chrome/custombuttons.jar!/content/custombuttons/
+
+## Firefox
+overlay	BROWSER/browser.xul	CBCONTENT/overlay.xul
+overlay	BROWSER/browser.xul	CBOVERLAY/buttonsoverlay.xul
+
+## Browser
+overlay	BROWSER/browser.xul				CBCONTENT/tcbbutton.xul
+overlay GLOBAL/customizeToolbar.xul		CBCONTENT/tcbbutton.xul
+
+## Firefox 3
+overlay	BROWSER/browser.xul			CBCONTENT/overlay3b2.xul   		 FIREFOXAPP appversion>=3.0b1
+overlay	GLOBAL/customizeToolbar.xul	CBCONTENT/customizeToolbars.xul  FIREFOXAPP appversion>=3.0b1
+
+## Thunderbird
+## main window
+overlay	MESSENGER/messenger.xul	CBCONTENT/ThunderbirdOverlay.xul
+overlay	MESSENGER/messenger.xul	CBCONTENT/tcbbutton.xul
+overlay	MESSENGER/messenger.xul	CBOVERLAY/buttonsoverlay.xul		THUNDERBIRDAPP
+## message window
+overlay MESSENGER/messageWindow.xul	CBCONTENT/ThunderbirdOverlay.xul
+overlay	MESSENGER/messenger.xul	CBCONTENT/tcbbutton.xul
+overlay MESSENGER/messageWindow.xul	CBOVERLAY/mwbuttonsoverlay.xul	THUNDERBIRDAPP
+## message compose
+overlay MESSENGERCOMPOSE/messengercompose.xul	CBCONTENT/ThunderbirdOverlay.xul
+overlay	MESSENGER/messenger.xul	CBCONTENT/tcbbutton.xul
+overlay MESSENGERCOMPOSE/messengercompose.xul	CBOVERLAY/mcbuttonsoverlay.xul THUNDERBIRDAPP
+
+## Sunbird
+overlay	SUNBIRD/calendar.xul	CBCONTENT/SunbirdOverlay.xul
+overlay	SUNBIRD/calendar.xul	CBCONTENT/tcbbutton.xul
+overlay SUNBIRD/calendar.xul	CBOVERLAY/buttonsoverlay.xul
+overlay	SUNBIRD/customizeToolbar.xul	CBCONTENT/tcbbutton.xul
+
+## Calendar
+overlay	CALENDAR/calendar.xul	CBCONTENT/CalendarOverlay.xul
+overlay	CALENDAR/calendar.xul	CBCONTENT/tcbbutton.xul
+overlay CALENDAR/calendar.xul	CBOVERLAY/buttonsoverlay.xul
+overlay	CALENDAR/customizeToolbar.xul	CBCONTENT/tcbbutton.xul
+
+## Editor (KompoZer)
+overlay	EDITOR/editor.xul		CBCONTENT/EditorOverlay.xul
+overlay	EDITOR/editor.xul		CBCONTENT/tcbbutton.xul
+overlay	EDITOR/editor.xul		CBOVERLAY/buttonsoverlay.xul
+
+##about dialog
+overlay	EXTENSIONS/about.xul	CBCONTENT/aboutOverlay.xul
+
+skin	custombuttons	classic/1.0	jar:chrome/custombuttons.jar!/skin/classic/
+
+style	BROWSER/browser.xul			CBSKIN/custombuttons.css
+style	BROWSER/browser.xul	CBCONTENT/overlay.css appversion>1.6
+style	BROWSER/browser.xul	CBCONTENT/overlay1.5.css FIREFOXAPP appversion<=1.6
+
+style	GLOBAL/customizeToolbar.xul	CBSKIN/custombuttons.css
+##style	GLOBAL/customizeToolbar.xul	CBCONTENT/overlay.css appversion>1.6
+style	GLOBAL/customizeToolbar.xul	CBCONTENT/customizeToolbar.css
+style	GLOBAL/customizeToolbar.xul	CBCONTENT/overlay1.5.css FIREFOXAPP appversion<=1.6
+
+style	MESSENGER/messenger.xul					CBSKIN/custombuttons.css
+style	MESSENGER/messenger.xul					CBCONTENT/overlay.css
+style	MESSENGERCOMPOSE/messengercompose.xul	CBSKIN/custombuttons.css
+style	MESSENGERCOMPOSE/messengercompose.xul	CBCONTENT/overlay.css
+style	MESSENGER/messageWindow.xul				CBSKIN/custombuttons.css
+style	MESSENGER/messageWindow.xul				CBCONTENT/overlay.css
+
+style	SUNBIRD/calendar.xul	CBSKIN/custombuttons.css
+style	SUNBIRD/calendar.xul	CBCONTENT/overlay.css
+
+style	CALENDAR/calendar.xul	CBSKIN/custombuttons.css
+style	CALENDAR/calendar.xul	CBCONTENT/overlay.css
+
+style	EDITOR/editor.xul		CBSKIN/custombuttons.css
+style	EDITOR/editor.xul		CBCONTENT/overlay.css
+
+style	GLOBAL/console.xul	CBCONTENT/console.css
+style	chrome://console2/content/console2.xul CBCONTENT/console.css
+
+locale	custombuttons	en-US	jar:chrome/custombuttons.jar!/locale/en-US/custombuttons/
+locale	custombuttons	ru-RU	jar:chrome/custombuttons.jar!/locale/ru-RU/custombuttons/
+locale	custombuttons	pl-PL	jar:chrome/custombuttons.jar!/locale/pl-PL/custombuttons/
+locale	custombuttons	pt-BR	jar:chrome/custombuttons.jar!/locale/pt-BR/custombuttons/
+locale	custombuttons	sk-SK	jar:chrome/custombuttons.jar!/locale/sk-SK/custombuttons/
+locale	custombuttons	zh-CN	jar:chrome/custombuttons.jar!/locale/zh-CN/custombuttons/
+
