@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <project name="Custom Buttons"
 		 default="buildxpi"
 		 basedir=".">
@@ -8,8 +8,7 @@
 	</description>
 	
 	<!-- set global properties for this build -->
-	<property name="geckosdkpath"
-			  location="Q:\tmp\Mozilla\gecko-sdk-i586-pc-msvc-1.8a6\gecko-sdk"/>
+	<property file="build.properties"/>
 	<property name="xpidlpath" location="${geckosdkpath}\BIN"/>
 	<property name="idlpath" location="${geckosdkpath}\IDL"/>
 	
@@ -20,13 +19,54 @@
 	<property name="appname" value="custombuttons"/>
 	<property name="jarname" value="custombuttons"/>
 	<property name="xpiname" value="custombuttons"/>
-	<property name="extensionversion" value="0.0.2"/>
+	<xmlproperty file="install.rdf" keepRoot="false"/>
 	
 	<property name="keep_jar" value="true"/>
 	
 	<target name="init">
 		<!-- Create the time stamp -->
 		<tstamp/>
+		<patternset id="xpipatternset">
+			<include name="chrome.manifest"/>
+			<include name="install.rdf"/>
+			<include name="changelog.txt"/>
+			<include name="license.txt"/>
+			<include name="defaults/**/*.*"/>
+			<include name="components/**/*.*"/>
+			<exclude name="build.number"/>
+		</patternset>
+		<patternset id="excludespatternset">
+			<exclude name="**/Thumbs.db"/>
+			<exclude name="**/*.sjs"/>
+			<exclude name="**/*.hjs"/>
+			<exclude name="**/*.ijs"/>
+			<exclude name="**/*.sxml"/>
+			<exclude name="**/*.ixml"/>
+			<exclude name="**/*.idl"/>
+			<exclude name="**/*.inc"/>
+			<exclude name="**/*.smanifest"/>
+			<exclude name="**/.*"/>
+		</patternset>
+		<uptodate property="checkLibs.forcedJSPreprocess" targetfile="build.number">
+			<srcfiles dir="${basedir}" includes="**/*.ijs"/>
+			<srcfiles dir="${basedir}" includes="**/*.hjs"/>
+		</uptodate>
+		<uptodate property="checkLibs.forcedXMLPreprocess" targetfile="build.number">
+			<srcfiles dir="${basedir}" includes="**/*.ixml"/>
+		</uptodate>
+		<uptodate property="checkLibs.forcedOtherPreprocess" targetfile="build.number">
+			<srcfiles dir="${basedir}" includes="**/*.inc"/>
+		</uptodate>
+		<condition property="checkLibs.forcedPreprocess" value="false" else="true">
+			<and>
+				<istrue value="${checkLibs.forcedJSPreprocess}"/>
+				<istrue value="${checkLibs.forcedXMLPreprocess}"/>
+				<istrue value="${checkLibs.forcedOtherPreprocess}"/>
+			</and>
+		</condition>
+		<buildnumber/>
+		<echo>Builds ${appname}-${Description.em:version}-${DSTAMP}</echo>
+		<echo>Build No. ${build.number}</echo>
 	</target>
 	
 	<!--
@@ -38,13 +78,15 @@
 		<mapper id="preprocessormapper">
 			<mapper type="glob" from="*.sjs" to="*.js"/>
 			<mapper type="glob" from="*.sxml" to="*.xml"/>
+			<mapper type="glob" from="*.smanifest" to="*.manifest"/>
 		</mapper>
 		<apply executable="cpp.exe"
 			   failonerror="true"
-			   force="true"> <!-- and no jpp.bat needed now -->
+			   force="${checkLibs.forcedPreprocess}"> <!-- and no jpp.bat needed now -->
 			<fileset dir="${basedir}">
 				<include name="**/*.sjs"/>
 				<include name="**/*.sxml"/>
+				<include name="**/*.smanifest"/>
 			</fileset>
 			<mapper refid="preprocessormapper"/>
 			<arg value="-I"/>
@@ -53,10 +95,11 @@
 			<arg value="${xpistdinc}"/>
 			<arg value="-I"/>
 			<arg value="${projectinc}"/>
+			<arg value="-ansi"/>
 			<arg value="-P"/>
 			<arg value="-CC"/>
 			<srcfile/>
-			<redirector>
+			<redirector inputencoding="UTF-8" outputencoding="UTF-8">
 				<outputfilterchain>
 					<linecontains negate="true"> <!-- and no grep needed now -->
 						<contains value="{--exclude-this-line}"/>
@@ -68,6 +111,8 @@
 	</target>
 	
 	<target name="buildxpt" depends="init,preprocess">
+				<fail unless="geckosdkpath">The path to gecko sdk (geckosdkpath property) not defined.
+Define it in build.properties (don't forget about double back slashes)</fail>
 		<apply executable="xpidl.exe" dir="${xpidlpath}"
 			   resolveExecutable="true" dest="${basedir}/components"
 			   failonerror="true"> <!-- and no pack.bat needed now -->
@@ -86,15 +131,44 @@
 	<target name="buildjar" depends="init,preprocess">
 		<zip destfile="${basedir}/chrome/${jarname}.jar"
 			 compress="false" level="0"> <!-- and no 7-zip needed now -->
-			<fileset dir="${basedir}/chrome/${jarname}">
+			<fileset id="jarfileset" dir="${basedir}/chrome/${jarname}">
 				<include name="**/*.*"/>
-				<exclude name="**/*.sjs"/>
-				<exclude name="**/*.hjs"/>
-				<exclude name="**/*.ijs"/>
-				<exclude name="**/*.sxml"/>
-				<exclude name="**/*.ixml"/>
-				<exclude name="**/*.idl"/>
-				<exclude name="**/.*"/>
+				<patternset refid="excludespatternset"/>
+				<!-- 0.0.3.8 excludes -->
+				<!--
+				<exclude name="content/custombuttons/customizeToolbars.xul"/>
+				<exclude name="content/custombuttons/customizeToolbars.js"/>
+				<exclude name="content/custombuttons/overlay3b2.xul"/>
+				-->
+				<!-- common excludes -->
+				<exclude name="content/custombuttons/editor.html"/>
+				<exclude name="content/custombuttons/addMoreKeysDialog.xul"/>
+				<exclude name="content/custombuttons/addMoreKeysDialog.js"/>
+				<exclude name="content/custombuttons/jsVer1.js"/>
+				<exclude name="content/custombuttons/jsVer2.js"/>
+				<exclude name="content/custombuttons/jsVer3.js"/>
+				<exclude name="content/custombuttons/jsVer4.js"/>
+				<exclude name="content/custombuttons/codeeditor2.xml"/>
+				<!-- 0.0.3.9 excludes -->
+				
+				<exclude name="content/custombuttons/cbbutton1.5.xul"/>
+				<!--
+				<exclude name="content/custombuttons/cbbutton.xul"/>
+				-->
+				<exclude name="content/custombuttons/cbbutton3.xul"/>
+				<exclude name="content/custombuttons/loader.js"/>
+				<!-- 0.0.4.0a excludes -->
+				
+				<exclude name="content/custombuttons/editor.js"/>
+				<exclude name="content/custombuttons/edit.xul"/>
+				<exclude name="skin/classic/button1.png"/>
+				<!-- 0.0.4.1 excludes -->
+				
+				<exclude name="content/custombuttons/codeeditor.xml"/>
+				<!-- 0.0.4.2a excludes -->
+				
+				<exclude name="content/custombuttons/buttonsoverlay.js"/>
+				
 			</fileset>
 		</zip>
 	</target>
@@ -111,25 +185,13 @@
   			<substitution expression="\1\2chrome/${jarname}\3"/>
 		</replaceregexp>
 			-->
-		<zip destfile="${xpiname}-${extensionversion}-${DSTAMP}.xpi"
+		<zip destfile="${xpiname}-${Description.em:version}-${DSTAMP}.xpi"
 			 compress="true" level="9"> <!-- and no 7-zip, pack.bat needed now -->
 			<fileset dir="${basedir}">
-				<include name="chrome.manifest"/>
-				<include name="install.rdf"/>
-				<include name="install.rdf"/>
-				<include name="changelog.txt"/>
-				<include name="license.txt"/>
+				<patternset refid="xpipatternset"/>
 				<include name="chrome/**/*.*"/>
-				<include name="defaults/**/*.*"/>
-				<include name="components/**/*.*"/>
 				<exclude name="chrome/*.jar"/>
-				<exclude name="**/*.sjs"/>
-				<exclude name="**/*.hjs"/>
-				<exclude name="**/*.ijs"/>
-				<exclude name="**/*.sxml"/>
-				<exclude name="**/*.ixml"/>
-				<exclude name="**/*.idl"/>
-				<exclude name="**/.*"/>
+				<patternset refid="excludespatternset"/>
 			</fileset>
 		</zip>
 	</target>
@@ -146,23 +208,19 @@
   			<substitution expression="\1\2jar:chrome\/${jarname}\.jar!\3"/>
 		</replaceregexp>
 			-->
-		<zip destfile="${xpiname}-${extensionversion}-${DSTAMP}.xpi"
+		<zip destfile="${xpiname}-${Description.em:version}-${DSTAMP}.xpi"
 			 compress="true" level="9"> <!-- and no 7-zip, pack.bat needed now -->
 			<fileset dir="${basedir}">
-				<include name="chrome.manifest"/>
-				<include name="install.rdf"/>
-				<include name="changelog.txt"/>
-				<include name="license.txt"/>
+				<patternset refid="xpipatternset"/>
 				<include name="chrome/${jarname}.jar"/>
-				<include name="defaults/**/*.*"/>
-				<include name="components/**/*.*"/>
-				<exclude name="**/*.sjs"/>
-				<exclude name="**/*.hjs"/>
-				<exclude name="**/*.ijs"/>
-				<exclude name="**/*.sxml"/>
-				<exclude name="**/*.ixml"/>
-				<exclude name="**/*.idl"/>
-				<exclude name="**/.*"/>
+				<patternset refid="excludespatternset"/>
+				<!-- common excludes -->
+				<exclude name="components/CBStorageService.xpt"/>
+				<exclude name="components/customhttpprotocol2.xpt"/>
+				<exclude name="components/customhttpprotocol3.xpt"/>
+				<exclude name="components/customhttpprotocol2.js"/>
+				<exclude name="components/customhttpprotocol3.js"/>
+				<exclude name="components/CBRDFService.js"/>
 			</fileset>
 		</zip>
 	</target>
