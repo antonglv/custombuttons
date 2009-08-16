@@ -234,7 +234,7 @@ function AppObject (sWindowId, overlayPath)
 AppObject. prototype =
 {
  _windowId: "",
- overlayPath: "custombuttons://content/",
+ overlayPath: "resource://custombuttons/",
  overlayFileName: "",
  paletteId: "",
  palette: null,
