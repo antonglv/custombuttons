@@ -1,0 +1,41 @@
+<!ENTITY editor.dialog.help "Help">
+<!ENTITY editor.dialog.title "编辑按钮">
+<!ENTITY editor.name "名称:">
+<!ENTITY editor.name.tooltiptext "定制按钮的标记和弹出文字">
+<!ENTITY editor.image "图片:">
+<!ENTITY editor.select "浏览…">
+<!ENTITY editor.base64 "&#8658; base64">
+<!ENTITY editor.base64.tooltiptext "把图片转换到 base64 格式 (data:image/png;base64,…)">
+<!ENTITY editor.code "代码">
+<!ENTITY editor.code.tooltiptext "点击按钮时执行的代码">
+<!ENTITY editor.initCode "初始化代码">
+<!ENTITY editor.initCode.tooltiptext "浏览器启动时执行的代码">
+<!ENTITY editor.code.defaultValue "/*代码*/">
+<!ENTITY editor.initCode.defaultValue "/*初始化代码*/">
+<!ENTITY editor.Apply "Apply">
+<!ENTITY editor.urlfield "Button URL:">
+<!ENTITY editor.buttonSettings "Button settings">
+<!ENTITY editor.buttonSettings.tooltiptext "Button settings panel">
+<!ENTITY editor.buttonSettings.hotKeyGroupbox "&quot;Hot&quot; key">
+<!ENTITY editor.buttonSettings.accelkey "Hotkey:">
+<!ENTITY editor.buttonSettings.disableDefaultKeyBehavior "Disable default action for specified hotkey">
+<!ENTITY editor.buttonSettings.initializationGroupbox "Initialization">
+<!ENTITY editor.buttonSettings.initInCustomizeToolbarDialog "Enable initialization in &quot;Customize Toolbar&quot; dialog">
+<!ENTITY editor.buttonSettings.addMoreKeys "More…">
+
+<!ENTITY cbeditor.quickfindtextbox "Quick Find: ">
+
+<!ENTITY finddialog.findtextbox "Find: ">
+<!ENTITY finddialog.replacetextbox "Replace: ">
+<!ENTITY finddialog.optionscaption "Options">
+<!ENTITY finddialog.casesensitive "Case sensitive">
+<!ENTITY finddialog.prompteachreplace "Prompt each replace">
+<!ENTITY finddialog.directioncaption "Direction">
+<!ENTITY finddialog.forward "Forward">
+<!ENTITY finddialog.backward "Backward">
+
+<!ENTITY repprompt.replace "Replace">
+<!ENTITY repprompt.cancel "Cancel">
+<!ENTITY repprompt.skip "Skip">
+<!ENTITY repprompt.replaceall "Replace All">
+<!ENTITY repprompt.msg "Replace ?">
