@@ -1,0 +1,31 @@
+
+<implementation>
+	<constructor>
+    	<![CDATA[
+			Components. classes ["@mozilla.org/moz/jssubscript-loader;1"]. getService (Components. interfaces. mozIJSSubScriptLoader).
+			loadSubScript ("chrome://custombuttons/content/cbbuttonimpl.js", this);
+			custombutton. buttonConstructor (this);
+		]]>
+	</constructor>
+	
+	<destructor>
+		<![CDATA[
+			custombutton. buttonDestroy (this);
+		]]>
+	</destructor>
+</implementation>
+
+<handlers>
+	<handler event="command">
+		<![CDATA[
+			custombutton. buttonCommand (event, this);
+		]]>
+	</handler>
+	
+	<handler event="mousedown" phase="capturing">
+		<![CDATA[
+			custombutton. onMouseDown (event, this);
+		]]>
+	</handler>
+</handlers>
+
