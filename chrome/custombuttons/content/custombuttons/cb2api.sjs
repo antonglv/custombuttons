@@ -394,11 +394,11 @@ custombuttons.getCbContextObj = function ( oBtn ) //{{{
 				oChildNode = ct.oMenu.firstChild;
 			} // End if ( oChildNode )
 			if ( ct.mCtxtSub ) {
-				var oRet = ""
+			    var oRet = "";
 				var newItem = this. constructItem (oNew, true);
 				oRet = ct.oMenu.insertBefore( newItem, oChildNode );
 			} // End if ( mCtxtSub )
-			return oRet
+			return oRet;
 		}, //}}} End Method insertBefore( oNew, oChildNode )
 
 		/**  insertAfter( oMenuItem, oChildNode )
@@ -414,12 +414,12 @@ custombuttons.getCbContextObj = function ( oBtn ) //{{{
 			var ct = this;
 			var sTemp = "";
 			if ( ct.mCtxtSub ) {
-				var oRet = {}
+				var oRet = {};
 				var newItem = this. constructItem (oNew, false);
 				oRet = ct.oMenu.insertBefore(newItem, oChildNode);
 				ct.OurCount.inc();
 			} // End if ( mCtxtSub )
-			return oRet
+			return oRet;
 		}, //}}} End Method insertAfter( oNew, oChildNode )
 
 		/**  addItem( oMenuItem )
@@ -435,12 +435,12 @@ custombuttons.getCbContextObj = function ( oBtn ) //{{{
 			var ct = this;
 			var sTemp = "";
 			if ( ct.mCtxtSub ) {
-				var oRet = ""
+				var oRet = "";
 				var newItem = this. constructItem (oNew, true);
 				oRet = ct.oMenu.insertBefore( newItem, ct.oMenu.firstChild );
 
 			} // End if ( mCtxtSub )
-			return oRet
+			return oRet;
 		}, //}}} End Method addItem( oNew )
 
 		/**  populate( oData, mItem )
@@ -482,7 +482,7 @@ custombuttons.getCbContextObj = function ( oBtn ) //{{{
 		getItemsById:function ( id ) //{{{
 		{
 			var aRet = [];
-			var ct = this
+			var ct = this;
 			var cId = this. constructId (id);
 			for ( var i = 0; i < ct.menuitems; i++) {
 				if ( ct.aElements.item(i).id.indexOf( cId ) > -1 ) {
@@ -669,7 +669,7 @@ custombuttons.gQuot = { //{{{
 	doDoubleClick: function (oEvent)
 	{
 		this. deleteTimer ();
-		this. click (oEvent)
+		this. click (oEvent);
 	},
 
 	/**
@@ -764,7 +764,7 @@ Purpose: 1. Handle mouse click events.
 var gQuot = function( evt, cButton ) //{{{
 {
 	custombuttons.gQuot.mHandler( evt, cButton );
-} //}}} End Function gQuot( evt, cButton )
+}; //}}} End Function gQuot( evt, cButton )
 
 /**  gShowPopup( node )
 Author:  George Dunham aka: SCClockDr
@@ -800,7 +800,7 @@ custombuttons.getButtonParameters2 = function ( num ) //{{{
 	var but = document.getElementById( "custombuttons-button"+num );
 	if (!but) return false;
 	var sHelp = but.getAttribute("Help") || but.getAttribute("help") || "";
-	var ret = {
+	ret = {
 		"name":     but.getAttribute("label")||"",
 		"image":    but.getAttribute("image")||"",
 		"code":     but.getAttribute("cb-oncommand")||"",
@@ -817,7 +817,7 @@ custombuttons.getButtonParameters2 = function ( num ) //{{{
 custombuttons. setButtonOpacity = function (oButton, sProperty, aValues)
 {
 	if (oButton. id. indexOf ("custombuttons-button") == 0)
-		oButton. style. opacity = aValues [oButton [sProperty]? 0: 1]
+	    oButton. style. opacity = aValues [oButton [sProperty]? 0: 1];
 };
 custombuttons. ButtonBrt = function (oEvent, opacity)
 {
@@ -924,7 +924,7 @@ custombuttons. alertSlide = function (sTitle, sMsg)
 	var as = SERVICE (ALERTS);
 	as. showAlertNotification ("chrome://custombuttons/skin/button.png", sTitle, sMsg, false, "", null);
 };
-custombuttons. uCbuttonButes = function (oBtn) {}
+custombuttons. uCbuttonButes = function (oBtn) {};
 custombuttons. getPref = custombuttons. getPrefs;
 custombuttonsUtils. createDebug = function (btn)
 {
