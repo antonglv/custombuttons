@@ -105,7 +105,6 @@ cbContentPolicyComponent. prototype =
    return 1;
 
   if ((contentLocation. spec. indexOf ("custombutton://content/") == 0) ||
-   (contentLocation. spec. indexOf ("custombuttons://content/") == 0) ||
    (contentLocation. spec. indexOf ("resource://custombuttons/") == 0))
    return -1;
 

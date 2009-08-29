@@ -109,7 +109,6 @@ cbContentPolicyComponent. prototype =
 			return CONTENT_POLICY_ACCEPT;
 
 		if ((contentLocation. spec. indexOf ("custombutton://content/") == 0) ||
-			(contentLocation. spec. indexOf ("custombuttons://content/") == 0) ||
 			(contentLocation. spec. indexOf ("resource://custombuttons/") == 0))
 			return CONTENT_POLICY_REJECT_REQUEST;
 
