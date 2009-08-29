@@ -194,7 +194,7 @@ Custombuttons. prototype =
 			return;
 		try
 		{
-			oRemovedButton. destroy ();
+			oRemovedButton. _destroy ();
 		}
 		catch (oErr) {}
 		if (bRemoveFromOverlay)
@@ -247,6 +247,11 @@ Custombuttons. prototype =
 					{
 						newButton = this. cbCloneNode (oSubject);
 						winButton = winButtons [i];
+						try
+						{
+							winButton. _destroy ();
+						}
+						catch (oErr) {}
 						winButton. parentNode. replaceChild (newButton, winButton);
 					}
 				}
