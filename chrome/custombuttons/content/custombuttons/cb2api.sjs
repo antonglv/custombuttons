@@ -356,7 +356,7 @@ custombuttons.getCbContextObj = function ( oBtn ) //{{{
 					type:"",
 					validate:"",
 					value:""
-				}// End oItem
+				};// End oItem
 				return oItem;
 			} // End if ( mCtxtSub )
 			return null;
