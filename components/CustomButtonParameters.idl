@@ -1,0 +1,22 @@
+#include "nsISupports.idl"
+#include "nsISupportsPrimitives.idl"
+#include "nsISupportsArray.idl"
+#include "nsIWritablePropertyBag.idl"
+
+[scriptable, uuid (8252e7b4-57cb-43ed-af81-ff3b515c8eeb)]
+interface cbICustomButtonParameters: nsISupports
+{
+	attribute AUTF8String accelkey;
+	attribute nsIWritablePropertyBag attributes;
+	attribute AUTF8String buttonLink;
+	attribute AUTF8String code;
+	attribute nsISupportsArray editorParameters;
+	attribute AUTF8String help;
+	attribute AUTF8String id;
+	attribute AUTF8String image;
+	attribute AUTF8String initCode;
+	attribute long mode;
+	attribute AUTF8String name;
+	attribute boolean newButton;
+	attribute AUTF8String windowId;
+};
