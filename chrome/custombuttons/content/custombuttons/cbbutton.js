@@ -76,8 +76,8 @@ var custombutton =
     return function ()
     {
      return method. apply (object, arguments);
-    }
-   }
+    };
+   };
   }
  },
 
