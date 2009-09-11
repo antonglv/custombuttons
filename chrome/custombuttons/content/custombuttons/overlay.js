@@ -382,7 +382,7 @@ Custombuttons. prototype =
 
       Author George Dunham
 
-    
+
 
       Args:
 
@@ -480,10 +480,10 @@ CustombuttonsTB. prototype =
  openEditor: function (oButton)
  {
   var mode = "";
-  var param;
+  var attributes = null;
   if (this. lightning && window ["gCurrentMode"])
   {
-   var mode = window ["gCurrentMode"];
+   mode = window ["gCurrentMode"];
    var mb = document. getElementById ("modeBroadcaster");
    mode = mode || (mb? mb. getAttribute ("mode"): "");
    if (document. popupNode && (document. popupNode. nodeName == "toolbar"))
@@ -498,13 +498,11 @@ CustombuttonsTB. prototype =
   }
   if (mode)
   {
-   param = {};
-   param ["attributes"] = {};
-   param. attributes ["mode"] = mode;
-   param. wrappedJSObject = param;
+   attributes = Components. classes ["@mozilla.org/hash-property-bag;1"]. createInstance (Components. interfaces. nsIWritablePropertyBag);
+   attributes. setProperty ("mode", mode);
   }
   var link = this. makeButtonLink ("edit", oButton? oButton. id: "");
-  this. cbService. editButton (window, link, param);
+  this. cbService. editButton (window, link, attributes);
  },
 
     makeBookmark: function (CbLink, sName) {}

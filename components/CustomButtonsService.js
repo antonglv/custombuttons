@@ -18,6 +18,12 @@
 // Author: Anton Glazatov (c) 2009
 //
 // ***** END LICENSE BLOCK *****
+    function dLOG (text)
+    {
+          var consoleService = Components. classes ["@mozilla.org/consoleservice;1"]. getService (Components. interfaces. nsIConsoleService);
+          consoleService. logStringMessage (text);
+    }
+
 function makeSupportsArray ()
 {
     var array = Components. classes ["@mozilla.org/supports-array;1"]. createInstance (Components. interfaces. nsISupportsArray);
@@ -389,14 +395,14 @@ CustombuttonsURIParser. prototype =
   var attsNode = this. doc. getElementsByTagName ("attributes") [0];
   if (attsNode)
   {
-      values. attributes = {};
+      values. attributes = Components. classes ["@mozilla.org/hash-property-bag;1"]. createInstance (Components. interfaces. nsIWritablePropertyBag);
       var attr, aName, aValue;
       for (var i = 0; i < attsNode. childNodes. length; i++)
       {
    attr = attsNode. childNodes [i];
    aName = attr. getAttribute ("name");
    aValue = attr. getAttribute ("value");
-   values. attributes [aName] = aValue;
+   values. attributes. setProperty (aName, aValue);
       }
   }
      }
@@ -512,14 +518,11 @@ cbCustomButtonsService. prototype =
      return param;
  },
 
- editButton: function (opener, buttonLink, param)
+ editButton: function (opener, buttonLink, attributes)
  {
      var oButtonParameters = this. getButtonParameters (buttonLink);
-     if (param)
-     {
-  for (var i in param)
-      oButtonParameters [i] = param [i];
-     }
+     if (attributes)
+  oButtonParameters. attributes = attributes;
      this. openEditor (opener, oButtonParameters. windowId, oButtonParameters);
  },
 
@@ -569,8 +572,13 @@ cbCustomButtonsService. prototype =
   button. setAttribute ("Help", param. help);
      if (param. attributes)
      {
-  for (var i in param. attributes)
-      button. setAttribute (i, param. attributes [i]);
+  var atts = param. attributes. enumerator;
+  var attr;
+  while (atts. hasMoreElements ())
+  {
+      attr = atts. getNext (). QueryInterface (Components. interfaces. nsIProperty);
+      button. setAttribute (attr. name, attr. value);
+  }
      }
  },
 
