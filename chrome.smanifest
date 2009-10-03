@@ -21,11 +21,11 @@ overlay	MESSENGER/messenger.xul	CBCONTENT/tcbbutton.xul
 overlay	MESSENGER/messenger.xul	CBOVERLAY/buttonsoverlay.xul		THUNDERBIRDAPP
 ## message window
 overlay MESSENGER/messageWindow.xul	CBCONTENT/ThunderbirdOverlay.xul
-overlay	MESSENGER/messenger.xul	CBCONTENT/tcbbutton.xul
+overlay	MESSENGER/messageWindow.xul	CBCONTENT/tcbbutton.xul
 overlay MESSENGER/messageWindow.xul	CBOVERLAY/mwbuttonsoverlay.xul	THUNDERBIRDAPP
 ## message compose
 overlay MESSENGERCOMPOSE/messengercompose.xul	CBCONTENT/ThunderbirdOverlay.xul
-overlay	MESSENGER/messenger.xul	CBCONTENT/tcbbutton.xul
+overlay	MESSENGERCOMPOSE/messengercompose.xul	CBCONTENT/tcbbutton.xul
 overlay MESSENGERCOMPOSE/messengercompose.xul	CBOVERLAY/mcbuttonsoverlay.xul THUNDERBIRDAPP
 
 ## Sunbird
