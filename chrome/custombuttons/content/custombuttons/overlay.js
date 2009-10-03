@@ -191,7 +191,7 @@ Custombuttons. prototype =
    return;
   try
   {
-   oRemovedButton. _destroy ();
+   oRemovedButton. destroy ();
   }
   catch (oErr) {}
   if (bRemoveFromOverlay)
@@ -244,11 +244,6 @@ Custombuttons. prototype =
      {
       newButton = this. cbCloneNode (oSubject);
       winButton = winButtons [i];
-      try
-      {
-       winButton. _destroy ();
-      }
-      catch (oErr) {}
       winButton. parentNode. replaceChild (newButton, winButton);
      }
     }
@@ -382,7 +377,7 @@ Custombuttons. prototype =
 
       Author George Dunham
 
-
+    
 
       Args:
 
@@ -480,10 +475,10 @@ CustombuttonsTB. prototype =
  openEditor: function (oButton)
  {
   var mode = "";
-  var attributes = null;
+  var param;
   if (this. lightning && window ["gCurrentMode"])
   {
-   mode = window ["gCurrentMode"];
+   var mode = window ["gCurrentMode"];
    var mb = document. getElementById ("modeBroadcaster");
    mode = mode || (mb? mb. getAttribute ("mode"): "");
    if (document. popupNode && (document. popupNode. nodeName == "toolbar"))
@@ -498,11 +493,13 @@ CustombuttonsTB. prototype =
   }
   if (mode)
   {
-   attributes = Components. classes ["@mozilla.org/hash-property-bag;1"]. createInstance (Components. interfaces. nsIWritablePropertyBag);
-   attributes. setProperty ("mode", mode);
+   param = {};
+   param ["attributes"] = {};
+   param. attributes ["mode"] = mode;
+   param. wrappedJSObject = param;
   }
   var link = this. makeButtonLink ("edit", oButton? oButton. id: "");
-  this. cbService. editButton (window, link, attributes);
+  this. cbService. editButton (window, link, param);
  },
 
     makeBookmark: function (CbLink, sName) {}

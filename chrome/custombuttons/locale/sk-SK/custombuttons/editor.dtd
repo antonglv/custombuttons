@@ -3,9 +3,9 @@
 <!ENTITY editor.name "Názov:">
 <!ENTITY editor.name.tooltiptext "Určuje text a bublinový popis tlačidla">
 <!ENTITY editor.image "Obrázok:">
-<!ENTITY editor.select "Prehľadávať…">
+<!ENTITY editor.select "Prehľadávať...">
 <!ENTITY editor.base64 "⇒ base64">
-<!ENTITY editor.base64.tooltiptext "Skonvertuje obrázok na formát base64 (údaje:image/png;base64,…)">
+<!ENTITY editor.base64.tooltiptext "Skonvertuje obrázok na formát base64 (údaje:image/png;base64,...)">
 <!ENTITY editor.code "Kód">
 <!ENTITY editor.code.tooltiptext "Vykoná sa po stlačení tlačidla">
 <!ENTITY editor.initCode "Vstupný kód">
@@ -21,7 +21,7 @@
 <!ENTITY editor.buttonSettings.disableDefaultKeyBehavior "Disable default action for specified hotkey">
 <!ENTITY editor.buttonSettings.initializationGroupbox "Initialization">
 <!ENTITY editor.buttonSettings.initInCustomizeToolbarDialog "Enable initialization in &quot;Customize Toolbar&quot; dialog">
-<!ENTITY editor.buttonSettings.addMoreKeys "More…">
+<!ENTITY editor.buttonSettings.addMoreKeys "More...">
 
 <!ENTITY cbeditor.quickfindtextbox "Quick Find: ">
 

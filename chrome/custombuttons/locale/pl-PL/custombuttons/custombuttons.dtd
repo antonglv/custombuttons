@@ -1,5 +1,5 @@
-<!ENTITY custombuttons.viewMenu_Item "Dodaj nowy przycisk…">
-<!ENTITY custombuttons.buttonPopup.edit "Edytuj przycisk…">
+<!ENTITY custombuttons.viewMenu_Item "Dodaj nowy przycisk...">
+<!ENTITY custombuttons.buttonPopup.edit "Edytuj przycisk...">
 <!ENTITY custombuttons.buttonPopup.remove "Usuń przycisk">
 <!ENTITY custombuttons.buttonPopup.clone "Duplikuj przycisk">
 <!ENTITY custombuttons.buttonPopup.copyURI "Kopiuj kod przycisku">

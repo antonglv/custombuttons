@@ -8,11 +8,6 @@
 		]]>
 	</constructor>
 	
-	<destructor>
-		<![CDATA[
-			custombutton. buttonDestroy (this);
-		]]>
-	</destructor>
 </implementation>
 
 <handlers>

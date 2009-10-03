@@ -1,5 +1,5 @@
-<!ENTITY custombuttons.viewMenu_Item "Добавить новую кнопку…">
-<!ENTITY custombuttons.buttonPopup.edit "Редактировать…">
+<!ENTITY custombuttons.viewMenu_Item "Добавить новую кнопку...">
+<!ENTITY custombuttons.buttonPopup.edit "Редактировать...">
 <!ENTITY custombuttons.buttonPopup.remove "Удалить">
 <!ENTITY custombuttons.buttonPopup.clone "Клонировать">
 <!ENTITY custombuttons.buttonPopup.copyURI "Копировать код в буфер">

@@ -88,7 +88,7 @@ function init ()
 	custombutton. buttonInit (this);
 }
 
-function _destroy ()
+function destroy ()
 {
 	custombutton. buttonDestroy (this);
 }

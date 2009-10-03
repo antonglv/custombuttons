@@ -1,7 +1,5 @@
 Changelog
 ==============
-0.0.4.5
-# Fixed: Bug 21641 'CB 0.0.4.4 doesn't work in Thunderbird Compose/View windows'
 0.0.4.4
 + Added: Firefox 3.7a1pre support
 + Added: Thunderbird 3.0b4pre support

@@ -1,7 +1,7 @@
 toolbarbutton[id^="custombuttons-button"][orient],
 toolbarbutton[id^='wrapper-custombuttons-button'][orient]
 {
-  -moz-binding: url("chrome://custombuttons/content/toolbarbutton.xml#menu-orient");
+  -moz-binding: url("toolbarbutton.xml#menu-orient");
 }
 
 toolbarbutton[id^='custombuttons-button'],

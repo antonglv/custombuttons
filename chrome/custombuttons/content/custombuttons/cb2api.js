@@ -133,7 +133,7 @@ custombuttons.gCounter = function ( nC, nS ) //{{{
   {
    return this.count;
   } // End Method get( )
- };
+ }
  oRet.init( nC, nS );
  return oRet;
 }; //}}} End Method gCounter( )
@@ -171,7 +171,7 @@ custombuttons.getCbContextObj = function ( oBtn ) //{{{
 
 	Author:  SCClockDr
 
-
+	
 
 	Scope:    Private - Each instance of this object is unique.
 
@@ -366,7 +366,7 @@ custombuttons.getCbContextObj = function ( oBtn ) //{{{
   // Methods
   /**  init(   )
 
-
+		
 
 		Scope:   global
 
@@ -396,7 +396,7 @@ custombuttons.getCbContextObj = function ( oBtn ) //{{{
   }, //}}} End Method init( )
   /**  setSub(  )
 
-
+		
 
 		Scope:   global
 
@@ -416,7 +416,7 @@ custombuttons.getCbContextObj = function ( oBtn ) //{{{
   }, //}}} End Method setSub( )
   /**  setPri(  )
 
-
+		
 
 		Scope:   global
 
@@ -436,7 +436,7 @@ custombuttons.getCbContextObj = function ( oBtn ) //{{{
   }, //}}} End Method setPri( )
   /**  getItem(  )
 
-
+		
 
 		Scope:   global
 
@@ -471,7 +471,7 @@ custombuttons.getCbContextObj = function ( oBtn ) //{{{
      type:"",
      validate:"",
      value:""
-    };// End oItem
+    }// End oItem
     return oItem;
    } // End if ( mCtxtSub )
    return null;
@@ -496,7 +496,7 @@ custombuttons.getCbContextObj = function ( oBtn ) //{{{
   },
   /**  insertBefore( oMenuItem )
 
-
+		
 
 		Scope:   global
 
@@ -519,11 +519,11 @@ custombuttons.getCbContextObj = function ( oBtn ) //{{{
     oChildNode = ct.oMenu.firstChild;
    } // End if ( oChildNode )
    if ( ct.mCtxtSub ) {
-       var oRet = "";
+    var oRet = ""
     var newItem = this. constructItem (oNew, true);
     oRet = ct.oMenu.insertBefore( newItem, oChildNode );
    } // End if ( mCtxtSub )
-   return oRet;
+   return oRet
   }, //}}} End Method insertBefore( oNew, oChildNode )
 
   /**  insertAfter( oMenuItem, oChildNode )
@@ -546,17 +546,17 @@ custombuttons.getCbContextObj = function ( oBtn ) //{{{
    var ct = this;
    var sTemp = "";
    if ( ct.mCtxtSub ) {
-    var oRet = {};
+    var oRet = {}
     var newItem = this. constructItem (oNew, false);
     oRet = ct.oMenu.insertBefore(newItem, oChildNode);
     ct.OurCount.inc();
    } // End if ( mCtxtSub )
-   return oRet;
+   return oRet
   }, //}}} End Method insertAfter( oNew, oChildNode )
 
   /**  addItem( oMenuItem )
 
-
+		
 
 		Scope:   global
 
@@ -574,17 +574,17 @@ custombuttons.getCbContextObj = function ( oBtn ) //{{{
    var ct = this;
    var sTemp = "";
    if ( ct.mCtxtSub ) {
-    var oRet = "";
+    var oRet = ""
     var newItem = this. constructItem (oNew, true);
     oRet = ct.oMenu.insertBefore( newItem, ct.oMenu.firstChild );
 
    } // End if ( mCtxtSub )
-   return oRet;
+   return oRet
   }, //}}} End Method addItem( oNew )
 
   /**  populate( oData, mItem )
 
-
+		
 
 		Scope:   private
 
@@ -622,7 +622,7 @@ custombuttons.getCbContextObj = function ( oBtn ) //{{{
 
   /**  getItemsById( id )
 
-
+		
 
 		Scope:   global
 
@@ -638,7 +638,7 @@ custombuttons.getCbContextObj = function ( oBtn ) //{{{
   getItemsById:function ( id ) //{{{
   {
    var aRet = [];
-   var ct = this;
+   var ct = this
    var cId = this. constructId (id);
    for ( var i = 0; i < ct.menuitems; i++) {
     if ( ct.aElements.item(i).id.indexOf( cId ) > -1 ) {
@@ -650,7 +650,7 @@ custombuttons.getCbContextObj = function ( oBtn ) //{{{
 
   /**  remItem( id )
 
-
+		
 
 		Scope:   private
 
@@ -792,7 +792,7 @@ custombuttons.gQuot = { //{{{
  // Methods
  /**  mHandler( evt, cButton )
 
-
+	
 
 	Scope:   private
 
@@ -847,7 +847,7 @@ custombuttons.gQuot = { //{{{
 
 	 * @author Anton
 
-	 *
+	 * 
 
 	 */
  setTimer: function ()
@@ -913,7 +913,7 @@ custombuttons.gQuot = { //{{{
  doDoubleClick: function (oEvent)
  {
   this. deleteTimer ();
-  this. click (oEvent);
+  this. click (oEvent)
  },
 
  /**
@@ -973,7 +973,7 @@ custombuttons.gQuot = { //{{{
 
  /**  gShowPopup( node )
 
-
+	
 
 	Scope:   public
 
@@ -1043,7 +1043,7 @@ Purpose: 1. Handle mouse click events.
 var gQuot = function( evt, cButton ) //{{{
 {
  custombuttons.gQuot.mHandler( evt, cButton );
-}; //}}} End Function gQuot( evt, cButton )
+} //}}} End Function gQuot( evt, cButton )
 
 /**  gShowPopup( node )
 
@@ -1099,7 +1099,7 @@ custombuttons.getButtonParameters2 = function ( num ) //{{{
  var but = document.getElementById( "custombuttons-button"+num );
  if (!but) return false;
  var sHelp = but.getAttribute("Help") || but.getAttribute("help") || "";
- ret = {
+ var ret = {
   "name": but.getAttribute("label")||"",
   "image": but.getAttribute("image")||"",
   "code": but.getAttribute("cb-oncommand")||"",
@@ -1119,7 +1119,7 @@ custombuttons.getButtonParameters2 = function ( num ) //{{{
 custombuttons. setButtonOpacity = function (oButton, sProperty, aValues)
 {
  if (oButton. id. indexOf ("custombuttons-button") == 0)
-     oButton. style. opacity = aValues [oButton [sProperty]? 0: 1];
+  oButton. style. opacity = aValues [oButton [sProperty]? 0: 1]
 };
 custombuttons. ButtonBrt = function (oEvent, opacity)
 {
@@ -1226,7 +1226,7 @@ custombuttons. alertSlide = function (sTitle, sMsg)
  var as = Components. classes ["@mozilla.org/alerts-service;1"]. getService (Components. interfaces. nsIAlertsService);
  as. showAlertNotification ("chrome://custombuttons/skin/button.png", sTitle, sMsg, false, "", null);
 };
-custombuttons. uCbuttonButes = function (oBtn) {};
+custombuttons. uCbuttonButes = function (oBtn) {}
 custombuttons. getPref = custombuttons. getPrefs;
 custombuttonsUtils. createDebug = function (btn)
 {

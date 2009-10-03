@@ -6,8 +6,7 @@ function custombuttonsFactory ()
   {
     case "Firefox": // Firefox
         var oVC = Components. classes ["@mozilla.org/xpcom/version-comparator;1"]. createInstance (Components. interfaces. nsIVersionComparator);
-        if ((oVC. compare ("3.0a1", info. version) <= 0) &&
-   (oVC. compare ("3.1b3", info. version) > 0))
+        if (oVC. compare ("3.0a1", info. version) <= 0)
             retobj = this. CustombuttonsMFFactory;
         else if (oVC. compare ("3.1b3", info. version) <= 0)
    retobj = this. CustombuttonsSTFactory;
