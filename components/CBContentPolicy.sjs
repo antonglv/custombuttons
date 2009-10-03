@@ -30,52 +30,51 @@
 #include <contentpolicy.hjs>
 #include <node.hjs>
 
-// Adblock Plus code
-//HACKHACK: need a way to get an implicit wrapper for nodes because of bug 337095 (fixed in Gecko 1.8.0.5)
-var fakeFactory =
+var info = SERVICE (XUL_APP_INFO);
+var oVC = COMPONENT (VERSION_COMPARATOR);
+if (oVC. compare (info. platformVersion, "1.8.0.5") < 0)
 {
-	createInstance: function (outer, iid)
+	// Adblock Plus code
+	//HACKHACK: need a way to get an implicit wrapper for nodes because of bug 337095 (fixed in Gecko 1.8.0.5)
+	var fakeFactory =
 	{
-		return outer;
-	},
+		createInstance: function (outer, iid)
+		{
+			return outer;
+		},
+	
+		QueryInterface: function (iid)
+		{
+			if (iid. equals (CI. nsISupports) ||
+				iid. equals (CI. nsIFactory))
+			return this;
+	
+			throw NS_ERROR (NO_INTERFACE);
+		}
+	};
+	var array = COMPONENT (SUPPORTS_ARRAY);
+	array. AppendElement (fakeFactory);
+	fakeFactory = array. GetElementAt (0). QI (nsIFactory);
+	array = null;
 
-	QueryInterface: function (iid)
+	function wrapNode (insecNode)
 	{
-		if (iid. equals (CI. nsISupports) ||
-			iid. equals (CI. nsIFactory))
-		return this;
-
-		throw NS_ERROR (NO_INTERFACE);
-	}
-};
-
-var array = COMPONENT (SUPPORTS_ARRAY);
-array. AppendElement (fakeFactory);
-fakeFactory = array. GetElementAt (0). QI (nsIFactory);
-array = null;
-
-function wrapNode (insecNode)
-{
-	var info = SERVICE (XUL_APP_INFO);
-	var oVC = COMPONENT (VERSION_COMPARATOR);
-	if (oVC. compare (info. platformVersion, "1.8.0.5") < 0)
 		return fakeFactory. createInstance (insecNode, CI. nsISupports);
-	else
-		return insecNode;
+	}
+	
+	// Retrieves the window object for a node or returns null if it isn't possible
+	function getWindow (node)
+	{
+		if (node && node. nodeType != NODE_DOCUMENT_NODE)
+			node = node. ownerDocument;
+	
+		if (!node || node. nodeType != NODE_DOCUMENT_NODE)
+			return null;
+	
+		return node. defaultView;
+	}
+	// end Adblock Plus code
 }
-
-// Retrieves the window object for a node or returns null if it isn't possible
-function getWindow (node)
-{
-	if (node && node. nodeType != NODE_DOCUMENT_NODE)
-		node = node. ownerDocument;
-
-	if (!node || node. nodeType != NODE_DOCUMENT_NODE)
-		return null;
-
-	return node. defaultView;
-}
-// end Adblock Plus code
 
 function cbContentPolicyComponent () {}
 cbContentPolicyComponent. prototype =
@@ -109,7 +108,7 @@ cbContentPolicyComponent. prototype =
 			return CONTENT_POLICY_ACCEPT;
 
 		if ((contentLocation. spec. indexOf ("custombutton://content/") == 0) ||
-			(contentLocation. spec. indexOf ("resource://custombuttons/") == 0))
+			(contentLocation. spec. indexOf ("custombuttons://content/") == 0))
 			return CONTENT_POLICY_REJECT_REQUEST;
 
 		return CONTENT_POLICY_ACCEPT;
@@ -137,6 +136,8 @@ var Module =
 	{
 		var info = SERVICE (XUL_APP_INFO);
 		var oVC = COMPONENT (VERSION_COMPARATOR);
+		if (oVC. compare (info. platformVersion, "1.8.0.5") >= 0)
+			return;
 		if (this. FIRST_TIME)
 	        this. FIRST_TIME = false;
 	    else

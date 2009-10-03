@@ -120,8 +120,6 @@ Define it in build.properties (don't forget about double back slashes)</fail>
 			<arg value="typelib"/>
 			<arg value="-I"/>
 			<arg value="${idlpath}"/>
-			<arg value="-I"/>
-			<arg value="${basedir}\components"/>
 			<arg value="-e"/>
 			<targetfile/>
 			<srcfile/>

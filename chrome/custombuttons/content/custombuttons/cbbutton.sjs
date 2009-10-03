@@ -3,10 +3,11 @@
 var custombutton =
 {
 	cbService: SERVICE (CB),
-
+	
     buttonConstructor: function (oBtn)
 	{
-		this. buttonDestroy (oBtn);
+		if (oBtn. destroy)
+			oBtn. destroy (); // to call onDestroy method, if exists
 		var cbd = SERVICE (CB_KEYMAP);
 		cbd. Delete (oBtn. getAttribute ("id"));
 		if (!oBtn. hasAttribute ("cb-name"))
@@ -36,7 +37,7 @@ var custombutton =
 			if (!oBtn. getAttribute ("Help"))
 				oBtn. removeAttribute ("Help");
 		}
-
+		
 		if (!oBtn. hasAttribute ("initialized"))
 		{
 			if (oBtn. hasAttribute ("cb-init"))
@@ -57,7 +58,7 @@ var custombutton =
 			}
 		}
 	},
-
+    
 	buttonDestructor: function(oBtn)
 	{
 		if (oBtn. hasAttribute ("cb-accelkey"))
@@ -65,9 +66,10 @@ var custombutton =
 			var cbd = SERVICE (CB_KEYMAP);
 			cbd. Delete (oBtn. getAttribute ("id"));
 		}
-		this. buttonDestroy (oBtn);
+		if (oBtn. destroy)
+			oBtn. destroy ();
 	},
-
+	
 	checkBind: function()
 	{
 		if (Function. prototype. bind == undefined)
@@ -78,16 +80,17 @@ var custombutton =
 				return function ()
 				{
 					return method. apply (object, arguments);
-				};
-			};
+				}
+			}
 		}
 	},
-
+	
 	buttonInit: function(oBtn)
 	{
-		this. buttonDestroy (oBtn);
 		if (oBtn. cbInitCode)
 		{
+			while (oBtn. hasChildNodes ())
+				oBtn. removeChild (oBtn. childNodes [0]);
 			oBtn. _initPhase = true;
 			oBtn. setAttribute ("initializeerror");
 			try
@@ -102,31 +105,20 @@ var custombutton =
 			}
 		}
 	},
-
+	
 	buttonDestroy: function (oBtn)
 	{
-		if (oBtn. destroy)
-		{
-			try
-			{
-				oBtn. destroy. call (oBtn);
-			}
-			catch (e) {}
-			oBtn. destroy = null;
-		}
 		if (oBtn. onDestroy)
 		{
 			try
 			{
-				oBtn. onDestroy. call (oBtn);
+				oBtn. onDestroy ();
 			}
 			catch (e) {}
 			oBtn. onDestroy = null;
 		}
-		while (oBtn. hasChildNodes ())
-			oBtn. removeChild (oBtn. childNodes [0]);
 	},
-
+	
 	buttonGetParameters: function(oBtn)
 	{
 		var parameters = {
@@ -146,35 +138,35 @@ var custombutton =
 		}
 		return parameters;
 	},
-
+	
 	buttonGetCbAccelKey: function(oBtn)
 	{
 		if (oBtn. hasAttribute ("cb-accelkey"))
 			return oBtn. getAttribute ("cb-accelkey");
 		return "";
 	},
-
+	
 	buttonGetImage: function(oBtn)
 	{
 		if (oBtn. hasAttribute ("image"))
 			return oBtn. getAttribute ("image");
 		return "";
 	},
-
+	
 	buttonGetHelp: function(oBtn)
 	{
 		if (oBtn. hasAttribute ("Help"))
 			return oBtn. getAttribute ("Help");
 		return "";
 	},
-
+	
 	buttonGetCbMode: function(oBtn)
 	{
 		if (oBtn. hasAttribute ("cb-mode"))
 			return oBtn. getAttribute ("cb-mode");
 		return 0;
 	},
-
+	
 	buttonGetOldFormatURI: function(oBtn)
 	{
 		var uri = "custombutton://" + escape
@@ -188,7 +180,7 @@ var custombutton =
 		);
 		return uri;
 	},
-
+	
 	midFormatURI: function(oBtn)
 	{
 		var uri = "custombutton://" + escape
@@ -203,7 +195,7 @@ var custombutton =
 		);
 		return uri;
 	},
-
+	
 	buttonSetText: function(doc, nodeName, text, make_CDATASection)
 	{
 		var node = doc. getElementsByTagName (nodeName) [0], cds;
@@ -226,7 +218,7 @@ var custombutton =
 			node. textContent = text;
 		}
 	},
-
+	
 	setAttribute: function (oDocument, sName, sValue)
 	{
 		var attsNode = oDocument. getElementsByTagName ("attributes") [0];
@@ -235,7 +227,7 @@ var custombutton =
 		attr. setAttribute ("value", sValue);
 		attsNode. appendChild (attr);
 	},
-
+	
 	xmlFormatURI: function(oBtn)
 	{
 		var doc = document. implementation. createDocument ("", "", null);
@@ -258,7 +250,7 @@ var custombutton =
 		var data = ser. serializeToString (doc);
 		return "custombutton://" + escape (data);
 	},
-
+	
 	buttonGetURI: function (oBtn)
 	{
 		var ps = Components. classes ["@mozilla.org/preferences-service;1"].
@@ -272,7 +264,7 @@ var custombutton =
 		else
 			return this. buttonGetOldFormatURI (oBtn);
 	},
-
+	
 	buttonCbExecuteCode: function (event, oButton, code)
 	{
 		this. checkBind ();
@@ -306,19 +298,19 @@ var custombutton =
 			throw (oCBError);
 		}
 	},
-
+	
 	// TODO: check for code evaluation construction. Carefully check.
 	buttonCommand: function(event, oBtn)
 	{
 		if (oBtn. cbCommand)
 			this. buttonCbExecuteCode (event, oBtn, oBtn. cbCommand);
 	},
-
+	
 	canUpdate: function ()
 	{
 		return this. cbService. canUpdate ();
 	},
-
+	
 	showElement: function (oElement, bShowFlag)
 	{
 		if (oElement. hasAttribute ("hidden"))
@@ -326,7 +318,7 @@ var custombutton =
 		if (!bShowFlag)
 			oElement. setAttribute ("hidden", "true");
 	},
-
+	
 	showBroadcast: function (sIdSuffix, bShowFlag)
 	{
 		var sBroadcasterId = "custombuttons-contextbroadcaster-" + sIdSuffix;
@@ -334,7 +326,7 @@ var custombutton =
 		if (oBroadcaster)
 			this. showElement (oBroadcaster, bShowFlag);
 	},
-
+	
 	setContextMenuVisibility: function (oButton)
 	{
 		this. showBroadcast ("root", false); // hide all buttons menuitems
@@ -359,7 +351,7 @@ var custombutton =
 		if (bHideSeparator)
 			this. showBroadcast ("customizeseparator", false);
 	},
-
+	
 	onMouseDown: function (oEvent, oButton)
 	{
 		this. setContextMenuVisibility (oButton);

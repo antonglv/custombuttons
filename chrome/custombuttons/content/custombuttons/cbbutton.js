@@ -4,7 +4,8 @@ var custombutton =
 
     buttonConstructor: function (oBtn)
  {
-  this. buttonDestroy (oBtn);
+  if (oBtn. destroy)
+   oBtn. destroy (); // to call onDestroy method, if exists
   var cbd = Components. classes ["@xsms.nm.ru/custombuttons/cbkeymap;1"]. getService (Components. interfaces. cbIKeyMapService);
   cbd. Delete (oBtn. getAttribute ("id"));
   if (!oBtn. hasAttribute ("cb-name"))
@@ -63,7 +64,8 @@ var custombutton =
    var cbd = Components. classes ["@xsms.nm.ru/custombuttons/cbkeymap;1"]. getService (Components. interfaces. cbIKeyMapService);
    cbd. Delete (oBtn. getAttribute ("id"));
   }
-  this. buttonDestroy (oBtn);
+  if (oBtn. destroy)
+   oBtn. destroy ();
  },
 
  checkBind: function()
@@ -76,16 +78,17 @@ var custombutton =
     return function ()
     {
      return method. apply (object, arguments);
-    };
-   };
+    }
+   }
   }
  },
 
  buttonInit: function(oBtn)
  {
-  this. buttonDestroy (oBtn);
   if (oBtn. cbInitCode)
   {
+   while (oBtn. hasChildNodes ())
+    oBtn. removeChild (oBtn. childNodes [0]);
    oBtn. _initPhase = true;
    oBtn. setAttribute ("initializeerror");
    try
@@ -103,26 +106,15 @@ var custombutton =
 
  buttonDestroy: function (oBtn)
  {
-  if (oBtn. destroy)
-  {
-   try
-   {
-    oBtn. destroy. call (oBtn);
-   }
-   catch (e) {}
-   oBtn. destroy = null;
-  }
   if (oBtn. onDestroy)
   {
    try
    {
-    oBtn. onDestroy. call (oBtn);
+    oBtn. onDestroy ();
    }
    catch (e) {}
    oBtn. onDestroy = null;
   }
-  while (oBtn. hasChildNodes ())
-   oBtn. removeChild (oBtn. childNodes [0]);
  },
 
  buttonGetParameters: function(oBtn)

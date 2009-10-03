@@ -1,5 +1,5 @@
-<!ENTITY custombuttons.viewMenu_Item "添加新按钮…">
-<!ENTITY custombuttons.buttonPopup.edit "编辑该按钮…">
+<!ENTITY custombuttons.viewMenu_Item "添加新按钮...">
+<!ENTITY custombuttons.buttonPopup.edit "编辑该按钮...">
 <!ENTITY custombuttons.buttonPopup.remove "删除该按钮">
 <!ENTITY custombuttons.buttonPopup.clone "复制该按钮">
 <!ENTITY custombuttons.buttonPopup.copyURI "复制该按钮到剪贴板">

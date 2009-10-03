@@ -19,11 +19,11 @@ overlay chrome://messenger/content/messenger.xul chrome://custombuttons/content/
 overlay chrome://messenger/content/messenger.xul resource://custombuttons/buttonsoverlay.xul application={3550f703-e582-4d05-9a08-453d09bdfdc6}
 ## message window
 overlay chrome://messenger/content/messageWindow.xul chrome://custombuttons/content/ThunderbirdOverlay.xul
-overlay chrome://messenger/content/messageWindow.xul chrome://custombuttons/content/tcbbutton.xul
+overlay chrome://messenger/content/messenger.xul chrome://custombuttons/content/tcbbutton.xul
 overlay chrome://messenger/content/messageWindow.xul resource://custombuttons/mwbuttonsoverlay.xul application={3550f703-e582-4d05-9a08-453d09bdfdc6}
 ## message compose
 overlay chrome://messenger/content/messengercompose/messengercompose.xul chrome://custombuttons/content/ThunderbirdOverlay.xul
-overlay chrome://messenger/content/messengercompose/messengercompose.xul chrome://custombuttons/content/tcbbutton.xul
+overlay chrome://messenger/content/messenger.xul chrome://custombuttons/content/tcbbutton.xul
 overlay chrome://messenger/content/messengercompose/messengercompose.xul resource://custombuttons/mcbuttonsoverlay.xul application={3550f703-e582-4d05-9a08-453d09bdfdc6}
 
 ## Sunbird

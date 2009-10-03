@@ -3,9 +3,9 @@
 <!ENTITY editor.name "名称:">
 <!ENTITY editor.name.tooltiptext "定制按钮的标记和弹出文字">
 <!ENTITY editor.image "图片:">
-<!ENTITY editor.select "浏览…">
+<!ENTITY editor.select "浏览...">
 <!ENTITY editor.base64 "&#8658; base64">
-<!ENTITY editor.base64.tooltiptext "把图片转换到 base64 格式 (data:image/png;base64,…)">
+<!ENTITY editor.base64.tooltiptext "把图片转换到 base64 格式 (data:image/png;base64,...)">
 <!ENTITY editor.code "代码">
 <!ENTITY editor.code.tooltiptext "点击按钮时执行的代码">
 <!ENTITY editor.initCode "初始化代码">
@@ -21,7 +21,7 @@
 <!ENTITY editor.buttonSettings.disableDefaultKeyBehavior "Disable default action for specified hotkey">
 <!ENTITY editor.buttonSettings.initializationGroupbox "Initialization">
 <!ENTITY editor.buttonSettings.initInCustomizeToolbarDialog "Enable initialization in &quot;Customize Toolbar&quot; dialog">
-<!ENTITY editor.buttonSettings.addMoreKeys "More…">
+<!ENTITY editor.buttonSettings.addMoreKeys "More...">
 
 <!ENTITY cbeditor.quickfindtextbox "Quick Find: ">
 

@@ -39,10 +39,10 @@ Editor. prototype =
     windowId = info. name;
    buttonId = buttonId? buttonId [1]: "";
    var link = "custombutton://buttons/" + windowId + "/edit/" + buttonId;
-   this. param = this. cbService. getButtonParameters (link);
+   this. param = this. cbService. getButtonParameters (link). wrappedJSObject;
   }
   else
-      this. param = window. arguments [0]. QueryInterface (Components. interfaces. cbICustomButtonParameters);
+   this. param = window. arguments [0]. wrappedJSObject;
   this. notificationPrefix = this. cbService. getNotificationPrefix (this. param. windowId);
   var os = Components. classes ["@mozilla.org/observer-service;1"]. getService (Components. interfaces. nsIObserverService);
   os. addObserver (this, this. notificationPrefix + "updateImage", false);
@@ -64,7 +64,7 @@ Editor. prototype =
 
  setEditorParameters: function (param)
  {
-  var editorParameters = param. editorParameters;
+  var editorParameters = param. wrappedJSObject. editorParameters;
   if (editorParameters instanceof Components. interfaces. nsISupportsArray)
   {
    window. focus ();
@@ -85,7 +85,7 @@ Editor. prototype =
   var field;
   for (var v in this. param)
   {
-   field = document. getElementById (v);
+   var field = document. getElementById (v);
    if (field && this. param [v])
     field. value = this. param [v];
   }
@@ -206,7 +206,7 @@ Editor. prototype =
   }
   else if (topic == this. notificationPrefix + "setEditorParameters")
   {
-   var param = subject. QueryInterface (Components. interfaces. cbICustomButtonParameters);
+   var param = subject. wrappedJSObject;
    if (this. param. id == param. id)
     this. setEditorParameters (subject);
   }

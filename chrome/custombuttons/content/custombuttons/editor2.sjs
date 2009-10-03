@@ -10,7 +10,7 @@ Editor. prototype =
 	param: {},
 	CNSISS: CI. nsISupportsString,
 	tempId: "",
-
+	
 	QueryInterface: function (iid)
 	{
 		if (iid. equals (CI. nsIObserver) ||
@@ -19,12 +19,12 @@ Editor. prototype =
 			return this;
 		return NS_ERROR (NO_INTERFACE);
 	},
-
+	
 	QueryReferent: function (iid)
 	{
 		return this. QueryInterface (iid);
 	},
-
+	
 	init: function ()
 	{
 		this. cbService = SERVICE (CB);
@@ -42,10 +42,10 @@ Editor. prototype =
 				windowId = info. name;
 			buttonId = buttonId? buttonId [1]: "";
 			var link = "custombutton://buttons/" + windowId + "/edit/" + buttonId;
-			this. param = this. cbService. getButtonParameters (link);
+			this. param = this. cbService. getButtonParameters (link). wrappedJSObject;
 		}
 		else
-		    this. param = window. arguments [0]. QI (cbICustomButtonParameters);
+			this. param = window. arguments [0]. wrappedJSObject;
 		this. notificationPrefix = this. cbService. getNotificationPrefix (this. param. windowId);
 		var os = SERVICE (OBSERVER);
 		os. addObserver (this, this. notificationPrefix + "updateImage", false);
@@ -64,10 +64,10 @@ Editor. prototype =
 			ELEMENT ("cbUpdateButtonCommand"). setAttribute ("disabled", "true");
 		}
 	},
-
+	
 	setEditorParameters: function (param)
 	{
-		var editorParameters = param. editorParameters;
+		var editorParameters = param. wrappedJSObject. editorParameters;
 		if (editorParameters instanceof CI. nsISupportsArray)
 		{
 			window. focus ();
@@ -82,13 +82,13 @@ Editor. prototype =
 			//textbox. scrollTo (lineNumber);
 		}
 	},
-
+	
 	setValues: function ()
 	{
 		var field;
 		for (var v in this. param)
 		{
-			field = ELEMENT (v);
+			var field = ELEMENT (v);
 			if (field && this. param [v])
 				field. value = this. param [v];
 		}
@@ -104,7 +104,7 @@ Editor. prototype =
 		else if (this. param. id)
 			document. title += ": " + this. param. id;
 	},
-
+	
 	updateButton: function ()
 	{
 		var uri = ELEMENT ("urlfield-textbox"). value;
@@ -132,21 +132,21 @@ Editor. prototype =
 		this. cbService. installButton (this. param);
 		return true;
 	},
-
+	
 	get canClose ()
 	{
 		if (!window. opener && !window. arguments)
 			return false;
 		return true;
 	},
-
+	
 	onAccept: function ()
 	{
 		if (this. updateButton ())
 			return this. canClose;
 		return false;
 	},
-
+	
 	selectImage: function ()
 	{
 		var fp = COMPONENT (FILE_PICKER);
@@ -156,7 +156,7 @@ Editor. prototype =
 		if (res == fp. returnOK)
 			ELEMENT ("image"). value = fp. fileURL. spec;
 	},
-
+	
 	execute_oncommand_code: function ()
 	{
 		var fe = document. commandDispatcher. focusedElement;
@@ -193,7 +193,7 @@ Editor. prototype =
 			}
 		}
 	},
-
+	
 	observe: function (subject, topic, data)
 	{
 		if (topic == this. notificationPrefix + "updateImage")
@@ -209,12 +209,12 @@ Editor. prototype =
 		}
 		else if (topic == this. notificationPrefix + "setEditorParameters")
 		{
-			var param = subject. QI (cbICustomButtonParameters);
+			var param = subject. wrappedJSObject;
 			if (this. param. id == param. id)
 				this. setEditorParameters (subject);
 		}
 	},
-
+	
 	imageChanged: function ()
 	{
 		if (!this. param. id || !this. notificationPrefix)
@@ -225,7 +225,7 @@ Editor. prototype =
 		var os = SERVICE (OBSERVER);
 		os. notifyObservers (aURL, this. notificationPrefix + "updateIcon", this. param. id);
 	},
-
+	
 	convert_image: function ()
 	{
 		var image_input = ELEMENT ("image");
@@ -240,14 +240,14 @@ Editor. prototype =
 		}
 		this. cbService. convertImageToRawData (this. param. windowId, this. param. id || this. tempId, aURL);
 	},
-
+	
 	destroy: function ()
 	{
 		var os = SERVICE (OBSERVER);
 		os. removeObserver (this, this. notificationPrefix + "setEditorParameters");
 		os. removeObserver (this, this. notificationPrefix + "updateImage");
 	},
-
+	
 	onCancel: function ()
 	{
 		return this. canClose;
