@@ -1,5 +1,18 @@
 Changelog
-==============
+0.0.4.6
++ Added:   Seamonkey 2.0 support
++ Added:   KompoZer 0.8b1 support
+- Removed: KompoZer 0.8a2 support
+# Fixed:   untrusted resources have access to the extension's resourses
+0.0.4.5
+# Fixed: Bug 21641 'CB 0.0.4.4 doesn't work in Thunderbird Compose/View windows'
+0.0.4.4
++ Added: Firefox 3.7a1pre support
++ Added: Thunderbird 3.0b4pre support
+# Fixed: Bug 21391 "ABP 1.1.1 breaks Custom Buttons extension"
+# Fixed: CB doesn't preserve XML.prettyPrinting field value
+# Fixed: readFile doesn't close input stream
+! Changed: error line number definition code
 0.0.4.3
 + Added: KompoZer 0.8a2 (0.7.99) support
 # Fixed: 'toggle comments' feature doesn't work
