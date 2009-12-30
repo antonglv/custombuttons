@@ -189,8 +189,14 @@ Overlay. prototype =
   var data = serializer. serializeToString (this. overlayDocument);
 
   //beautifull output
-  XML. prettyPrinting = true;
-  data = (new XML (data)). toXMLString ();
+  try
+  {
+   var oldPrettyPrinting = XML. prettyPrinting;
+   XML. prettyPrinting = true;
+   data = (new XML (data)). toXMLString ();
+   XML. prettyPrinting = oldPrettyPrinting;
+  }
+  catch (e) {}
 
   var uniConv = Components. classes ["@mozilla.org/intl/scriptableunicodeconverter"]. createInstance (Components. interfaces. nsIScriptableUnicodeConverter);
   uniConv. charset = "utf-8";
@@ -243,7 +249,7 @@ function AppObject (sWindowId, overlayPath)
 AppObject. prototype =
 {
  _windowId: "",
- overlayPath: "custombuttons://content/",
+ overlayPath: "resource://custombuttons/",
  overlayFileName: "",
  paletteId: "",
  palette: null,
@@ -259,22 +265,26 @@ AppObject. prototype =
   switch (val)
   {
    case "Firefox":
+   case "SeaMonkey":
    case "Browser":
     this. overlayFileName = "buttonsoverlay.xul";
     this. paletteId = "BrowserToolbarPalette";
     this. notificationPrefix = "custombuttons:69423527-65a1-4b8f-bd7a-29593fc46d27:";
     break;
+   case "SeaMonkeyMail":
    case "Thunderbird":
     this. overlayFileName = "buttonsoverlay.xul";
     this. paletteId = "MailToolbarPalette";
     this. notificationPrefix = "custombuttons:69423527-65a1-4b8f-bd7a-29593fc46d27:";
     break;
+   case "SeaMonkeyMailWindow":
    case "ThunderbirdMailWindow":
     this. overlayFileName = "mwbuttonsoverlay.xul";
     this. paletteId = "MailToolbarPalette";
     this. notificationPrefix = "custombuttons:69423527-65a1-4b8f-bd7a-29593fc46d28:";
     this. _windowId = "ThunderbirdMailWindow";
     break;
+   case "SeaMonkeyComposeWindow":
    case "ThunderbirdComposeWindow":
     this. overlayFileName = "mcbuttonsoverlay.xul";
     this. paletteId = "MsgComposeToolbarPalette";
@@ -808,6 +818,15 @@ cbCustomButtonsService. prototype =
   if (info. name == "Thunderbird")
   {
    if (documentURI == "chrome://messenger/content/messageWindow.xul")
+    windowId += "MailWindow";
+   else if (documentURI == "chrome://messenger/content/messengercompose/messengercompose.xul")
+    windowId += "ComposeWindow";
+  }
+  else if (info. name == "SeaMonkey")
+  {
+   if (documentURI == "chrome://messenger/content/messenger.xul")
+    windowId += "Mail";
+   else if (documentURI == "chrome://messenger/content/messageWindow.xul")
     windowId += "MailWindow";
    else if (documentURI == "chrome://messenger/content/messengercompose/messengercompose.xul")
     windowId += "ComposeWindow";
