@@ -71,7 +71,7 @@ ImageConverter. prototype =
     bytes: [],
     stream: null,
     data: "",
-    
+
 	// nsISupports
 	QueryInterface: function (iid)
     {
@@ -129,7 +129,7 @@ Overlay. prototype =
 	path: "",
 	fileName: "",
 	_overlayDocument: null,
-	
+
 	get overlayDocument ()
 	{
 		if (!this. _overlayDocument)
@@ -143,14 +143,14 @@ Overlay. prototype =
 		}
 		return this. _overlayDocument;
 	},
-	
+
 	getNumber: function (id)
 	{
 		if (id. indexOf ("custombuttons-button") != -1)
 			return id. substring ("custombuttons-button". length);
 		return "";
 	},
-	
+
 	minButtonNumber: function (paletteId)
 	{
 		var palette = this. overlayDocument. getElementById (paletteId);
@@ -172,20 +172,26 @@ Overlay. prototype =
 			z++;
 		return z;
 	},
-	
+
 	saveOverlayToProfile: function ()
 	{
 		var serializer = COMPONENT (DOM_SERIALIZER);
 		var data = serializer. serializeToString (this. overlayDocument);
-		
+
 		//beautifull output
-		XML. prettyPrinting = true;
-		data = (new XML (data)). toXMLString ();
-		
+		try
+		{
+			var oldPrettyPrinting = XML. prettyPrinting;
+			XML. prettyPrinting = true;
+			data = (new XML (data)). toXMLString ();
+			XML. prettyPrinting = oldPrettyPrinting;
+		}
+		catch (e) {}
+
 		var uniConv = COMPONENT (SCRIPTABLE_UNICODE_CONVERTER);
 		uniConv. charset = "utf-8";
 		data = uniConv. ConvertFromUnicode (data);
-		
+
 		var dir = SERVICE (PROPERTIES). get ("ProfD", CI. nsIFile); // get profile folder
 		dir. append ("custombuttons");
 		if (!dir. exists ())
@@ -202,7 +208,7 @@ Overlay. prototype =
 				Components. utils. reportError (msg);
 			}
 		}
-		
+
 		var file = dir. clone ();
 		file. append (this. fileName);
 		if (file. exists ())
@@ -215,7 +221,7 @@ Overlay. prototype =
 				backupfile. remove (false);
 			file. copyTo (dir, backupfileName);
 		}
-		
+
 		var foStream = COMPONENT (FILE_OUTPUT_STREAM);
 		var flags = PR_WRONLY | PR_CREATE_FILE | PR_TRUNCATE;
 		foStream. init (file, flags, 0664, 0);
@@ -233,13 +239,13 @@ function AppObject (sWindowId, overlayPath)
 AppObject. prototype =
 {
 	_windowId: "",
-	overlayPath: "custombuttons://content/",
+	overlayPath: "resource://custombuttons/",
 	overlayFileName: "",
 	paletteId: "",
 	palette: null,
 	notificationPrefix: "",
 	overlay: null,
-	
+
 	set windowId (val)
 	{
 		var info = SERVICE (XUL_APP_INFO);
@@ -249,22 +255,26 @@ AppObject. prototype =
 		switch (val)
 		{
 			case "Firefox":
+			case "SeaMonkey":
 			case "Browser":
 				this. overlayFileName = "buttonsoverlay.xul";
 				this. paletteId = "BrowserToolbarPalette";
 				this. notificationPrefix = "custombuttons:69423527-65a1-4b8f-bd7a-29593fc46d27:";
 				break;
+			case "SeaMonkeyMail":
 			case "Thunderbird":
 				this. overlayFileName = "buttonsoverlay.xul";
 				this. paletteId = "MailToolbarPalette";
 				this. notificationPrefix = "custombuttons:69423527-65a1-4b8f-bd7a-29593fc46d27:";
 				break;
+			case "SeaMonkeyMailWindow":
 			case "ThunderbirdMailWindow":
 				this. overlayFileName = "mwbuttonsoverlay.xul";
 				this. paletteId = "MailToolbarPalette";
 				this. notificationPrefix = "custombuttons:69423527-65a1-4b8f-bd7a-29593fc46d28:";
 				this. _windowId = "ThunderbirdMailWindow";
 				break;
+			case "SeaMonkeyComposeWindow":
 			case "ThunderbirdComposeWindow":
 				this. overlayFileName = "mcbuttonsoverlay.xul";
 				this. paletteId = "MsgComposeToolbarPalette";
@@ -283,20 +293,20 @@ AppObject. prototype =
 		}
 		this. overlay = new Overlay (this. overlayPath, this. overlayFileName);
 	},
-	
+
 	get palette ()
 	{
 		if (!this. _palette)
 			this. _palette = this. overlay. overlayDocument. getElementById (this. paletteId);
 		return this. _palette;
 	},
-	
+
 	getNewID: function ()
 	{
 		var minButtonNumber = this. overlay. minButtonNumber (this. paletteId);
 		return "custombuttons-button" + minButtonNumber;
 	},
-	
+
 	getButton: function (sButtonId)
 	{
 		var doc = this. overlay. overlayDocument;
@@ -304,13 +314,13 @@ AppObject. prototype =
 		var overlayButton = palette. getElementsByAttribute ("id", sButtonId) [0];
 		return overlayButton;
 	},
-	
+
 	createNewButton: function ()
 	{
 		var doc = this. overlay. overlayDocument;
 		return doc. createElement ("toolbarbutton");
 	},
-	
+
 	saveButtonToOverlay: function (button)
 	{
 		var doc = this. overlay. overlayDocument;
@@ -322,7 +332,7 @@ AppObject. prototype =
 		palette. appendChild (button);
 		this. overlay. saveOverlayToProfile ();
 	},
-	
+
 	notifyObservers: function (oSubject, sTopic, sData)
 	{
 		var os = SERVICE (OBSERVER);
@@ -338,7 +348,7 @@ CustombuttonsURIParser. prototype =
 {
 	doc: null,
 	parameters: {},
-	
+
 	getText: function (nodeName)
 	{
 		var result = "";
@@ -352,7 +362,7 @@ CustombuttonsURIParser. prototype =
 			result = unescape (node. firstChild. textContent);
 		return result;
 	},
-	
+
 	parse: function (uri)
 	{
 		var sProtocolPrefix = "custombutton:";
@@ -370,7 +380,7 @@ CustombuttonsURIParser. prototype =
 			values. name	 = this. getText ("name");
 			values. mode	 = this. getText ("mode");
 			values. image	 = this. getText ("image") ||
-							   this. getText ("stdicon") || ""; 
+							   this. getText ("stdicon") || "";
 			values. code	 = this. getText ("code");
 			values. initCode = this. getText ("initcode");
 			values. accelkey = this. getText ("accelkey");
@@ -418,7 +428,7 @@ cbCustomButtonsService. prototype =
 {
 	_refcount: 0,
 	_ps: null,
-	
+
 	get ps ()
 	{
 		if (!this. _ps)
@@ -429,7 +439,7 @@ cbCustomButtonsService. prototype =
 		}
 		return this. _ps;
 	},
-	
+
 	QueryInterface: function (iid)
     {
         if (!iid. equals (CI. cbICustomButtonsService) &&
@@ -438,14 +448,14 @@ cbCustomButtonsService. prototype =
             throw NS_ERROR (NO_INTERFACE);
         return this;
     },
-    
+
     register: function (win)
     {
         this. _refcount++;
 	},
-    
+
     editors: [],
-    
+
     closeEditorDialogs: function ()
 	{
 		var mode = this. ps. getIntPref ("mode");
@@ -459,14 +469,14 @@ cbCustomButtonsService. prototype =
 			} catch (e) {}
 		}
 	},
-	
+
 	unregister: function ()
 	{
 		this. _refcount--;
 		if (this. _refcount == 0)
 			this. closeEditorDialogs ();
 	},
-	
+
 	getButtonParameters: function (buttonLink)
 	{
 		var link = this. parseButtonLink (buttonLink);
@@ -500,7 +510,7 @@ cbCustomButtonsService. prototype =
 		param. wrappedJSObject = param;
 		return param;
 	},
-	
+
 	editButton: function (opener, buttonLink, param)
 	{
 		var oButtonParameters = this. getButtonParameters (buttonLink);
@@ -511,7 +521,7 @@ cbCustomButtonsService. prototype =
 		}
 		this. openEditor (opener, oButtonParameters. windowId, oButtonParameters);
 	},
-	
+
 	openEditor: function (opener, uri, param)
 	{
 		var sEditorId = "custombuttons-editor@" + uri + ":";
@@ -538,7 +548,7 @@ cbCustomButtonsService. prototype =
 			this. editors. push (cbedw);
 		}
 	},
-	
+
 	makeButton: function (button, param)
 	{
 		button. setAttribute ("id", param. id);
@@ -563,7 +573,7 @@ cbCustomButtonsService. prototype =
 				button. setAttribute (i, param. attributes [i]);
 		}
 	},
-	
+
 	installButton: function (param)
 	{
 		param = param. wrappedJSObject;
@@ -577,7 +587,7 @@ cbCustomButtonsService. prototype =
 		if (param. newButton)
 			this. alert ("ButtonAddedAlert");
 	},
-	
+
 	updateButton: function (buttonLink, uri)
 	{
 		var parameters = this. getButtonParameters (buttonLink);
@@ -604,7 +614,7 @@ cbCustomButtonsService. prototype =
 		}
 		return false;
 	},
-	
+
 	getLocaleString: function (stringId)
 	{
 		var ls = SERVICE (LOCALE);
@@ -613,26 +623,26 @@ cbCustomButtonsService. prototype =
 		var sb = sbs. createBundle ("chrome://custombuttons/locale/custombuttons.properties", appLocale);
 		return sb. GetStringFromName (stringId);
 	},
-	
+
 	alert: function (msgId)
 	{
 		var msg = this. getLocaleString (msgId);
 		var ps = SERVICE (PROMPT);
 		ps. alert (null, "Custom Buttons", msg);
 	},
-	
+
 	convertImageToRawData: function (windowId, buttonId, imageURL)
 	{
 		var topic = this. getNotificationPrefix (windowId) + "updateImage";
 		var converter = new ImageConverter (imageURL, buttonId, topic);
 	},
-	
+
 	getNotificationPrefix: function (windowId)
 	{
 		var app = new AppObject (windowId);
 		return app. notificationPrefix;
 	},
-	
+
 	parseButtonURI: function (uri)
 	{
 		try
@@ -646,7 +656,7 @@ cbCustomButtonsService. prototype =
 			return null;
 		}
 	},
-	
+
 	cloneButton: function (clonedButton)
 	{
 		var documentURI = clonedButton. ownerDocument. documentURI;
@@ -662,7 +672,7 @@ cbCustomButtonsService. prototype =
 		app. saveButtonToOverlay (newButton);
 		return newId;
 	},
-	
+
 	removeButton: function (removedButton, removeFromOverlay)
 	{
 		var documentURI = removedButton. ownerDocument. documentURI;
@@ -678,7 +688,7 @@ cbCustomButtonsService. prototype =
 		}
 		app. notifyObservers (null, "removeButton", parentId + ":" + buttonId);
 	},
-	
+
 	makeOverlay: function ()
 	{
 		var app = new AppObject ("", "chrome://custombuttons/content/");
@@ -718,7 +728,7 @@ cbCustomButtonsService. prototype =
 			}
 		}
 	},
-	
+
 	installWebButton: function (parameters, buttonURI, showConfirmDialog)
 	{
 		var param = this. parseButtonURI (buttonURI);
@@ -752,7 +762,7 @@ cbCustomButtonsService. prototype =
 			this. openEditor (null, buttonURI, param);
 		return true;
 	},
-	
+
 	readFromClipboard: function ()
 	{
 		var str = {};
@@ -771,26 +781,26 @@ cbCustomButtonsService. prototype =
 		} catch (e) {}
 		return result;
 	},
-	
+
 	writeToClipboard: function (str)
 	{
 		var clipid = Components. interfaces. nsIClipboard. kGlobalClipboard;
 		var ch = SERVICE (CLIPBOARD_HELPER);
 		ch. copyStringToClipboard (str, clipid);
 	},
-	
+
 	alert2: function (msg)
 	{
 		var ps = SERVICE (PROMPT);
 		ps. alert (null, "Custom Buttons", msg);
 	},
-	
+
 	canUpdate: function ()
 	{
 		var param = this. parseButtonURI (this. readFromClipboard ());
 		return param? true: false;
 	},
-	
+
 	getWindowId: function (documentURI)
 	{
 		var info = SERVICE (XUL_APP_INFO);
@@ -802,9 +812,18 @@ cbCustomButtonsService. prototype =
 			else if (documentURI == "chrome://messenger/content/messengercompose/messengercompose.xul")
 				windowId += "ComposeWindow";
 		}
+		else if (info. name == "SeaMonkey")
+		{
+			if (documentURI == "chrome://messenger/content/messenger.xul")
+				windowId += "Mail";
+			else if (documentURI == "chrome://messenger/content/messageWindow.xul")
+				windowId += "MailWindow";
+			else if (documentURI == "chrome://messenger/content/messengercompose/messengercompose.xul")
+				windowId += "ComposeWindow";
+		}
 		return windowId;
 	},
-	
+
 	makeButtonLink: function (documentURI, action, buttonId)
 	{
 		var windowId = this. getWindowId (documentURI);
@@ -815,7 +834,7 @@ cbCustomButtonsService. prototype =
 			res += buttonId;
 		return res;
 	},
-	
+
 	parseButtonLink: function (buttonLink)
 	{
 		var arr = buttonLink. split ("/");
@@ -838,7 +857,7 @@ var Module =
     CLSID: CID ("{64d03940-83bc-4ac6-afc5-3cbf6a7147c5}"),
     ContractID: CB_SERVICE_CID,
     ComponentName: "Custom Buttons extension service",
-    
+
     DEFINE_STD_MODULE_INTERFACE,
     DEFINE_STD_CLASS_FACTORY (cbCustomButtonsService)
 };
