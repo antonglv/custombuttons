@@ -400,7 +400,7 @@
 					]]>
 				</body>
 			</method>
-			
+
 			<method name="find">
 				<parameter name="incrementalSearch"/>
 				<body>
@@ -703,10 +703,22 @@
 						this. setNewLineIndent (event);
 					if (event. originalTarget == this. qsTextbox. inputField)
 					{
-						this. endFastFind ();
-						event. preventDefault ();
+						//this. endFastFind ();
+						//event. preventDefault ();
+                                                this. findNext (event);
+                                                event. preventDefault ();
 					}
 				]]>
+			</handler>
+
+			<handler event="keypress" keycode="VK_RETURN" modifiers="shift">
+			    <![CDATA[
+                                if (event. originalTarget == this. qsTextbox. inputField)
+                                {
+                                    this. findNext (event);
+                                    event. preventDefault ();
+                                }
+                            ]]>
 			</handler>
 			
 			<handler event="blur">
