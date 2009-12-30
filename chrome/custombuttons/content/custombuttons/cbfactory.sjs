@@ -18,6 +18,27 @@ function custombuttonsFactory ()
     case "Browser": // strange name for Flock
 		retobj = this. CustombuttonsFactory;
 		break;
+	case "SeaMonkey":
+		switch (document. documentURI)
+		{
+			case "chrome://navigator/content/navigator.xul":
+				retobj = this. CustombuttonsSTFactory;
+				break;
+			case "chrome://messenger/content/messenger.xul":
+				retobj = this. CustombuttonsTBFactory;
+				break;
+			case "chrome://messenger/content/messageWindow.xul":
+				retobj = this. CustombuttonsTBMWFactory;
+				break;
+			case "chrome://messenger/content/messengercompose/messengercompose.xul":
+				retobj = this. CustombuttonsTBMCFactory;
+				break;
+			case "chrome://messenger/content/addressbook/addressbook.xul":
+				break;
+			case "chrome://chatzilla/content/chatzilla.xul":
+				break;
+		}
+		break;
     case "Thunderbird": // Thunderbird
 		switch (document. documentURI)
 		{
