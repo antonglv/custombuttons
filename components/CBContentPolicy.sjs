@@ -56,25 +56,30 @@ if (oVC. compare (info. platformVersion, "1.8.0.5") < 0)
 	array. AppendElement (fakeFactory);
 	fakeFactory = array. GetElementAt (0). QI (nsIFactory);
 	array = null;
-
-	function wrapNode (insecNode)
-	{
-		return fakeFactory. createInstance (insecNode, CI. nsISupports);
-	}
-	
-	// Retrieves the window object for a node or returns null if it isn't possible
-	function getWindow (node)
-	{
-		if (node && node. nodeType != NODE_DOCUMENT_NODE)
-			node = node. ownerDocument;
-	
-		if (!node || node. nodeType != NODE_DOCUMENT_NODE)
-			return null;
-	
-		return node. defaultView;
-	}
-	// end Adblock Plus code
 }
+
+function wrapNode (insecNode)
+{
+	var info = SERVICE (XUL_APP_INFO);
+	var oVC = COMPONENT (VERSION_COMPARATOR);
+	if (oVC. compare (info. platformVersion, "1.8.0.5") < 0)
+		return fakeFactory. createInstance (insecNode, CI. nsISupports);
+	else
+		return insecNode;
+}
+
+// Retrieves the window object for a node or returns null if it isn't possible
+function getWindow (node)
+{
+	if (node && node. nodeType != NODE_DOCUMENT_NODE)
+		node = node. ownerDocument;
+
+	if (!node || node. nodeType != NODE_DOCUMENT_NODE)
+		return null;
+
+	return node. defaultView;
+}
+// end Adblock Plus code
 
 function cbContentPolicyComponent () {}
 cbContentPolicyComponent. prototype =
@@ -86,7 +91,7 @@ cbContentPolicyComponent. prototype =
 			throw NS_ERROR (NO_INTERFACE);
 		return this;
 	},
-
+	
 	// Adblock Plus code	
 	shouldLoad: function (contentType, contentLocation, requestOrigin, context,
 						  mimeTypeGuess, extra)
@@ -108,7 +113,8 @@ cbContentPolicyComponent. prototype =
 			return CONTENT_POLICY_ACCEPT;
 
 		if ((contentLocation. spec. indexOf ("custombutton://content/") == 0) ||
-			(contentLocation. spec. indexOf ("custombuttons://content/") == 0))
+			(contentLocation. spec. indexOf ("custombuttons://content/") == 0) ||
+			(contentLocation. spec. indexOf ("resource://custombuttons") == 0))
 			return CONTENT_POLICY_REJECT_REQUEST;
 
 		return CONTENT_POLICY_ACCEPT;
@@ -134,10 +140,6 @@ var Module =
 	FIRST_TIME: true,																
 	registerSelf: function (componentManager, fileSpec, location, type)
 	{
-		var info = SERVICE (XUL_APP_INFO);
-		var oVC = COMPONENT (VERSION_COMPARATOR);
-		if (oVC. compare (info. platformVersion, "1.8.0.5") >= 0)
-			return;
 		if (this. FIRST_TIME)
 	        this. FIRST_TIME = false;
 	    else
