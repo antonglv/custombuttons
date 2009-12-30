@@ -434,15 +434,19 @@ CustombuttonsTB. prototype =
 	{
 		var result = false;
 		var rs = SERVICE (RDF);
-		var res = rs. GetResource ("urn:mozilla:item:{e2fda1a4-762b-4020-b5ad-a41df1933103}");
+		var lightningUUID = "{e2fda1a4-762b-4020-b5ad-a41df1933103}";
+		var res = rs. GetResource ("urn:mozilla:item:" + lightningUUID);
 		if (res instanceof CI. nsIRDFResource)
 		{
 			var em = SERVICE (EXTENSION_MANAGER);
-			var ds = em. datasource;
-			var res2 = rs. GetResource ("http://www.mozilla.org/2004/em-rdf#isDisabled");
-			var t = ds. GetTarget (res, res2, true);
-			if (t instanceof CI. nsIRDFLiteral)
-				result = (t. Value != "true");
+			if (em. getInstallLocation (lightningUUID))
+			{
+				var ds = em. datasource;
+				var res2 = rs. GetResource ("http://www.mozilla.org/2004/em-rdf#isDisabled");
+				var t = ds. GetTarget (res, res2, true);
+				if (t instanceof CI. nsIRDFLiteral)
+					result = (t. Value != "true");
+			}
 		}
 		return result;
 	},
@@ -545,6 +549,9 @@ EXTEND (CustombuttonsNVU, CustombuttonsTB);
 
 
 const custombuttons = new custombuttonsFactory (). Custombuttons;
+var info = SERVICE (XUL_APP_INFO);
+if (info. name == "SeaMonkey")
+	custombuttons. shouldAddToPalette = false;
 
 // add-ons
 /**  uChelpButton(  )
