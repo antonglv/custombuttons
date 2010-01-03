@@ -1,5 +1,6 @@
 Changelog
 0.0.4.6
++ Added:   Thunderbird 3.0 support
 + Added:   Seamonkey 2.0 support
 + Added:   KompoZer 0.8b1 support
 - Removed: KompoZer 0.8a2 support
