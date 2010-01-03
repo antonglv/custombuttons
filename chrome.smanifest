@@ -29,8 +29,8 @@ overlay MESSENGERCOMPOSE/messengercompose.xul	CBOVERLAY/mcbuttonsoverlay.xul
 ## Seamonkey chatzilla
 
 ## Browser
-overlay	BROWSER/browser.xul				CBOVERLAY/cbbutton.xul
-overlay GLOBAL/customizeToolbar.xul		CBOVERLAY/cbbutton.xul
+overlay	BROWSER/browser.xul				CBCONTENT/tcbbutton.xul
+overlay GLOBAL/customizeToolbar.xul		CBCONTENT/tcbbutton.xul
 
 ## Firefox 3
 overlay	BROWSER/browser.xul			CBCONTENT/overlay3b2.xul   		 FIREFOXAPP appversion>=3.0b1
@@ -52,20 +52,20 @@ overlay MESSENGERCOMPOSE/messengercompose.xul	CBOVERLAY/mcbuttonsoverlay.xul
 
 ## Sunbird
 overlay	SUNBIRD/calendar.xul	CBCONTENT/SunbirdOverlay.xul
+overlay	SUNBIRD/calendar.xul	CBCONTENT/tcbbutton.xul
 overlay SUNBIRD/calendar.xul	CBOVERLAY/buttonsoverlay.xul
-overlay	SUNBIRD/calendar.xul	CBOVERLAY/cbbutton.xul
-overlay	SUNBIRD/customizeToolbar.xul	CBOVERLAY/cbbutton.xul
+overlay	SUNBIRD/customizeToolbar.xul	CBCONTENT/tcbbutton.xul
 
 ## Calendar
 overlay	CALENDAR/calendar.xul	CBCONTENT/CalendarOverlay.xul
+overlay	CALENDAR/calendar.xul	CBCONTENT/tcbbutton.xul
 overlay CALENDAR/calendar.xul	CBOVERLAY/buttonsoverlay.xul
-overlay	CALENDAR/calendar.xul	CBOVERLAY/cbbutton.xul
-overlay	CALENDAR/customizeToolbar.xul	CBOVERLAY/cbbutton.xul
+overlay	CALENDAR/customizeToolbar.xul	CBCONTENT/tcbbutton.xul
 
 ## Editor (KompoZer)
 overlay	EDITOR/editor.xul		CBCONTENT/EditorOverlay.xul
+overlay	EDITOR/editor.xul		CBCONTENT/tcbbutton.xul
 overlay	EDITOR/editor.xul		CBOVERLAY/buttonsoverlay.xul
-overlay	EDITOR/editor.xul		CBOVERLAY/cbbutton.xul
 
 ##about dialog
 overlay	EXTENSIONS/about.xul	CBCONTENT/aboutOverlay.xul
