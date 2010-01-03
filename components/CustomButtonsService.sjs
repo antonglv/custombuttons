@@ -444,6 +444,7 @@ cbCustomButtonsService. prototype =
     {
         if (!iid. equals (CI. cbICustomButtonsService) &&
             !iid. equals (CI. nsIObserver) &&
+			!iid. equals (CI. nsISupportsWeakReference) &&
             !iid. equals (CI. nsISupports))
             throw NS_ERROR (NO_INTERFACE);
         return this;
@@ -849,6 +850,29 @@ cbCustomButtonsService. prototype =
 			res. line = id [1];
 		}
 		return res;
+	},
+
+	observe: function (subject, topic, data)
+	{
+		switch (topic)
+		{
+			case "app-startup":
+				var os = SERVICE (OBSERVER);
+				os. addObserver (this, "profile-after-change", true);
+				break;
+			case "profile-after-change":
+				var ios = SERVICE (IO);
+				var rph = ios. getProtocolHandler ("resource"). QI (nsIResProtocolHandler);
+				var dir = SERVICE (PROPERTIES). get ("ProfD", CI. nsIFile);
+				dir. append ("custombuttons");
+				var file = dir. clone ();
+				file. append ("buttonsoverlay.xul");
+				if (!file. exists ())
+					this. makeOverlay ();
+				var uri = ios. newFileURI (dir);
+				rph. setSubstitution ("custombuttons", uri);
+				break;
+		}
 	}
 };
 
@@ -857,8 +881,39 @@ var Module =
     CLSID: CID ("{64d03940-83bc-4ac6-afc5-3cbf6a7147c5}"),
     ContractID: CB_SERVICE_CID,
     ComponentName: "Custom Buttons extension service",
+    canUnload: function (componentManager) { return true; },
+    getClassObject: function (componentManager, cid, iid)
+    {
+	if (!cid. equals (this. CLSID))
+	    THROW (NO_INTERFACE);
+	if (!iid. equals (Components. interfaces. nsIFactory))
+	    THROW (NOT_IMPLEMENTED);
+	return this. CLASS_FACTORY;
+    },
 
-    DEFINE_STD_MODULE_INTERFACE,
+    unregisterSelf: function ()
+    {
+	var cm = SERVICE (CATEGORY_MANAGER);
+	cm. deleteCategoryEntry ("app-startup", "service," + this. ContractID, true);
+    },
+
+    firstTime: true,
+    registerSelf: function (compMgr, fileSpec, location, type)
+    {
+        if (this. firstTime)
+            this. firstTime = false;
+        else
+	    THROW (FACTORY_REGISTER_AGAIN);
+        compMgr = compMgr. QI (COMPONENT_REGISTRAR);
+        compMgr. registerFactoryLocation
+	(
+	    this. CLSID, this. ComponentName, this. ContractID,
+	    fileSpec, location, type
+	);
+        var cm = SERVICE (CATEGORY_MANAGER);
+	cm. addCategoryEntry ("app-startup", this. ComponentName, "service," + this. ContractID, true, true);
+    },
+
     DEFINE_STD_CLASS_FACTORY (cbCustomButtonsService)
 };
 

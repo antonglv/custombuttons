@@ -2,11 +2,11 @@ content custombuttons jar:chrome/custombuttons.jar!/content/custombuttons/
 
 ## Firefox
 overlay chrome://browser/content/browser.xul chrome://custombuttons/content/overlay.xul
-overlay chrome://browser/content/browser.xul custombuttons://content/buttonsoverlay.xul
+overlay chrome://browser/content/browser.xul resource://custombuttons/buttonsoverlay.xul
 
 ## Seamonkey navigator
 overlay chrome://navigator/content/navigator.xul chrome://custombuttons/content/SeamonkeyOverlay.xul
-overlay chrome://navigator/content/navigator.xul custombuttons://content/buttonsoverlay.xul
+overlay chrome://navigator/content/navigator.xul resource://custombuttons/buttonsoverlay.xul
 overlay chrome://navigator/content/navigator.xul chrome://custombuttons/content/overlay3b2.xul appversion>=3.0b1
 overlay chrome://navigator/content/navigator.xul chrome://custombuttons/content/tcbbutton.xul
 
@@ -14,21 +14,21 @@ overlay chrome://navigator/content/navigator.xul chrome://custombuttons/content/
 ## main window
 overlay chrome://messenger/content/messenger.xul chrome://custombuttons/content/SeamonkeyMailOverlay.xul application={92650c4d-4b8e-4d2a-b7eb-24ecf4f6b63a}
 overlay chrome://messenger/content/messenger.xul chrome://custombuttons/content/tcbbutton.xul
-overlay chrome://messenger/content/messenger.xul custombuttons://content/buttonsoverlay.xul
+overlay chrome://messenger/content/messenger.xul resource://custombuttons/buttonsoverlay.xul
 ## message window
 overlay chrome://messenger/content/messageWindow.xul chrome://custombuttons/content/SeamonkeyMailOverlay.xul application={92650c4d-4b8e-4d2a-b7eb-24ecf4f6b63a}
 overlay chrome://messenger/content/messageWindow.xul chrome://custombuttons/content/tcbbutton.xul
-overlay chrome://messenger/content/messageWindow.xul custombuttons://content/mwbuttonsoverlay.xul
+overlay chrome://messenger/content/messageWindow.xul resource://custombuttons/mwbuttonsoverlay.xul
 ## message compose
 overlay chrome://messenger/content/messengercompose/messengercompose.xul chrome://custombuttons/content/SeamonkeyMailOverlay.xul application={92650c4d-4b8e-4d2a-b7eb-24ecf4f6b63a}
 overlay chrome://messenger/content/messengercompose/messengercompose.xul chrome://custombuttons/content/tcbbutton.xul
-overlay chrome://messenger/content/messengercompose/messengercompose.xul custombuttons://content/mcbuttonsoverlay.xul
+overlay chrome://messenger/content/messengercompose/messengercompose.xul resource://custombuttons/mcbuttonsoverlay.xul
 
 ## Seamonkey chatzilla
 
 ## Browser
-overlay chrome://browser/content/browser.xul custombuttons://content/cbbutton.xul
-overlay chrome://global/content/customizeToolbar.xul custombuttons://content/cbbutton.xul
+overlay chrome://browser/content/browser.xul chrome://custombuttons/content/tcbbutton.xul
+overlay chrome://global/content/customizeToolbar.xul chrome://custombuttons/content/tcbbutton.xul
 
 ## Firefox 3
 overlay chrome://browser/content/browser.xul chrome://custombuttons/content/overlay3b2.xul application={ec8030f7-c20a-464f-9b0e-13a3a9e97384} appversion>=3.0b1
@@ -38,32 +38,32 @@ overlay chrome://global/content/customizeToolbar.xul chrome://custombuttons/cont
 ## main window
 overlay chrome://messenger/content/messenger.xul chrome://custombuttons/content/ThunderbirdOverlay.xul application={3550f703-e582-4d05-9a08-453d09bdfdc6}
 overlay chrome://messenger/content/messenger.xul chrome://custombuttons/content/tcbbutton.xul
-overlay chrome://messenger/content/messenger.xul custombuttons://content/buttonsoverlay.xul
+overlay chrome://messenger/content/messenger.xul resource://custombuttons/buttonsoverlay.xul
 ## message window
 overlay chrome://messenger/content/messageWindow.xul chrome://custombuttons/content/ThunderbirdOverlay.xul application={3550f703-e582-4d05-9a08-453d09bdfdc6}
 overlay chrome://messenger/content/messageWindow.xul chrome://custombuttons/content/tcbbutton.xul
-overlay chrome://messenger/content/messageWindow.xul custombuttons://content/mwbuttonsoverlay.xul
+overlay chrome://messenger/content/messageWindow.xul resource://custombuttons/mwbuttonsoverlay.xul
 ## message compose
 overlay chrome://messenger/content/messengercompose/messengercompose.xul chrome://custombuttons/content/ThunderbirdOverlay.xul application={3550f703-e582-4d05-9a08-453d09bdfdc6}
 overlay chrome://messenger/content/messengercompose/messengercompose.xul chrome://custombuttons/content/tcbbutton.xul
-overlay chrome://messenger/content/messengercompose/messengercompose.xul custombuttons://content/mcbuttonsoverlay.xul
+overlay chrome://messenger/content/messengercompose/messengercompose.xul resource://custombuttons/mcbuttonsoverlay.xul
 
 ## Sunbird
 overlay chrome://calendar/content/calendar.xul chrome://custombuttons/content/SunbirdOverlay.xul
-overlay chrome://calendar/content/calendar.xul custombuttons://content/buttonsoverlay.xul
-overlay chrome://calendar/content/calendar.xul custombuttons://content/cbbutton.xul
-overlay chrome://calendar/content/customizeToolbar.xul custombuttons://content/cbbutton.xul
+overlay chrome://calendar/content/calendar.xul chrome://custombuttons/content/tcbbutton.xul
+overlay chrome://calendar/content/calendar.xul resource://custombuttons/buttonsoverlay.xul
+overlay chrome://calendar/content/customizeToolbar.xul chrome://custombuttons/content/tcbbutton.xul
 
 ## Calendar
 overlay chrome://sunbird/content/calendar.xul chrome://custombuttons/content/CalendarOverlay.xul
-overlay chrome://sunbird/content/calendar.xul custombuttons://content/buttonsoverlay.xul
-overlay chrome://sunbird/content/calendar.xul custombuttons://content/cbbutton.xul
-overlay chrome://sunbird/content/customizeToolbar.xul custombuttons://content/cbbutton.xul
+overlay chrome://sunbird/content/calendar.xul chrome://custombuttons/content/tcbbutton.xul
+overlay chrome://sunbird/content/calendar.xul resource://custombuttons/buttonsoverlay.xul
+overlay chrome://sunbird/content/customizeToolbar.xul chrome://custombuttons/content/tcbbutton.xul
 
 ## Editor (KompoZer)
 overlay chrome://editor/content/editor.xul chrome://custombuttons/content/EditorOverlay.xul
-overlay chrome://editor/content/editor.xul custombuttons://content/buttonsoverlay.xul
-overlay chrome://editor/content/editor.xul custombuttons://content/cbbutton.xul
+overlay chrome://editor/content/editor.xul chrome://custombuttons/content/tcbbutton.xul
+overlay chrome://editor/content/editor.xul resource://custombuttons/buttonsoverlay.xul
 
 ##about dialog
 overlay chrome://mozapps/content/extensions/about.xul chrome://custombuttons/content/aboutOverlay.xul

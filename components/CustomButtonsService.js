@@ -454,6 +454,7 @@ cbCustomButtonsService. prototype =
     {
         if (!iid. equals (Components. interfaces. cbICustomButtonsService) &&
             !iid. equals (Components. interfaces. nsIObserver) &&
+   !iid. equals (Components. interfaces. nsISupportsWeakReference) &&
             !iid. equals (Components. interfaces. nsISupports))
             throw Components. results. NS_ERROR_NO_INTERFACE;
         return this;
@@ -859,6 +860,29 @@ cbCustomButtonsService. prototype =
    res. line = id [1];
   }
   return res;
+ },
+
+ observe: function (subject, topic, data)
+ {
+  switch (topic)
+  {
+   case "app-startup":
+    var os = Components. classes ["@mozilla.org/observer-service;1"]. getService (Components. interfaces. nsIObserverService);
+    os. addObserver (this, "profile-after-change", true);
+    break;
+   case "profile-after-change":
+    var ios = Components. classes ["@mozilla.org/network/io-service;1"]. getService (Components. interfaces. nsIIOService);
+    var rph = ios. getProtocolHandler ("resource"). QueryInterface (Components. interfaces. nsIResProtocolHandler);
+    var dir = Components. classes ["@mozilla.org/file/directory_service;1"]. getService (Components. interfaces. nsIProperties). get ("ProfD", Components. interfaces. nsIFile);
+    dir. append ("custombuttons");
+    var file = dir. clone ();
+    file. append ("buttonsoverlay.xul");
+    if (!file. exists ())
+     this. makeOverlay ();
+    var uri = ios. newFileURI (dir);
+    rph. setSubstitution ("custombuttons", uri);
+    break;
+  }
  }
 };
 
@@ -867,8 +891,39 @@ var Module =
     CLSID: Components. ID ("{64d03940-83bc-4ac6-afc5-3cbf6a7147c5}"),
     ContractID: "@xsms.nm.ru/custombuttons/cbservice;1",
     ComponentName: "Custom Buttons extension service",
+    canUnload: function (componentManager) { return true; },
+    getClassObject: function (componentManager, cid, iid)
+    {
+ if (!cid. equals (this. CLSID))
+     throw new Error (NO_INTERFACE);;
+ if (!iid. equals (Components. interfaces. nsIFactory))
+     throw new Error (NOT_IMPLEMENTED);;
+ return this. CLASS_FACTORY;
+    },
 
-    canUnload: function (componentManager) { return true; }, getClassObject: function (componentManager, cid, iid) { if (!cid. equals (this. CLSID)) throw Components. results. NS_ERROR_NO_INTERFACE; if (!iid. equals (Components. interfaces. nsIFactory)) throw Components. results. NS_ERROR_NOT_IMPLEMENTED; return this. CLASS_FACTORY; }, FIRST_TIME: true, registerSelf: function (componentManager, fileSpec, location, type) { if (this. FIRST_TIME) this. FIRST_TIME = false; else throw Components. results. NS_ERROR_FACTORY_REGISTER_AGAIN; componentManager = componentManager. QueryInterface (Components. interfaces. nsIComponentRegistrar); componentManager. registerFactoryLocation ( this. CLSID, this. ComponentName, this. ContractID, fileSpec, location, type ); }, unregisterSelf: function (componentManager, location, loaderStr) {},
+    unregisterSelf: function ()
+    {
+ var cm = Components. classes ["@mozilla.org/categorymanager;1"]. getService (Components. interfaces. nsICategoryManager);
+ cm. deleteCategoryEntry ("app-startup", "service," + this. ContractID, true);
+    },
+
+    firstTime: true,
+    registerSelf: function (compMgr, fileSpec, location, type)
+    {
+        if (this. firstTime)
+            this. firstTime = false;
+        else
+     throw new Error (FACTORY_REGISTER_AGAIN);;
+        compMgr = compMgr. QueryInterface (Components. interfaces. COMPONENT_REGISTRAR);
+        compMgr. registerFactoryLocation
+ (
+     this. CLSID, this. ComponentName, this. ContractID,
+     fileSpec, location, type
+ );
+        var cm = Components. classes ["@mozilla.org/categorymanager;1"]. getService (Components. interfaces. nsICategoryManager);
+ cm. addCategoryEntry ("app-startup", this. ComponentName, "service," + this. ContractID, true, true);
+    },
+
     CLASS_FACTORY: { QueryInterface: function (iid) { if (iid. equals (Components. interfaces. nsIFactory) || iid. equals (Components. interfaces. nsISupports)) return this; throw Components. results. NS_ERROR_NO_INTERFACE; }, createInstance: function (outer, iid) { if (outer != null) throw Components. results. NS_ERROR_NO_AGGREGATION; return (new cbCustomButtonsService ()). QueryInterface (iid); } }
 };
 
