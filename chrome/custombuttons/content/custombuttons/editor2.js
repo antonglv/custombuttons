@@ -262,6 +262,14 @@ Editor. prototype =
  onCancel: function ()
  {
   return this. canClose;
+ },
+
+ fullScreen: function ()
+ {
+     if (window. windowState == Components. interfaces. nsIDOMChromeWindow. STATE_MAXIMIZED)
+  window. restore ();
+     else
+  window. maximize ();
  }
 };
 
