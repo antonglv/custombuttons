@@ -455,15 +455,19 @@ CustombuttonsTB. prototype =
  {
   var result = false;
   var rs = Components. classes ["@mozilla.org/rdf/rdf-service;1"]. getService (Components. interfaces. nsIRDFService);
-  var res = rs. GetResource ("urn:mozilla:item:{e2fda1a4-762b-4020-b5ad-a41df1933103}");
+  var lightningUUID = "{e2fda1a4-762b-4020-b5ad-a41df1933103}";
+  var res = rs. GetResource ("urn:mozilla:item:" + lightningUUID);
   if (res instanceof Components. interfaces. nsIRDFResource)
   {
    var em = Components. classes ["@mozilla.org/extensions/manager;1"]. getService (Components. interfaces. nsIExtensionManager);
-   var ds = em. datasource;
-   var res2 = rs. GetResource ("http://www.mozilla.org/2004/em-rdf#isDisabled");
-   var t = ds. GetTarget (res, res2, true);
-   if (t instanceof Components. interfaces. nsIRDFLiteral)
-    result = (t. Value != "true");
+   if (em. getInstallLocation (lightningUUID))
+   {
+    var ds = em. datasource;
+    var res2 = rs. GetResource ("http://www.mozilla.org/2004/em-rdf#isDisabled");
+    var t = ds. GetTarget (res, res2, true);
+    if (t instanceof Components. interfaces. nsIRDFLiteral)
+     result = (t. Value != "true");
+   }
   }
   return result;
  },
@@ -566,6 +570,9 @@ CustombuttonsNVU. prototype. __proto__ = CustombuttonsTB. prototype;
 
 
 const custombuttons = new custombuttonsFactory (). Custombuttons;
+var info = Components. classes ["@mozilla.org/xre/app-info;1"]. getService (Components. interfaces. nsIXULAppInfo);
+if (info. name == "SeaMonkey")
+ custombuttons. shouldAddToPalette = false;
 
 // add-ons
 /**  uChelpButton(  )
@@ -1006,6 +1013,25 @@ setPrefs: function ( sPrefId, prefValue ) //{{{
   {
    return this. _cbService. readFromClipboard ();
   }
+ },
+
+ makeXML: function (xmlObject)
+ {
+  var res = null;
+  var oldPrettyPrinting = XML. prettyPrinting;
+  XML. prettyPrinting = false;
+  try
+  {
+   if (typeof (xmlObject) == "string")
+    xmlObject = new XML (xmlObject);
+   var res = new DOMParser (). parseFromString
+   (
+    xmlObject. toXMLString (),
+    "application/xml"
+   ). documentElement;
+  } catch (e) {}
+  XML. prettyPrinting = oldPrettyPrinting;
+  return res;
  }
 }; // -- custombuttonsUtils
 

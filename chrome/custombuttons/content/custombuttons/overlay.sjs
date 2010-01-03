@@ -875,6 +875,25 @@ setPrefs: function ( sPrefId, prefValue ) //{{{
 		{
 			return this. _cbService. readFromClipboard ();
 		}
+	},
+	
+	makeXML: function (xmlObject)
+	{
+		var res = null;
+		var oldPrettyPrinting = XML. prettyPrinting;
+		XML. prettyPrinting = false;
+		try
+		{
+			if (typeof (xmlObject) == "string")
+				xmlObject = new XML (xmlObject);
+			var res = new DOMParser (). parseFromString
+			(
+				xmlObject. toXMLString (),
+				"application/xml"
+			). documentElement;
+		} catch (e) {}
+		XML. prettyPrinting = oldPrettyPrinting;
+		return res;
 	}
 }; // -- custombuttonsUtils
 

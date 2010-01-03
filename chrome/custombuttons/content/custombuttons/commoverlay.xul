@@ -10,7 +10,6 @@
 	<script type="application/x-javascript" src="chrome://custombuttons/content/cbfactory.js"/>
 	<script type="application/x-javascript" src="chrome://custombuttons/content/overlay.js"/>
 	<script type="application/x-javascript" src="chrome://custombuttons/content/cb2api.js"/>
-	<script type="application/x-javascript" src="chrome://custombuttons/content/cbbutton.js"/>
 	<!-- end added -->
 
 	<broadcasterset id="custombuttons-broadcasterset">
