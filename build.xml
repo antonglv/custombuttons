@@ -33,6 +33,7 @@
 			<include name="license.txt"/>
 			<include name="defaults/**/*.*"/>
 			<include name="components/**/*.*"/>
+			<include name="platform/**/*.*"/>
 			<exclude name="build.number"/>
 		</patternset>
 		<patternset id="excludespatternset">
@@ -152,7 +153,9 @@ Define it in build.properties (don't forget about double back slashes)</fail>
 				<!-- 0.0.3.9 excludes -->
 				
 				<exclude name="content/custombuttons/cbbutton1.5.xul"/>
+				<!--
 				<exclude name="content/custombuttons/cbbutton.xul"/>
+				-->
 				<exclude name="content/custombuttons/cbbutton3.xul"/>
 				<exclude name="content/custombuttons/loader.js"/>
 				<!-- 0.0.4.0a excludes -->
