@@ -24,11 +24,13 @@
 	<commandset id="custombuttonsEditorCommandSet">
 		<command id="cbUpdateButtonCommand" oncommand="editor.updateButton()"/>
 		<command id="cbExecuteCode" oncommand="editor.execute_oncommand_code()"/>
+		<command id="cbFullScreen" oncommand="editor.fullScreen()"/>
 	</commandset>
 	
 	<keyset id="custombuttonsEditorKeySet">
 		<key id="cbUpdateButtonKey" command="cbUpdateButtonCommand" key="s" modifiers="control"/>
 		<key id="cbExecuteCode" command="cbExecuteCode" keycode="VK_F9"/>
+		<key id="cbFullScreen" command="cbFullScreen" keycode="VK_F11"/>
 	</keyset>
 	
 	<grid id="urlfield">
