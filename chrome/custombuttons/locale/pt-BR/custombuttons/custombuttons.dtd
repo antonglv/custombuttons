@@ -8,7 +8,7 @@
 <!ENTITY custombuttons.buttonPopup.update "Update Button">
 <!ENTITY custombuttons.buttonPopup.subCall "Custom Button">
 
-<!ENTITY custombuttons_prefsDialog.title "Custombuttons: settings">
+<!ENTITY custombuttons_prefsDialog.title "Custom Buttons: settings">
 <!ENTITY custombuttons.prefs.use_xml_button_format "Use new button format">
 <!ENTITY custombuttons.prefs.use_cb2_button_format "Use old Custom Buttons² button format">
 <!ENTITY custombuttons.prefs.show_apply_button "Show &quot;Apply&quot; button in code editor">
