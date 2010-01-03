@@ -904,7 +904,7 @@ var Module =
             this. firstTime = false;
         else
 	    THROW (FACTORY_REGISTER_AGAIN);
-        compMgr = compMgr. QI (COMPONENT_REGISTRAR);
+        compMgr = compMgr. QueryInterface (Components. interfaces. nsIComponentRegistrar);
         compMgr. registerFactoryLocation
 	(
 	    this. CLSID, this. ComponentName, this. ContractID,
