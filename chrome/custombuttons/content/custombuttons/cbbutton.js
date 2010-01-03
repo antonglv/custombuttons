@@ -279,39 +279,35 @@ var custombutton =
 
  buttonCbExecuteCode: function (event, oButton, code)
  {
-  var scode = "var event = arguments [0];";
-  scode += " var createDebug = custombuttonsUtils. createDebug;"
-  scode += " var createMsg = custombuttonsUtils. createMsg;\n" + code;
   this. checkBind ();
+  var oCBError, errLine;
+  var cd = null, cm = null;
+  if ("custombuttonsUtils" in window)
+  {
+   cd = custombuttonsUtils. createDebug;
+   cm = custombuttonsUtils. createMsg;
+  }
   try
   {
-   (new Function (scode)). apply (oButton, [event]);
+   errLine = new Error (). lineNumber + 1;
+   (new Function ("event,createDebug,createMsg", code)). apply
+   (
+    oButton, [event, cd, cm]
+   );
   }
   catch (oError)
   {
-   if (oError. stack)
-   {
-    var n1 = oError. lineNumber;
-    var aStack = oError. stack. split ("\n");
-    var aMatch;
-    for (var i = 0; i < aStack. length; i++)
-    {
-     aMatch = aStack [i]. match (/\(\[.*?\],\[.*?\],".*"\)@.*\:(\d+)$/);
-     if (aMatch)
-      break;
-    }
-    var n2 = aMatch? aMatch [1]: 0;
-    var oCBError = new Error ();
-    oCBError. name = oError. name;
-    oCBError. message = oError. message;
-    var phase = oButton. _initPhase? "init": "code";
-    oCBError. fileName = this. cbService. makeButtonLink (document. documentURI, phase, oButton. id);
-    oCBError. lineNumber = n1 - n2;
-    oCBError. stack = aStack. splice (0, i? (i - 1): 0). join ("\n");
-    throw (oCBError);
-   }
-   else
-    throw (oError);
+   errLine = oError. lineNumber - errLine + 1;
+   if (errLine == 4294967295)
+    errLine = 0;
+   oCBError = new Error ();
+   oCBError. name = oError. name;
+   oCBError. message = oError. message;
+   var phase = oButton. _initPhase? "init": "code";
+   oCBError. fileName = this. cbService. makeButtonLink (document. documentURI, phase, oButton. id);
+   oCBError. lineNumber = errLine;
+   oCBError. stack = oError. stack;
+   throw (oCBError);
   }
  },
 
