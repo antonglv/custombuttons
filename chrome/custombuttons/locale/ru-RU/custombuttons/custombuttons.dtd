@@ -8,7 +8,7 @@
 <!ENTITY custombuttons.buttonPopup.update "Обновить кнопку">
 <!ENTITY custombuttons.buttonPopup.subCall "Меню кнопки">
 
-<!ENTITY custombuttons_prefsDialog.title "Custombuttons: настройки">
+<!ENTITY custombuttons_prefsDialog.title "Custom Buttons: настройки">
 <!ENTITY custombuttons.prefs.use_xml_button_format "Использовать новый формат кнопки">
 <!ENTITY custombuttons.prefs.use_cb2_button_format "Использовать старый формат кнопки Custom Buttons²">
 <!ENTITY custombuttons.prefs.show_apply_button "Отобразить кнопку &quot;Применить&quot; в редакторе кода">
