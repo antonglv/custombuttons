@@ -66,25 +66,30 @@ if (oVC. compare (info. platformVersion, "1.8.0.5") < 0)
  array. AppendElement (fakeFactory);
  fakeFactory = array. GetElementAt (0). QueryInterface (Components. interfaces. nsIFactory);
  array = null;
-
- function wrapNode (insecNode)
- {
-  return fakeFactory. createInstance (insecNode, Components. interfaces. nsISupports);
- }
-
- // Retrieves the window object for a node or returns null if it isn't possible
- function getWindow (node)
- {
-  if (node && node. nodeType != 9)
-   node = node. ownerDocument;
-
-  if (!node || node. nodeType != 9)
-   return null;
-
-  return node. defaultView;
- }
- // end Adblock Plus code
 }
+
+function wrapNode (insecNode)
+{
+ var info = Components. classes ["@mozilla.org/xre/app-info;1"]. getService (Components. interfaces. nsIXULAppInfo);
+ var oVC = Components. classes ["@mozilla.org/xpcom/version-comparator;1"]. createInstance (Components. interfaces. nsIVersionComparator);
+ if (oVC. compare (info. platformVersion, "1.8.0.5") < 0)
+  return fakeFactory. createInstance (insecNode, Components. interfaces. nsISupports);
+ else
+  return insecNode;
+}
+
+// Retrieves the window object for a node or returns null if it isn't possible
+function getWindow (node)
+{
+ if (node && node. nodeType != 9)
+  node = node. ownerDocument;
+
+ if (!node || node. nodeType != 9)
+  return null;
+
+ return node. defaultView;
+}
+// end Adblock Plus code
 
 function cbContentPolicyComponent () {}
 cbContentPolicyComponent. prototype =
@@ -118,7 +123,8 @@ cbContentPolicyComponent. prototype =
    return 1;
 
   if ((contentLocation. spec. indexOf ("custombutton://content/") == 0) ||
-   (contentLocation. spec. indexOf ("custombuttons://content/") == 0))
+   (contentLocation. spec. indexOf ("custombuttons://content/") == 0) ||
+   (contentLocation. spec. indexOf ("resource://custombuttons") == 0))
    return -1;
 
   return 1;
@@ -144,10 +150,6 @@ var Module =
  FIRST_TIME: true,
  registerSelf: function (componentManager, fileSpec, location, type)
  {
-  var info = Components. classes ["@mozilla.org/xre/app-info;1"]. getService (Components. interfaces. nsIXULAppInfo);
-  var oVC = Components. classes ["@mozilla.org/xpcom/version-comparator;1"]. createInstance (Components. interfaces. nsIVersionComparator);
-  if (oVC. compare (info. platformVersion, "1.8.0.5") >= 0)
-   return;
   if (this. FIRST_TIME)
          this. FIRST_TIME = false;
      else
