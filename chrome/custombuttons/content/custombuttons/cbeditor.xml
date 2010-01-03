@@ -334,15 +334,23 @@
 					]]>
 				</body>
 			</method>
+
+			<method name="getSelection">
+				<body>
+					<![CDATA[
+						var ss = this. textbox. selectionStart;
+						var se = this. textbox. selectionEnd;
+						return this. textbox. value. substring (ss, se);
+					]]>
+				</body>
+			</method>
 			
 			<method name="setSearchParameters">
 				<parameter name="dialogType"/>
 				<parameter name="searchBackwards"/>
 				<body>
 					<![CDATA[
-						var ss = this. textbox. selectionStart;
-						var se = this. textbox. selectionEnd;
-						var selstr = this. textbox. value. substring (ss, se);
+						var selstr = this. getSelection ();
 						var param =
 						{
 							type: dialogType,
@@ -369,10 +377,10 @@
 			</method>
 			
 			<method name="newSearch">
-				<parameter name="event"/>
+				<parameter name="findBackwards"/>
 				<body>
 					<![CDATA[
-						this. setSearchParameters ("find", event. shiftKey);
+						this. setSearchParameters ("find", findBackwards);
 						if (!this. searchString)
 							return;
 						this. find (false);
@@ -380,12 +388,38 @@
 					]]>
 				</body>
 			</method>
-			
-			<method name="findNext">
+
+			<method name="findForward">
 				<parameter name="event"/>
 				<body>
 					<![CDATA[
-						this. searchBackwards = event. shiftKey;
+						if (event. originalTarget == this. qsTextbox. inputField)
+						{
+							this. findNext (false);
+							event. preventDefault ();
+						}
+					]]>
+				</body>
+			</method>
+
+			<method name="findBackward">
+				<parameter name="event"/>
+				<body>
+					<![CDATA[
+						if (event. originalTarget == this. qsTextbox. inputField)
+						{
+							this. findNext (true);
+							event. preventDefault ();
+						}
+					]]>
+				</body>
+			</method>
+
+			<method name="findNext">
+				<parameter name="findBackwards"/>
+				<body>
+					<![CDATA[
+						this. searchBackwards = findBackwards;
 						var fe = document. commandDispatcher. focusedElement;
 						if (fe == this. qsTextbox. inputField)
 						{
@@ -393,7 +427,7 @@
 							return;
 						}
 						if (!this. searchString)
-							this. newSearch (event);
+							this. newSearch (findBackwards);
 						else
 							this. find (false);
 						this. textbox. focus ();
@@ -472,7 +506,14 @@
 						this. caseSensitive = false;
 						var fb = document. getAnonymousElementByAttribute (this, "anonid", "findbar");
 						fb. removeAttribute ("hidden");
+                                                var sel = this. getSelection ();
 						this. qsTextbox. inputField. focus ();
+                                                if (sel)
+                                                {
+                                                    this. textbox. selectionEnd = this. textbox. selectionEnd;
+                                                    this. qsTextbox. value = sel;
+                                                    this. onInput (null);
+                                                }
 					]]>
 				</body>
 			</method>
@@ -606,7 +647,7 @@
 					<![CDATA[
 						var ss = this. textbox. selectionStart;
 						var se = this. textbox. selectionEnd;
-						var selstr = this. value. substring (ss, se);
+						var selstr = this. getSelection ();
 						var bes = this. value. substring (0, ss);
 						var li = bes. lastIndexOf ("\n");
 						li++;
@@ -676,8 +717,8 @@
 		<handlers>
 			<handler event="keypress" keycode="VK_TAB" action="this.handleTabs(event)"/>
 			<handler event="keypress" keycode="VK_TAB" action="this.handleTabs(event)" modifiers="shift"/>
-			<handler event="keypress" keycode="VK_F3" action="this.findNext(event)"/>
-			<handler event="keypress" keycode="VK_F3" action="this.findNext(event)" modifiers="shift"/>
+			<handler event="keypress" keycode="VK_F3" action="this.findNext(event.shiftKey)"/>
+			<handler event="keypress" keycode="VK_F3" action="this.findNext(event.shiftKey)" modifiers="shift"/>
 			<handler event="keypress" key="a" action="this.toggleComments()" modifiers="control,shift"/>
 			<handler event="keypress" key="g" action="this.goToLine()" modifiers="control"/>
 			<handler event="keypress" key="f" action="this.newSearch(event)" modifiers="control"/>
@@ -697,29 +738,18 @@
 				]]>
 			</handler>
 			
+			<handler event="keypress" keycode="VK_UP" action="this.findBackward(event)"/>
+			<handler event="keypress" keycode="VK_DOWN" action="this.findForward(event)"/>
+
 			<handler event="keypress" keycode="VK_RETURN">
 				<![CDATA[
 					if (event. originalTarget == this. textbox. inputField)
 						this. setNewLineIndent (event);
-					if (event. originalTarget == this. qsTextbox. inputField)
-					{
-						//this. endFastFind ();
-						//event. preventDefault ();
-                                                this. findNext (event);
-                                                event. preventDefault ();
-					}
+					this. findForward (event);
 				]]>
 			</handler>
 
-			<handler event="keypress" keycode="VK_RETURN" modifiers="shift">
-			    <![CDATA[
-                                if (event. originalTarget == this. qsTextbox. inputField)
-                                {
-                                    this. findNext (event);
-                                    event. preventDefault ();
-                                }
-                            ]]>
-			</handler>
+			<handler event="keypress" keycode="VK_RETURN" modifiers="shift" action="this.findBackward(event)"/>
 			
 			<handler event="blur">
 				<![CDATA[
