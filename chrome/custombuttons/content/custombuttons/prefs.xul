@@ -4,7 +4,7 @@
 
 <!DOCTYPE dialog SYSTEM "chrome://custombuttons/locale/custombuttons.dtd">
 
-<dialog id="custombuttonsSettingsDialog"
+<dialog id="custombuttonsPrefsDialog"
         xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
         buttons="accept, cancel"
         onload="cbPrefs.onLoad();"
