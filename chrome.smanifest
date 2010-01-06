@@ -26,8 +26,6 @@ overlay MESSENGERCOMPOSE/messengercompose.xul	CBCONTENT/SeamonkeyMailOverlay.xul
 overlay	MESSENGERCOMPOSE/messengercompose.xul	CBCONTENT/tcbbutton.xul
 overlay MESSENGERCOMPOSE/messengercompose.xul	CBOVERLAY/mcbuttonsoverlay.xul
 
-## Seamonkey chatzilla
-
 ## Browser
 overlay	BROWSER/browser.xul				CBCONTENT/tcbbutton.xul
 overlay GLOBAL/customizeToolbar.xul		CBCONTENT/tcbbutton.xul

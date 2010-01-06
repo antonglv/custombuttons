@@ -261,20 +261,20 @@ AppObject. prototype =
    case "Thunderbird":
     this. overlayFileName = "buttonsoverlay.xul";
     this. paletteId = "MailToolbarPalette";
-    this. notificationPrefix = "custombuttons:69423527-65a1-4b8f-bd7a-29593fc46d27:";
+    this. notificationPrefix = "custombuttons:69423527-65a1-4b8f-bd7a-29593fc46d28:";
     break;
    case "SeaMonkeyMailWindow":
    case "ThunderbirdMailWindow":
     this. overlayFileName = "mwbuttonsoverlay.xul";
     this. paletteId = "MailToolbarPalette";
-    this. notificationPrefix = "custombuttons:69423527-65a1-4b8f-bd7a-29593fc46d28:";
+    this. notificationPrefix = "custombuttons:69423527-65a1-4b8f-bd7a-29593fc46d29:";
     this. _windowId = "ThunderbirdMailWindow";
     break;
    case "SeaMonkeyComposeWindow":
    case "ThunderbirdComposeWindow":
     this. overlayFileName = "mcbuttonsoverlay.xul";
     this. paletteId = "MsgComposeToolbarPalette";
-    this. notificationPrefix = "custombuttons:69423527-65a1-4b8f-bd7a-29593fc46d29:";
+    this. notificationPrefix = "custombuttons:69423527-65a1-4b8f-bd7a-29593fc46d2a:";
     this. _windowId = "ThunderbirdComposeWindow";
     break;
    case "Sunbird":
@@ -598,7 +598,7 @@ cbCustomButtonsService. prototype =
   param = param. wrappedJSObject;
   var ps = Components. classes ["@mozilla.org/embedcomp/prompt-service;1"]. getService (Components. interfaces. nsIPromptService);
   var msg = this. getLocaleString ("UpdateConfirm"). replace (/%s/, parameters. name);
-  msg = msg. replace (/%n/, param. name)
+  msg = msg. replace (/%n/, param. name);
   if (ps. confirm (null, "Custom Buttons", msg))
   {
    var link = this. parseButtonLink (buttonLink);
@@ -696,7 +696,7 @@ cbCustomButtonsService. prototype =
    {
     var data, param, button, i, id;
     var palette = app. palette;
-    for (var i = 0; i < numbers. length; i++)
+    for (i = 0; i < numbers. length; i++)
     {
      id = "custombuttons-" + numbers [i];
      data = this. ps. getComplexValue (numbers [i], Components. interfaces. nsISupportsString). data;
@@ -865,6 +865,30 @@ cbCustomButtonsService. prototype =
     file. append ("buttonsoverlay.xul");
     if (!file. exists ())
      this. makeOverlay ();
+    var info = Components. classes ["@mozilla.org/xre/app-info;1"]. getService (Components. interfaces. nsIXULAppInfo);
+    if ((info. name == "SeaMonkey") ||
+        (info. name == "Thunderbird"))
+    {
+        var ovl, doc;
+        file = dir. clone ();
+        file. append ("mwbuttonsoverlay.xul");
+        if (!file. exists ())
+        {
+     ovl = new Overlay ("chrome://custombuttons/content/", "buttonsoverlay.xul");
+     doc = ovl. overlayDocument;
+     ovl. fileName = "mwbuttonsoverlay.xul";
+     ovl. saveOverlayToProfile ();
+        }
+        file = dir. clone ();
+        file. append ("mcbuttonsoverlay.xul");
+        if (!file. exists ())
+        {
+     ovl = new Overlay ("chrome://custombuttons/content/", "buttonsoverlay.xul");
+     doc = ovl. overlayDocument;
+     ovl. fileName = "mcbuttonsoverlay.xul";
+     ovl. saveOverlayToProfile ();
+        }
+    }
     var uri = ios. newFileURI (dir);
     rph. setSubstitution ("custombuttons", uri);
     break;

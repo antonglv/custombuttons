@@ -39,9 +39,9 @@ Prefs. prototype =
 			oElement. removeAttribute (sAttributeName);
 	},
 
-	sizeWindowToContent: function ()
+	sizeWindowToContent: function (forsed)
 	{
-		var oDialog = ELEMENT ("custombuttonsSettingsDialog");
+		var oDialog = ELEMENT ("custombuttonsPrefsDialog");
 		if (oDialog. hasAttribute ("width"))
 			this. removeAttribute (oDialog, "width");
 		if (oDialog. hasAttribute ("height"))
@@ -57,7 +57,7 @@ Prefs. prototype =
 		var oFormatSelector = ELEMENT ("modebit3");
 		oFormatSelector. hidden = mode & CB_MODE_USE_XML_BUTTON_FORMAT;
 		window. addEventListener ("command", this, false);
-		this. sizeWindowToContent ();
+		this. sizeWindowToContent (true);
 	},
 
 	onAccept: function ()
@@ -85,7 +85,7 @@ Prefs. prototype =
 				var sBlockedElementId = oTarget. getAttribute ("cbblocks");
 				var oBlockedElement = ELEMENT (sBlockedElementId);
 				oBlockedElement. hidden = oTarget. checked;
-				this. sizeWindowToContent ();
+				this. sizeWindowToContent (false);
 			}
 		}
 	},
@@ -94,7 +94,7 @@ Prefs. prototype =
 	handleEvent: function (oEvent)
 	{
 		if (oEvent. type == "command")
-			this. onCommand (oEvent);
+		    this. onCommand (oEvent);
 	}
 };
 
@@ -111,8 +111,15 @@ TBPrefs. prototype =
 		return this. _checkbox;
 	},
 
+    sizeWindowToContent: function (forsed)
+    {
+	SUPER (sizeWindowToContent);
+	if (forsed)
+	    setTimeout (window. sizeToContent, 0);
+    },
+
 	onLoad: function ()
-	{
+    {
 		SUPER (onLoad);
 		var state = this. ps. prefHasUserValue (this. pn) &&
 					this. ps. getBoolPref (this. pn);
@@ -146,3 +153,5 @@ TBPrefs. prototype =
 EXTENDS (TBPrefs, Prefs);
 
 var cbPrefs = new custombuttonsFactory (). Prefs;
+
+//window. addEventListener ("load", cbPrefs, false);
