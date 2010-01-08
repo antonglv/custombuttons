@@ -22,3 +22,101 @@
 #include <project.hjs>
 #include <prio.hjs>
 
+var cbCommandLineHandler =
+{
+
+    QueryInterface: function (iid)
+    {
+	if (iid. equals (CI. nsICommandLineHandler) ||
+	    (iid. equals (CI. nsISupports)))
+	    return this;
+	throw NS_ERROR (NO_INTERFACE);
+    },
+
+    handle: function (commandLine)
+    {
+	var param = commandLine. handleFlagWithParam ("custombuttons", false);
+	if (!param)
+	    return;
+	if (param == "disable-button-initialization")
+	{
+	}
+    },
+
+    helpInfo: "-custombuttons disable-buttons-initialization        Disable buttons initialisation\n"
+};
+
+var Module =
+{
+    CLSID: CID ("{cafd9345-65a1-46b2-944d-ff4a9725a609}"),
+    ContractID: CB_COMMAND_LINE_HANDLER_COMPONENT_CID,
+    ComponentName: "Custombuttons extension command line handler component",
+
+    QueryInterface: function (iid)
+    {
+	if (iid. equals (CI. nsIModule) ||
+	    iid. equals (CI. nsISupports))
+	    return this;
+	throw NS_ERROR (NO_INTERFACE);
+    },
+
+    getClassObject: function (compMgr, cid, iid)
+    {
+	if (!cid. equals (this. CLSID))
+	    throw NS_ERROR (NO_INTERFACE);
+	if (!iid. equals (Components. interfaces. nsIFactory))
+	    throw NS_ERROR (NOT_IMPLEMENTED);
+	return this. CLASS_FACTORY;
+    },
+
+    firstTime: true,
+    registerSelf: function (compMgr, fileSpec, location, type)
+    {
+	if (this. firstTime)
+            this. firstTime = false;
+        else
+	    throw NS_ERROR (FACTORY_REGISTER_AGAIN);
+	compMgr = compMgr. QI (nsIComponentRegistrar);
+	compMgr. registerFactoryLocation
+	(
+	    this. CLSID, this. ComponentName, this. ContractID,
+	    fileSpec, location, type
+	);
+        var cm = SERVICE (CATEGORY_MANAGER);
+	cm. addCategoryEntry ("command-line-handler", this. ComponentName, this. ContractID, true, true);
+
+    },
+
+    unregisterSelf: function (compMgr, location, type)
+    {
+	compMgr = compMgr. QI (nsIComponentRegistrar);
+	compMgr. unregisterFactoryLocation (this. CID, location);
+	var cm = SERVICE (CATEGORY_MANAGER);
+	cm. deleteCategoryEntry ("command-line-handler", this. ComponentName);
+    },
+
+    canUnload: function (compMgr)
+    {
+	return true;
+    },
+
+    CLASS_FACTORY:
+    {
+	QueryInterface: function (iid)
+	{
+	    if (iid. equals (CI. nsIFactory) ||
+		iid. equals (CI. nsISupports))
+		return this;
+	    throw NS_ERROR (NO_INTERFACE);
+	},
+
+	createInstance: function (outer, iid)
+	{
+	    if (outer != null)
+		throw NS_ERROR (NO_AGGREGATION);
+	    return cbCommandLineHandler. QueryInterface (iid);
+	}
+    }
+};
+
+DEFINE_STD_NS_GET_MODULE (Module)

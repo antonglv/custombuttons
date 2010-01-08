@@ -31,7 +31,16 @@
 #define CB_CONTENT_POLICY_COMPONENT_CID "@xsms.nm.ru/custombuttons/cbcontentpolicy;1"
 #define CB_CONTENT_POLICY_COMPONENT_IID cbIContentPolicyComponent
 
+#define CB_COMMAND_LINE_HANDLER_COMPONENT_UUID cafd9345-65a1-46b2-944d-ff4a9725a609
+#define CB_COMMAND_LINE_HANDLER_COMPONENT_CID "@mozilla.org/commandlinehandler/general-startup;1?type=custombuttons"
+
 #define CB_NOT_USED_UUID "custombuttons:2c73fe2f-2ed5-432d-9901-a8dbc4961e83"
+
+#define CB_RESERVED_UUID1 5c95c458-367b-42e8-9fa6-689c5b4c79ef
+#define CB_RESERVED_UUID2 8c3f6293-9cc3-4731-a48c-498198b552a4
+#define CB_RESERVED_UUID3 3ef76ee8-04c3-4c02-8f7d-f80ebac6af07
+#define CB_RESERVED_UUID4 4d416b3d-96a1-4c4e-be8f-5b6059872a35
+#define CB_RESERVED_UUID5 ec566b5f-b932-49bd-ae35-f2b1e3e7e71a
 
 #define CB_NOTIFICATION_PREFIX "custombuttons:69423527-65a1-4b8f-bd7a-29593fc46d27:"
 #define CB_BUTTONEDIT_NOTIFICATION_UUID "custombuttons:69423527-65a1-4b8f-bd7a-29593fc46d27:edit"
