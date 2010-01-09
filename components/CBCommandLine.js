@@ -29,14 +29,31 @@ var cbCommandLineHandler =
  throw Components. results. NS_ERROR_NO_INTERFACE;
     },
 
+    _ps: null,
+
+    get ps ()
+    {
+ if (!this. _ps)
+ {
+     var pbs = Components. classes ["@mozilla.org/preferences-service;1"]. getService (Components. interfaces. nsIPrefService);
+     pbs = pbs. QueryInterface (Components. interfaces. nsIPrefBranch);
+     this. _ps = pbs. getBranch ("custombuttons.");
+ }
+ return this. _ps;
+    },
+
     handle: function (commandLine)
     {
+ var mode = this. ps. getIntPref ("mode");
  var param = commandLine. handleFlagWithParam ("custombuttons", false);
  if (!param)
      return;
+ if (param == "disable-buttons-initialization")
+     mode = mode | 32;
+ this. ps. setIntPref ("mode", mode);
     },
 
-    helpInfo: "-custombuttons disable-buttons-initialisation        Disable buttons initialisation\n"
+    helpInfo: "  -custombuttons\n    disable-buttons-initialization               Disable buttons initialisation\n"
 };
 
 var Module =
@@ -76,7 +93,7 @@ var Module =
      fileSpec, location, type
  );
         var cm = Components. classes ["@mozilla.org/categorymanager;1"]. getService (Components. interfaces. nsICategoryManager);
- cm. addCategoryEntry ("command-line-handler", this. ComponentName, this. ContractID, true, true);
+ cm. addCategoryEntry ("command-line-handler", "m-custombuttons", this. ContractID, true, true);
 
     },
 
@@ -85,7 +102,7 @@ var Module =
  compMgr = compMgr. QueryInterface (Components. interfaces. nsIComponentRegistrar);
  compMgr. unregisterFactoryLocation (this. CID, location);
  var cm = Components. classes ["@mozilla.org/categorymanager;1"]. getService (Components. interfaces. nsICategoryManager);
- cm. deleteCategoryEntry ("command-line-handler", this. ComponentName);
+ cm. deleteCategoryEntry ("command-line-handler", "m-custombuttons");
     },
 
     canUnload: function (compMgr)

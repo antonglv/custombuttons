@@ -1,10 +1,10 @@
-function _callNativeMethod (name, arguments)
+function _callNativeMethod (name, args)
 {
 	var res;
 	try
 	{
 		var nativeMethod = Components. lookupMethod (this, name);
-		res = nativeMethod. apply (this, arguments);
+		res = nativeMethod. apply (this, args);
 	} catch (err) {}
 	return res;
 }
