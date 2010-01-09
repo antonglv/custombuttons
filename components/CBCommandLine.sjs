@@ -33,17 +33,31 @@ var cbCommandLineHandler =
 	throw NS_ERROR (NO_INTERFACE);
     },
 
+    _ps: null,
+
+    get ps ()
+    {
+	if (!this. _ps)
+	{
+	    var pbs = SERVICE (PREF);
+	    pbs = pbs. QI (nsIPrefBranch);
+	    this. _ps = pbs. getBranch ("custombuttons.");
+	}
+	return this. _ps;
+    },
+
     handle: function (commandLine)
     {
+	var mode = this. ps. getIntPref ("mode");
 	var param = commandLine. handleFlagWithParam ("custombuttons", false);
 	if (!param)
 	    return;
-	if (param == "disable-button-initialization")
-	{
-	}
+	if (param == "disable-buttons-initialization")
+	    mode = mode | CB_MODE_DISABLE_INITIALIZATION;
+	this. ps. setIntPref ("mode", mode);
     },
 
-    helpInfo: "-custombuttons disable-buttons-initialization        Disable buttons initialisation\n"
+    helpInfo: "  -custombuttons\n    disable-buttons-initialization               Disable buttons initialisation\n"
 };
 
 var Module =
@@ -83,7 +97,7 @@ var Module =
 	    fileSpec, location, type
 	);
         var cm = SERVICE (CATEGORY_MANAGER);
-	cm. addCategoryEntry ("command-line-handler", this. ComponentName, this. ContractID, true, true);
+	cm. addCategoryEntry ("command-line-handler", "m-custombuttons", this. ContractID, true, true);
 
     },
 
@@ -92,7 +106,7 @@ var Module =
 	compMgr = compMgr. QI (nsIComponentRegistrar);
 	compMgr. unregisterFactoryLocation (this. CID, location);
 	var cm = SERVICE (CATEGORY_MANAGER);
-	cm. deleteCategoryEntry ("command-line-handler", this. ComponentName);
+	cm. deleteCategoryEntry ("command-line-handler", "m-custombuttons");
     },
 
     canUnload: function (compMgr)

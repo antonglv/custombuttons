@@ -42,9 +42,11 @@ var custombutton =
    {
     var ps = Components. classes ["@mozilla.org/preferences-service;1"]. getService (Components. interfaces. nsIPrefService). getBranch ("custombuttons.");
     var mode = ps. getIntPref ("mode");
+    if (mode & 32) // disable initialization
+        return;
     if (oBtn. parentNode && (oBtn. parentNode. nodeName != "toolbar") &&
-     ((mode & 4) ||
-     !(oBtn. cbMode & 1)))
+        ((mode & 4) ||
+        !(oBtn. cbMode & 1)))
      return;
     oBtn. cbInitCode = oBtn. getAttribute ("cb-init");
     oBtn. init ();
