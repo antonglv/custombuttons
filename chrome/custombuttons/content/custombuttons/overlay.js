@@ -374,25 +374,15 @@ Custombuttons. prototype =
  },
 
     /**  bookmarkButton(  )
-
       Author George Dunham
-
     
-
       Args:
-
       Returns: Nothing
-
       Scope:	 private
-
       Called:   from overlay.xul
-
       Purpose: Allows one to save a button as a bookmark
-
       UPDATED: 11/12/2007 to improve stability.
-
       changed by Anton 24.02.08
-
     **/
     bookmarkButton: function (oBtn)
     {
@@ -562,41 +552,23 @@ if (info. name == "SeaMonkey")
 
 // add-ons
 /**  uChelpButton(  )
-
   Author Yan, George Dunham
 
-
-
   Args:
-
   Returns: Nothing
-
   Scope:	 private
-
   Called:	 By:
-
      1. Custom buttons context menu.
-
   Purpose: To:
-
      1. Display the button's help text.
-
      2. Insert the help data into the clipboard.
-
      TODO: Provide a means to display help in the form of
-
            web page.
-
      Add
-
      changed by Anton 24.02.08
-
      TODO: refactor it
-
 	 UPDATED: 16.03.08 by Anton - uChelpButton should not use global clipboard
-
 	 UPDATED: 03.04.08 by Anton - now we have 'name' field in buttons
-
 **/
 custombuttons.uChelpButton = function ( oBtn ) //{{{
 {
@@ -627,54 +599,31 @@ const custombuttonsUtils =
  },
 
     /**  createMsg( [title] )
-
  Author:	George Dunham aka: SCClockDr
 
-
-
  Scope:		global
-
  Args:		title - Optional Title to init the object with.
-
  Returns:	Msg
-
  Called by:	1. Any process wanting to instance this message object.
-
  Purpose: 	1. Create a message object and return it to the caller process.
-
  How it works:	gMsg uses the constructor method to create an object gMsg
-
  Setup:		MyObj = new gMsg();
-
  Use:		MyObj.aMsg("Any string", ["Optional Title"]);
-
  changed by Anton 24.02.08
-
  TODO: refactor it
-
 **/
 createMsg: function (title) //{{{
 {
   /**  Object Msg
-
    Author:	George Dunham aka: SCClockDr
 
-
-
    Scope:		Public
-
    Properties:	prompts - nsIPromptService
-
       check - Provides a check box if value = true.
-
       sTitle - Retains the default/assigned title for the
-
          Dialog box.
-
    Methods:	aMsg - Displays the dialog box.
-
    Purpose:	1. Provide a better means to alert the operator.
-
   **/
   var Msg = { //{{{
     // Properties:
@@ -685,22 +634,13 @@ createMsg: function (title) //{{{
     // Methods
     /**  aMsg( str, [title] )
 
-
-
      Scope:		global
-
      Args:		str - String to display
-
         title - Optional title of the dialog
-
      Returns:	Nothing
-
      Called by:	1. Any process which has the aMsg object
-
            available
-
      Purpose: 	1. Present a confirm dialog.
-
     **/
     aMsg:function ( str, title ) //{{{
     {
@@ -723,35 +663,20 @@ get ps ()
 /*--------------------------- Preference Utilities ---------------------------*/
 
 /**  isPref( sPrefId, aDefault )
-
   Author	 George Dunham
 
-
-
   Args:	 aprefId - Preference ID string
-
      aDefault - Default Preference Value
-
   Returns: lRet - Boolean, true if the preference exists.
-
   Scope:	 public
-
   Called:	 By:
-
      1. Any process which passes aprefId and will accept
-
         a boolean return.
-
      2. Passing the optional [Default] will cause the pref
-
         to be created if not defined.
-
   Purpose: To:
-
      1. Test for the presence of a specified pref.
-
      NOTE: Inserted with ver. 2.0.02a
-
 **/
 isPref: function ( sPrefId, aDefault ) //{{{
 {
@@ -768,31 +693,18 @@ isPref: function ( sPrefId, aDefault ) //{{{
   return lRet;
 }, //}}} End Method isPref( sPrefId, aDefault )
 /**  getPrefs( sPrefId )
-
   Author	 George Dunham
 
-
-
   Args:	 sPrefId - Preference ID string
-
   Returns: rRet - Preference value in the correct type.
-
      1. null if Preference ID not in about:config list.
-
   Scope:	 public
-
   Called:	 By:
-
      1. Any process passing a prefid string and accepting
-
         its value.
-
   Purpose: To:
-
      1. Return the pref specified in sPrefId
-
      NOTE: Inserted with ver. 2.0.02a
-
 **/
 getPrefs: function ( sPrefId ) //{{{
 {
@@ -814,29 +726,17 @@ getPrefs: function ( sPrefId ) //{{{
   return rRet;
 }, //}}} End Method getPrefs( sPrefId )
 /**  setPrefs( sPrefId, prefValue )
-
   Author	 George Dunham
 
-
-
   Args:	 sPrefId - Preference ID string
-
      prefValue - Value to set into the Preference ID.
-
   Returns: Nothing
-
   Scope:	 public
-
   Called by:
-
      1. Any process which passes a pref id and it's new value.
-
   Purpose: To:
-
      1. Modify the specified pref to the passed value.
-
      NOTE: Inserted with ver. 2.0.02a
-
 **/
 setPrefs: function ( sPrefId, prefValue ) //{{{
 {
@@ -861,23 +761,14 @@ setPrefs: function ( sPrefId, prefValue ) //{{{
 }, //}}} End Method setPrefs( sPrefId, prefValue )
 
 /**  clearPrefs( sPrefId )
-
  Author:    George Dunham aka: SCClockDr
-
  Scope:	    global
-
  Args:	    sPrefId - Preference ID string
 
-
-
  Returns:   Nothing
-
  Called by: 1.
-
  Purpose:   1. Clear specified User preference
-
  changed by Anton 25.02.08
-
  */
  clearPrefs: function(sPrefId) //{{{
 {
@@ -887,23 +778,14 @@ setPrefs: function ( sPrefId, prefValue ) //{{{
 }, //}}} End Method clearPrefs( sPrefId )
 
 /**  readFile( fPath )
-
  Author:    George Dunham aka: SCClockDr
-
  Scope:	    private
-
  Args:	    fPath -
-
  Returns:   sRet
-
  Called by: 1.
-
  Purpose:   1.
-
  TODO:	    1.
-
  changed by Anton 25.02.08
-
  */
  readFile: function(fPath) //{{{
 {
@@ -927,23 +809,14 @@ setPrefs: function ( sPrefId, prefValue ) //{{{
 }, //}}} End Method readFile( fPath )
 
 /**  writeFile( fPath, sData )
-
  Author:    George Dunham aka: SCClockDr
-
  Scope:	    private
-
  Args:	    fPath -
-
             sData -
-
  Returns:   Nothing
-
  Called by: 1.
-
  Purpose:   1.
-
  TODO:	    1.
-
  */
  writeFile: function(fPath, sData) //{{{
 {
