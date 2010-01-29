@@ -33,10 +33,9 @@ function custombuttonsFactory ()
 			case "chrome://messenger/content/messengercompose/messengercompose.xul":
 				retobj = this. CustombuttonsTBMCFactory;
 				break;
-			case "chrome://messenger/content/addressbook/addressbook.xul":
-				break;
-			case "chrome://chatzilla/content/chatzilla.xul":
-				break;
+			default:
+			    retobj = this. CustombuttonsSTFactory;
+			    break;
 		}
 		break;
     case "Thunderbird": // Thunderbird
@@ -70,49 +69,49 @@ custombuttonsFactory. prototype =
 		DEFINE_GETTER (Editor, Editor),
 		DEFINE_GETTER (Prefs, Prefs)
 	},
-	
+
 	CustombuttonsTBFactory:
 	{
 		DEFINE_GETTER (Custombuttons, CustombuttonsTB),
 		DEFINE_GETTER (Editor, TBEditor),
 		DEFINE_GETTER (Prefs, TBPrefs)
 	},
-	
+
 	CustombuttonsTBMWFactory:
 	{
 		DEFINE_GETTER (Custombuttons, CustombuttonsTBMW),
 		DEFINE_GETTER (Editor, TBEditor),
 		DEFINE_GETTER (Prefs, TBPrefs)
 	},
-	
+
 	CustombuttonsTBMCFactory:
 	{
 		DEFINE_GETTER (Custombuttons, CustombuttonsTBMC),
 		DEFINE_GETTER (Editor, TBEditor),
 		DEFINE_GETTER (Prefs, TBPrefs)
 	},
-	
+
 	CustombuttonsMFFactory:
 	{
 		DEFINE_GETTER (Custombuttons, CustombuttonsMF),
 		DEFINE_GETTER (Editor, Editor),
 		DEFINE_GETTER (Prefs, Prefs)
 	},
-	
+
 	CustombuttonsSTFactory:
 	{
 		DEFINE_GETTER (Custombuttons, CustombuttonsST),
 		DEFINE_GETTER (Editor, Editor),
 		DEFINE_GETTER (Prefs, Prefs)
 	},
-	
+
 	CustombuttonsSBFactory:
 	{
 		DEFINE_GETTER (Custombuttons, CustombuttonsSB),
 		DEFINE_GETTER (Editor, TBEditor),
 		DEFINE_GETTER (Prefs, Prefs)
 	},
-	
+
 	CustombuttonsNVUFactory:
 	{
 		DEFINE_GETTER (Custombuttons, CustombuttonsNVU),
