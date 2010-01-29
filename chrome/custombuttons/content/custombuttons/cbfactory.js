@@ -31,10 +31,9 @@ function custombuttonsFactory ()
    case "chrome://messenger/content/messengercompose/messengercompose.xul":
     retobj = this. CustombuttonsTBMCFactory;
     break;
-   case "chrome://messenger/content/addressbook/addressbook.xul":
-    break;
-   case "chrome://chatzilla/content/chatzilla.xul":
-    break;
+   default:
+       retobj = this. CustombuttonsSTFactory;
+       break;
   }
   break;
     case "Thunderbird": // Thunderbird
