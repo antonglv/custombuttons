@@ -1,4 +1,6 @@
 Changelog
+0.0.4.7
+# Fixed: Bug 22274 'Custom Buttons: settings' dialog doesn't work on SeaMonkey
 0.0.4.6
 + Added:   Thunderbird 3.0 support
 + Added:   Seamonkey 2.0 support
