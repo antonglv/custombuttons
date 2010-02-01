@@ -37,7 +37,7 @@ Prefs. prototype =
    oElement. removeAttribute (sAttributeName);
  },
 
- sizeWindowToContent: function (forsed)
+ sizeWindowToContent: function (forced)
  {
   var oDialog = document. getElementById ("custombuttonsPrefsDialog");
   if (oDialog. hasAttribute ("width"))
@@ -109,10 +109,10 @@ TBPrefs. prototype =
   return this. _checkbox;
  },
 
-    sizeWindowToContent: function (forsed)
+    sizeWindowToContent: function (forced)
     {
  this. __super. prototype. sizeWindowToContent. apply (this, []);
- if (forsed)
+ if (forced)
      setTimeout (window. sizeToContent, 0);
     },
 
