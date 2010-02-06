@@ -189,7 +189,23 @@
 			</property>
 			
 			<property name="value" onget="return this.textbox.value;"
-								   onset="return this.textbox.value=val;"/>
+				  onset="return this.textbox.value=val;"/>
+
+			<method name="focus">
+			  <body>
+			    <![CDATA[
+				this. textbox. focus ();
+			    ]]>
+			  </body>
+			</method>
+
+			<method name="blur">
+			  <body>
+			    <![CDATA[
+				this. textbox. blur ();
+			    ]]>
+			  </body>
+			</method>
 			
 			<method name="setSelection">
 				<parameter name="selectionStart"/>
