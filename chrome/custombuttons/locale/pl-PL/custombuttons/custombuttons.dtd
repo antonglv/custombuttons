@@ -11,7 +11,7 @@
 <!ENTITY custombuttons_prefsDialog.title "Custom Buttons: settings">
 <!ENTITY custombuttons.prefs.use_cb2_button_format "Use old Custom Buttons² button format">
 <!ENTITY custombuttons.prefs.use_xml_button_format "Use new button format">
-<!ENTITY custombuttons.prefs.show_apply_button "Show &quot;Apply&quot; button in code editor">
+<!ENTITY custombuttons.prefs.show_apply_button "Show &quot;Save&quot; button in code editor">
 <!ENTITY custombuttons.prefs.disable_init "Disable buttons initialization (Changes affect only new windows)">
 <!ENTITY custombuttons.prefs.disable_init_in_customize_toolbar "Disable initialization id &quot;Customize Toolbar&quot; dialog">
 <!ENTITY custombuttons.prefs.enable_custombutton_protocol "Enable install buttons from mail messages">

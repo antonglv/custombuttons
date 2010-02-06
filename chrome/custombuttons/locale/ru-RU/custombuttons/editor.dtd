@@ -19,7 +19,7 @@
 <!ENTITY editor.initCode.tooltiptext "Выполняется при загрузке браузера">
 <!ENTITY editor.code.defaultValue "/*CODE*/">
 <!ENTITY editor.initCode.defaultValue "/*Initialization Code*/">
-<!ENTITY editor.Apply "Применить">
+<!ENTITY editor.Apply "Сохранить">
 <!ENTITY editor.urlfield "URL кнопки:">
 <!ENTITY editor.urlfield.accesskey "U">
 <!ENTITY editor.buttonSettings "Настройки кнопки">

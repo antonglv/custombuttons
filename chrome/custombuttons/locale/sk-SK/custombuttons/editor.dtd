@@ -19,7 +19,7 @@
 <!ENTITY editor.initCode.tooltiptext "Vykoná sa pri štarte prehliadača">
 <!ENTITY editor.code.defaultValue "/*KÓD*/">
 <!ENTITY editor.initCode.defaultValue "/*Vstupný kód*/">
-<!ENTITY editor.Apply "Apply">
+<!ENTITY editor.Apply "Save">
 <!ENTITY editor.urlfield "Button URL:">
 <!ENTITY editor.urlfield.accesskey "U">
 <!ENTITY editor.buttonSettings "Button settings">
