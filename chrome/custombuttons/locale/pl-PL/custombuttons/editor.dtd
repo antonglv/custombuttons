@@ -18,7 +18,7 @@
 <!ENTITY editor.initCode.tooltiptext "Uruchamiany przy starcie przeglądarki">
 <!ENTITY editor.code.defaultValue "/*KOD*/">
 <!ENTITY editor.initCode.defaultValue "/*Inicjowany kod*/">
-<!ENTITY editor.Apply "Apply">
+<!ENTITY editor.Apply "Save">
 <!ENTITY editor.urlfield "Button URL:">
 <!ENTITY editor.urlfield.accesskey "U">
 <!ENTITY editor.buttonSettings "Button settings">

@@ -19,7 +19,7 @@
 <!ENTITY editor.initCode.tooltiptext "浏览器启动时执行的代码">
 <!ENTITY editor.code.defaultValue "/*代码*/">
 <!ENTITY editor.initCode.defaultValue "/*初始化代码*/">
-<!ENTITY editor.Apply "Apply">
+<!ENTITY editor.Apply "Save">
 <!ENTITY editor.urlfield "Button URL:">
 <!ENTITY editor.urlfield.accesskey "U">
 <!ENTITY editor.buttonSettings "Button settings">

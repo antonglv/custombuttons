@@ -19,7 +19,7 @@
 <!ENTITY editor.initCode.tooltiptext "Executa quando o navegar inicia">
 <!ENTITY editor.code.defaultValue "/*CÓDIGO*/">
 <!ENTITY editor.initCode.defaultValue "/*Código de inicialização*/">
-<!ENTITY editor.Apply "Apply">
+<!ENTITY editor.Apply "Save">
 <!ENTITY editor.urlfield "Button URL:">
 <!ENTITY editor.urlfield.accesskey "U">
 <!ENTITY editor.buttonSettings "Button settings">
