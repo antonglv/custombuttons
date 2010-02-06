@@ -259,6 +259,21 @@ Editor. prototype =
 		window. restore ();
 	    else
 		window. maximize ();
+	},
+
+	tabSelect: function (event)
+	{
+	    var tab = event. target;
+	    if (tab. nodeName != "tab")
+		return;
+	    event. preventDefault ();
+	    var tabs = ELEMENT ("custombuttons-editbutton-tabbox");
+	    tabs. selectedTab = tab;
+	    var controlId = tab. getAttribute ("cbcontrol");
+	    {
+		var control = ELEMENT (controlId);
+		control. focus ();
+	    }
 	}
 };
 

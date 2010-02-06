@@ -41,7 +41,7 @@
 	
 		<rows>
 			<row align="center">
-				<label value="&editor.urlfield;"/>
+				<label value="&editor.urlfield;" accesskey="&editor.urlfield.accesskey;" control="urlfield-textbox"/>
 				<textbox id="urlfield-textbox" flex="1"/>
 			</row>
 		</rows>
@@ -54,12 +54,11 @@
 		</columns>
 		<rows>
 			<row align="center">
-				<label value="&editor.name;"
-					   tooltiptext="&editor.name.tooltiptext;"/>
+				<label value="&editor.name;" tooltiptext="&editor.name.tooltiptext;" accesskey="&editor.name.accesskey;" control="name"/>
 				<textbox id="name" flex="1"/>
 			</row>
 			<row align="center">
-				<label value="&editor.image;"/>
+				<label value="&editor.image;" accesskey="&editor.image.accesskey;" control="image"/>
 				<hbox>
 					<menulist id="image" class="menulist-iconic" flex="1"
 							  onselect="editor.imageChanged()">
@@ -70,26 +69,25 @@
 							<menuitem value="custombuttons-stdicon-4"/>
 						</menupopup>
 					</menulist>
-					<button label="&editor.select;"
+					<button label="&editor.select;" accesskey="&editor.select.accesskey;"
 							oncommand="editor.selectImage();"/>
-					<button label="&editor.base64;"
+					<button label="&editor.base64;" accesskey="&editor.base64.accesskey;"
 							oncommand="editor.convert_image();"
 							tooltiptext="&editor.base64.tooltiptext;"/>
 				</hbox>
 			</row>
 		</rows>
 	</grid>
-	
-	<tabbox  flex="1" id="custombuttons-editbutton-tabbox"
+	<tabbox  flex="1" id="custombuttons-editbutton-tabbox" onfocus="alert('focus')"
 			 handleCtrlTab="true" handleCtrlPageUpDown="true">
-		<tabs>
-			<tab id="code-tab"
+		<tabs oncommand="editor.tabSelect(event);" onselect="//editor.tabSelect(event);">
+			<tab id="code-tab" accesskey="&editor.code.accesskey;" cbcontrol="code"
 				 label="&editor.code;" tooltiptext="&editor.code.tooltiptext;"/>
-			<tab id = "init-tab" label="&editor.initCode;"
+			<tab id="init-tab" label="&editor.initCode;" accesskey="&editor.initCode.accesskey;" cbcontrol="initCode"
 				 tooltiptext="&editor.initCode.tooltiptext;"/>
-			<tab label="&editor.dialog.help;"
+			<tab label="&editor.dialog.help;" accesskey="&editor.dialog.help.accesskey;" cbcontrol="help"
 				 tooltiptext="&editor.dialog.help;"/>
-			<tab label="&editor.buttonSettings;"
+			<tab label="&editor.buttonSettings;" accesskey="&editor.buttonSettings.accesskey;"
 				 tooltiptext="&editor.buttonSettings.tooltiptext;"/>
 		</tabs>
 		<tabpanels flex="1">
