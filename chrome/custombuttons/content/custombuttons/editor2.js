@@ -234,6 +234,8 @@ Editor. prototype =
     aURL = aURL. substring (4, aURL. length - 1);
    else
     aURL = "";
+   aURL = aURL. replace (/^"/, "");
+   aURL = aURL. replace (/"$/, "");
   }
   this. cbService. convertImageToRawData (this. param. windowId, this. param. id || this. tempId, aURL);
  },
