@@ -78,9 +78,9 @@
 			</row>
 		</rows>
 	</grid>
-	<tabbox  flex="1" id="custombuttons-editbutton-tabbox" onfocus="alert('focus')"
+	<tabbox  flex="1" id="custombuttons-editbutton-tabbox"
 			 handleCtrlTab="true" handleCtrlPageUpDown="true">
-		<tabs oncommand="editor.tabSelect(event);" onselect="//editor.tabSelect(event);">
+		<tabs oncommand="editor.tabSelect(event);">
 			<tab id="code-tab" accesskey="&editor.code.accesskey;" cbcontrol="code"
 				 label="&editor.code;" tooltiptext="&editor.code.tooltiptext;"/>
 			<tab id="init-tab" label="&editor.initCode;" accesskey="&editor.initCode.accesskey;" cbcontrol="initCode"
