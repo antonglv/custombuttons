@@ -1,5 +1,8 @@
 Changelog
 0.0.4.7
++ Added: ability to disable buttons initialization in extension's Preferences dialog
++ Added: application command line options '-custombuttons disable-buttons-initialization'
+# Fixed: standard icons doesn't converted to base64 urls on Firefox 3.6/3.7
 # Fixed: Bug 22274 'Custom Buttons: settings' dialog doesn't work on SeaMonkey
 0.0.4.6
 + Added:   Thunderbird 3.0 support
