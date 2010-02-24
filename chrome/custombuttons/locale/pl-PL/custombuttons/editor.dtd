@@ -7,6 +7,7 @@
 <!ENTITY editor.image "Ikona:">
 <!ENTITY editor.image.accesskey "m">
 <!ENTITY editor.select "Przeglądaj…">
+<!ENTITY editor.select.accesskey "o">
 <!ENTITY editor.base64 "&#10162; base64">
 <!ENTITY editor.base64.accesskey "b">
 <!ENTITY editor.base64.tooltiptext "Konwertuje obrazek ikony do formatu base64 (data:image/png;base64,...)">
