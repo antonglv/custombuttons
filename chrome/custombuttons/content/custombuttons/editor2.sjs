@@ -272,6 +272,7 @@ Editor. prototype =
 	    var tabs = ELEMENT ("custombuttons-editbutton-tabbox");
 	    tabs. selectedTab = tab;
 	    var controlId = tab. getAttribute ("cbcontrol");
+	    if (controlId)
 	    {
 		var control = ELEMENT (controlId);
 		control. focus ();
