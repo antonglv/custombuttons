@@ -1,3 +1,5 @@
+
+
 var custombutton =
 {
  cbService: Components. classes ["@xsms.nm.ru/custombuttons/cbservice;1"]. getService (Components. interfaces. cbICustomButtonsService),

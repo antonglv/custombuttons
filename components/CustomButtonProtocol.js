@@ -34,6 +34,10 @@
  * the terms of any one of the MPL, the GPL or the LGPL.
  *
  * ***** END LICENSE BLOCK ***** */
+
+
+
+
 const kSIMPLEURI_CONTRACTID = "@mozilla.org/network/simple-uri;1";
 const nsIURI = Components. interfaces. nsIURI;
 

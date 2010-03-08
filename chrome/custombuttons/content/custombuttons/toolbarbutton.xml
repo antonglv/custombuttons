@@ -6,9 +6,6 @@
 
   <binding id="toolbarbutton"
        extends="chrome://global/content/bindings/toolbarbutton.xml#toolbarbutton">
-
-
-
 <implementation>
  <constructor>
      <![CDATA[
@@ -17,31 +14,22 @@
    custombutton. buttonConstructor (this);
   ]]>
  </constructor>
-
 </implementation>
-
 <handlers>
  <handler event="command">
   <![CDATA[
    custombutton. buttonCommand (event, this);
   ]]>
  </handler>
-
  <handler event="mousedown" phase="capturing">
   <![CDATA[
    custombutton. onMouseDown (event, this);
   ]]>
  </handler>
 </handlers>
-
-
   </binding>
-
   <binding id="menu"
        extends="chrome://global/content/bindings/toolbarbutton.xml#menu">
-
-
-
 <implementation>
  <constructor>
      <![CDATA[
@@ -50,31 +38,22 @@
    custombutton. buttonConstructor (this);
   ]]>
  </constructor>
-
 </implementation>
-
 <handlers>
  <handler event="command">
   <![CDATA[
    custombutton. buttonCommand (event, this);
   ]]>
  </handler>
-
  <handler event="mousedown" phase="capturing">
   <![CDATA[
    custombutton. onMouseDown (event, this);
   ]]>
  </handler>
 </handlers>
-
-
   </binding>
-
   <binding id="menu-orient"
        extends="chrome://global/content/bindings/toolbarbutton.xml#menu-orient">
-
-
-
 <implementation>
  <constructor>
      <![CDATA[
@@ -83,31 +62,22 @@
    custombutton. buttonConstructor (this);
   ]]>
  </constructor>
-
 </implementation>
-
 <handlers>
  <handler event="command">
   <![CDATA[
    custombutton. buttonCommand (event, this);
   ]]>
  </handler>
-
  <handler event="mousedown" phase="capturing">
   <![CDATA[
    custombutton. onMouseDown (event, this);
   ]]>
  </handler>
 </handlers>
-
-
   </binding>
-
   <binding id="menu-button"
        extends="chrome://global/content/bindings/toolbarbutton.xml#menu-button">
-
-
-
 <implementation>
  <constructor>
      <![CDATA[
@@ -116,31 +86,22 @@
    custombutton. buttonConstructor (this);
   ]]>
  </constructor>
-
 </implementation>
-
 <handlers>
  <handler event="command">
   <![CDATA[
    custombutton. buttonCommand (event, this);
   ]]>
  </handler>
-
  <handler event="mousedown" phase="capturing">
   <![CDATA[
    custombutton. onMouseDown (event, this);
   ]]>
  </handler>
 </handlers>
-
-
   </binding>
-
   <binding id="menu-vertical"
        extends="chrome://global/content/bindings/toolbarbutton.xml#menu-vertical">
-
-
-
 <implementation>
  <constructor>
      <![CDATA[
@@ -149,24 +110,18 @@
    custombutton. buttonConstructor (this);
   ]]>
  </constructor>
-
 </implementation>
-
 <handlers>
  <handler event="command">
   <![CDATA[
    custombutton. buttonCommand (event, this);
   ]]>
  </handler>
-
  <handler event="mousedown" phase="capturing">
   <![CDATA[
    custombutton. onMouseDown (event, this);
   ]]>
  </handler>
 </handlers>
-
-
   </binding>
-
 </bindings>

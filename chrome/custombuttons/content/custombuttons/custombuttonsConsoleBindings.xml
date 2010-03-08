@@ -13,7 +13,6 @@
   <handlers>
    <handler event="click" phase="capturing" button="0" preventdefault="true">
     <![CDATA[
-
 var url = this. getAttribute ("href");
 var line = this. getAttribute ("line");
 var cbs = Components. classes ["@xsms.nm.ru/custombuttons/cbservice;1"].
@@ -23,13 +22,11 @@ cbs. editButton (null, url + "#" + line, null);
    </handler>
   </handlers>
  </binding>
-
  <binding id="console2-error-source" extends="chrome://console2/content/console2.xml#item">
   <handlers>
    <handler event="click" phase="capturing" button="0" preventdefault="true">
     <![CDATA[
      event. stopPropagation ();
-
 var url = this. getAttribute ("href");
 var line = this. getAttribute ("line");
 var cbs = Components. classes ["@xsms.nm.ru/custombuttons/cbservice;1"].
@@ -39,5 +36,4 @@ cbs. editButton (null, url + "#" + line, null);
    </handler>
   </handlers>
  </binding>
-
 </bindings>

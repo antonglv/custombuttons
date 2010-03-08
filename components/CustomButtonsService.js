@@ -18,6 +18,10 @@
 // Author: Anton Glazatov (c) 2009
 //
 // ***** END LICENSE BLOCK *****
+
+
+
+
 function makeSupportsArray ()
 {
  var array = Components. classes ["@mozilla.org/supports-array;1"]. createInstance (Components. interfaces. nsISupportsArray);
