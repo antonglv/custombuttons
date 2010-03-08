@@ -18,6 +18,8 @@
 // Author: Anton Glazatov (c) 2008
 //
 // ***** END LICENSE BLOCK *****
+
+
 function cbKeyMapService () {}
 cbKeyMapService. prototype =
 {

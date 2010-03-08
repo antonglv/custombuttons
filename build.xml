@@ -9,8 +9,8 @@
 	
 	<!-- set global properties for this build -->
 	<property file="build.properties"/>
-	<property name="xpidlpath" location="${geckosdkpath}\BIN"/>
-	<property name="idlpath" location="${geckosdkpath}\IDL"/>
+	<property name="xpidlpath" location="${geckosdkpath}\bin"/>
+	<property name="idlpath" location="${geckosdkpath}\idl"/>
 	
 	<property name="xpistdlib" location="${basedir}\stdlib"/>
 	<property name="xpistdinc" location="${xpistdlib}\inc"/>
@@ -82,6 +82,7 @@
 			<mapper type="glob" from="*.smanifest" to="*.manifest"/>
 		</mapper>
 		<apply executable="cpp.exe"
+		       os="Windows"
 			   failonerror="true"
 			   force="${checkLibs.forcedPreprocess}"> <!-- and no jpp.bat needed now -->
 			<fileset dir="${basedir}">
@@ -109,6 +110,36 @@
 				<outputmapper refid="preprocessormapper"/>
 			</redirector>
 		</apply>
+		<apply executable="cpp"
+		       os="Linux"
+			   failonerror="true"
+			   force="${checkLibs.forcedPreprocess}"> <!-- and no jpp.bat needed now -->
+			<fileset dir="${basedir}">
+				<include name="**/*.sjs"/>
+				<include name="**/*.sxml"/>
+				<include name="**/*.smanifest"/>
+			</fileset>
+			<mapper refid="preprocessormapper"/>
+			<arg value="-I"/>
+			<arg value="${xpistdlib}"/>
+			<arg value="-I"/>
+			<arg value="${xpistdinc}"/>
+			<arg value="-I"/>
+			<arg value="${projectinc}"/>
+			<arg value="-ansi"/>
+			<arg value="-P"/>
+			<arg value="-CC"/>
+			<arg value="-w"/>
+			<srcfile/>
+			<redirector inputencoding="UTF-8" outputencoding="UTF-8">
+				<outputfilterchain>
+					<linecontains negate="true"> <!-- and no grep needed now -->
+						<contains value="{--exclude-this-line}"/>
+					</linecontains>
+				</outputfilterchain>
+				<outputmapper refid="preprocessormapper"/>
+			</redirector>
+		</apply>
 	</target>
 	
 	<target name="buildxpt" depends="init,preprocess">
@@ -116,6 +147,21 @@
 Define it in build.properties (don't forget about double back slashes)</fail>
 		<apply executable="xpidl.exe" dir="${xpidlpath}"
 			   resolveExecutable="true" dest="${basedir}/components"
+		       os="Windows"
+			   failonerror="true"> <!-- and no pack.bat needed now -->
+			<arg value="-m"/>
+			<arg value="typelib"/>
+			<arg value="-I"/>
+			<arg value="${idlpath}"/>
+			<arg value="-e"/>
+			<targetfile/>
+			<srcfile/>
+			<fileset dir="${basedir}/components" includes="*.idl"/>
+			<mapper type="glob" from="*.idl" to="*.xpt"/>
+		</apply>
+		<apply executable="xpidl" dir="${xpidlpath}"
+			   resolveExecutable="true" dest="${basedir}/components"
+		       os="Linux"
 			   failonerror="true"> <!-- and no pack.bat needed now -->
 			<arg value="-m"/>
 			<arg value="typelib"/>
