@@ -735,7 +735,7 @@
 			<handler event="keypress" keycode="VK_TAB" action="this.handleTabs(event)" modifiers="shift"/>
 			<handler event="keypress" keycode="VK_F3" action="this.findNext(event.shiftKey)"/>
 			<handler event="keypress" keycode="VK_F3" action="this.findNext(event.shiftKey)" modifiers="shift"/>
-			<handler event="keypress" key="a" action="this.toggleComments()" modifiers="control,shift"/>
+			<handler event="keypress" key="a" action="event.preventDefault();this.toggleComments()" modifiers="control,shift"/>
 			<handler event="keypress" key="g" action="this.goToLine()" modifiers="control"/>
 			<handler event="keypress" key="f" action="this.newSearch(event)" modifiers="control"/>
 			<handler event="keypress" key="f" action="this.newSearch(event)" modifiers="control,shift"/>
