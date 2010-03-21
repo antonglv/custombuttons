@@ -140,6 +140,12 @@ Editor. prototype =
   return true;
  },
 
+        acceptDialog: function ()
+        {
+     var dialog = document. getElementById ("custombuttonsEditor");
+     dialog. acceptDialog ();
+ },
+
  onAccept: function ()
  {
   if (this. updateButton ())
