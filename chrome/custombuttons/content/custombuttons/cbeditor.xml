@@ -191,6 +191,8 @@
 			<property name="value" onget="return this.textbox.value;"
 				  onset="return this.textbox.value=val;"/>
 
+			<property name="changed" onget="return this.editor.transactionManager.numberOfUndoItems!=0"/>
+
 			<method name="focus">
 			  <body>
 			    <![CDATA[

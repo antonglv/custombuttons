@@ -14,11 +14,42 @@ Editor. prototype =
 	QueryInterface: function (iid)
 	{
 		if (iid. equals (CI. nsIObserver) ||
+		    iid. equals (CI. nsIEditorObserver) ||
 			iid. equals (CI. nsIWeakReference) ||
 			iid. equals (CI. nsISupports))
 			return this;
 		return NS_ERROR (NO_INTERFACE);
 	},
+
+    _changed: false,
+
+    get changed ()
+    {
+	return this. _changed;
+    },
+
+    set changed (val)
+    {
+	if (val && !this. _changed)
+	    document. title = document. title + " *";
+	else if (!val && this. _changed)
+	    document. title = document. title. replace (/ \*$/, "");
+	this. _changed = val;
+    },
+
+    /* nsIEditorObserver */
+    EditAction: function ()
+    {
+	var codeEditor = ELEMENT ("code");
+	var initEditor = ELEMENT ("initCode");
+	var helpEditor = ELEMENT ("help");
+	if (codeEditor. changed ||
+	    initEditor. changed ||
+	    helpEditor. changed)
+	    this. changed = true;
+	else
+	    this. changed = false;
+    },
 
 	QueryReferent: function (iid)
 	{
@@ -63,6 +94,11 @@ Editor. prototype =
 			document. documentElement. getButton ("extra2"). setAttribute ("hidden", "true");
 			ELEMENT ("cbUpdateButtonCommand"). setAttribute ("disabled", "true");
 		}
+
+	    ELEMENT ("code"). editor. addEditorObserver (this);
+	    ELEMENT ("initCode"). editor. addEditorObserver (this);
+	    ELEMENT ("help"). editor. addEditorObserver (this);
+	    window. addEventListener ("mousedown", this, true);
 	},
 
 	setEditorParameters: function (param)
@@ -251,14 +287,57 @@ Editor. prototype =
 
 	destroy: function ()
 	{
+	    window. removeEventListener ("mousedown", this, true);
+	    ELEMENT ("code"). editor. removeEditorObserver (this);
+	    ELEMENT ("initCode"). editor. removeEditorObserver (this);
+	    ELEMENT ("help"). editor. removeEditorObserver (this);
+
 		var os = SERVICE (OBSERVER);
 		os. removeObserver (this, this. notificationPrefix + "setEditorParameters");
 		os. removeObserver (this, this. notificationPrefix + "updateImage");
 	},
 
+        // next field and method are needed to rewind focus to active element
+        // if "Cancel" button will be pressed twice
+        // I think there should be more easiest way to do it
+        // but I don't know it
+        lastFocused: null,
+
+        handleEvent: function (event)
+        {
+	    var cbtn = ELEMENT ("custombuttonsEditor"). getButton ("cancel");
+	    if (event. originalTarget == cbtn)
+		this. lastFocused = document. activeElement;
+	},
+
 	onCancel: function ()
 	{
-		return this. canClose;
+	    const RES_SAVE = 0;
+	    const RES_DONT_SAVE = 1;
+	    const RES_CANCEL = 2;
+	    var res;
+	    if (this. changed)
+	    {
+		var ps = SERVICE (PROMPT);
+		var aButtonFlags = ps. BUTTON_POS_0 * ps. BUTTON_TITLE_SAVE +
+		                   ps. BUTTON_POS_1 * ps. BUTTON_TITLE_DONT_SAVE +
+		                   ps. BUTTON_POS_2 * ps. BUTTON_TITLE_CANCEL +
+		                   ps. BUTTON_POS_0_DEFAULT;
+		res = ps. confirmEx (null, "Custom Buttons", "There were changes made to button code.\nWould you like to save changes ?", aButtonFlags, "", "", "", "", {});
+		if (res == RES_SAVE)
+		{
+		    this. acceptDialog ();
+		    return true;
+		}
+		else
+		{
+		    if ((res == RES_CANCEL) && this. lastFocused)
+			this. lastFocused. focus ();
+		    return (res == RES_DONT_SAVE);
+		}
+	    }
+		
+	    return this. canClose;
 	},
 
 	fullScreen: function ()

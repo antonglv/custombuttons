@@ -14,11 +14,42 @@ Editor. prototype =
  QueryInterface: function (iid)
  {
   if (iid. equals (Components. interfaces. nsIObserver) ||
+      iid. equals (Components. interfaces. nsIEditorObserver) ||
    iid. equals (Components. interfaces. nsIWeakReference) ||
    iid. equals (Components. interfaces. nsISupports))
    return this;
   return Components. results. NS_ERROR_NO_INTERFACE;
  },
+
+    _changed: false,
+
+    get changed ()
+    {
+ return this. _changed;
+    },
+
+    set changed (val)
+    {
+ if (val && !this. _changed)
+     document. title = document. title + " *";
+ else if (!val && this. _changed)
+     document. title = document. title. replace (/ \*$/, "");
+ this. _changed = val;
+    },
+
+    /* nsIEditorObserver */
+    EditAction: function ()
+    {
+ var codeEditor = document. getElementById ("code");
+ var initEditor = document. getElementById ("initCode");
+ var helpEditor = document. getElementById ("help");
+ if (codeEditor. changed ||
+     initEditor. changed ||
+     helpEditor. changed)
+     this. changed = true;
+ else
+     this. changed = false;
+    },
 
  QueryReferent: function (iid)
  {
@@ -63,6 +94,11 @@ Editor. prototype =
    document. documentElement. getButton ("extra2"). setAttribute ("hidden", "true");
    document. getElementById ("cbUpdateButtonCommand"). setAttribute ("disabled", "true");
   }
+
+     document. getElementById ("code"). editor. addEditorObserver (this);
+     document. getElementById ("initCode"). editor. addEditorObserver (this);
+     document. getElementById ("help"). editor. addEditorObserver (this);
+     window. addEventListener ("mousedown", this, true);
  },
 
  setEditorParameters: function (param)
@@ -251,14 +287,55 @@ Editor. prototype =
 
  destroy: function ()
  {
+     window. removeEventListener ("mousedown", this, true);
+     document. getElementById ("code"). editor. removeEditorObserver (this);
+     document. getElementById ("initCode"). editor. removeEditorObserver (this);
+     document. getElementById ("help"). editor. removeEditorObserver (this);
+
   var os = Components. classes ["@mozilla.org/observer-service;1"]. getService (Components. interfaces. nsIObserverService);
   os. removeObserver (this, this. notificationPrefix + "setEditorParameters");
   os. removeObserver (this, this. notificationPrefix + "updateImage");
  },
 
+        lastFocused: null,
+
+        handleEvent: function (event)
+        {
+     var cbtn = document. getElementById ("custombuttonsEditor"). getButton ("cancel");
+     if (event. originalTarget == cbtn) {
+
+  this. lastFocused = document.activeElement;
+  document.title=this.lastFocused.nodeName;}
+ },
+
  onCancel: function ()
  {
-  return this. canClose;
+     const RES_SAVE = 0;
+     const RES_DONT_SAVE = 1;
+     const RES_CANCEL = 2;
+     var res;
+     if (this. changed)
+     {
+  var ps = Components. classes ["@mozilla.org/embedcomp/prompt-service;1"]. getService (Components. interfaces. nsIPromptService);
+  var aButtonFlags = ps. BUTTON_POS_0 * ps. BUTTON_TITLE_SAVE +
+                     ps. BUTTON_POS_1 * ps. BUTTON_TITLE_DONT_SAVE +
+                     ps. BUTTON_POS_2 * ps. BUTTON_TITLE_CANCEL +
+                     ps. BUTTON_POS_0_DEFAULT;
+  res = ps. confirmEx (null, "Custom Buttons", "There were changes made to button code.\nWould you like to save changes ?", aButtonFlags, "", "", "", "", {});
+  if (res == RES_SAVE)
+  {
+      this. acceptDialog ();
+      return true;
+  }
+  else
+  {
+      if ((res == RES_CANCEL) && this. lastFocused)
+   this. lastFocused. focus ();
+      return (res == RES_DONT_SAVE);
+  }
+     }
+
+     return this. canClose;
  },
 
  fullScreen: function ()
