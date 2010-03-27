@@ -297,15 +297,17 @@ Editor. prototype =
   os. removeObserver (this, this. notificationPrefix + "updateImage");
  },
 
+        // next field and method are needed to rewind focus to active element
+        // if "Cancel" button will be pressed twice
+        // I think there should be more easiest way to do it
+        // but I don't know it
         lastFocused: null,
 
         handleEvent: function (event)
         {
      var cbtn = document. getElementById ("custombuttonsEditor"). getButton ("cancel");
-     if (event. originalTarget == cbtn) {
-
-  this. lastFocused = document.activeElement;
-  document.title=this.lastFocused.nodeName;}
+     if (event. originalTarget == cbtn)
+  this. lastFocused = document. activeElement;
  },
 
  onCancel: function ()
@@ -321,7 +323,8 @@ Editor. prototype =
                      ps. BUTTON_POS_1 * ps. BUTTON_TITLE_DONT_SAVE +
                      ps. BUTTON_POS_2 * ps. BUTTON_TITLE_CANCEL +
                      ps. BUTTON_POS_0_DEFAULT;
-  res = ps. confirmEx (null, "Custom Buttons", "There were changes made to button code.\nWould you like to save changes ?", aButtonFlags, "", "", "", "", {});
+  var promptMsg = this. cbService. getLocaleString ("ConfirmSaveChanges");
+  res = ps. confirmEx (null, "Custom Buttons", promptMsg, aButtonFlags, "", "", "", "", {});
   if (res == RES_SAVE)
   {
       this. acceptDialog ();

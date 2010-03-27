@@ -323,7 +323,8 @@ Editor. prototype =
 		                   ps. BUTTON_POS_1 * ps. BUTTON_TITLE_DONT_SAVE +
 		                   ps. BUTTON_POS_2 * ps. BUTTON_TITLE_CANCEL +
 		                   ps. BUTTON_POS_0_DEFAULT;
-		res = ps. confirmEx (null, "Custom Buttons", "There were changes made to button code.\nWould you like to save changes ?", aButtonFlags, "", "", "", "", {});
+		var promptMsg = this. cbService. getLocaleString ("ConfirmSaveChanges");
+		res = ps. confirmEx (null, "Custom Buttons", promptMsg, aButtonFlags, "", "", "", "", {});
 		if (res == RES_SAVE)
 		{
 		    this. acceptDialog ();
