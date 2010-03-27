@@ -324,7 +324,7 @@ Editor. prototype =
                      ps. BUTTON_POS_2 * ps. BUTTON_TITLE_CANCEL +
                      ps. BUTTON_POS_0_DEFAULT;
   var promptMsg = this. cbService. getLocaleString ("ConfirmSaveChanges");
-  res = ps. confirmEx (null, "Custom Buttons", promptMsg, aButtonFlags, "", "", "", "", {});
+  res = ps. confirmEx (window, "Custom Buttons", promptMsg, aButtonFlags, "", "", "", "", {});
   if (res == RES_SAVE)
   {
       this. acceptDialog ();
