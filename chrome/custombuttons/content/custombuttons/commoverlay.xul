@@ -120,12 +120,12 @@
 	</stringbundleset>
 	
 	<menupopup id="toolbar-context-menu">
-	    <menuitem label="&custombuttons.viewMenu_Item;"
+	    <menuitem label="&custombuttons.viewMenu_Item;" class="menuitem-iconic"
 				  oncommand="custombuttons.addButton()"/>
 	</menupopup>
 	
 	<menupopup id="main-toolbar-context-menu">
-	    <menuitem label="&custombuttons.viewMenu_Item;"
+	    <menuitem label="&custombuttons.viewMenu_Item;" class="menuitem-iconic"
 				  oncommand="custombuttons.addButton()"/>
 	</menupopup>
 
