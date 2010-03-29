@@ -81,6 +81,7 @@ Editor. prototype =
 		var os = SERVICE (OBSERVER);
 		os. addObserver (this, this. notificationPrefix + "updateImage", false);
 		os. addObserver (this, this. notificationPrefix + "setEditorParameters", false);
+	    	os. addObserver (this, this. notificationPrefix + "updateButton", false);
 		this. setValues ();
 		ELEMENT ("name"). focus ();
 		if (this. param. editorParameters)
@@ -255,6 +256,14 @@ Editor. prototype =
 			if (this. param. id == param. id)
 				this. setEditorParameters (subject);
 		}
+	    	else if ((topic == this. notificationPrefix + "updateButton") &&
+			(subject. getAttribute ("id") == this. param. id))
+	    	{
+		    var link = "custombutton://buttons/" + this. param. windowId + "/edit/" + this. param. id;
+		    this. param = this. cbService. getButtonParameters (link). wrappedJSObject;
+		    this. setValues ();
+		    this. changed = false;
+		}
 	},
 
 	imageChanged: function ()
@@ -293,6 +302,7 @@ Editor. prototype =
 	    ELEMENT ("help"). editor. removeEditorObserver (this);
 
 		var os = SERVICE (OBSERVER);
+	    	os. removeObserver (this, this. notificationPrefix + "updateButton");
 		os. removeObserver (this, this. notificationPrefix + "setEditorParameters");
 		os. removeObserver (this, this. notificationPrefix + "updateImage");
 	},
