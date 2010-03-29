@@ -20,9 +20,11 @@
 
 		<popup id="custombuttons-contextpopup">
 			<menuitem id="custombuttons-contextpopup-addnewbutton"
+				  class="menuitem-iconic"
 					  label="&custombuttons.viewMenu_Item;"
 					  oncommand="custombuttons.addButton()"/>
 			<menuitem id="custombuttons-contextpopup-customize"
+				  class="menuitem-iconic"
 					  accesskey="&customizeToolbarContext.accesskey;"
 					  label="&customizeToolbarContext.label;"
 					  observes="custombuttons-contextbroadcaster-primary"
@@ -32,9 +34,11 @@
 				  observes="custombuttons-contextbroadcaster-secondary">
 				<menupopup id="custombuttons-contextpopup-sub">
 					<menuitem id="custombuttons-contextpopup-addnewbutton-sub"
+						  class="menuitem-iconic"
 							  label="&custombuttons.viewMenu_Item;"
 							  oncommand="custombuttons.addButton()"/>
 					<menuitem id="custombuttons-contextpopup-customize-sub"
+						  class="menuitem-iconic"
 							  accesskey="&customizeToolbarContext.accesskey;"
 							  label="&customizeToolbarContext.label;"
 							  command="cmd_CustomizeToolbars"/>
@@ -47,6 +51,7 @@
 	<menupopup id="menu_View_Popup">
 		<menuseparator/>
 		<menuitem label="&custombuttons.viewMenu_Item;"
+			  class="menuitem-iconic"
 				  oncommand="custombuttons.addButton()"/>
 	</menupopup>
 
@@ -58,9 +63,11 @@
 
 		<popup id="custombuttons-contextpopup">
 			<menuitem id="custombuttons-contextpopup-addnewbutton"
+				  class="menuitem-iconic"
 					  label="&custombuttons.viewMenu_Item;"
 					  oncommand="custombuttons.addButton()"/>
 			<menuitem id="custombuttons-contextpopup-customize"
+				  class="menuitem-iconic"
 					  accesskey="&customizeToolbarContext.accesskey;"
 					  label="&customizeToolbarContext.label;"
 					  observes="custombuttons-contextbroadcaster-primary"
@@ -70,9 +77,11 @@
 				  observes="custombuttons-contextbroadcaster-secondary">
 				<menupopup id="custombuttons-contextpopup-sub">
 					<menuitem id="custombuttons-contextpopup-addnewbutton-sub"
+						  class="menuitem-iconic"
 							  label="&custombuttons.viewMenu_Item;"
 							  oncommand="custombuttons.addButton()"/>
 					<menuitem id="custombuttons-contextpopup-customize-sub"
+						  class="menuitem-iconic"
 							  accesskey="&customizeToolbarContext.accesskey;"
 							  label="&customizeToolbarContext.label;"
 							  command="cmd_CustomizeToolbars"/>

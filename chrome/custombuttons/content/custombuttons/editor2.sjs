@@ -31,9 +31,9 @@ Editor. prototype =
     set changed (val)
     {
 	if (val && !this. _changed)
-	    document. title = document. title + " *";
+	    document. title = "* " + document. title;
 	else if (!val && this. _changed)
-	    document. title = document. title. replace (/ \*$/, "");
+	    document. title = document. title. replace (/^\* /, "");
 	this. _changed = val;
     },
 
