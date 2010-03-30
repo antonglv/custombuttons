@@ -8,8 +8,9 @@ var custombutton =
  {
   if (oBtn. destroy)
    oBtn. destroy (); // to call onDestroy method, if exists
+         var windowId = this. cbService. getWindowId (document. documentURI);
   var cbd = Components. classes ["@xsms.nm.ru/custombuttons/cbkeymap;1"]. getService (Components. interfaces. cbIKeyMapService);
-  cbd. Delete (oBtn. getAttribute ("id"));
+  cbd. Delete (windowId, oBtn. getAttribute ("id"));
   if (!oBtn. hasAttribute ("cb-name"))
   {
    if (oBtn. hasAttribute ("label"))
@@ -19,6 +20,7 @@ var custombutton =
   {
    cbd. Add
    (
+        windowId,
     oBtn. getAttribute ("id"),
     oBtn. getAttribute ("cb-accelkey"),
     (oBtn. cbMode & 2)? true: false
@@ -65,8 +67,9 @@ var custombutton =
  {
   if (oBtn. hasAttribute ("cb-accelkey"))
   {
+       var windowId = this. cbService. getWindowId (document. documentURI);
    var cbd = Components. classes ["@xsms.nm.ru/custombuttons/cbkeymap;1"]. getService (Components. interfaces. cbIKeyMapService);
-   cbd. Delete (oBtn. getAttribute ("id"));
+   cbd. Delete (windowId, oBtn. getAttribute ("id"));
   }
   if (oBtn. destroy)
    oBtn. destroy ();

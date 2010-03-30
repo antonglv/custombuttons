@@ -27,20 +27,22 @@ cbKeyMapService. prototype =
 
     keymap: {},
     
-    Add: function (id, key, disableDefaultAction)
+    Add: function (windowId, buttonId, key, disableDefaultAction)
     {
-		if (!id)
+		if (!windowId || !buttonId)
 			return;
+		if (!this. keymap [windowId])
+		    this. keymap [windowId] = {};
 		if (key)
-			this. keymap [id] = [key, disableDefaultAction];
+			this. keymap [windowId] [buttonId] = [key, disableDefaultAction];
 		else
-			this. Delete (id); 
+			this. Delete (windowId, buttonId); 
 	},
 	
-	Delete: function (id)
+	Delete: function (windowId, buttonId)
 	{
-		if (this. keymap [id])
-			delete this. keymap [id];
+	    if (this. keymap [windowId] && this. keymap [windowId] [buttonId])
+		delete this. keymap [windowId] [buttonId];
 	},
 	
 	getKeyPrefix: function (event)
@@ -80,17 +82,17 @@ cbKeyMapService. prototype =
 		return key;
 	},
 	
-	Get: function (event, count)
+	Get: function (windowId, event, count)
 	{
 		var key = this. getKeyPrefix (event) + this. getKey (event);
 		var values = new Array ();
 		var mode = false;
-		for (var i in this. keymap)
+		for (var i in this. keymap [windowId])
 		{
-			if (this. keymap [i] [0] == key)
+			if (this. keymap [windowId] [i] [0] == key)
 			{
 				values. push (i);
-				mode = mode || this. keymap [i] [1];
+				mode = mode || this. keymap [windowId] [i] [1];
 			}
 		}
 		if (values. length != 0)
