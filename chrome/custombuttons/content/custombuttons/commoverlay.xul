@@ -34,7 +34,8 @@
 		<menuitem id="custombuttons-contextpopup-clone-sub"
 			  class="menuitem-iconic"
 				  label="&custombuttons.buttonPopup.clone;"
-				  oncommand="custombuttons.doButtonOperation('clone');"/>
+				  oncommand="if(!event.ctrlKey)custombuttons.doButtonOperation('clone');"
+			  	  onclick="custombuttons.handleMenuClick(event);"/>
 		<menuitem id="custombuttons-contextpopup-copyURI-sub"
 			  class="menuitem-iconic"
 				  label="&custombuttons.buttonPopup.copyURI;"
@@ -75,7 +76,8 @@
 			  class="menuitem-iconic"
 				  label="&custombuttons.buttonPopup.clone;"
 				  observes="custombuttons-contextbroadcaster-primary"
-				  oncommand="custombuttons.doButtonOperation('clone');"/>
+				  oncommand="if(!event.ctrlKey)custombuttons.doButtonOperation('clone');"
+			  	  onclick="custombuttons.handleMenuClick(event);"/>
 		<menuitem id="custombuttons-contextpopup-copyURI"
 			  class="menuitem-iconic"
 				  label="&custombuttons.buttonPopup.copyURI;"
