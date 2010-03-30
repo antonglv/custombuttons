@@ -4,11 +4,11 @@
 [scriptable, uuid (86216795-2b22-470a-9388-785cb4b4101b)]
 interface cbIKeyMapService: nsISupports
 {
-	void Add (in string id, in AUTF8String key, in boolean disableDefaultAction);
-	void Delete (in string id);
-	void Get (in nsIDOMEvent event,
-			  out unsigned long count,
-			  [retval, array, size_is(count)] out string values);
-	AUTF8String getKey (in nsIDOMEvent event);
-	AUTF8String getKeyPrefix (in nsIDOMEvent event);
+  void Add (in string windowId, in string buttonId, in AUTF8String key, in boolean disableDefaultAction);
+  void Delete (in string windowId, in string buttonId);
+  void Get (in string windowId, in nsIDOMEvent event,
+	    out unsigned long count,
+	    [retval, array, size_is(count)] out string values);
+  AUTF8String getKey (in nsIDOMEvent event);
+  AUTF8String getKeyPrefix (in nsIDOMEvent event);
 };

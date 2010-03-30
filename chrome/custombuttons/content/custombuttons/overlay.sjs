@@ -336,9 +336,10 @@ Custombuttons. prototype =
 	
 	onKeyPress: function (event)
 	{
+	    	var windowId = this. cbService. getWindowId (document. documentURI);
 		var cbd = SERVICE (CB_KEYMAP);
 		var lenobj = {};
-		var ids = cbd. Get (event, /*prefixedKey,*/ lenobj);
+		var ids = cbd. Get (windowId, event, /*prefixedKey,*/ lenobj);
 		if (ids. length == 0)
 			return;
 		var mode = (ids. shift () == "true");
