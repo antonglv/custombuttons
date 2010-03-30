@@ -357,7 +357,32 @@ Custombuttons. prototype =
 			catch (e) {}
 		}
 	},
-	
+
+    	handleMenuClick: function (event)
+    	{
+	    if ((event. button != 1) &&
+		!((event. button == 0) && event. ctrlKey))
+		return;
+	    var oButton = document. popupNode;
+	    if (!oButton)
+		return;
+	    event. preventDefault ();
+	    event. stopPropagation ();
+	    event. target. parentNode. hidePopup ();
+	    this. cloneButton (oButton);
+	    var newButtonLink = this. makeButtonLink ("update", oButton. nextSibling. id);
+	    var params = this. cbService. getButtonParameters (newButtonLink). wrappedJSObject;
+	    params. name = "";
+	    params. image = "";
+	    params. code = "";
+	    params. initCode = "";
+	    params. accelkey = "";
+	    params. mode = 0;
+	    params. help = "";
+	    params. wrappedJSObject = params;
+	    this. cbService. installButton (params);
+	},
+
 	/* EventHandler interface */
 	handleEvent: function (event)
 	{
