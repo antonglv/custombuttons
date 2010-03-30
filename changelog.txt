@@ -1,4 +1,12 @@
 Changelog
+0.0.4.8
++ Added: Firefox 3.7a4pre support
++ Added: Thunderbird 3.2a1 support
++ Added: KompoZer 0.8b3 support
++ Added: Protection against loss of changes in the editor
++ Added: Middle mouse or Ctrl+Left click on "Clone button" menuitem makes new empty button
+# Fixed: Buttons with the same identifier can override the "hot" keys to each other
+* New extension icon
 0.0.4.7
 + Added: ability to disable buttons initialization in extension's Preferences dialog
 + Added: application command line options '-custombuttons disable-buttons-initialization'

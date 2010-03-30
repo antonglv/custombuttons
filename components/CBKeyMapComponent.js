@@ -87,13 +87,16 @@ cbKeyMapService. prototype =
   var key = this. getKeyPrefix (event) + this. getKey (event);
   var values = new Array ();
   var mode = false;
-  for (var i in this. keymap [windowId])
-  {
+      if (this. keymap [windowId])
+      {
+      for (var i in this. keymap [windowId])
+      {
    if (this. keymap [windowId] [i] [0] == key)
    {
     values. push (i);
     mode = mode || this. keymap [windowId] [i] [1];
    }
+      }
   }
   if (values. length != 0)
    values. unshift (mode? "true": "");
