@@ -82,7 +82,7 @@
 			<mapper type="glob" from="*.smanifest" to="*.manifest"/>
 		</mapper>
 		<apply executable="cpp.exe"
-		       os="Windows"
+		       os="Windows,Windows XP"
 			   failonerror="true"
 			   force="${checkLibs.forcedPreprocess}"> <!-- and no jpp.bat needed now -->
 			<fileset dir="${basedir}">
