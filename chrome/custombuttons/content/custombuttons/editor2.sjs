@@ -96,10 +96,10 @@ Editor. prototype =
 			ELEMENT ("cbUpdateButtonCommand"). setAttribute ("disabled", "true");
 		}
 
-	    ELEMENT ("code"). editor. addEditorObserver (this);
-	    ELEMENT ("initCode"). editor. addEditorObserver (this);
-	    ELEMENT ("help"). editor. addEditorObserver (this);
-	    window. addEventListener ("mousedown", this, true);
+		ELEMENT ("code"). addEditorObserver (this);
+		ELEMENT ("initCode"). addEditorObserver (this);
+		ELEMENT ("help"). addEditorObserver (this);
+		window. addEventListener ("mousedown", this, true);
 	},
 
 	setEditorParameters: function (param)
@@ -297,9 +297,9 @@ Editor. prototype =
 	destroy: function ()
 	{
 	    window. removeEventListener ("mousedown", this, true);
-	    ELEMENT ("code"). editor. removeEditorObserver (this);
-	    ELEMENT ("initCode"). editor. removeEditorObserver (this);
-	    ELEMENT ("help"). editor. removeEditorObserver (this);
+	    ELEMENT ("code"). removeEditorObserver (this);
+	    ELEMENT ("initCode"). removeEditorObserver (this);
+	    ELEMENT ("help"). removeEditorObserver (this);
 
 		var os = SERVICE (OBSERVER);
 	    	os. removeObserver (this, this. notificationPrefix + "updateButton");

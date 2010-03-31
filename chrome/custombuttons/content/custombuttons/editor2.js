@@ -1,6 +1,3 @@
-
-
-
 function Editor () {}
 Editor. prototype =
 {
@@ -96,10 +93,10 @@ Editor. prototype =
    document. getElementById ("cbUpdateButtonCommand"). setAttribute ("disabled", "true");
   }
 
-     document. getElementById ("code"). editor. addEditorObserver (this);
-     document. getElementById ("initCode"). editor. addEditorObserver (this);
-     document. getElementById ("help"). editor. addEditorObserver (this);
-     window. addEventListener ("mousedown", this, true);
+  document. getElementById ("code"). addEditorObserver (this);
+  document. getElementById ("initCode"). addEditorObserver (this);
+  document. getElementById ("help"). addEditorObserver (this);
+  window. addEventListener ("mousedown", this, true);
  },
 
  setEditorParameters: function (param)
@@ -297,9 +294,9 @@ Editor. prototype =
  destroy: function ()
  {
      window. removeEventListener ("mousedown", this, true);
-     document. getElementById ("code"). editor. removeEditorObserver (this);
-     document. getElementById ("initCode"). editor. removeEditorObserver (this);
-     document. getElementById ("help"). editor. removeEditorObserver (this);
+     document. getElementById ("code"). removeEditorObserver (this);
+     document. getElementById ("initCode"). removeEditorObserver (this);
+     document. getElementById ("help"). removeEditorObserver (this);
 
   var os = Components. classes ["@mozilla.org/observer-service;1"]. getService (Components. interfaces. nsIObserverService);
       os. removeObserver (this, this. notificationPrefix + "updateButton");

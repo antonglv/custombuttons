@@ -146,15 +146,48 @@
 			</xul:vbox>
 		</content>
 		
-		<implementation>
+		<implementation implements="nsIEditorObserver">
 			<constructor>
 				<![CDATA[
 					this. editor. transactionManager. clear ();
 					this. editor. wrapWidth = -1;
 					this. finder = Components. classes ["@mozilla.org/embedcomp/rangefind;1"].
 								   createInstance (Components. interfaces. nsIFind);
+					this. editor. addEditorObserver (this);
 				]]>
 			</constructor>
+
+			<field name="_observer">null</field>
+
+			<method name="addEditorObserver">
+			  <parameter name="aObserver"/>
+			  <body>
+			    <![CDATA[
+			    	if (this. _observer)
+			    		throw "Can't add another observer";
+			    	this. _observer = aObserver;
+			    	this. editor. addEditorObserver (this);
+			    ]]>
+			  </body>
+			</method>
+
+			<method name="removeEditorObserver">
+			  <parameter name="aObserver"/>
+			  <body>
+			    <![CDATA[
+			    	this. editor. removeEditorObserver (this);
+			    	this. _observer = null;
+			    ]]>
+			  </body>
+			</method>
+
+			<method name="EditAction">
+			  <body>
+			    <![CDATA[
+				    this. _observer. EditAction ();
+			    ]]>
+			  </body>
+			</method>
 			
 			<field name="fastFindMode">false</field>
 			<field name="searchRange">null</field>
