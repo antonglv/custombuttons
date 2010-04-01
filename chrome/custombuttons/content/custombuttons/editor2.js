@@ -1,3 +1,6 @@
+
+
+
 function Editor () {}
 Editor. prototype =
 {
@@ -320,15 +323,15 @@ Editor. prototype =
  onCancel: function ()
  {
      const RES_SAVE = 0;
-     const RES_DONT_SAVE = 1;
-     const RES_CANCEL = 2;
+     const RES_CANCEL = 1;
+     const RES_DONT_SAVE = 2;
      var res;
      if (this. changed)
      {
   var ps = Components. classes ["@mozilla.org/embedcomp/prompt-service;1"]. getService (Components. interfaces. nsIPromptService);
   var aButtonFlags = ps. BUTTON_POS_0 * ps. BUTTON_TITLE_SAVE +
-                     ps. BUTTON_POS_1 * ps. BUTTON_TITLE_DONT_SAVE +
-                     ps. BUTTON_POS_2 * ps. BUTTON_TITLE_CANCEL +
+                     ps. BUTTON_POS_1 * ps. BUTTON_TITLE_CANCEL +
+                     ps. BUTTON_POS_2 * ps. BUTTON_TITLE_DONT_SAVE +
                      ps. BUTTON_POS_0_DEFAULT;
   var promptMsg = this. cbService. getLocaleString ("ConfirmSaveChanges");
   res = ps. confirmEx (window, "Custom Buttons", promptMsg, aButtonFlags, "", "", "", "", {});
