@@ -40,6 +40,7 @@ tabpanels
 .menulist-iconic
 {
 	-moz-binding: url("chrome://custombuttons/content/menulisticonic.xml#custombuttons-menulist-editable-iconic");
+	-moz-user-focus: ignore;
 }
 
 .menu-iconic-left
