@@ -242,7 +242,7 @@ AppObject. prototype =
 	overlayPath: "resource://custombuttons/",
 	overlayFileName: "",
 	paletteId: "",
-	palette: null,
+	_palette: null,
 	notificationPrefix: "",
 	overlay: null,
 
@@ -377,6 +377,8 @@ CustombuttonsURIParser. prototype =
 		{
 			var xp = COMPONENT (DOM_PARSER);
 			this. doc = xp. parseFromString (button_code, "text/xml");
+		        if (this. doc. documentElement. namespaceURI == "http://www.mozilla.org/newlayout/xml/parsererror.xml")
+			    THROW ("Malformed custombutton:// URI");
 			values. name	 = this. getText ("name");
 			values. mode	 = this. getText ("mode");
 			values. image	 = this. getText ("image") ||
@@ -384,7 +386,7 @@ CustombuttonsURIParser. prototype =
 			values. code	 = this. getText ("code");
 			values. initCode = this. getText ("initcode");
 			values. accelkey = this. getText ("accelkey");
-            values. help = this. getText ("help");
+		        values. help = this. getText ("help");
 			var attsNode = this. doc. getElementsByTagName ("attributes") [0];
 			if (attsNode)
 			{
