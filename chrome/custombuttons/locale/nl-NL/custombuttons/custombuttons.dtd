@@ -1,0 +1,19 @@
+<!ENTITY custombuttons.viewMenu_Item "Nieuwe knop toevoegen…">
+<!ENTITY custombuttons.buttonPopup.edit "Knop bewerken…">
+<!ENTITY custombuttons.buttonPopup.remove "Knop verwijderen">
+<!ENTITY custombuttons.buttonPopup.clone "Knop klonen">
+<!ENTITY custombuttons.buttonPopup.copyURI "Kopiëren naar klembord">
+<!ENTITY custombuttons.buttonPopup.bookmark "Bladwijzer voor knop maken">
+<!ENTITY custombuttons.buttonPopup.help "Knophulp">
+<!ENTITY custombuttons.buttonPopup.update "Button bijwerken">
+<!ENTITY custombuttons.buttonPopup.subCall "Aangepaste knop">
+
+<!ENTITY custombuttons_prefsDialog.title "Custom Buttons: instellingen">
+<!ENTITY custombuttons.prefs.use_xml_button_format "Nieuwe knopformaat gebruiken">
+<!ENTITY custombuttons.prefs.use_cb2_button_format "Oude knopformaat van Custom Buttons² gebruiken">
+<!ENTITY custombuttons.prefs.show_apply_button "Knop “Opslaan” in code-editor tonen">
+<!ENTITY custombuttons.prefs.disable_init "Initialisatie van knoppen uitschakelen (Wijzigingen zijn alleen van invloed op nieuwe vensters)">
+<!ENTITY custombuttons.prefs.disable_init_in_customize_toolbar "Initialisatie in dialoogvenster “Werkbalk aanpassen” uitschakelen">
+<!ENTITY custombuttons.prefs.enable_custombutton_protocol "Installatieknoppen in e-mailberichten inschakelen">
+
+<!ENTITY custombuttons.about.supportPageURL "Ondersteuningspagina bezoeken">
