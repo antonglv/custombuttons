@@ -14,6 +14,7 @@ Editor. prototype =
  QueryInterface: function (iid)
  {
   if (iid. equals (Components. interfaces. nsIObserver) ||
+      iid. equals (Components. interfaces. nsIDOMEventListener) ||
       iid. equals (Components. interfaces. nsIEditorObserver) ||
    iid. equals (Components. interfaces. nsIWeakReference) ||
    iid. equals (Components. interfaces. nsISupports))
