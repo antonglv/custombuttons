@@ -143,6 +143,7 @@ Editor. prototype =
 			document. title += ": " + this. param. id;
 	},
 
+    	notificationSender: false,
 	updateButton: function ()
 	{
 		var uri = ELEMENT ("urlfield-textbox"). value;
@@ -167,7 +168,9 @@ Editor. prototype =
 		}
 		this. param ["mode"] = ELEMENT ("initInCustomizeToolbarDialog"). checked? CB_MODE_ENABLE_INIT_IN_CTDIALOG: 0;
 		this. param ["mode"] |= ELEMENT ("disableDefaultKeyBehavior"). checked? CB_MODE_DISABLE_DEFAULT_KEY_BEHAVIOR: 0;
+	    	this. notificationSender = true;
 		this. cbService. installButton (this. param);
+	    	this. notificationSender = false;
 		return true;
 	},
 
@@ -262,7 +265,8 @@ Editor. prototype =
 	    	{
 		    var link = "custombutton://buttons/" + this. param. windowId + "/edit/" + this. param. id;
 		    this. param = this. cbService. getButtonParameters (link). wrappedJSObject;
-		    this. setValues ();
+		    if (!this. notificationSender)
+			this. setValues ();
 		    this. changed = false;
 		}
 	},
