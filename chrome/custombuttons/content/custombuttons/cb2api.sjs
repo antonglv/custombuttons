@@ -832,7 +832,7 @@ custombuttons. getLocalString = function (oBtn, strId)
 	var ln = this. getPrefs ("general.useragent.locale"). replace ("-", "_");
 	var props = oBtn. properties;
 	if (!props)
-		return "";
+		return strId;
 	var loc = props [ln];
 	return loc? loc [strId]: props ["en_US"] [strId];
 };
