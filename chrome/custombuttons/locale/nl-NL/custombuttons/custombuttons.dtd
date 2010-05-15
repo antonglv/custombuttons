@@ -5,7 +5,7 @@
 <!ENTITY custombuttons.buttonPopup.copyURI "Kopiëren naar klembord">
 <!ENTITY custombuttons.buttonPopup.bookmark "Bladwijzer voor knop maken">
 <!ENTITY custombuttons.buttonPopup.help "Knophulp">
-<!ENTITY custombuttons.buttonPopup.update "Button bijwerken">
+<!ENTITY custombuttons.buttonPopup.update "Knop bijwerken">
 <!ENTITY custombuttons.buttonPopup.subCall "Aangepaste knop">
 
 <!ENTITY custombuttons_prefsDialog.title "Custom Buttons: instellingen">
