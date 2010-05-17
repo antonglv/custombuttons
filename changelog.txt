@@ -1,4 +1,8 @@
 Changelog
+0.0.4.9
++ Added: nl-NL translation
++ Added: de-DE translation
+# Fixed: some minor bugs
 0.0.4.8
 + Added: Firefox 3.7a4pre support
 + Added: Thunderbird 3.2a1 support
