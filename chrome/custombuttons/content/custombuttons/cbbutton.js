@@ -270,38 +270,28 @@ var custombutton =
    return this. buttonGetOldFormatURI (oBtn);
  },
 
+        counter: 0,
+
  buttonCbExecuteCode: function (event, oButton, code)
  {
-  this. checkBind ();
-  var oCBError, errLine;
-  var cd = null, cm = null;
-  if ("custombuttonsUtils" in window)
-  {
-   cd = custombuttonsUtils. createDebug;
-   cm = custombuttonsUtils. createMsg;
-  }
-  try
-  {
-   errLine = new Error (). lineNumber + 1;
-   (new Function ("event,createDebug,createMsg", code)). apply
-   (
-    oButton, [event, cd, cm]
-   );
-  }
-  catch (oError)
-  {
-   errLine = oError. lineNumber - errLine + 1;
-   if (errLine == 4294967295)
-    errLine = 0;
-   oCBError = new Error ();
-   oCBError. name = oError. name;
-   oCBError. message = oError. message;
-   var phase = oButton. _initPhase? "init": "code";
-   oCBError. fileName = this. cbService. makeButtonLink (document. documentURI, phase, oButton. id);
-   oCBError. lineNumber = errLine;
-   oCBError. stack = oError. stack;
-   throw (oCBError);
-  }
+     this. checkBind ();
+     var execurl = "chrome://custombuttons/content/button.js?windowId=";
+     execurl += this. cbService. getWindowId (document. documentURI) + "&id=";
+     execurl += oButton. id + "@";
+     execurl += oButton. _initPhase? "init": "code";
+     execurl += "&counter=" + this. counter++;
+     var cd = null, cm = null;
+     if ("custombuttonsUtils" in window)
+     {
+  cd = custombuttonsUtils. createDebug;
+  cm = custombuttonsUtils. createMsg;
+     }
+     var executionContext = {};
+     executionContext ["oButton"] = oButton;
+     executionContext ["code"] = code;
+     executionContext ["argNames"] = "event,createDebug,createMsg";
+     executionContext ["args"] = [event, cd, cm];
+     Components. classes ["@mozilla.org/moz/jssubscript-loader;1"]. getService (Components. interfaces. mozIJSSubScriptLoader). loadSubScript (execurl, executionContext);
  },
 
  // TODO: check for code evaluation construction. Carefully check.
