@@ -270,8 +270,6 @@ var custombutton =
    return this. buttonGetOldFormatURI (oBtn);
  },
 
-        counter: 0,
-
  buttonCbExecuteCode: function (event, oButton, code)
  {
      this. checkBind ();
@@ -279,7 +277,6 @@ var custombutton =
      execurl += this. cbService. getWindowId (document. documentURI) + "&id=";
      execurl += oButton. id + "@";
      execurl += oButton. _initPhase? "init": "code";
-     execurl += "&counter=" + this. counter++;
      var cd = null, cm = null;
      if ("custombuttonsUtils" in window)
      {
