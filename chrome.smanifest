@@ -7,7 +7,8 @@ overlay	BROWSER/browser.xul	CBCONTENT/overlay.xul
 overlay	BROWSER/browser.xul	CBOVERLAY/buttonsoverlay.xul
 
 ## Seamonkey navigator
-overlay	SEAMONKEY/navigator.xul	CBCONTENT/SeamonkeyOverlay.xul
+overlay	SEAMONKEY/navigator.xul	CBCONTENT/SeamonkeyOverlay.xul	SEAMONKEYAPP	appversion<2.1a1pre
+overlay	SEAMONKEY/navigator.xul CBCONTENT/Seamonkey21Overlay.xul		SEAMONKEYAPP	appversion>=2.1a1pre
 overlay	SEAMONKEY/navigator.xul	CBOVERLAY/buttonsoverlay.xul
 overlay	SEAMONKEY/navigator.xul	CBCONTENT/overlay3b2.xul appversion>=3.0b1
 overlay	SEAMONKEY/navigator.xul	CBCONTENT/tcbbutton.xul
