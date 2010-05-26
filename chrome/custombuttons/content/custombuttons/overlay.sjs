@@ -459,21 +459,24 @@ CustombuttonsTB. prototype =
 	checkLightning: function ()
 	{
 		var result = false;
-		var rs = SERVICE (RDF);
-		var lightningUUID = "{e2fda1a4-762b-4020-b5ad-a41df1933103}";
-		var res = rs. GetResource ("urn:mozilla:item:" + lightningUUID);
-		if (res instanceof CI. nsIRDFResource)
+	    	try
 		{
+		    var rs = SERVICE (RDF);
+		    var lightningUUID = "{e2fda1a4-762b-4020-b5ad-a41df1933103}";
+		    var res = rs. GetResource ("urn:mozilla:item:" + lightningUUID);
+		    if (res instanceof CI. nsIRDFResource)
+		    {
 			var em = SERVICE (EXTENSION_MANAGER);
 			if (em. getInstallLocation (lightningUUID))
 			{
-				var ds = em. datasource;
-				var res2 = rs. GetResource ("http://www.mozilla.org/2004/em-rdf#isDisabled");
-				var t = ds. GetTarget (res, res2, true);
-				if (t instanceof CI. nsIRDFLiteral)
-					result = (t. Value != "true");
+			    var ds = em. datasource;
+			    var res2 = rs. GetResource ("http://www.mozilla.org/2004/em-rdf#isDisabled");
+			    var t = ds. GetTarget (res, res2, true);
+			    if (t instanceof CI. nsIRDFLiteral)
+				result = (t. Value != "true");
 			}
-		}
+		    }
+		} catch (e) {}
 		return result;
 	},
 	
