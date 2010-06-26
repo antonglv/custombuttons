@@ -838,40 +838,44 @@ custombuttons. getLocalString = function (oBtn, strId)
 };
 custombuttons. openPromptDialog = function (type, dialogId, args)
 {
- var i, s, ci, index, valueAttr;
- if (type == "checkbox")
-  valueAttr = "checked";
- else
-  valueAttr = "selected";
- var uri = "chrome://custombuttons/content/dialogs/cbpromptdialog.xul?type=" + type;
- var param =
+    var i, s, ci, index, valueAttr;
+    if (type == "checkbox")
+ valueAttr = "checked";
+    else
+ valueAttr = "selected";
+    var uri = "chrome://custombuttons/content/dialogs/cbpromptdialog.xul?type=" + type;
+    var param =
  {
-  inn: null,
-  out: null
+     inn: null,
+     out: null
  };
- var arg0 = [uri, dialogId, "chrome,dialog,centerscreen,modal,resizable=yes", param];
- var arg1 = [];
- for (i = 1; i < args. length; i++)
-  arg1 [i - 1] = args [i];
- var arg = arg0. concat (arg1);
- window. openDialog. apply (window, arg);
- if (param. out)
+    var arg0 = [uri, dialogId, "chrome,dialog,centerscreen,modal,resizable=yes", param];
+    var arg1 = [];
+    for (i = 1; i < args. length; i++)
+ arg1 [i - 1] = args [i];
+    var arg = arg0. concat (arg1);
+    window. openDialog. apply (window, arg);
+    if (param. out)
+    {
+ var ch = param. out. chosen;
+ var arr = arg1 [0];
+ for (i = 0; i < ch. length; i++)
  {
-  var ch = param. out. chosen;
-  var arr = arg1 [0];
-  for (i = 0; i < ch. length; i++)
-  {
-   ci = ch [i];
-   index = ci. index;
-   if (typeof (arr [index]) == "string")
-   {
-    s = arr [index];
-    arr [index] = [s, false];
-   }
-   arr [index] [1] = ch [i] [valueAttr];
-  }
+     ci = ch [i];
+     index = ci. index;
+     if (typeof (arr [index]) == "string")
+     {
+  s = arr [index];
+  arr [index] = [s, false];
+     }
+     arr [index] [1] = ch [i] [valueAttr];
  }
- return param. out;
+ for (i = 0; i < args [1]. length; i++)
+     args [1] [i] [1] = false;
+ for (i = 0; i < ch. length; i++)
+     args [1] [ch [i]. index] [1] = true;
+    }
+    return param. out;
 };
 custombuttons. checkboxDialog = function (button)
 {
