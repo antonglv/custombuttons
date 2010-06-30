@@ -53,7 +53,7 @@ var custombutton =
 				    !(oBtn. cbMode & CB_MODE_ENABLE_INIT_IN_CTDIALOG)))
 					return;
 				oBtn. cbInitCode = oBtn. getAttribute ("cb-init");
-				oBtn. init ();
+				setTimeout (function () { oBtn. init (); }, 0);
 			}
 			else
 			{

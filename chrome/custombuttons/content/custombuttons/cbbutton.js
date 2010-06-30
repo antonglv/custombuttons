@@ -53,7 +53,7 @@ var custombutton =
         !(oBtn. cbMode & 1)))
      return;
     oBtn. cbInitCode = oBtn. getAttribute ("cb-init");
-    oBtn. init ();
+    setTimeout (function () { oBtn. init (); }, 0);
    }
    else
    {
