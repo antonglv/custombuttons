@@ -953,9 +953,6 @@ try
     Components. utils. import ("resource://gre/modules/XPCOMUtils.jsm");
     var components = [cbCustomButtonsService];
     var NSGetFactory = XPCOMUtils. generateNSGetFactory (components);
-    var cm = Components. classes ["@mozilla.org/categorymanager;1"]. getService (Components. interfaces. nsICategoryManager);
-    cm. addCategoryEntry ("profile-after-change", Components. ID ("{64d03940-83bc-4ac6-afc5-3cbf6a7147c5}"), "service," + "@xsms.nm.ru/custombuttons/cbservice;1", true, true);
-    //var NSGetModule = XPCOMUtils. generateNSGetModule (components);
 }
 catch (e)
 {

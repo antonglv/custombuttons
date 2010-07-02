@@ -953,9 +953,6 @@ try
     Components. utils. import ("resource://gre/modules/XPCOMUtils.jsm");
     var components = [cbCustomButtonsService];
     var NSGetFactory = XPCOMUtils. generateNSGetFactory (components);
-    var cm = SERVICE (CATEGORY_MANAGER);
-    cm. addCategoryEntry ("profile-after-change", CID ("{64d03940-83bc-4ac6-afc5-3cbf6a7147c5}"), "service," + CB_SERVICE_CID, true, true);
-    //var NSGetModule = XPCOMUtils. generateNSGetModule (components);
 }
 catch (e)
 {
