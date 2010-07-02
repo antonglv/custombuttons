@@ -22,8 +22,13 @@
 #include <project.hjs>
 #include <prio.hjs>
 
-var cbCommandLineHandler =
+function cbCommandLineHandler () {}
+cbCommandLineHandler. prototype =
 {
+    classDescription: "Custombuttons extension command line handler component",
+    classID: CID ("{cafd9345-65a1-46b2-944d-ff4a9725a609}"),
+    contractID: CB_COMMAND_LINE_HANDLER_COMPONENT_CID,
+    _xpcom_categories: [{category: "command-line-handler", entry: "m-custombuttons", service: true}],
 
     QueryInterface: function (iid)
     {
@@ -92,7 +97,7 @@ var Module =
 	    throw NS_ERROR (FACTORY_REGISTER_AGAIN);
 	compMgr = compMgr. QI (nsIComponentRegistrar);
 	compMgr. registerFactoryLocation
-	(
+n	(
 	    this. CLSID, this. ComponentName, this. ContractID,
 	    fileSpec, location, type
 	);
@@ -128,9 +133,18 @@ var Module =
 	{
 	    if (outer != null)
 		throw NS_ERROR (NO_AGGREGATION);
-	    return cbCommandLineHandler. QueryInterface (iid);
+	    return (new cbCommandLineHandler ()). QueryInterface (iid);
 	}
     }
 };
 
-DEFINE_STD_NS_GET_MODULE (Module)
+try
+{
+    Components. utils. import ("resource://gre/modules/XPCOMUtils.jsm");
+    var components = [cbCommandLineHandler];
+    var NSGetFactory = XPCOMUtils. generateNSGetFactory (components);
+}
+catch (e)
+{
+    DEFINE_STD_NS_GET_MODULE (Module)
+}

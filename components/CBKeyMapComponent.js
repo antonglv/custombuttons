@@ -23,6 +23,10 @@
 function cbKeyMapService () {}
 cbKeyMapService. prototype =
 {
+    classDescription: "Custombuttons extension keymap service component",
+    classID: Components. ID ("{86216795-2b22-470a-9388-785cb4b4101b}"),
+    contractID: "@xsms.nm.ru/custombuttons/cbkeymap;1",
+
  QueryInterface: function (iid) { if (!iid. equals (Components. interfaces. cbIKeyMapService) && !iid. equals (Components. interfaces. nsISupports)) throw Components. results. NS_ERROR_NO_INTERFACE; return this; },
 
     keymap: {},
@@ -115,4 +119,13 @@ var Module =
  CLASS_FACTORY: { QueryInterface: function (iid) { if (iid. equals (Components. interfaces. nsIFactory) || iid. equals (Components. interfaces. nsISupports)) return this; throw Components. results. NS_ERROR_NO_INTERFACE; }, createInstance: function (outer, iid) { if (outer != null) throw Components. results. NS_ERROR_NO_AGGREGATION; return (new cbKeyMapService ()). QueryInterface (iid); } }
 };
 
-function NSGetModule (componentManager, fileSpec) { return Module; }
+try
+{
+    Components. utils. import ("resource://gre/modules/XPCOMUtils.jsm");
+    var components = [cbKeyMapService];
+    var NSGetFactory = XPCOMUtils. generateNSGetFactory (components);
+}
+catch (e)
+{
+    function NSGetModule (componentManager, fileSpec) { return Module; }
+}

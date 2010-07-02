@@ -428,6 +428,11 @@ CustombuttonsURIParser. prototype =
 function cbCustomButtonsService () {}
 cbCustomButtonsService. prototype =
 {
+    classDescription: "Custom Buttons extension service",
+    classID: CID ("{64d03940-83bc-4ac6-afc5-3cbf6a7147c5}"),
+    contractID: CB_SERVICE_CID,
+    _xpcom_categories: [{category: "profile-after-change", service: true}],
+
 	_refcount: 0,
 	_ps: null,
 
@@ -943,4 +948,16 @@ var Module =
     DEFINE_STD_CLASS_FACTORY (cbCustomButtonsService)
 };
 
-DEFINE_STD_NS_GET_MODULE (Module)
+try
+{
+    Components. utils. import ("resource://gre/modules/XPCOMUtils.jsm");
+    var components = [cbCustomButtonsService];
+    var NSGetFactory = XPCOMUtils. generateNSGetFactory (components);
+    var cm = SERVICE (CATEGORY_MANAGER);
+    cm. addCategoryEntry ("profile-after-change", CID ("{64d03940-83bc-4ac6-afc5-3cbf6a7147c5}"), "service," + CB_SERVICE_CID, true, true);
+    //var NSGetModule = XPCOMUtils. generateNSGetModule (components);
+}
+catch (e)
+{
+    DEFINE_STD_NS_GET_MODULE (Module)
+}

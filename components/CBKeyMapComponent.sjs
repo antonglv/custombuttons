@@ -23,6 +23,10 @@
 function cbKeyMapService () {}
 cbKeyMapService. prototype =
 {
+    classDescription: "Custombuttons extension keymap service component",
+    classID: CID ("{86216795-2b22-470a-9388-785cb4b4101b}"),
+    contractID: CB_KEYMAP_SERVICE_CID,
+
 	DEFINE_STD_QI (cbIKeyMapService),
 
     keymap: {},
@@ -115,4 +119,13 @@ var Module =
 	DEFINE_STD_CLASS_FACTORY (cbKeyMapService)
 };
 
-DEFINE_STD_NS_GET_MODULE (Module)
+try
+{
+    Components. utils. import ("resource://gre/modules/XPCOMUtils.jsm");
+    var components = [cbKeyMapService];
+    var NSGetFactory = XPCOMUtils. generateNSGetFactory (components);
+}
+catch (e)
+{
+    DEFINE_STD_NS_GET_MODULE (Module)
+}
