@@ -428,6 +428,11 @@ CustombuttonsURIParser. prototype =
 function cbCustomButtonsService () {}
 cbCustomButtonsService. prototype =
 {
+    classDescription: "Custom Buttons extension service",
+    classID: Components. ID ("{64d03940-83bc-4ac6-afc5-3cbf6a7147c5}"),
+    contractID: "@xsms.nm.ru/custombuttons/cbservice;1",
+    _xpcom_categories: [{category: "profile-after-change", service: true}],
+
  _refcount: 0,
  _ps: null,
 
@@ -943,4 +948,16 @@ var Module =
     CLASS_FACTORY: { QueryInterface: function (iid) { if (iid. equals (Components. interfaces. nsIFactory) || iid. equals (Components. interfaces. nsISupports)) return this; throw Components. results. NS_ERROR_NO_INTERFACE; }, createInstance: function (outer, iid) { if (outer != null) throw Components. results. NS_ERROR_NO_AGGREGATION; return (new cbCustomButtonsService ()). QueryInterface (iid); } }
 };
 
-function NSGetModule (componentManager, fileSpec) { return Module; }
+try
+{
+    Components. utils. import ("resource://gre/modules/XPCOMUtils.jsm");
+    var components = [cbCustomButtonsService];
+    var NSGetFactory = XPCOMUtils. generateNSGetFactory (components);
+    var cm = Components. classes ["@mozilla.org/categorymanager;1"]. getService (Components. interfaces. nsICategoryManager);
+    cm. addCategoryEntry ("profile-after-change", Components. ID ("{64d03940-83bc-4ac6-afc5-3cbf6a7147c5}"), "service," + "@xsms.nm.ru/custombuttons/cbservice;1", true, true);
+    //var NSGetModule = XPCOMUtils. generateNSGetModule (components);
+}
+catch (e)
+{
+    function NSGetModule (componentManager, fileSpec) { return Module; }
+}

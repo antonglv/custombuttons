@@ -84,6 +84,11 @@ function getWindow (node)
 function cbContentPolicyComponent () {}
 cbContentPolicyComponent. prototype =
 {
+    classDescription: "Custombuttons extension content policy component",
+    classID: Components. ID ("{cb267f0c-88ed-430d-bd9c-f4e132cd71d5}"),
+    contractID: "@xsms.nm.ru/custombuttons/cbcontentpolicy;1",
+    _xpcom_categories: [{category: "content-policy"}],
+
  QueryInterface: function (iid)
  {
   if (!iid. equals (Components. interfaces. nsIContentPolicy) &&
@@ -169,4 +174,13 @@ var Module =
  CLASS_FACTORY: { QueryInterface: function (iid) { if (iid. equals (Components. interfaces. nsIFactory) || iid. equals (Components. interfaces. nsISupports)) return this; throw Components. results. NS_ERROR_NO_INTERFACE; }, createInstance: function (outer, iid) { if (outer != null) throw Components. results. NS_ERROR_NO_AGGREGATION; return (new cbContentPolicyComponent ()). QueryInterface (iid); } }
 };
 
-function NSGetModule (componentManager, fileSpec) { return Module; }
+try
+{
+    Components. utils. import ("resource://gre/modules/XPCOMUtils.jsm");
+    var components = [cbContentPolicyComponent];
+    var NSGetFactory = XPCOMUtils. generateNSGetFactory (components);
+}
+catch (e)
+{
+    function NSGetModule (componentManager, fileSpec) { return Module; }
+}

@@ -84,6 +84,11 @@ function getWindow (node)
 function cbContentPolicyComponent () {}
 cbContentPolicyComponent. prototype =
 {
+    classDescription: "Custombuttons extension content policy component",
+    classID: CID ("{cb267f0c-88ed-430d-bd9c-f4e132cd71d5}"),
+    contractID: CB_CONTENT_POLICY_COMPONENT_CID,
+    _xpcom_categories: [{category: "content-policy"}],
+
 	QueryInterface: function (iid)
 	{
 		if (!iid. equals (CI. nsIContentPolicy) &&
@@ -169,4 +174,14 @@ var Module =
 	DEFINE_STD_CLASS_FACTORY (cbContentPolicyComponent)
 };
 
-DEFINE_STD_NS_GET_MODULE (Module)
+try
+{
+    Components. utils. import ("resource://gre/modules/XPCOMUtils.jsm");
+    var components = [cbContentPolicyComponent];
+    var NSGetFactory = XPCOMUtils. generateNSGetFactory (components);
+}
+catch (e)
+{
+    DEFINE_STD_NS_GET_MODULE (Module)
+}
+

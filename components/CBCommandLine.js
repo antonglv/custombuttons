@@ -22,8 +22,13 @@
 
 
 
-var cbCommandLineHandler =
+function cbCommandLineHandler () {}
+cbCommandLineHandler. prototype =
 {
+    classDescription: "Custombuttons extension command line handler component",
+    classID: Components. ID ("{cafd9345-65a1-46b2-944d-ff4a9725a609}"),
+    contractID: "@mozilla.org/commandlinehandler/general-startup;1?type=custombuttons",
+    _xpcom_categories: [{category: "command-line-handler", entry: "m-custombuttons", service: true}],
 
     QueryInterface: function (iid)
     {
@@ -92,7 +97,7 @@ var Module =
      throw Components. results. NS_ERROR_FACTORY_REGISTER_AGAIN;
  compMgr = compMgr. QueryInterface (Components. interfaces. nsIComponentRegistrar);
  compMgr. registerFactoryLocation
- (
+n (
      this. CLSID, this. ComponentName, this. ContractID,
      fileSpec, location, type
  );
@@ -128,9 +133,18 @@ var Module =
  {
      if (outer != null)
   throw Components. results. NS_ERROR_NO_AGGREGATION;
-     return cbCommandLineHandler. QueryInterface (iid);
+     return (new cbCommandLineHandler ()). QueryInterface (iid);
  }
     }
 };
 
-function NSGetModule (componentManager, fileSpec) { return Module; }
+try
+{
+    Components. utils. import ("resource://gre/modules/XPCOMUtils.jsm");
+    var components = [cbCommandLineHandler];
+    var NSGetFactory = XPCOMUtils. generateNSGetFactory (components);
+}
+catch (e)
+{
+    function NSGetModule (componentManager, fileSpec) { return Module; }
+}

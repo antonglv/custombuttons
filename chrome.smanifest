@@ -110,3 +110,27 @@ locale	custombuttons	sk-SK	jar:chrome/custombuttons.jar!/locale/sk-SK/custombutt
 locale	custombuttons	zh-CN	jar:chrome/custombuttons.jar!/locale/zh-CN/custombuttons/
 locale	custombuttons	nl-NL	jar:chrome/custombuttons.jar!/locale/nl-NL/custombuttons/
 locale	custombuttons	de-DE	jar:chrome/custombuttons.jar!/locale/de-DE/custombuttons/
+
+## XPCOM registration
+interfaces components/CBKeyMapComponent.xpt
+component 86216795-2b22-470a-9388-785cb4b4101b components/CBKeyMapComponent.js
+contract @xsms.nm.ru/custombuttons/cbkeymap;1 86216795-2b22-470a-9388-785cb4b4101b
+
+interfaces components/CustomButtonsService.xpt
+component 64d03940-83bc-4ac6-afc5-3cbf6a7147c5 components/CustomButtonsService.js
+contract @xsms.nm.ru/custombuttons/cbservice;1 64d03940-83bc-4ac6-afc5-3cbf6a7147c5
+category profile-after-change cbICustomButtonsService @xsms.nm.ru/custombuttons/cbservice;1
+
+component cafd9345-65a1-46b2-944d-ff4a9725a609 components/CBCommandLine.js
+contract @mozilla.org/commandlinehandler/general-startup;1?type=custombuttons cafd9345-65a1-46b2-944d-ff4a9725a609
+category command-line-handler m-custombuttons @mozilla.org/commandlinehandler/general-startup;1?type=custombuttons
+
+component cb267f0c-88ed-430d-bd9c-f4e132cd71d5 components/CBContentPolicy.js
+contract @xsms.nm.ru/custombuttons/cbcontentpolicy;1 cb267f0c-88ed-430d-bd9c-f4e132cd71d5
+category content-policy @xsms.nm.ru/custombuttons/cbcontentpolicy;1 @xsms.nm.ru/custombuttons/cbcontentpolicy;1
+
+component 78D452B8-2CE8-4a7b-8A59-DA3C0960DAE7 components/CustomButtonProtocol.js
+contract @mozilla.org/network/protocol;1?name=custombutton 78D452B8-2CE8-4a7b-8A59-DA3C0960DAE7
+
+component 1c796f9e-9a22-4604-84e4-fa7c4b8d80a4 components/CustomButtonProtocol.js
+contract @mozilla.org/network/protocol;1?name=custombuttons 1c796f9e-9a22-4604-84e4-fa7c4b8d80a4
