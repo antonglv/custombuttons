@@ -281,19 +281,13 @@ var Module =
  unregisterSelf: function (componentManager, location, loaderStr) {}
 };
 
-try
+function NSGetFactory (cid)
 {
-    function NSGetFactory (cid)
-    {
- var protocol;
- if (cid. equals (Components. ID ("{78D452B8-2CE8-4a7b-8A59-DA3C0960DAE7}")))
-     protocol = "custombutton";
- else if (cid. equals (Components. ID ("{1c796f9e-9a22-4604-84e4-fa7c4b8d80a4}")))
+    var protocol;
+    if (cid. equals (Components. ID ("{78D452B8-2CE8-4a7b-8A59-DA3C0960DAE7}")))
+ protocol = "custombutton";
+    else if (cid. equals (Components. ID ("{1c796f9e-9a22-4604-84e4-fa7c4b8d80a4}")))
      protocol = "custombuttons";
- return new CustombuttonsProtocolClassFactory (protocol);
-    }
+    return new CustombuttonsProtocolClassFactory (protocol);
 }
-catch (e)
-{
-    function NSGetModule (componentManager, fileSpec) { return Module; }
-}
+function NSGetModule (componentManager, fileSpec) { return Module; }
