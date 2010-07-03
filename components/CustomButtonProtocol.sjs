@@ -281,19 +281,14 @@ var Module =
 	unregisterSelf: function (componentManager, location, loaderStr) {}
 };
 
-try
+function NSGetFactory (cid)
 {
-    function NSGetFactory (cid)
-    {
-	var protocol;
-	if (cid. equals (CID ("{78D452B8-2CE8-4a7b-8A59-DA3C0960DAE7}")))
-	    protocol = "custombutton";
-	else if (cid. equals (CID ("{1c796f9e-9a22-4604-84e4-fa7c4b8d80a4}")))
-	    protocol = "custombuttons";
-	return new CustombuttonsProtocolClassFactory (protocol);
-    }
+    var protocol;
+    if (cid. equals (CID ("{78D452B8-2CE8-4a7b-8A59-DA3C0960DAE7}")))
+	protocol = "custombutton";
+    else if (cid. equals (CID ("{1c796f9e-9a22-4604-84e4-fa7c4b8d80a4}")))
+    	protocol = "custombuttons";
+    return new CustombuttonsProtocolClassFactory (protocol);
 }
-catch (e)
-{
-    DEFINE_STD_NS_GET_MODULE (Module)
-}
+DEFINE_STD_NS_GET_MODULE (Module)
+
