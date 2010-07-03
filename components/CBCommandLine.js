@@ -97,7 +97,7 @@ var Module =
      throw Components. results. NS_ERROR_FACTORY_REGISTER_AGAIN;
  compMgr = compMgr. QueryInterface (Components. interfaces. nsIComponentRegistrar);
  compMgr. registerFactoryLocation
-n (
+ (
      this. CLSID, this. ComponentName, this. ContractID,
      fileSpec, location, type
  );
