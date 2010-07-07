@@ -220,6 +220,7 @@ Custombuttons. prototype =
 	{
 		var oClone = document. createElement (node. nodeName);
 		this. copyAttributes (node, oClone);
+	    	oClone. setAttribute ("removable", "true"); // Firefox >= 3.7
 		return oClone;
 	},
 	
