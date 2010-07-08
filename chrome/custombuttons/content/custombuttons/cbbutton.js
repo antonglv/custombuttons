@@ -235,9 +235,10 @@ var custombutton =
 
  xmlFormatURI: function(oBtn)
  {
-  var doc = document. implementation. createDocument ("", "", null);
-  doc. async = false;
-  doc. load ("chrome://custombuttons/content/nbftemplate.xml");
+      var xr = new XMLHttpRequest ();
+      xr. open ("GET", "chrome://custombuttons/content/nbftemplate.xml", false);
+      xr. send (null);
+      var doc = xr. responseXML;
   oBtn. setText (doc, "name", oBtn. name, false);
   oBtn. setText (doc, "mode", oBtn. cbMode, false);
   oBtn. setText (doc, "image", oBtn. image || oBtn. cbStdIcon, true);
