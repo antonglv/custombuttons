@@ -291,4 +291,3 @@ function NSGetFactory (cid)
     return new CustombuttonsProtocolClassFactory (protocol);
 }
 DEFINE_STD_NS_GET_MODULE (Module)
-

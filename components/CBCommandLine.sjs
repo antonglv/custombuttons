@@ -138,13 +138,5 @@ var Module =
     }
 };
 
-try
-{
-    Components. utils. import ("resource://gre/modules/XPCOMUtils.jsm");
-    var components = [cbCommandLineHandler];
-    var NSGetFactory = XPCOMUtils. generateNSGetFactory (components);
-}
-catch (e)
-{
-    DEFINE_STD_NS_GET_MODULE (Module)
-}
+DEFINE_STD_NS_GET_MODULE (Module)
+DEFINE_STD_NS_GET_FACTORY (Module. CLASS_FACTORY)
