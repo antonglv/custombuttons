@@ -23,10 +23,6 @@
 function cbKeyMapService () {}
 cbKeyMapService. prototype =
 {
-    classDescription: "Custombuttons extension keymap service component",
-    classID: CID ("{86216795-2b22-470a-9388-785cb4b4101b}"),
-    contractID: CB_KEYMAP_SERVICE_CID,
-
 	DEFINE_STD_QI (cbIKeyMapService),
 
     keymap: {},

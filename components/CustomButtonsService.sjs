@@ -428,11 +428,6 @@ CustombuttonsURIParser. prototype =
 function cbCustomButtonsService () {}
 cbCustomButtonsService. prototype =
 {
-    classDescription: "Custom Buttons extension service",
-    classID: CID ("{64d03940-83bc-4ac6-afc5-3cbf6a7147c5}"),
-    contractID: CB_SERVICE_CID,
-    _xpcom_categories: [{category: "profile-after-change", service: true}],
-
 	_refcount: 0,
 	_ps: null,
 
