@@ -157,6 +157,12 @@ function NSGetModule (componentManager, fileSpec)                \
   return module;                                \
 }
 
+#define DEFINE_STD_NS_GET_FACTORY(factory)	\
+function NSGetFactory (cid)	\
+{	\
+    return factory;	\
+}
+
 #define DEFINE_STD_QI(IID)                            \
 QueryInterface: function (iid)                          \
 {                                        \
