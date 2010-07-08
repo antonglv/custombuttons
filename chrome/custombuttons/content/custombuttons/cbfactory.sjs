@@ -9,10 +9,13 @@ function custombuttonsFactory ()
     case "Firefox": // Firefox
         var oVC = COMPONENT (VERSION_COMPARATOR);
         if (oVC. compare ("3.0a1", info. version) <= 0)
-            retobj = this. CustombuttonsMFFactory;
-        else if (oVC. compare ("3.1b3", info. version) <= 0)
-			retobj = this. CustombuttonsSTFactory;
-		else
+      	{
+	    if (oVC. compare ("3.1b3", info. version) <= 0)
+		retobj = this. CustombuttonsSTFactory;
+	    else
+		retobj = this. CustombuttonsMFFactory;
+	}
+      	else
             retobj = this. CustombuttonsFactory;
         break;
     case "Browser": // strange name for Flock
