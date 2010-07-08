@@ -84,11 +84,6 @@ function getWindow (node)
 function cbContentPolicyComponent () {}
 cbContentPolicyComponent. prototype =
 {
-    classDescription: "Custombuttons extension content policy component",
-    classID: CID ("{cb267f0c-88ed-430d-bd9c-f4e132cd71d5}"),
-    contractID: CB_CONTENT_POLICY_COMPONENT_CID,
-    _xpcom_categories: [{category: "content-policy"}],
-
 	QueryInterface: function (iid)
 	{
 		if (!iid. equals (CI. nsIContentPolicy) &&

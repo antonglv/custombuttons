@@ -23,10 +23,6 @@
 function cbKeyMapService () {}
 cbKeyMapService. prototype =
 {
-    classDescription: "Custombuttons extension keymap service component",
-    classID: Components. ID ("{86216795-2b22-470a-9388-785cb4b4101b}"),
-    contractID: "@xsms.nm.ru/custombuttons/cbkeymap;1",
-
  QueryInterface: function (iid) { if (!iid. equals (Components. interfaces. cbIKeyMapService) && !iid. equals (Components. interfaces. nsISupports)) throw Components. results. NS_ERROR_NO_INTERFACE; return this; },
 
     keymap: {},

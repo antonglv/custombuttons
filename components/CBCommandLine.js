@@ -25,11 +25,6 @@
 function cbCommandLineHandler () {}
 cbCommandLineHandler. prototype =
 {
-    classDescription: "Custombuttons extension command line handler component",
-    classID: Components. ID ("{cafd9345-65a1-46b2-944d-ff4a9725a609}"),
-    contractID: "@mozilla.org/commandlinehandler/general-startup;1?type=custombuttons",
-    _xpcom_categories: [{category: "command-line-handler", entry: "m-custombuttons", service: true}],
-
     QueryInterface: function (iid)
     {
  if (iid. equals (Components. interfaces. nsICommandLineHandler) ||
