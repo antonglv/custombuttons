@@ -119,13 +119,5 @@ var Module =
 	DEFINE_STD_CLASS_FACTORY (cbKeyMapService)
 };
 
-try
-{
-    Components. utils. import ("resource://gre/modules/XPCOMUtils.jsm");
-    var components = [cbKeyMapService];
-    var NSGetFactory = XPCOMUtils. generateNSGetFactory (components);
-}
-catch (e)
-{
-    DEFINE_STD_NS_GET_MODULE (Module)
-}
+DEFINE_STD_NS_GET_MODULE (Module)
+DEFINE_STD_NS_GET_FACTORY (Module. CLASS_FACTORY)

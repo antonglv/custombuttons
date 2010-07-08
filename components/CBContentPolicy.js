@@ -174,13 +174,5 @@ var Module =
  CLASS_FACTORY: { QueryInterface: function (iid) { if (iid. equals (Components. interfaces. nsIFactory) || iid. equals (Components. interfaces. nsISupports)) return this; throw Components. results. NS_ERROR_NO_INTERFACE; }, createInstance: function (outer, iid) { if (outer != null) throw Components. results. NS_ERROR_NO_AGGREGATION; return (new cbContentPolicyComponent ()). QueryInterface (iid); } }
 };
 
-try
-{
-    Components. utils. import ("resource://gre/modules/XPCOMUtils.jsm");
-    var components = [cbContentPolicyComponent];
-    var NSGetFactory = XPCOMUtils. generateNSGetFactory (components);
-}
-catch (e)
-{
-    function NSGetModule (componentManager, fileSpec) { return Module; }
-}
+function NSGetModule (componentManager, fileSpec) { return Module; }
+function NSGetFactory (cid) { return Module. CLASS_FACTORY; }
