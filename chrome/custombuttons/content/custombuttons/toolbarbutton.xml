@@ -8,12 +8,17 @@
        extends="chrome://global/content/bindings/toolbarbutton.xml#toolbarbutton">
 <implementation>
  <constructor>
-     <![CDATA[
+  <![CDATA[
    Components. classes ["@mozilla.org/moz/jssubscript-loader;1"]. getService (Components. interfaces. mozIJSSubScriptLoader).
    loadSubScript ("chrome://custombuttons/content/cbbuttonimpl.js", this);
    custombutton. buttonConstructor (this);
   ]]>
  </constructor>
+ <destructor>
+  <![CDATA[
+   custombutton. buttonDestructor (this);
+  ]]>
+ </destructor>
 </implementation>
 <handlers>
  <handler event="command">
@@ -32,12 +37,17 @@
        extends="chrome://global/content/bindings/toolbarbutton.xml#menu">
 <implementation>
  <constructor>
-     <![CDATA[
+  <![CDATA[
    Components. classes ["@mozilla.org/moz/jssubscript-loader;1"]. getService (Components. interfaces. mozIJSSubScriptLoader).
    loadSubScript ("chrome://custombuttons/content/cbbuttonimpl.js", this);
    custombutton. buttonConstructor (this);
   ]]>
  </constructor>
+ <destructor>
+  <![CDATA[
+   custombutton. buttonDestructor (this);
+  ]]>
+ </destructor>
 </implementation>
 <handlers>
  <handler event="command">
@@ -56,12 +66,17 @@
        extends="chrome://global/content/bindings/toolbarbutton.xml#menu-orient">
 <implementation>
  <constructor>
-     <![CDATA[
+  <![CDATA[
    Components. classes ["@mozilla.org/moz/jssubscript-loader;1"]. getService (Components. interfaces. mozIJSSubScriptLoader).
    loadSubScript ("chrome://custombuttons/content/cbbuttonimpl.js", this);
    custombutton. buttonConstructor (this);
   ]]>
  </constructor>
+ <destructor>
+  <![CDATA[
+   custombutton. buttonDestructor (this);
+  ]]>
+ </destructor>
 </implementation>
 <handlers>
  <handler event="command">
@@ -80,12 +95,17 @@
        extends="chrome://global/content/bindings/toolbarbutton.xml#menu-button">
 <implementation>
  <constructor>
-     <![CDATA[
+  <![CDATA[
    Components. classes ["@mozilla.org/moz/jssubscript-loader;1"]. getService (Components. interfaces. mozIJSSubScriptLoader).
    loadSubScript ("chrome://custombuttons/content/cbbuttonimpl.js", this);
    custombutton. buttonConstructor (this);
   ]]>
  </constructor>
+ <destructor>
+  <![CDATA[
+   custombutton. buttonDestructor (this);
+  ]]>
+ </destructor>
 </implementation>
 <handlers>
  <handler event="command">
@@ -104,12 +124,17 @@
        extends="chrome://global/content/bindings/toolbarbutton.xml#menu-vertical">
 <implementation>
  <constructor>
-     <![CDATA[
+  <![CDATA[
    Components. classes ["@mozilla.org/moz/jssubscript-loader;1"]. getService (Components. interfaces. mozIJSSubScriptLoader).
    loadSubScript ("chrome://custombuttons/content/cbbuttonimpl.js", this);
    custombutton. buttonConstructor (this);
   ]]>
  </constructor>
+ <destructor>
+  <![CDATA[
+   custombutton. buttonDestructor (this);
+  ]]>
+ </destructor>
 </implementation>
 <handlers>
  <handler event="command">
