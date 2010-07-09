@@ -88,9 +88,9 @@ function init ()
 	custombutton. buttonInit (this);
 }
 
-function destroy ()
+function destroy (reason)
 {
-	custombutton. buttonDestroy (this);
+	custombutton. buttonDestroy (this, reason);
 }
 
 __defineGetter__

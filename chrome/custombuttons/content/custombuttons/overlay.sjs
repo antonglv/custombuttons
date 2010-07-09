@@ -109,7 +109,14 @@ Custombuttons. prototype =
 		var sId = oButton. getAttribute ("id");
 		var oPaletteButton = this. palette. getElementsByAttribute ("id", sId) [0];
 		if (oPaletteButton)
-			this. palette. removeChild (oPaletteButton);
+		{
+		    try
+		    {
+			oPaletteButton. destroy ("remove_from_palette");
+		    }
+		    catch (e) {}
+		    this. palette. removeChild (oPaletteButton);
+		}
 	},
 	
 	AddButtonToPalette: function (oButton)
@@ -194,7 +201,7 @@ Custombuttons. prototype =
 			return;
 		try
 		{
-			oRemovedButton. destroy ();
+			oRemovedButton. destroy ("delete");
 		}
 		catch (oErr) {}
 		if (bRemoveFromOverlay)
@@ -248,6 +255,11 @@ Custombuttons. prototype =
 					{
 						newButton = this. cbCloneNode (oSubject);
 						winButton = winButtons [i];
+					    	try
+						{
+						    winButton. destroy ("update");
+						}
+					    	catch (e) {}
 						winButton. parentNode. replaceChild (newButton, winButton);
 					}
 				}
