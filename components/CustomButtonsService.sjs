@@ -80,6 +80,15 @@ var consoleListener =
 	var columnNumber = msg. columnNumber;
 	var flags = msg. flags;
 	var category = msg. category;
+	if (!msg. sourceName)
+	    message = message. replace (/JS frame :: (.*?) ::/, "JS frame :: " + uri + " ::");
+	if (msg. sourceName && (msg. sourceName. indexOf ("->") != -1))
+	{
+	    var sourceName = msg. sourceName. split (" -> ");
+	    sourceName [0] = uri;
+	    uri = sourceName [sourceName. length - 1];
+	    message += "\t[ " + sourceName. join (" -> ") + " ]";
+	}
 	msg. init (message, uri, sourceLine, lineNumber, columnNumber, flags, category);
     }
 };
