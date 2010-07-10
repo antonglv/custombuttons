@@ -22,6 +22,68 @@
 
 
 
+var consoleListener =
+{
+    QueryInterface: function (iid) { if (!iid. equals (Components. interfaces. nsIConsoleListener) && !iid. equals (Components. interfaces. nsISupports)) throw Components. results. NS_ERROR_NO_INTERFACE; return this; },
+
+    registered: false,
+
+    register: function ()
+    {
+ if (this. registered)
+     return;
+ var cs = Components. classes ["@mozilla.org/consoleservice;1"]. getService (Components. interfaces. nsIConsoleService);
+ cs. registerListener (this);
+    },
+
+    unregister: function ()
+    {
+ if (!this. registered)
+     return;
+ var cs = Components. classes ["@mozilla.org/consoleservice;1"]. getService (Components. interfaces. nsIConsoleService);
+ cs. unregisterListener (this);
+    },
+
+    observe: function (msg)
+    {
+ var cs = Components. classes ["@mozilla.org/consoleservice;1"]. getService (Components. interfaces. nsIConsoleService);
+ if (!(msg instanceof Components. interfaces. nsIConsoleMessage))
+     return;
+ if (!(msg instanceof Components. interfaces. nsIScriptError))
+     return;
+ var re = new RegExp ('location: "JS frame :: chrome://custombuttons/content/button.js');
+ if (!msg. message. match (re) && (msg. sourceName. indexOf ("chrome://custombuttons/content/button.js") == -1))
+     return;
+ var lineNumber = msg. lineNumber;
+ var uri = msg. sourceName;
+ if (!uri)
+ {
+     re = new RegExp ('location: "JS frame :: (.*?) :: .*? :: line (\\d+)"');
+     var m = msg. message. match (re);
+     if (!m)
+  return;
+     uri = m [1];
+     lineNumber = m [2];
+ }
+ var ios = Components. classes ["@mozilla.org/network/io-service;1"]. getService (Components. interfaces. nsIIOService);
+ var url = ios. newURI (uri, null, null);
+ url = url. QueryInterface (Components. interfaces. nsIURL);
+ var q = url. query || "";
+ var windowId = q. match (/&?windowId=(\w*)?&?/);
+ var buttonId = q. match (/&?id=(custombuttons-button\d+)&?/);
+ var phase = q. match (/@(\w*)?/);
+ if (!windowId || !buttonId || !phase)
+     return;
+ uri = "custombutton://buttons/" + windowId [1] + "/" + phase [1] + "/" + buttonId [1];
+ var message = msg. errorMessage;
+ var sourceLine = msg. sourceLine;
+ var columnNumber = msg. columnNumber;
+ var flags = msg. flags;
+ var category = msg. category;
+ msg. init (message, uri, sourceLine, lineNumber, columnNumber, flags, category);
+    }
+};
+
 function makeSupportsArray ()
 {
  var array = Components. classes ["@mozilla.org/supports-array;1"]. createInstance (Components. interfaces. nsISupportsArray);
@@ -862,7 +924,20 @@ cbCustomButtonsService. prototype =
     var os = Components. classes ["@mozilla.org/observer-service;1"]. getService (Components. interfaces. nsIObserverService);
     os. addObserver (this, "profile-after-change", true);
     break;
+       case "quit-application":
+        consoleListener. unregister ();
+        var os = Components. classes ["@mozilla.org/observer-service;1"]. getService (Components. interfaces. nsIObserverService);
+        os. removeObserver (this, "quit-application");
+        break;
    case "profile-after-change":
+        var os = Components. classes ["@mozilla.org/observer-service;1"]. getService (Components. interfaces. nsIObserverService);
+        try
+    {
+        os. removeObserver (this, "profile-after-change");
+    }
+        catch (e) {}
+        os. addObserver (this, "quit-application", true);
+        consoleListener. register ();
     var ios = Components. classes ["@mozilla.org/network/io-service;1"]. getService (Components. interfaces. nsIIOService);
     var rph = ios. getProtocolHandler ("resource"). QueryInterface (Components. interfaces. nsIResProtocolHandler);
     var dir = Components. classes ["@mozilla.org/file/directory_service;1"]. getService (Components. interfaces. nsIProperties). get ("ProfD", Components. interfaces. nsIFile);
