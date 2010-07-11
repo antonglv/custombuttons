@@ -1,5 +1,10 @@
+var uri = "custombutton://buttons/";
 var url = this. getAttribute ("href");
+var windowId = url. match (/windowId=(\w+)/) [1];
+var buttonId = url. match (/id=([\w-]+)/) [1];
+var phase = url. match (/@(\w+)/) [1];
 var line = this. getAttribute ("line");
+uri += windowId + "/" + phase + "/" + buttonId + "#" + line;
 var cbs = Components. classes ["@xsms.nm.ru/custombuttons/cbservice;1"].
 		  getService (Components. interfaces. cbICustomButtonsService);
-cbs. editButton (null, url + "#" + line, null);
+cbs. editButton (null, uri, null);

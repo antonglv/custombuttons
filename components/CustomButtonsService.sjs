@@ -22,77 +22,6 @@
 #include <project.hjs>
 #include <prio.hjs>
 
-var consoleListener =
-{
-    DEFINE_STD_QI (nsIConsoleListener),
-
-    registered: false,
-
-    register: function ()
-    {
-	if (this. registered)
-	    return;
-	var cs = SERVICE (CONSOLE);
-	cs. registerListener (this);
-    },
-
-    unregister: function ()
-    {
-	if (!this. registered)
-	    return;
-	var cs = SERVICE (CONSOLE);
-	cs. unregisterListener (this);
-    },
-
-    observe: function (msg)
-    {
-	var cs = SERVICE (CONSOLE);
-	if (!(msg instanceof CI. nsIConsoleMessage))
-	    return;
-	if (!(msg instanceof CI. nsIScriptError))
-	    return;
-	var re = new RegExp ('location: "JS frame :: chrome://custombuttons/content/button.js');
-	if (!msg. message. match (re) && (msg. sourceName. indexOf  ("chrome://custombuttons/content/button.js") == -1))
-	    return;
-	var lineNumber = msg. lineNumber;
-	var uri = msg. sourceName;
-	if (!uri)
-	{
-	    re = new RegExp ('location: "JS frame :: (.*?) :: .*? :: line (\\d+)"');
-	    var m = msg. message. match (re);
-	    if (!m)
-		return;
-	    uri = m [1];
-	    lineNumber = m [2];
-	}
-	var ios = SERVICE (IO);
-	var url = ios. newURI (uri, null, null);
-	url = url. QI (nsIURL);
-	var q = url. query || "";
-	var windowId = q. match (/&?windowId=(\w*)?&?/);
-	var buttonId = q. match (/&?id=(custombuttons-button\d+)&?/);
-	var phase = q. match (/@(\w*)?/);
-	if (!windowId || !buttonId || !phase)
-	    return;
-	uri = "custombutton://buttons/" + windowId [1] + "/" + phase [1] + "/" + buttonId [1];
-	var message = msg. errorMessage;
-	var sourceLine = msg. sourceLine;
-	var columnNumber = msg. columnNumber;
-	var flags = msg. flags;
-	var category = msg. category;
-	if (!msg. sourceName)
-	    message = message. replace (/JS frame :: (.*?) ::/, "JS frame :: " + uri + " ::");
-	if (msg. sourceName && (msg. sourceName. indexOf ("->") != -1))
-	{
-	    var sourceName = msg. sourceName. split (" -> ");
-	    sourceName [0] = uri;
-	    uri = sourceName [sourceName. length - 1];
-	    message += "\t[ " + sourceName. join (" -> ") + " ]";
-	}
-	msg. init (message, uri, sourceLine, lineNumber, columnNumber, flags, category);
-    }
-};
-
 function makeSupportsArray ()
 {
 	var array = COMPONENT (SUPPORTS_ARRAY);
@@ -933,20 +862,7 @@ cbCustomButtonsService. prototype =
 				var os = SERVICE (OBSERVER);
 				os. addObserver (this, "profile-after-change", true);
 				break;
-		    	case "quit-application":
-		    		consoleListener. unregister ();
-		    		var os = SERVICE (OBSERVER);
-		    		os. removeObserver (this, "quit-application");
-		    		break;
 			case "profile-after-change":
-		    		var os = SERVICE (OBSERVER);
-		    		try
-				{
-				    os. removeObserver (this, "profile-after-change");
-				}
-		    		catch (e) {}
-		    		os. addObserver (this, "quit-application", true);
-		    		consoleListener. register ();
 				var ios = SERVICE (IO);
 				var rph = ios. getProtocolHandler ("resource"). QI (nsIResProtocolHandler);
 				var dir = SERVICE (PROPERTIES). get ("ProfD", CI. nsIFile);
