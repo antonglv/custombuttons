@@ -271,6 +271,20 @@ var custombutton =
    return this. buttonGetOldFormatURI (oBtn);
  },
 
+    createLogger: function (oButton)
+    {
+ var id = oButton. id;
+ var name = oButton. name;
+ var phase = oButton. _initPhase? "init": "code";
+ var head = "[Custom Buttons: id: " + id + "@" + phase + ", name: " + name + "]";
+ var logger = function (msg)
+ {
+     var cs = Components. classes ["@mozilla.org/consoleservice;1"]. getService (Components. interfaces. nsIConsoleService);
+     cs. logStringMessage (head + (msg? ("\n" + msg): ""));
+ };
+ return logger;
+    },
+
  buttonCbExecuteCode: function (event, oButton, code)
  {
      this. checkBind ();
@@ -285,10 +299,11 @@ var custombutton =
   cm = custombuttonsUtils. createMsg;
      }
      var executionContext = {};
+     var LOG = this. createLogger (oButton);
      executionContext ["oButton"] = oButton;
      executionContext ["code"] = code;
-     executionContext ["argNames"] = "event,createDebug,createMsg";
-     executionContext ["args"] = [event, cd, cm];
+     executionContext ["argNames"] = "event,createDebug,createMsg,LOG";
+     executionContext ["args"] = [event, cd, cm, LOG];
      Components. classes ["@mozilla.org/moz/jssubscript-loader;1"]. getService (Components. interfaces. mozIJSSubScriptLoader). loadSubScript (execurl, executionContext);
  },
 
