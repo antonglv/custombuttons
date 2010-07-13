@@ -31,7 +31,7 @@ function addEventListener (eventType, eventHandler, captureFlag, eventTarget)
 	    switch (typeof this. eventHandler)
 	    {
 	    case "function":
-		this. eventHandler. call (this. context, [event]);
+		this. eventHandler. apply (this. context, [event]);
 		break;
 	    case "object":
 		this. eventHandler. handleEvent (event);
