@@ -1,3 +1,7 @@
+/**
+ * @fileOverview This file used for building custom buttons runtime environment
+ */
+
 var phase = oButton. _initPhase? "init": "code";
 var id = oButton. id;
 var doc = document;
@@ -10,8 +14,8 @@ if ("custombuttonsUtils" in window)
 
 /**
  * Logs an message to Error Console
+ * @since version 0.0.5.1
  * @param {String} msg A message to log to
- * @version 0.0.5.1
  */
 function LOG (msg)
 {
@@ -23,12 +27,16 @@ function LOG (msg)
 }
 
 /**
- * Registers an event listener so the listener may be deleted on button destruction
+ * Registers an event listener.
+ * The listener is deleted automatically when the button is being destroyed
+ * (when the button is changed or removed or when window is closed).
+ * @since version 0.0.5.1
  * @param {String} eventType
  * @param {nsIDOMEventListener|function} eventHandler
  * @param {Boolean} captureFlag 
  * @param {nsIDOMEventTarget} [eventTarget=window]
- * @version 0.0.5.1
+ * @throws {TypeError} If eventHandler is not a function or has not nsIDOMEventListener interface
+ * @throws {TypeError} If eventTarget has not nsIDOMEventTarget interface
  */
 function addEventListener (eventType, eventHandler, captureFlag, eventTarget)
 {
@@ -94,6 +102,7 @@ function addEventListener (eventType, eventHandler, captureFlag, eventTarget)
 
 /**
  * Unregisters an event listener registered with addEventListener
+ * @since version 0.0.5.1
  * @param {String} eventType
  * @param {nsIDOMEventListener|function} eventHandler
  * @param {Boolean} captureFlag
