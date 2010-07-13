@@ -280,10 +280,10 @@ var custombutton =
     {
 	var utils = {};
 	utils ["oButton"] = oButton;
-	utils ["uri"] = uri;
+	utils ["buttonURI"] = uri;
 	SERVICE (JS_SUBSCRIPT_LOADER). loadSubScript ("chrome://custombuttons/content/contextBuilder.js", utils);
 	delete utils. oButton;
-	delete utils. uri;
+	delete utils. buttonURI;
 	for (var i in utils)
 	{
 	    executionContext. argNames += "," + i;

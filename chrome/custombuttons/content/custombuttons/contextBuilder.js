@@ -1,6 +1,7 @@
 var phase = oButton. _initPhase? "init": "code";
 var id = oButton. id;
 var doc = document;
+var uri = buttonURI;
 if ("custombuttonsUtils" in window)
 {
     var createDebug = custombuttonsUtils. createDebug;
