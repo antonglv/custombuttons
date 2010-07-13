@@ -273,12 +273,14 @@ var custombutton =
 
     createLogger: function (oButton)
     {
-	var id = oButton. id;
-	var name = oButton. name;
 	var phase = oButton. _initPhase? "init": "code";
-	var head = "[Custom Buttons: id: " + id + "@" + phase + ", name: " + name + "]";
+	var id = oButton. id;
+	var doc = document;
 	var logger = function (msg)
 	{
+	    var oButton = doc. getElementById (id);
+	    var name = oButton. name;
+	    var head = "[Custom Buttons: id: " + id + "@" + phase + ", name: " + name + "]";
 	    var cs = SERVICE (CONSOLE);
 	    cs. logStringMessage (head + (msg? ("\n" + msg): ""));
 	};
