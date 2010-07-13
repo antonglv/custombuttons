@@ -64,7 +64,7 @@ function addEventListener (eventType, eventHandler, captureFlag, eventTarget)
     if (!eventTarget)
 	eventTarget = window;
     if (eventTarget instanceof Components. interfaces. nsIDOMEventTarget)
-	handler. eventTarget = eventTarget || window;
+	handler. eventTarget = eventTarget;
     else
 	throw new TypeError ("Custom Buttons: addEventListener: eventTarget hasn't interface nsIDOMEventTarget\n", uri, Components. stack. caller. lineNumber);
     var oButton = doc. getElementById (id);
