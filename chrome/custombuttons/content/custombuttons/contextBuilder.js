@@ -78,14 +78,16 @@ function addEventListener (eventType, eventHandler, captureFlag, eventTarget)
     oButton. _handlers. push (handler);
 }
 
-function removeEventListener (eventType, eventHandler, captureFlag)
+function removeEventListener (eventType, eventHandler, captureFlag, eventTarget)
 {
     var handler;
     var oButton = doc. getElementById (id);
+    if (!eventTarget)
+	eventTarget = window;
     for (var i = 0; i < oButton. _handlers. length; i++)
     {
 	handler = oButton. _handlers [i];
-	if ((handler. eventType == eventType) && (handler. eventHandler == eventHandler) && (handler. captureFlag == handler. captureFlag))
+	if ((handler. eventType == eventType) && (handler. eventHandler == eventHandler) && (handler. captureFlag == handler. captureFlag) && (handler. eventTarget == eventTarget))
 	{
 	    handler. unregister ();
 	    oButton. _handlers. splice (i, 1);
