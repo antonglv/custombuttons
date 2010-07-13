@@ -280,7 +280,7 @@ var custombutton =
 	{
 	    var oButton = doc. getElementById (id);
 	    var name = oButton. name;
-	    var head = "[Custom Buttons: id: " + id + "@" + phase + ", name: " + name + "]";
+	    var head = "[Custom Buttons: id: " + id + "@" + phase + ", line: " + Components. stack. caller. lineNumber + ", name: " + name + "]";
 	    var cs = SERVICE (CONSOLE);
 	    cs. logStringMessage (head + (msg? ("\n" + msg): ""));
 	};
