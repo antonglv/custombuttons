@@ -59,7 +59,12 @@ function addEventListener (eventType, eventHandler, captureFlag, eventTarget)
 	}
     };
     handler. eventType = eventType;
-    handler. eventHandler = eventHandler;
+    if ((eventHandler instanceof Components. interfaces. nsIDOMEventListener) ||
+	(typeof (eventHandler) == "function") ||
+	((typeof (eventHandler) == "object") && (typeof (eventHandler ["handleEvent"]) == "function")))
+	handler. eventHandler = eventHandler;
+    else
+	throw new TypeError ("Custom Buttons: addEventListener: eventHandler isn't a function or hasn't nsIDOMEventListener interface", uri, Components. stack. caller. lineNumber);
     handler. captureFlag = captureFlag;
     if (!eventTarget)
 	eventTarget = window;
