@@ -8,6 +8,11 @@ if ("custombuttonsUtils" in window)
     var createMsg = custombuttonsUtils. createMsg;
 }
 
+/**
+ * Logs an message to Error Console
+ * @param {String} msg A message to log to
+ * @version 0.0.5.1
+ */
 function LOG (msg)
 {
     var oButton = doc. getElementById (id);
@@ -17,6 +22,14 @@ function LOG (msg)
     cs. logStringMessage (head + (msg? ("\n" + msg): ""));
 }
 
+/**
+ * Registers an event listener so the listener may be deleted on button destruction
+ * @param {String} eventType
+ * @param {nsIDOMEventListener|function} eventHandler
+ * @param {Boolean} captureFlag 
+ * @param {nsIDOMEventTarget} [eventTarget=window]
+ * @version 0.0.5.1
+ */
 function addEventListener (eventType, eventHandler, captureFlag, eventTarget)
 {
     var handler =
@@ -79,6 +92,13 @@ function addEventListener (eventType, eventHandler, captureFlag, eventTarget)
     oButton. _handlers. push (handler);
 }
 
+/**
+ * Unregisters an event listener registered with addEventListener
+ * @param {String} eventType
+ * @param {nsIDOMEventListener|function} eventHandler
+ * @param {Boolean} captureFlag
+ * @param {nsIDOMEventTarget} [eventTarget=window]
+ */
 function removeEventListener (eventType, eventHandler, captureFlag, eventTarget)
 {
     var handler;
