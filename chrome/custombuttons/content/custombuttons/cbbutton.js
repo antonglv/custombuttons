@@ -113,6 +113,11 @@ var custombutton =
 
  buttonDestroy: function (oBtn, reason)
  {
+     while (oBtn. _handlers. length != 0)
+     {
+  oBtn. _handlers [0]. unregister ();
+  oBtn. _handlers. shift ();
+     }
   if (oBtn. onDestroy)
   {
    try
@@ -271,20 +276,19 @@ var custombutton =
    return this. buttonGetOldFormatURI (oBtn);
  },
 
-    createLogger: function (oButton)
+    buildExecutionContext: function (oButton, uri, executionContext)
     {
- var phase = oButton. _initPhase? "init": "code";
- var id = oButton. id;
- var doc = document;
- var logger = function (msg)
+ var utils = {};
+ utils ["oButton"] = oButton;
+ utils ["uri"] = uri;
+ Components. classes ["@mozilla.org/moz/jssubscript-loader;1"]. getService (Components. interfaces. mozIJSSubScriptLoader). loadSubScript ("chrome://custombuttons/content/contextBuilder.js", utils);
+ delete utils. oButton;
+ delete utils. uri;
+ for (var i in utils)
  {
-     var oButton = doc. getElementById (id);
-     var name = oButton. name;
-     var head = "[Custom Buttons: id: " + id + "@" + phase + ", line: " + Components. stack. caller. lineNumber + ", name: " + name + "]";
-     var cs = Components. classes ["@mozilla.org/consoleservice;1"]. getService (Components. interfaces. nsIConsoleService);
-     cs. logStringMessage (head + (msg? ("\n" + msg): ""));
- };
- return logger;
+     executionContext. argNames += "," + i;
+     executionContext. args. push (utils [i]);
+ }
     },
 
  buttonCbExecuteCode: function (event, oButton, code)
@@ -294,18 +298,12 @@ var custombutton =
      execurl += this. cbService. getWindowId (document. documentURI) + "&id=";
      execurl += oButton. id + "@";
      execurl += oButton. _initPhase? "init": "code";
-     var cd = null, cm = null;
-     if ("custombuttonsUtils" in window)
-     {
-  cd = custombuttonsUtils. createDebug;
-  cm = custombuttonsUtils. createMsg;
-     }
      var executionContext = {};
-     var LOG = this. createLogger (oButton);
      executionContext ["oButton"] = oButton;
      executionContext ["code"] = code;
-     executionContext ["argNames"] = "event,createDebug,createMsg,LOG";
-     executionContext ["args"] = [event, cd, cm, LOG];
+     executionContext ["argNames"] = "event";
+     executionContext ["args"] = [event];
+     this. buildExecutionContext (oButton, execurl, executionContext);
      Components. classes ["@mozilla.org/moz/jssubscript-loader;1"]. getService (Components. interfaces. mozIJSSubScriptLoader). loadSubScript (execurl, executionContext);
  },
 
