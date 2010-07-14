@@ -119,6 +119,11 @@ Editor. prototype =
 			textbox. selectLine (lineNumber);
 			//textbox. scrollTo (lineNumber);
 		}
+	    	if (param. wrappedJSObject. updateButton == true)
+	    	{
+		    this. param = param. wrappedJSObject;
+		    this. setValues ();
+		}
 	},
 
 	setValues: function ()

@@ -525,13 +525,15 @@ cbCustomButtonsService. prototype =
   this. openEditor (opener, oButtonParameters. windowId, oButtonParameters);
  },
 
- openEditor: function (opener, uri, param)
+ openEditor: function (opener, uri, param, checkIfEditorIsOpen)
  {
   var sEditorId = "custombuttons-editor@" + uri + ":";
   sEditorId += param. id || param. name || (new Date (). valueOf ());
   var wws = Components. classes ["@mozilla.org/embedcomp/window-watcher;1"]. getService (Components. interfaces. nsIWindowWatcher);
   var cbedw = wws. getWindowByName (sEditorId, opener);
   param. wrappedJSObject = param;
+      if (checkIfEditorIsOpen)
+      return cbedw? true: false;
   if (cbedw)
   {
    cbedw. focus ();
@@ -550,6 +552,7 @@ cbCustomButtonsService. prototype =
    );
    this. editors. push (cbedw);
   }
+      return true;
  },
 
  makeButton: function (button, param)
@@ -605,17 +608,25 @@ cbCustomButtonsService. prototype =
   var ps = Components. classes ["@mozilla.org/embedcomp/prompt-service;1"]. getService (Components. interfaces. nsIPromptService);
   var msg = this. getLocaleString ("UpdateConfirm"). replace (/%s/, parameters. name);
   msg = msg. replace (/%n/, param. name);
-  if (ps. confirm (null, "Custom Buttons", msg))
-  {
-   var link = this. parseButtonLink (buttonLink);
-   param. newButton = false;
-   param. windowId = link. windowId;
-   param. id = link. buttonId;
-   param. wrappedJSObject = param;
-   this. installButton (param);
-   return true;
-  }
-  return false;
+      var link = this. parseButtonLink (buttonLink);
+      param. newButton = false;
+      param. windowId = link. windowId;
+      param. id = link. buttonId;
+      param ["updateButton"] = true;
+      param. wrappedJSObject = param;
+      var sEditButtonLabel = this. getLocaleString ("OpenInEditor");
+      var buttonFlags = (ps. BUTTON_POS_0 * ps. BUTTON_TITLE_OK) |
+      (ps. BUTTON_POS_2 * ps. BUTTON_TITLE_IS_STRING) |
+      (ps. BUTTON_POS_1 * ps. BUTTON_TITLE_CANCEL);
+      var checkState = { value: false };
+      res = ps. confirmEx (null, "Custom Buttons", msg, buttonFlags, "", "", sEditButtonLabel, null, checkState);
+      if (res == 1) // Cancel pressed
+      return false;
+      if ((res == 2) || this. openEditor (null, param. windowId, param, true)) // Edit... pressed or Ok pressed and Editor already opened
+      this. openEditor (null, param. windowId, param);
+      else
+      this. installButton (param);
+      return true;
  },
 
  getLocaleString: function (stringId)
