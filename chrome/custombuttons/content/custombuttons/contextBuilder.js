@@ -20,6 +20,8 @@ if ("custombuttonsUtils" in window)
 function LOG (msg)
 {
     var oButton = doc. getElementById (id);
+    if (!oButton)
+	return;
     var name = oButton. name;
     var head = "[Custom Buttons: id: " + id + "@" + phase + ", line: " + Components. stack. caller. lineNumber + ", name: " + name + "]";
     var cs = Components. classes ["@mozilla.org/consoleservice;1"]. getService (Components. interfaces. nsIConsoleService);
@@ -40,6 +42,9 @@ function LOG (msg)
  */
 function addEventListener (eventType, eventHandler, captureFlag, eventTarget)
 {
+    var oButton = doc. getElementById (id);
+    if (!oButton)
+	return;
     var handler =
     {
 	eventType: "",
@@ -94,7 +99,6 @@ function addEventListener (eventType, eventHandler, captureFlag, eventTarget)
 	handler. eventTarget = eventTarget;
     else
 	throw new TypeError ("Custom Buttons: addEventListener: eventTarget hasn't interface nsIDOMEventTarget\n", uri, Components. stack. caller. lineNumber);
-    var oButton = doc. getElementById (id);
     handler. context = oButton;
     handler. register ();
     oButton. _handlers. push (handler);
@@ -110,8 +114,10 @@ function addEventListener (eventType, eventHandler, captureFlag, eventTarget)
  */
 function removeEventListener (eventType, eventHandler, captureFlag, eventTarget)
 {
-    var handler;
     var oButton = doc. getElementById (id);
+    if (!oButton)
+	return;
+    var handler;
     if (!eventTarget)
 	eventTarget = window;
     for (var i = 0; i < oButton. _handlers. length; i++)
