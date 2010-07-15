@@ -18,7 +18,7 @@
 		<broadcasterset id="custombuttons-broadcasterset"/>
 		<broadcasterset id="custombuttons-buttons-broadcasterset"/>
 
-		<popup id="custombuttons-contextpopup">
+		<menupopup id="custombuttons-contextpopup">
 			<menuitem id="custombuttons-contextpopup-addnewbutton"
 				  class="menuitem-iconic"
 					  label="&custombuttons.viewMenu_Item;"
@@ -44,7 +44,7 @@
 							  command="cmd_CustomizeToolbars"/>
 				</menupopup>
 			</menu>
-		</popup>
+		</menupopup>
 		
 	</window>
 
@@ -61,7 +61,7 @@
 		<broadcasterset id="custombuttons-broadcasterset"/>
 		<broadcasterset id="custombuttons-buttons-broadcasterset"/>
 
-		<popup id="custombuttons-contextpopup">
+		<menupopup id="custombuttons-contextpopup">
 			<menuitem id="custombuttons-contextpopup-addnewbutton"
 				  class="menuitem-iconic"
 					  label="&custombuttons.viewMenu_Item;"
@@ -87,7 +87,7 @@
 							  command="cmd_CustomizeToolbars"/>
 				</menupopup>
 			</menu>
-		</popup>
+		</menupopup>
 		
 	</window>
 
