@@ -543,6 +543,8 @@ cbCustomButtonsService. prototype =
  openEditor: function (opener, uri, param)
  {
   var cbedw = this. findEditor (opener, uri, param);
+      var wws = Components. classes ["@mozilla.org/embedcomp/window-watcher;1"]. getService (Components. interfaces. nsIWindowWatcher);
+      var sEditorId = this. getEditorId (uri, param);
   param. wrappedJSObject = param;
   if (cbedw)
   {
@@ -628,7 +630,7 @@ cbCustomButtonsService. prototype =
       (ps. BUTTON_POS_2 * ps. BUTTON_TITLE_IS_STRING) |
       (ps. BUTTON_POS_1 * ps. BUTTON_TITLE_CANCEL);
       var checkState = { value: false };
-      res = ps. confirmEx (null, "Custom Buttons", msg, buttonFlags, "", "", sEditButtonLabel, null, checkState);
+      var res = ps. confirmEx (null, "Custom Buttons", msg, buttonFlags, "", "", sEditButtonLabel, null, checkState);
       if (res == 1) // Cancel pressed
       return false;
       if ((res == 2) || this. findEditor (null, param. windowId, param)) // Edit... pressed or Ok pressed and Editor already opened
