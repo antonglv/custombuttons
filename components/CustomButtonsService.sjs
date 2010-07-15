@@ -525,15 +525,25 @@ cbCustomButtonsService. prototype =
 		this. openEditor (opener, oButtonParameters. windowId, oButtonParameters);
 	},
 
-	openEditor: function (opener, uri, param, checkIfEditorIsOpen)
+    getEditorId: function (uri, param)
+    {
+	var sEditorId = "custombuttons-editor@" + uri + ":";
+	sEditorId += param. id || param. name || (new Date (). valueOf ());
+	return sEditorId;
+    },
+
+    findEditor: function (opener, uri, param)
+    {
+	var sEditorId = this. getEditorId (uri, param);
+	var wws = SERVICE (WINDOW_WATCHER);
+	var cbedw = wws. getWindowByName (sEditorId, opener);
+	return cbedw;
+    },
+
+	openEditor: function (opener, uri, param)
 	{
-		var sEditorId = "custombuttons-editor@" + uri + ":";
-		sEditorId += param. id || param. name || (new Date (). valueOf ());
-		var wws = SERVICE (WINDOW_WATCHER);
-		var cbedw = wws. getWindowByName (sEditorId, opener);
+		var cbedw = this. findEditor (opener, uri, param);
 		param. wrappedJSObject = param;
-	    	if (checkIfEditorIsOpen)
-		    return cbedw? true: false;
 		if (cbedw)
 		{
 			cbedw. focus ();
@@ -552,7 +562,6 @@ cbCustomButtonsService. prototype =
 			);
 			this. editors. push (cbedw);
 		}
-	    	return true;
 	},
 
 	makeButton: function (button, param)
@@ -622,7 +631,7 @@ cbCustomButtonsService. prototype =
 	    	res = ps. confirmEx (null, "Custom Buttons", msg, buttonFlags, "", "", sEditButtonLabel, null, checkState);
 	    	if (res == 1) // Cancel pressed
 		    return false;
-	    	if ((res == 2) || this. openEditor (null, param. windowId, param, true)) // Edit... pressed or Ok pressed and Editor already opened
+	    	if ((res == 2) || this. findEditor (null, param. windowId, param)) // Edit... pressed or Ok pressed and Editor already opened
 		    this. openEditor (null, param. windowId, param);
 	    	else
 		    this. installButton (param);
