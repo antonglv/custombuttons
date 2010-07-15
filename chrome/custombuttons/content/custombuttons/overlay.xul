@@ -11,7 +11,7 @@
 		 xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
 	<popupset id="mainPopupSet">
-		<popup id="custombuttons-contextpopup">
+		<menupopup id="custombuttons-contextpopup">
 			<menuitem id="custombuttons-contextpopup-addnewbutton"
 				  class="menuitem-iconic"
 					  label="&custombuttons.viewMenu_Item;"
@@ -37,7 +37,7 @@
 							  label="&viewCustomizeToolbar.label;"/>
 				</menupopup>
 			</menu>
-		</popup>
+		</menupopup>
 		
 	</popupset>
 

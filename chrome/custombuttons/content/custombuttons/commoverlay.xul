@@ -21,7 +21,7 @@
 		<broadcaster id="custombuttons-contextbroadcaster-customizeseparator"/>
 	</broadcasterset>
 
-	<popup id="custombuttons-contextpopup-sub">
+	<menupopup id="custombuttons-contextpopup-sub">
 		<menuitem id="custombuttons-contextpopup-edit-sub"
 			  class="menuitem-iconic"
 				  label="&custombuttons.buttonPopup.edit;"
@@ -57,7 +57,7 @@
 				  oncommand="custombuttons.uChelpButton();"/>
 		<menuseparator id="custombuttons-contextpopup-separator3-sub"
 					   observes="custombuttons-contextpopup-customizeseparator"/>
-	</popup>
+	</menupopup>
 
 	<menupopup id="custombuttons-contextpopup">
 		<menuitem id="custombuttons-contextpopup-edit"
