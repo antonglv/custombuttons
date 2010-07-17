@@ -123,12 +123,12 @@
 	
 	<menupopup id="toolbar-context-menu">
 	    <menuitem label="&custombuttons.viewMenu_Item;" class="menuitem-iconic"
-				  oncommand="custombuttons.addButton()"/>
+				  oncommand="custombuttons.addButton(event)"/>
 	</menupopup>
 	
 	<menupopup id="main-toolbar-context-menu">
 	    <menuitem label="&custombuttons.viewMenu_Item;" class="menuitem-iconic"
-				  oncommand="custombuttons.addButton()"/>
+				  oncommand="custombuttons.addButton(event)"/>
 	</menupopup>
 
 </overlay>

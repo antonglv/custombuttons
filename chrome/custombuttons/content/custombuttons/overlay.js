@@ -281,8 +281,9 @@ Custombuttons. prototype =
   return document. getElementById ("custombuttons-button" + num);
  },
 
- addButton: function ()
+ addButton: function (event)
  {
+     event. stopPropagation ();
   this. openEditor ("");
  },
 
