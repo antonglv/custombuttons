@@ -47,7 +47,8 @@ function getParamBlock ()
   accelkey: "",
   mode: 0,
   help: "",
-  newButton: false
+  newButton: false,
+     updateButton: false
  };
 }
 
