@@ -283,8 +283,9 @@ Custombuttons. prototype =
 	
 	addButton: function (event)
 	{
-	    event. stopPropagation ();
-		this. openEditor ("");
+	    if (event)
+		event. stopPropagation ();
+	    this. openEditor ("");
 	},
 	
 	editButton: function (oBtn)
