@@ -102,6 +102,9 @@ style	EDITOR/editor.xul		CBCONTENT/overlay.css
 style	GLOBAL/console.xul	CBCONTENT/console.css
 style	chrome://console2/content/console2.xul CBCONTENT/console.css
 
+style	CBCONTENT/console.xul   CBCONTENT/console.css FIREFOXAPP appversion>=2.0
+style	CBCONTENT/console.xul   CBCONTENT/console1.5.css FIREFOXAPP appversion<2.0
+
 locale	custombuttons	en-US	jar:chrome/custombuttons.jar!/locale/en-US/custombuttons/
 locale	custombuttons	ru-RU	jar:chrome/custombuttons.jar!/locale/ru-RU/custombuttons/
 locale	custombuttons	pl-PL	jar:chrome/custombuttons.jar!/locale/pl-PL/custombuttons/

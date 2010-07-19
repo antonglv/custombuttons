@@ -102,6 +102,9 @@ style chrome://editor/content/editor.xul chrome://custombuttons/content/overlay.
 style chrome://global/content/console.xul chrome://custombuttons/content/console.css
 style chrome://console2/content/console2.xul chrome://custombuttons/content/console.css
 
+style chrome://custombuttons/content/console.xul chrome://custombuttons/content/console.css application={ec8030f7-c20a-464f-9b0e-13a3a9e97384} appversion>=2.0
+style chrome://custombuttons/content/console.xul chrome://custombuttons/content/console1.5.css application={ec8030f7-c20a-464f-9b0e-13a3a9e97384} appversion<2.0
+
 locale custombuttons en-US jar:chrome/custombuttons.jar!/locale/en-US/custombuttons/
 locale custombuttons ru-RU jar:chrome/custombuttons.jar!/locale/ru-RU/custombuttons/
 locale custombuttons pl-PL jar:chrome/custombuttons.jar!/locale/pl-PL/custombuttons/

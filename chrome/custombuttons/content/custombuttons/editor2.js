@@ -101,7 +101,23 @@ Editor. prototype =
   document. getElementById ("initCode"). addEditorObserver (this);
   document. getElementById ("help"). addEditorObserver (this);
   window. addEventListener ("mousedown", this, true);
+     if (this. param. newButton)
+     {
+  var console = document. getElementById ("console");
+  console. setAttribute ("hidden", true);
+  console. previousSibling. setAttribute ("hidden", true);
+     }
+     else
+     {
+  var consoleDoc = document. getElementById ("console"). contentDocument;
+  var console = consoleDoc. getElementById ("CBConsoleBox");
+  console. clear ();
+  console. buttonid = this. param. id;
+  this. console = console;
+     }
  },
+
+    console: null,
 
  setEditorParameters: function (param)
  {
@@ -237,8 +253,22 @@ Editor. prototype =
    {
     var doc = opener. document;
     var button = doc. getElementById (this. param. id);
-    if (button)
-     CB. execute_oncommand_code (code, button);
+       if (button)
+       {
+    this. console. clear ();
+    this. console. buttonid = button. id;
+    this. console. uri = "chrome://custombuttons/content/button.js?windowId=" + this. param. windowId + "&id=" + button. id;
+    this. console. enableLogging = true;
+    var console = this. console;
+    try
+    {
+        CB. execute_oncommand_code (code, button);
+    }
+    finally
+    {
+        setTimeout (function () { console. enableLogging = false; }, 100);
+    }
+       }
     else
      this. cbService. alert ("ButtonDoesntExist");
     window. focus ();

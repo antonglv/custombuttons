@@ -93,9 +93,15 @@
 				 tooltiptext="&editor.buttonSettings.tooltiptext;"/>
 		</tabs>
 		<tabpanels flex="1">
+		  <vbox>
 			<cbeditor class="custombuttons-editor-codeBox"
 					  id="code" multiline="true" flex="1"
 					  value="&editor.code.defaultValue;"/>
+			<splitter collapse="after" state="collapsed">
+			  <grippy/>
+			</splitter>
+			<browser id="console" minheight="200px" disablehistory="true" src="chrome://custombuttons/content/console.xul"/>
+		  </vbox>
 			<cbeditor  class="custombuttons-editor-codeBox"
 					  id="initCode" multiline="true" flex="1"
 					  value="&editor.initCode.defaultValue;"/>

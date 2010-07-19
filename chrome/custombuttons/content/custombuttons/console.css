@@ -7,3 +7,8 @@
 richlistitem[href^='chrome://custombuttons/content/button.js']{
 	-moz-binding: url(chrome://custombuttons/content/custombuttonsConsoleBindings.xml#console2-error-source);
 }
+
+#CBConsoleBox
+{
+    -moz-binding: url(chrome://custombuttons/content/cbeditor.xml#cb-error-console);
+}
