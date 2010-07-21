@@ -413,7 +413,17 @@ Editor. prototype =
 		var control = ELEMENT (controlId);
 		control. focus ();
 	    }
-	}
+	},
+
+    openConsole: function ()
+    {
+	var console = ELEMENT ("console");
+	var splitter = console. previousSibling;
+	if (splitter. getAttribute ("state") == "open")
+	    splitter. setAttribute ("state", "collapsed");
+	else
+	    splitter. setAttribute ("state", "open");
+    }
 };
 
 var editor = new Editor ();

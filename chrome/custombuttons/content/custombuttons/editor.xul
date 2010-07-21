@@ -26,6 +26,7 @@
 		<command id="cbExecuteCode" oncommand="editor.execute_oncommand_code()"/>
 		<command id="cbFullScreen" oncommand="editor.fullScreen()"/>
 		<command id="cbCloseDialog" oncommand="editor.acceptDialog()"/>
+		<command id="cbOpenConsole" oncommand="editor.openConsole()"/>
 	</commandset>
 	
 	<keyset id="custombuttonsEditorKeySet">
@@ -33,6 +34,7 @@
 		<key id="cbExecuteCode" command="cbExecuteCode" keycode="VK_F9"/>
 		<key id="cbFullScreen" command="cbFullScreen" keycode="VK_F11"/>
 		<key id="cbCloseDialog" command="cbCloseDialog" keycode="VK_RETURN" modifiers="control"/>
+		<key id="cbOpenConsole" command="cbOpenConsole" keycode="VK_F4"/>
 	</keyset>
 	
 	<grid id="urlfield">
@@ -100,7 +102,7 @@
 			<splitter collapse="after" state="collapsed">
 			  <grippy/>
 			</splitter>
-			<browser id="console" minheight="200px" disablehistory="true" src="chrome://custombuttons/content/console.xul"/>
+			<browser id="console" minheight="150px" disablehistory="true" src="chrome://custombuttons/content/console.xul"/>
 		  </vbox>
 			<cbeditor  class="custombuttons-editor-codeBox"
 					  id="initCode" multiline="true" flex="1"
