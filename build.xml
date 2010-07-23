@@ -33,7 +33,7 @@
 			<include name="license.txt"/>
 			<include name="defaults/**/*.*"/>
 			<include name="components/**/*.*"/>
-			<include name="platform/**/*.*"/>
+			<include name="chrome/icons/**/*.*"/>
 			<exclude name="build.number"/>
 		</patternset>
 		<patternset id="excludespatternset">
@@ -217,6 +217,7 @@ Define it in build.properties (don't forget about double back slashes)</fail>
 				<exclude name="content/custombuttons/buttonsoverlay.js"/>
 				
 			</fileset>
+
 		</zip>
 	</target>
 	
