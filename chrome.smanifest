@@ -102,10 +102,10 @@ style	EDITOR/editor.xul		CBCONTENT/overlay.css
 style	GLOBAL/console.xul	CBCONTENT/editor/console.css
 style	chrome://console2/content/console2.xul CBCONTENT/editor/console.css
 
-style	CBCONTENT/console.xul   CBCONTENT/console.css FIREFOXAPP appversion>=2.0
-style	CBCONTENT/console.xul   CBCONTENT/console1.5.css FIREFOXAPP appversion<2.0
-style	CBCONTENT/console.xul	CBCONTENT/console1.5.css THUNDERBIRDAPP appversion<=3.0
-style	CBCONTENT/console.xul   CBCONTENT/console.css SEAMONKEYAPP
+style	CBCONTENT/editor/console.xul   CBCONTENT/editor/console.css FIREFOXAPP appversion>=3.0
+style	CBCONTENT/editor/console.xul   CBCONTENT/editor/console1.5.css FIREFOXAPP appversion<3.0
+style	CBCONTENT/editor/console.xul	CBCONTENT/editor/console1.5.css THUNDERBIRDAPP appversion<=3.0
+style	CBCONTENT/editor/console.xul   CBCONTENT/editor/console.css SEAMONKEYAPP
 
 locale	custombuttons	en-US	jar:chrome/custombuttons.jar!/locale/en-US/custombuttons/
 locale	custombuttons	ru-RU	jar:chrome/custombuttons.jar!/locale/ru-RU/custombuttons/
