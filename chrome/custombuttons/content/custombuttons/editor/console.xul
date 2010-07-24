@@ -19,7 +19,7 @@
         onclose="return closeWindow(false);"> 
 
   <script type="application/javascript" src="chrome://global/content/globalOverlay.js"/>
-  <script type="application/javascript" src="chrome://custombuttons/content/console.js"/>
+  <script type="application/javascript" src="chrome://custombuttons/content/editor/console.js"/>
   <script type="application/javascript" src="chrome://global/content/viewSourceUtils.js"/>
 
   <stringbundle id="ConsoleBundle" src="chrome://global/locale/console.properties"/>

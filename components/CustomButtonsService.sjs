@@ -558,7 +558,7 @@ cbCustomButtonsService. prototype =
 			cbedw = wws. openWindow
 			(
 				opener,
-				"chrome://custombuttons/content/editor.xul",
+				"chrome://custombuttons/content/editor/editor.xul",
 				sEditorId,
 				"chrome,resizable,dialog=no",
 				param

@@ -99,8 +99,8 @@ style	CALENDAR/calendar.xul	CBCONTENT/overlay.css
 style	EDITOR/editor.xul		CBSKIN/custombuttons.css
 style	EDITOR/editor.xul		CBCONTENT/overlay.css
 
-style	GLOBAL/console.xul	CBCONTENT/console.css
-style	chrome://console2/content/console2.xul CBCONTENT/console.css
+style	GLOBAL/console.xul	CBCONTENT/editor/console.css
+style	chrome://console2/content/console2.xul CBCONTENT/editor/console.css
 
 style	CBCONTENT/console.xul   CBCONTENT/console.css FIREFOXAPP appversion>=2.0
 style	CBCONTENT/console.xul   CBCONTENT/console1.5.css FIREFOXAPP appversion<2.0

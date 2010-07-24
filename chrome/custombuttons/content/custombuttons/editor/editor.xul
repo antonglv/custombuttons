@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 
 <?xml-stylesheet href="chrome://global/skin/"?>
-<?xml-stylesheet href="chrome://custombuttons/content/codeeditor.css" type="text/css"?>
+<?xml-stylesheet href="chrome://custombuttons/content/editor/codeeditor.css" type="text/css"?>
 
 <!DOCTYPE dialog SYSTEM "chrome://custombuttons/locale/editor.dtd">
 
@@ -102,7 +102,7 @@
 			<splitter collapse="after" state="collapsed">
 			  <grippy/>
 			</splitter>
-			<browser id="console" minheight="150px" disablehistory="true" src="chrome://custombuttons/content/console.xul"/>
+			<browser id="console" minheight="150px" disablehistory="true" src="chrome://custombuttons/content/editor/console.xul"/>
 		  </vbox>
 			<cbeditor  class="custombuttons-editor-codeBox"
 					  id="initCode" multiline="true" flex="1"

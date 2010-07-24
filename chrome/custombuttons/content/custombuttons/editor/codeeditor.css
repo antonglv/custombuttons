@@ -6,7 +6,7 @@
 */
 cbeditor
 {
-	-moz-binding: url(chrome://custombuttons/content/cbeditor.xml#custombuttons-codeeditor);
+	-moz-binding: url(chrome://custombuttons/content/editor/cbeditor.xml#custombuttons-codeeditor);
 }
 
 cbeditor > *
@@ -23,7 +23,7 @@ cbeditor > *
 }
 #accelkey
 {
-  -moz-binding: url("chrome://custombuttons/content/cbeditor.xml#accelkeytextboxbinding");
+  -moz-binding: url("chrome://custombuttons/content/editor/cbeditor.xml#accelkeytextboxbinding");
 }
 #accelkey[bExtendedMode="true"] > .textbox-input-box
 {
@@ -39,7 +39,7 @@ tabpanels
 
 .menulist-iconic
 {
-	-moz-binding: url("chrome://custombuttons/content/menulisticonic.xml#custombuttons-menulist-editable-iconic");
+	-moz-binding: url("chrome://custombuttons/content/editor/menulisticonic.xml#custombuttons-menulist-editable-iconic");
 	-moz-user-focus: ignore;
 }
 

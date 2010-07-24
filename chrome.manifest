@@ -99,8 +99,8 @@ style chrome://sunbird/content/calendar.xul chrome://custombuttons/content/overl
 style chrome://editor/content/editor.xul chrome://custombuttons/skin/custombuttons.css
 style chrome://editor/content/editor.xul chrome://custombuttons/content/overlay.css
 
-style chrome://global/content/console.xul chrome://custombuttons/content/console.css
-style chrome://console2/content/console2.xul chrome://custombuttons/content/console.css
+style chrome://global/content/console.xul chrome://custombuttons/content/editor/console.css
+style chrome://console2/content/console2.xul chrome://custombuttons/content/editor/console.css
 
 style chrome://custombuttons/content/console.xul chrome://custombuttons/content/console.css application={ec8030f7-c20a-464f-9b0e-13a3a9e97384} appversion>=2.0
 style chrome://custombuttons/content/console.xul chrome://custombuttons/content/console1.5.css application={ec8030f7-c20a-464f-9b0e-13a3a9e97384} appversion<2.0
