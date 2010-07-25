@@ -22,6 +22,26 @@
 
 
 
+function allowedSource (src)
+{
+    var res = true;
+    if (src. indexOf ("custombuttons-stdicon") == 0)
+ return res;
+    var ios = Components. classes ["@mozilla.org/network/io-service;1"]. getService (Components. interfaces. nsIIOService);
+    try
+    {
+ var scheme = ios. extractScheme (src);
+ var pfs = ios. getProtocolFlags (scheme);
+ if (pfs & Components. interfaces. nsIProtocolHandler. URI_DOES_NOT_RETURN_DATA)
+     res = false;
+    }
+    catch (e)
+    {
+ res = false; // malformed URI
+    }
+    return res;
+}
+
 function makeSupportsArray ()
 {
  var array = Components. classes ["@mozilla.org/supports-array;1"]. createInstance (Components. interfaces. nsISupportsArray);
@@ -54,9 +74,16 @@ function getParamBlock ()
 
 function ImageConverter (imageURL, id, topic)
 {
- this. topic = topic;
- this. id = id;
- this. imageURL = imageURL;
+    this. topic = topic;
+    this. id = id;
+    if (!allowedSource (imageURL))
+    {
+ var array = makeSupportsArray ("", "");
+ var os = Components. classes ["@mozilla.org/observer-service;1"]. getService (Components. interfaces. nsIObserverService);
+ os. notifyObservers (array, this. topic, this. id);
+ return;
+    }
+    this. imageURL = imageURL;
     var ios = Components. classes ["@mozilla.org/network/io-service;1"]. getService (Components. interfaces. nsIIOService);
     this. channel = ios. newChannel (imageURL, null, null);
     this. channel. notificationCallbacks = this;
@@ -576,8 +603,10 @@ cbCustomButtonsService. prototype =
   button. setAttribute ("context", "custombuttons-contextpopup");
   if (param. image. indexOf ("custombuttons-stdicon") == 0)
    button. setAttribute ("cb-stdicon", param. image);
-  else
+  else if (allowedSource (param. image))
    button. setAttribute ("image", param. image || "");
+     else
+  button. setAttribute ("image", "");
   button. setAttribute ("cb-oncommand", param. code || "");
   button. setAttribute ("cb-init", param. initCode || "");
   if (param. accelkey)
@@ -922,7 +951,12 @@ cbCustomButtonsService. prototype =
     rph. setSubstitution ("custombuttons", uri);
     break;
   }
- }
+ },
+
+    allowedSource: function (src)
+    {
+ return allowedSource (src);
+    }
 };
 
 var Module =

@@ -111,6 +111,16 @@
 			</property>
 			
 			<field name="_selectedItem">null</field>
+
+			<method name="allowedSource">
+			  <parameter name="src"/>
+			  <body>
+			    <![CDATA[
+				     var cbs = Components. classes ["@xsms.nm.ru/custombuttons/cbservice;1"]. getService (Components. interfaces. cbICustomButtonsService);
+				     return cbs. allowedSource (src);
+			    ]]>
+			  </body>
+			</method>
 			
 			<property name="selectedItem">
 				<getter>
@@ -131,7 +141,7 @@
 							newValue = label || value;
 						}
 						this. setAttribute ("value", newValue);
-						if (label)
+						if (label && this. allowedSource (label))
 							this. setAttribute ("src", label);
 						else
 							this. setAttribute ("src", "");
@@ -154,6 +164,8 @@
 				</getter>
 				<setter>
 					<![CDATA[
+						 if (!this. allowedSource (val))
+						 	return;
 						var popup = this. menupopup;
 						var mis = popup. getElementsByAttribute ("label", val);
 						if (mis. length == 0)

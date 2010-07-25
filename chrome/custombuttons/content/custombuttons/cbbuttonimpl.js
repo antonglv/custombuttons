@@ -125,7 +125,10 @@ __defineSetter__
 	"image",
 	function (val)
 	{
+	    if (custombutton. allowedSource (val))
 		this. setAttribute ("image", val);
+	    else
+		this. setAttribute ("image", "");
 	}
 );
 

@@ -22,6 +22,26 @@
 #include <project.hjs>
 #include <prio.hjs>
 
+function allowedSource (src)
+{
+    var res = true;
+    if (src. indexOf ("custombuttons-stdicon") == 0)
+	return res;
+    var ios = SERVICE (IO);
+    try
+    {
+	var scheme = ios. extractScheme (src);
+	var pfs = ios. getProtocolFlags (scheme);
+	if (pfs & Components. interfaces. nsIProtocolHandler. URI_DOES_NOT_RETURN_DATA)
+	    res = false;
+    }
+    catch (e)
+    {
+	res = false; // malformed URI
+    }
+    return res;
+}
+
 function makeSupportsArray ()
 {
 	var array = COMPONENT (SUPPORTS_ARRAY);
@@ -54,9 +74,16 @@ function getParamBlock ()
 
 function ImageConverter (imageURL, id, topic)
 {
-	this. topic = topic;
-	this. id = id;
-	this. imageURL = imageURL;
+    this. topic = topic;
+    this. id = id;
+    if (!allowedSource (imageURL))
+    {
+	var array = makeSupportsArray ("", "");
+	var os = SERVICE (OBSERVER);
+	os. notifyObservers (array, this. topic, this. id);
+	return;
+    }
+    this. imageURL = imageURL;
     var ios = SERVICE (IO);
     this. channel = ios. newChannel (imageURL, null, null);
     this. channel. notificationCallbacks = this;
@@ -576,8 +603,10 @@ cbCustomButtonsService. prototype =
 		button. setAttribute ("context", "custombuttons-contextpopup");
 		if (param. image. indexOf ("custombuttons-stdicon") == 0)
 			button. setAttribute ("cb-stdicon", param. image);
-		else
+		else if (allowedSource (param. image))
 			button. setAttribute ("image", param. image || "");
+	    else
+		button. setAttribute ("image", "");
 		button. setAttribute ("cb-oncommand", param. code || "");
 		button. setAttribute ("cb-init", param. initCode || "");
 		if (param. accelkey)
@@ -922,7 +951,12 @@ cbCustomButtonsService. prototype =
 				rph. setSubstitution ("custombuttons", uri);
 				break;
 		}
-	}
+	},
+
+    allowedSource: function (src)
+    {
+	return allowedSource (src);
+    }
 };
 
 var Module =
