@@ -30,6 +30,7 @@ var custombutton =
 			oBtn. cbCommand = oBtn. getAttribute ("cb-oncommand");
 		if (oBtn. hasAttribute ("image"))
 		{
+		    oBtn. image = oBtn. getAttribute ("image");
 			if (!oBtn. getAttribute ("image") ||
 				(oBtn. getAttribute ("image") == "data:"))
 			oBtn. removeAttribute ("image");
@@ -363,5 +364,10 @@ var custombutton =
 	onMouseDown: function (oEvent, oButton)
 	{
 		this. setContextMenuVisibility (oButton);
-	}
+	},
+
+    allowedSource: function (src)
+    {
+	return this. cbService. allowedSource (src);
+    }
 };
