@@ -10,5 +10,30 @@ richlistitem[href^='chrome://custombuttons/content/button.js']{
 
 #CBConsoleBox
 {
-    -moz-binding: url(chrome://custombuttons/content/editor/cbeditor.xml#cb-error-console);
+    -moz-binding: url(chrome://custombuttons/content/editor/console.xml#cb-error-console);
+}
+
+.console-box > .console-box-internal > console-rows > .console-row
+{
+    display: none !important;
+}
+
+.console-box[mode~="Messages"] > .console-box-internal > .console-rows > .console-row[type="message"]
+{
+    display: -moz-box !important;
+}
+
+.console-box[mode~="Errors"] > .console-box-internal > .console-rows > .console-row[type="error"]
+{
+    display: -moz-box !important;
+}
+
+.console-box[mode~="Warnings"] > .console-box-internal > .console-rows > .console-row[type="warning"]
+{
+    display: -moz-box !important;
+}
+
+toolbarbutton
+{
+    -moz-box-orient: vertical !important;
 }

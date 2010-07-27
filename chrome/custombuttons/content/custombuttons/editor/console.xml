@@ -1,0 +1,349 @@
+<?xml version="1.0"?>
+
+<!--
+// ***** BEGIN LICENSE BLOCK *****
+// Version: MPL 1.1
+// 
+// The contents of this file are subject to the Mozilla Public License Version
+// 1.1 (the "License"); you may not use this file except in compliance with
+// the License. You may obtain a copy of the License at
+// http://www.mozilla.org/MPL/
+// 
+// Software distributed under the License is distributed on an "AS IS" basis,
+// WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License
+// for the specific language governing rights and limitations under the
+// License.
+// 
+// Custom Buttons:
+// - Gives a possibility to create custom toolbarbuttons.
+// - This component implements custom buttons editor console
+// 
+// Author: Anton Glazatov (c) 2010
+// 
+// ***** END LICENSE BLOCK *****
+-->
+
+<!DOCTYPE dialog SYSTEM "chrome://custombuttons/locale/editor.dtd">
+
+<bindings id="consoleBindings"
+		  xmlns="http://www.mozilla.org/xbl"
+		  xmlns:html="http://www.w3.org/1999/xhtml"
+		  xmlns:xul="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+		  xmlns:xbl="http://www.mozilla.org/xbl">
+
+	<binding id="cb-error-console" extends="xul:box">
+	  <content>
+	    <xul:stringbundle anonid="sb01" src="chrome://global/locale/console.properties"/>
+	    <xul:vbox class="console-box-internal">
+	      <xul:vbox anonid="console-rows" class="console-rows" xbl:inherits="dir=sortOrder"/>
+	    </xul:vbox>
+	  </content>
+
+	  <implementation implements="nsIConsoleListener,nsIController">
+	    <constructor>
+	      <![CDATA[
+		       this. init ();
+	      ]]>
+	    </constructor>
+
+	    <destructor>
+	      <![CDATA[
+		       this. destroy ();
+	      ]]>
+	    </destructor>
+	    
+	    <field name="limit">250</field>
+	    <field name="mSelectedItem">null</field>
+	    <field name="enableLogging">false</field>
+	    <field name="uri">""</field>
+	    <field name="buttonid">""</field>
+	    <field name="mMode">""</field>
+
+	    <method name="supportsCommand">
+	      <parameter name="command"/>
+	      <body>
+		<![CDATA[
+			 return command == "cmd_copy";
+		]]>
+	      </body>
+	    </method>
+
+	    <method name="isCommandEnabled">
+	      <parameter name="command"/>
+	      <body>
+		<![CDATA[
+			 return this. supportsCommand (command) && this. selectedItem;
+		]]>
+	      </body>
+	    </method>
+
+	    <method name="doCommand">
+	      <parameter name="command"/>
+	      <body>
+		<![CDATA[
+			 if (this. supportsCommand (command))
+			 	this. copySelectedItem ();
+		]]>
+	      </body>
+	    </method>
+
+	    <method name="onEvent">
+	      <body/>
+	    </method>
+
+	    <property name="count" readonly="true" onget="return this.mCount;"/>
+
+	    <property name="mode">
+	      <getter>
+		<![CDATA[
+			return this. mMode;
+		]]>
+	      </getter>
+	      
+	      <setter>
+		<![CDATA[
+			 if (this. mode. indexOf (val) == -1)
+			 	this. mMode += " " + val;
+			else
+				this. mMode. replace (val, "");
+			this. setAttribute ("mode", this. mMode);
+			this. selectedItem = null;
+			return val;
+		]]>
+	      </setter>
+	    </property>
+
+	    <property name="sortOrder"
+		      onget="return this.getAttribute('sortOrder');"
+		      onset="this.setAttribute('sortOrder',val);return val;"/>
+
+	    <property name="selectedItem">
+	      <getter>
+		<![CDATA[
+			 return this. mSelectedItem;
+		]]>
+	      </getter>
+	      
+	      <setter>
+		<![CDATA[
+			 if (this. mSelectedItem)
+			 	this. mSelectedItem. removeAttribute ("selected");
+			this. mSelectedItem = val;
+			if (val)
+				val. setAttribute ("selected", "true");
+			window. updateCommands ("focus");
+			return val;
+		]]>
+	      </setter>
+	    </property>
+
+	    <method name="observe">
+	      <parameter name="msg"/>
+	      <body>
+		<![CDATA[
+			 this. appendConsoleMessage (msg);
+		]]>
+	      </body>
+	    </method>
+
+	    <method name="init">
+	      <body>
+		<![CDATA[
+			this. mCount = 0;
+			this. mConsole = document. getAnonymousElementByAttribute (this, "anonid", "console-rows");
+			this. mStrBundle = document. getAnonymousElementByAttribute (this, "anonid", "sb01");
+			this. mConsoleService = Components. classes ["@mozilla.org/consoleservice;1"]. getService (Components. interfaces. nsIConsoleService);
+			this. mConsoleService. registerListener (this);
+			this. mMode = this. getAttribute ("mode") || "All";
+			window. controllers. insertControllerAt (0, this);
+		]]>
+	      </body>
+	    </method>
+
+	    <method name="destroy">
+	      <body>
+		<![CDATA[
+			this. mConsoleService. unregisterListener (this);
+			window. controllers. removeController (this);
+		]]>
+	      </body>
+	    </method>
+
+	    <method name="appendConsoleMessage">
+	      <parameter name="msg"/>
+	      <body>
+		<![CDATA[
+			if (msg instanceof Components. interfaces. nsIScriptError)
+				this. appendError (msg);
+			else
+				this. appendMessage (msg);
+		]]>
+	      </body>
+	    </method>
+
+	    <method name="repeatChar">
+	      <parameter name="ch"/>
+	      <parameter name="col"/>
+	      <body>
+		<![CDATA[
+			var res = "";
+			if (Math. abs (col) <= 1)
+				return res;
+			for (var i = 1; i < col; i++)
+				res += ch;
+			return res;
+		]]>
+	      </body>
+	    </method>
+
+	    <method name="appendConsoleRow">
+	      <parameter name="aRow"/>
+	      <body>
+		<![CDATA[
+			 this. mConsole. appendChild (aRow);
+			 this. mCount++;
+			 if (this. mCount > this. limit)
+			 {
+			 	this. mConsole. removeChild (this. mConsole. firstChild);
+				this. mCount--;
+			}
+		]]>
+	      </body>
+	    </method>
+
+	    <method name="createConsoleRow">
+	      <body>
+		<![CDATA[
+			 var row = document. createElement ("box");
+			 row. setAttribute ("class", "console-row");
+			 row. _IsConsoleRow = true;
+			 row. _ConsoleBox = this;
+			 return row;
+		]]>
+	      </body>
+	    </method>
+
+	    <method name="appendError">
+	      <parameter name="msg"/>
+	      <body>
+		<![CDATA[
+			var row = this. createConsoleRow ();
+			var sourceName = msg. sourceName;
+			var lineNumber = msg. lineNumber;
+			if (!lineNumber && !sourceName && (msg. errorMessage. indexOf ("chrome://custombuttons/content/button.js?") != -1))
+			{
+				var sn = msg. errorMessage. match (/"JS frame :: (.*)? :: .*? :: line (\d+)"/);
+				if (sn)
+				{
+					sourceName = sn [1];
+					lineNumber = sn [2];
+				}
+			}
+			if (!this. enableLogging && (sourceName. indexOf (this. uri) != 0))
+				return;
+			var nsIScriptError = Components. interfaces. nsIScriptError;
+			var warning = (msg. flags & nsIScriptError. warningFlag) != 0;
+			var typetext = warning? "typeWarning": "typeError";
+			row. setAttribute ("typetext", this. mStrBundle. getString (typetext));
+			row. setAttribute ("type", warning? "warning": "error");
+			row. setAttribute ("msg", msg. errorMessage);
+			row. setAttribute ("category", msg. category);
+			if (lineNumber || sourceName)
+			{
+				row. setAttribute ("href", sourceName);
+				row. setAttribute ("line", lineNumber);
+			}
+			else
+				row. setAttribute ("hideSource", "true");
+			if (msg. sourceLine)
+			{
+				row. setAttribute ("code", msg. sourceLine. replace (/\s/g, " "));
+				if (msg. columnNumber)
+				{
+					row. setAttribute ("col", msg. columnNumber);
+					row. setAttribute ("errorDots", this. repeatChar (" ", msg. columnNumber));
+					row. setAttribute ("errorCaret", " ");
+				}
+				else
+					row. setAttribute ("hideCaret", "true");
+			}
+			else
+				row. setAttribute ("hideCode", "true");
+			this. appendConsoleRow (row);
+		]]>
+	      </body>
+	    </method>
+
+	    <method name="appendMessage">
+	      <parameter name="msg"/>
+	      <body>
+		<![CDATA[
+			if (!msg. message)
+				return;
+			if (!this. enableLogging && (msg. message. indexOf (this. buttonid) == -1))
+				return;
+			var row = this. createConsoleRow ();
+			row. setAttribute ("type", "message");
+			row. setAttribute ("msg", msg. message);
+			this. appendConsoleRow (row);
+		]]>
+	      </body>
+	    </method>
+
+	    <method name="clearConsole">
+	      <body>
+		<![CDATA[
+			if (this. mCount == 0)
+				return;
+			this. mCount = 0;
+			var newConsole = this. mConsole. cloneNode (false);
+			this. mConsole. parentNode. replaceChild (newConsole, this. mConsole);
+			this. mConsole = newConsole;
+			this. selectedItem = null;
+		]]>
+	      </body>
+	    </method>
+
+	    <method name="clear">
+	      <body>
+		<![CDATA[
+			 this. clearConsole ();
+		]]>
+	      </body>
+	    </method>
+
+	    <method name="copySelectedItem">
+	      <body>
+		<![CDATA[
+			 if (this. mSelectedItem)
+			 {
+			 	try
+				{
+					var clipboard = Components. classes ["@mozilla.org/widget/clipboardhelper;1"].
+							getService (Components. interfaces. nsIClipboardHelper);
+					clipboard. copyString (this. mSelectedItem. toString());
+				}
+				catch (ex) {}
+			}
+		]]>
+	      </body>
+	    </method>
+	  </implementation>
+
+	  <handlers>
+	    <handler event="mousedown">
+	      <![CDATA[
+		       	if (event. button != 1)
+		       	{
+		       		var target = event. originalTarget;
+				while (target && !("_IsConsoleRow" in target))
+					target = target. parentNode;
+				if (target)
+					this. selectedItem = target;
+			}
+	      ]]>
+	    </handler>
+	  </handlers>
+	</binding>
+	
+</bindings>
