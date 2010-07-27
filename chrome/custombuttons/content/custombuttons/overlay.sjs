@@ -502,8 +502,30 @@ CustombuttonsTB. prototype =
 		SUPER (init, null);
 		var oBookmarkButtonMenuitem = ELEMENT ("custombuttons-contextpopup-bookmarkButton");
 		oBookmarkButtonMenuitem. parentNode. removeChild (oBookmarkButtonMenuitem);
-		var oBookmarkButtonMenuitem = ELEMENT ("custombuttons-contextpopup-bookmarkButton-sub");
+		oBookmarkButtonMenuitem = ELEMENT ("custombuttons-contextpopup-bookmarkButton-sub");
 		oBookmarkButtonMenuitem. parentNode. removeChild (oBookmarkButtonMenuitem);
+	    if (!CI. nsIExtensionManager)
+	    {
+		try
+		{
+		    var env = {};
+		    Components. utils ["import"] ("resource://gre/modules/AddonManager.jsm", env);
+		    env. AddonManager. getAddonByID
+		    (
+			lightningUUID,
+			(function (cbObj)
+			 {
+			     return function (addon)
+			     {
+				 if (addon)
+				     cbObj. lightning = true;
+			     };
+			 }
+			) (this)
+		    );
+		} catch (e) {}
+	    }
+	    else
 		this. lightning = this. checkLightning ();
 	},
 	
