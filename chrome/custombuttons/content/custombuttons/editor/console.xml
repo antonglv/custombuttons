@@ -102,13 +102,15 @@
 	      
 	      <setter>
 		<![CDATA[
-			 if (this. mode. indexOf (val) == -1)
-			 	this. mMode += " " + val;
-			else
-				this. mMode. replace (val, "");
-			this. setAttribute ("mode", this. mMode);
-			this. selectedItem = null;
-			return val;
+			 var a = (this. mode == "")? []: this. mode. split (" ");
+			 if (a. indexOf (val) != -1)
+			 	a. splice (a. indexOf (val), 1); //a. pop (a. indexOf (val));
+			 else
+			 	a. push (val);
+			 this. mMode = (a. length != 0)? a. join (" "): "";
+			 this. setAttribute ("mode", this. mMode);
+			 this. selectedItem = null;
+			 return val;
 		]]>
 	      </setter>
 	    </property>
@@ -154,7 +156,7 @@
 			this. mStrBundle = document. getAnonymousElementByAttribute (this, "anonid", "sb01");
 			this. mConsoleService = Components. classes ["@mozilla.org/consoleservice;1"]. getService (Components. interfaces. nsIConsoleService);
 			this. mConsoleService. registerListener (this);
-			this. mMode = this. getAttribute ("mode") || "All";
+			this. mMode = this. getAttribute ("mode") || "";
 			window. controllers. insertControllerAt (0, this);
 		]]>
 	      </body>

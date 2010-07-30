@@ -13,17 +13,7 @@ window. onload = function()
 
 function changeMode(aMode)
 {
-  switch (aMode) {
-    case "Errors":
-    case "Warnings":
-    case "Messages":
-      gConsole.mode = aMode;
-      break;
-    case "All":
-      gConsole.mode = null;
-  }
-  
-  document.persist("ConsoleBox", "mode");
+    gConsole. mode = aMode;
 }
 
 function clearConsole()
@@ -52,6 +42,5 @@ function updateModeCommand(aMode)
   /* aMode can end up invalid if it set by an extension that replaces */
   /* mode and then it is uninstalled or disabled */
   var bc = document.getElementById("Console:mode" + aMode) ||
-           document.getElementById("Console:modeAll");
-  bc.setAttribute("checked", true);
+           document.getElementById("Console:modeErrors");
 }
