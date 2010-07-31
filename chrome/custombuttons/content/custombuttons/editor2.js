@@ -161,7 +161,19 @@ Editor. prototype =
    else
    {
     var link = this. cbService. makeButtonLink (this. param. windowId, "update", this. param. id);
-    return this. cbService. updateButton (link, uri);
+    var res = this. cbService. updateButton (link, uri);
+       if (res == 1) // Cancel
+    return false;
+       if (res == 0) // Ok
+       {
+    this. cbService. installButton (this. param);
+    return true;
+       }
+       else // Edit…
+       {
+    document. getElementById ("urlfield-textbox"). value = "";
+    return false;
+       }
    }
   }
   var field;
