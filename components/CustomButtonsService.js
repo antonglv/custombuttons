@@ -643,7 +643,7 @@ cbCustomButtonsService. prototype =
   if (!param)
   {
    this. alert ("ButtonErrors");
-   return false;
+   return 1; // Cancel
   }
   param = param. wrappedJSObject;
   var ps = Components. classes ["@mozilla.org/embedcomp/prompt-service;1"]. getService (Components. interfaces. nsIPromptService);
@@ -662,12 +662,12 @@ cbCustomButtonsService. prototype =
       var checkState = { value: false };
       var res = ps. confirmEx (null, "Custom Buttons", msg, buttonFlags, "", "", sEditButtonLabel, null, checkState);
       if (res == 1) // Cancel pressed
-      return false;
+      return res;
       if ((res == 2) || this. findEditor (null, param. windowId, param)) // Edit... pressed or Ok pressed and Editor already opened
       this. openEditor (null, param. windowId, param);
       else
       this. installButton (param);
-      return true;
+      return res;
  },
 
  getLocaleString: function (stringId)
