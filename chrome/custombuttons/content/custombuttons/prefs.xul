@@ -30,6 +30,7 @@
             <checkbox id="cbEnableCBProtocol"
             label="&custombuttons.prefs.enable_custombutton_protocol;"
             hidden="true"/>
+	    <checkbox id="modebit6" label="Save size and position of editor windows separately for each custom button"/>
         </groupbox>
   </vbox>
 
