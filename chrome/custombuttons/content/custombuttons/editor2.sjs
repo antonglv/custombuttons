@@ -101,6 +101,11 @@ Editor. prototype =
 		ELEMENT ("initCode"). addEditorObserver (this);
 		ELEMENT ("help"). addEditorObserver (this);
 		window. addEventListener ("mousedown", this, true);
+	    // window manager may ignore screenX and screenY, so let's move window manually
+	    var x = ELEMENT ("custombuttonsEditor"). getAttribute ("screenX");
+	    var y = ELEMENT ("custombuttonsEditor"). getAttribute ("screenY");
+	    if (x && y)
+		window. moveTo (x, y);
 	},
 
 	setEditorParameters: function (param)
