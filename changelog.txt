@@ -1,7 +1,7 @@
 Changelog
 0.0.5.1
 + Added: Seamonkey 2.1a3pre compatibility
-+ Added: Firefox 4.0b3pre compatibility
++ Added: Firefox 4.0b4pre compatibility
 + Added: "Edit…" button in update button prompt dialog
 + Added: LOG, addEventListener, removeEventListener functions
 + Added: "reason" argument for "onDestroy" custom button's method
