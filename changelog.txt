@@ -6,7 +6,7 @@ Changelog
 + Added: LOG, addEventListener, removeEventListener functions
 + Added: "reason" argument for "onDestroy" custom button's method
 * Restored desctructor section in custom buttons binding
-* Implemented new code execution mechanism
+* Implemented new code execution mechanism with better error handling
 # Fixed: checkboxDialog / radioboxDialog doesn't modify options array argument
 # Fixed: bug 23040 "Assignment an custombuton:// uri as a button image causes infinite button installation loop"
 # Fixed: some minor bugs
@@ -17,7 +17,7 @@ Changelog
 + Added: LOG, addEventListener, removeEventListener functions
 + Added: "reason" argument for "onDestroy" custom button's method
 * Restored desctructor section in custom buttons binding
-* Implemented new code execution mechanism
+* Implemented new code execution mechanism with better error handling
 # Fixed: checkboxDialog / radioboxDialog doesn't modify options array argument
 0.0.4.9
 + Added: nl-NL translation
