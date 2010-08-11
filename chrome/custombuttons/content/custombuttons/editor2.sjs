@@ -91,6 +91,7 @@ Editor. prototype =
 		var ps = SERVICE (PREF). getBranch ("custombuttons.");
 		var cbMode = ps. getIntPref ("mode");
 		var sab = cbMode & CB_MODE_SHOW_APPLY_BUTTON;
+	    document. documentElement. getButton ("extra2"). setAttribute ("icon", "save");
 		if (this. param. newButton || !sab)
 		{
 			document. documentElement. getButton ("extra2"). setAttribute ("hidden", "true");

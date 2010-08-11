@@ -91,6 +91,7 @@ Editor. prototype =
   var ps = Components. classes ["@mozilla.org/preferences-service;1"]. getService (Components. interfaces. nsIPrefService). getBranch ("custombuttons.");
   var cbMode = ps. getIntPref ("mode");
   var sab = cbMode & 2;
+     document. documentElement. getButton ("extra2"). setAttribute ("icon", "save");
   if (this. param. newButton || !sab)
   {
    document. documentElement. getButton ("extra2"). setAttribute ("hidden", "true");
