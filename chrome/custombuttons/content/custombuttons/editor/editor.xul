@@ -10,7 +10,7 @@
 		width="400"
 		height="400"
 		title="&editor.dialog.title;"
-		persist="width,height,screenX,screenY"
+		persist="width height screenX screenY"
 		buttons="extra2,accept,cancel"
 		buttonlabelextra2="&editor.Apply;"
 		ondialogextra2="editor.updateButton()"
@@ -83,7 +83,8 @@
 		</rows>
 	</grid>
 	<tabbox  flex="1" id="custombuttons-editbutton-tabbox"
-			 handleCtrlTab="true" handleCtrlPageUpDown="true">
+			 handleCtrlTab="true" handleCtrlPageUpDown="true"
+			 persist="selectedIndex">
 		<tabs oncommand="editor.tabSelect(event);">
 			<tab id="code-tab" accesskey="&editor.code.accesskey;" cbcontrol="code"
 				 label="&editor.code;" tooltiptext="&editor.code.tooltiptext;"/>

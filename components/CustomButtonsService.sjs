@@ -582,10 +582,14 @@ cbCustomButtonsService. prototype =
 		}
 		else
 		{
+		    var editorUri = "chrome://custombuttons/content/editor.xul";
+		    var mode = this. ps. getIntPref ("mode");
+		    if (mode & CB_MODE_SAVE_EDITOR_SIZE_SEPARATELY)
+			editorUri += "?editorId=" + sEditorId;
 			cbedw = wws. openWindow
 			(
 				opener,
-				"chrome://custombuttons/content/editor/editor.xul",
+				editorUri,
 				sEditorId,
 				"chrome,resizable,dialog=no",
 				param
@@ -728,12 +732,55 @@ cbCustomButtonsService. prototype =
 		return newId;
 	},
 
+    removeRDFResource: function (ds, res)
+    {
+	var alo = ds. ArcLabelsOut (res);
+	var ca, ta;
+	while (alo. hasMoreElements ())
+	{
+	    ca = alo. getNext ();
+	    if (ca instanceof CI. nsIRDFResource)
+	    {
+		ta = ds. GetTarget (res, ca, true);
+		if (ta instanceof CI. nsIRDFResource)
+		    this. removeRDFResource (ds, ta);
+		else if (ta instanceof CI. nsIRDFLiteral)
+		    ds. Unassert (res, ca, ta);
+	    }
+	}
+    },
+
+    unPersist: function (resId)
+    {
+	try
+	{
+	    var rs = SERVICE (RDF);
+	    var ds = rs. GetDataSource ("rdf:local-store");
+	    var res1 = rs. GetResource (resId);
+	    var res2 = rs. GetResource ("http://home.netscape.com/NC-rdf#persist");
+	    var targets = ds. GetTargets (res1, res2, true);
+	    var cta;
+	    ds. beginUpdateBatch ();
+	    while (targets. hasMoreElements ())
+	    {
+		cta = targets. getNext ();
+		if (cta instanceof CI. nsIRDFResource)
+		{
+		    this. removeRDFResource (ds, cta);
+		    ds. Unassert (res1, res2, cta);
+		}
+	    }
+	    ds. endUpdateBatch ();
+	} catch (e) {}
+    },
+
 	removeButton: function (removedButton, removeFromOverlay)
 	{
 		var documentURI = removedButton. ownerDocument. documentURI;
 		var buttonId = removedButton. getAttribute ("id");
 		var parentId = removedButton. parentNode. getAttribute ("id");
 		var windowId = this. getWindowId (documentURI);
+	    var editorId = "chrome://custombuttons/content/editor.xul?editorId=custombuttons-editor@" + windowId + ":" + buttonId;
 		var app = new AppObject (windowId);
 		var button = app. getButton (buttonId);
 		if (button && removeFromOverlay)
@@ -742,6 +789,9 @@ cbCustomButtonsService. prototype =
 			app. overlay. saveOverlayToProfile ();
 		}
 		app. notifyObservers (null, "removeButton", parentId + ":" + buttonId);
+	    var mode = this. ps. getIntPref ("mode");
+	    if (mode & CB_MODE_SAVE_EDITOR_SIZE_SEPARATELY)
+		this. unPersist (editorId);
 	},
 
 	makeOverlay: function ()
