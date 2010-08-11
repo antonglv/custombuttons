@@ -241,6 +241,24 @@
 			    ]]>
 			  </body>
 			</method>
+
+			<method name="moveCaret">
+			  <parameter name="moveLeft"/>
+			  <parameter name="event"/>
+			  <body>
+			    <![CDATA[
+				     var inputField = this. textbox. inputField;
+				     var ss = inputField. selectionStart;
+				     var se = inputField. selectionEnd;
+				     if(ss != se)
+				     {
+				     	event. preventDefault ();
+				     	inputField. selectionStart = inputField. selectionEnd = moveLeft? ss: se;
+					this. scrollSelectionIntoView ();
+				     }
+			    ]]>
+			  </body>
+			</method>
 			
 			<method name="setSelection">
 				<parameter name="selectionStart"/>
@@ -778,6 +796,8 @@
 			<handler event="keypress" key="h" action="this.searchAndReplace(event)" modifiers="control,shift"/>
 			<handler event="keypress" key="w" action="this.toggleWrapLines()" modifiers="control"/>
 			<handler event="keypress" key="/" action="this.startFastFind()" modifiers="control"/>
+			<handler event="keypress" keycode="VK_LEFT" action="this.moveCaret(true, event);"/>
+			<handler event="keypress" keycode="VK_RIGHT" action="this.moveCaret(false, event);"/>
 			
 			<handler event="keypress" keycode="VK_ESCAPE">
 				<![CDATA[
