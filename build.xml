@@ -46,6 +46,7 @@
 			<exclude name="**/*.idl"/>
 			<exclude name="**/*.inc"/>
 			<exclude name="**/*.smanifest"/>
+			<exclude name="**/*.orig"/>
 			<exclude name="**/.*"/>
 		</patternset>
 		<uptodate property="checkLibs.forcedJSPreprocess" targetfile="build.number">
