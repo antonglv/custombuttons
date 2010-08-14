@@ -459,6 +459,10 @@ cbCustomButtonsService. prototype =
  _refcount: 0,
  _ps: null,
 
+ CUSTOM_BUTTONS_EXTENSION_ID: "custombuttons@xsms.org",
+ pathToEditor: "chrome://custombuttons/content/editor.xul",
+ beingUninstalled: false,
+
  get ps ()
  {
      if (!this. _ps)
@@ -774,6 +778,28 @@ cbCustomButtonsService. prototype =
      } catch (e) {}
  },
 
+ unPersistAll: function ()
+ {
+     var rs = Components. classes ["@mozilla.org/rdf/rdf-service;1"]. getService (Components. interfaces. nsIRDFService);
+     var ds = rs. GetDataSource ("rdf:local-store");
+     var rss = ds. GetAllResources ();
+     var cre, cnt = 0, s = "", s2 = "";
+     var resid = this. pathToEditor + "?";
+     while (rss. hasMoreElements ())
+     {
+  cre = rss. getNext ();
+  if (cre instanceof Components. interfaces. nsIRDFResource)
+      s2 += cre. Value + "\n";
+  if ((cre instanceof Components. interfaces. nsIRDFResource) &&
+      (cre. Value. indexOf (resid) == 0))
+  {
+      cnt++;
+      s += cre. Value + "\n";
+      this. unPersist (cre. Value);
+  }
+     }
+ },
+
  removeButton: function (removedButton, removeFromOverlay)
  {
      var documentURI = removedButton. ownerDocument. documentURI;
@@ -956,15 +982,42 @@ cbCustomButtonsService. prototype =
      return res;
  },
 
+ onUninstalling: function (addon)
+ {
+     if (addon. id != this. CUSTOM_BUTTONS_EXTENSION_ID)
+  return;
+     this. beingUninstalled = true;
+ },
+
+
+ onOperationCancelled: function (addon)
+ {
+     if (addon. id != this. CUSTOM_BUTTONS_EXTENSION_ID)
+  return;
+     this. beingUninstalled = false;
+ },
+
  observe: function (subject, topic, data)
  {
+     var os = Components. classes ["@mozilla.org/observer-service;1"]. getService (Components. interfaces. nsIObserverService);
      switch (topic)
      {
      case "app-startup":
-  var os = Components. classes ["@mozilla.org/observer-service;1"]. getService (Components. interfaces. nsIObserverService);
   os. addObserver (this, "profile-after-change", true);
   break;
      case "profile-after-change":
+  try
+  {
+      var am = {};
+      Components. utils ["import"] ("resource://gre/modules/AddonManager.jsm", am);
+      am. AddonManager. addAddonListener (this);
+  }
+  catch (e)
+  {
+      Components. utils. reportError (e);
+      os. addObserver (this, "em-action-requested", true);
+  }
+  os. addObserver (this, "profile-change-teardown", true);
   var ios = Components. classes ["@mozilla.org/network/io-service;1"]. getService (Components. interfaces. nsIIOService);
   var rph = ios. getProtocolHandler ("resource"). QueryInterface (Components. interfaces. nsIResProtocolHandler);
   var dir = Components. classes ["@mozilla.org/file/directory_service;1"]. getService (Components. interfaces. nsIProperties). get ("ProfD", Components. interfaces. nsIFile);
@@ -1000,6 +1053,18 @@ cbCustomButtonsService. prototype =
   var uri = ios. newFileURI (dir);
   rph. setSubstitution ("custombuttons", uri);
   break;
+     case "profile-change-teardown":
+  os. removeObserver (this, "profile-change-teardown");
+  if (this. beingUninstalled)
+      this. unPersistAll ();
+  break;
+     case "em-action-requested":
+  if (!(subject instanceof Components. interfaces. nsIUpdateItem))
+      return;
+  if (data == "item-uninstalled")
+      this. onUninstalling (subject);
+  else if (data == "item-cancel-action")
+      this. onOperationCancelled (subject);
      default:;
      }
  },
