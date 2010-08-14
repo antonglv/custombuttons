@@ -3,7 +3,6 @@
 <!ENTITY custombuttons.buttonPopup.remove "Schaltfläche löschen">
 <!ENTITY custombuttons.buttonPopup.clone "Schaltfläche klonen">
 <!ENTITY custombuttons.buttonPopup.copyURI "In die Zwischenablage kopieren">
-
 <!ENTITY custombuttons.buttonPopup.bookmark "Lesezeichen für Schaltfläche setzen">
 <!ENTITY custombuttons.buttonPopup.help "Hilfe...">
 <!ENTITY custombuttons.buttonPopup.update "Schaltfläche aktualisieren">

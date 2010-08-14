@@ -24,6 +24,11 @@ Editor. prototype =
 
     _changed: false,
 
+    get saveButton ()
+    {
+	return document. documentElement. getButton ("extra2");
+    },
+
     get changed ()
     {
 	return this. _changed;
@@ -36,6 +41,10 @@ Editor. prototype =
 	else if (!val && this. _changed)
 	    document. title = document. title. replace (/^\* /, "");
 	this. _changed = val;
+	if (val)
+	    this. saveButton. removeAttribute ("disabled");
+	else
+	    this. saveButton. setAttribute ("disabled", "true");
     },
 
     /* nsIEditorObserver */
@@ -91,9 +100,11 @@ Editor. prototype =
 		var ps = SERVICE (PREF). getBranch ("custombuttons.");
 		var cbMode = ps. getIntPref ("mode");
 		var sab = cbMode & CB_MODE_SHOW_APPLY_BUTTON;
+	    this. saveButton. setAttribute ("icon", "save");
+	    this. saveButton. setAttribute ("disabled", "true");
 		if (this. param. newButton || !sab)
 		{
-			document. documentElement. getButton ("extra2"). setAttribute ("hidden", "true");
+			this. saveButton. setAttribute ("hidden", "true");
 			ELEMENT ("cbUpdateButtonCommand"). setAttribute ("disabled", "true");
 		}
 
