@@ -459,6 +459,10 @@ cbCustomButtonsService. prototype =
 	_refcount: 0,
 	_ps: null,
 
+	CUSTOM_BUTTONS_EXTENSION_ID: "custombuttons@xsms.org",
+	pathToEditor: "chrome://custombuttons/content/editor.xul",
+	beingUninstalled: false,
+
 	get ps ()
 	{
 	    if (!this. _ps)
@@ -774,6 +778,28 @@ cbCustomButtonsService. prototype =
 	    } catch (e) {}
 	},
 
+	unPersistAll: function ()
+	{
+	    var rs = SERVICE (RDF);
+	    var ds = rs. GetDataSource ("rdf:local-store");
+	    var rss = ds. GetAllResources ();
+	    var cre, cnt = 0, s = "", s2 = "";
+	    var resid = this. pathToEditor + "?";
+	    while (rss. hasMoreElements ())
+	    {
+		cre = rss. getNext ();
+		if (cre instanceof CI. nsIRDFResource)
+		    s2 += cre. Value + "\n";
+		if ((cre instanceof CI. nsIRDFResource) &&
+		    (cre. Value. indexOf (resid) == 0))
+		{
+		    cnt++;
+		    s += cre. Value + "\n";
+		    this. unPersist (cre. Value);
+		}
+	    }
+	},
+
 	removeButton: function (removedButton, removeFromOverlay)
 	{
 	    var documentURI = removedButton. ownerDocument. documentURI;
@@ -956,15 +982,42 @@ cbCustomButtonsService. prototype =
 	    return res;
 	},
 
+	onUninstalling: function (addon)
+	{
+	    if (addon. id != this. CUSTOM_BUTTONS_EXTENSION_ID)
+		return;
+	    this. beingUninstalled = true;
+	},
+
+
+	onOperationCancelled: function (addon)
+	{
+	    if (addon. id != this. CUSTOM_BUTTONS_EXTENSION_ID)
+		return;
+	    this. beingUninstalled = false;
+	},
+
 	observe: function (subject, topic, data)
 	{
+	    var os = SERVICE (OBSERVER);
 	    switch (topic)
 	    {
 	    case "app-startup":
-		var os = SERVICE (OBSERVER);
 		os. addObserver (this, "profile-after-change", true);
 		break;
 	    case "profile-after-change":
+		try
+		{
+		    var am = {};
+		    Components. utils ["import"] ("resource://gre/modules/AddonManager.jsm", am);
+		    am. AddonManager. addAddonListener (this);
+		}
+		catch (e)
+		{
+		    Components. utils. reportError (e);
+		    os. addObserver (this, "em-action-requested", true);
+		}
+		os. addObserver (this, "profile-change-teardown", true);
 		var ios = SERVICE (IO);
 		var rph = ios. getProtocolHandler ("resource"). QI (nsIResProtocolHandler);
 		var dir = SERVICE (PROPERTIES). get ("ProfD", CI. nsIFile);
@@ -1000,6 +1053,18 @@ cbCustomButtonsService. prototype =
 		var uri = ios. newFileURI (dir);
 		rph. setSubstitution ("custombuttons", uri);
 		break;
+	    case "profile-change-teardown":
+		os. removeObserver (this, "profile-change-teardown");
+		if (this. beingUninstalled)
+		    this. unPersistAll ();
+		break;
+	    case "em-action-requested":
+		if (!(subject instanceof CI. nsIUpdateItem))
+		    return;
+		if (data == "item-uninstalled")
+		    this. onUninstalling (subject);
+		else if (data == "item-cancel-action")
+		    this. onOperationCancelled (subject);
 	    default:;
 	    }
 	},
