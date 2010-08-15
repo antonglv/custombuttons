@@ -1014,7 +1014,6 @@ cbCustomButtonsService. prototype =
 		}
 		catch (e)
 		{
-		    Components. utils. reportError (e);
 		    os. addObserver (this, "em-action-requested", true);
 		}
 		os. addObserver (this, "profile-change-teardown", true);
