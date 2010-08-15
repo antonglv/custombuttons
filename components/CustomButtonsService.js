@@ -586,7 +586,7 @@ cbCustomButtonsService. prototype =
      }
      else
      {
-  var editorUri = "chrome://custombuttons/content/editor.xul";
+  var editorUri = this. pathToEditor;
   var mode = this. ps. getIntPref ("mode");
   if (mode & 64)
       editorUri += "?editorId=" + sEditorId;
@@ -806,7 +806,7 @@ cbCustomButtonsService. prototype =
      var buttonId = removedButton. getAttribute ("id");
      var parentId = removedButton. parentNode. getAttribute ("id");
      var windowId = this. getWindowId (documentURI);
-     var editorId = "chrome://custombuttons/content/editor.xul?editorId=custombuttons-editor@" + windowId + ":" + buttonId;
+     var editorId = this. pathToEditor + "?editorId=custombuttons-editor@" + windowId + ":" + buttonId;
      var app = new AppObject (windowId);
      var button = app. getButton (buttonId);
      if (button && removeFromOverlay)
