@@ -22,6 +22,118 @@
 #include <project.hjs>
 #include <prio.hjs>
 
+function backupProfile (phase)
+{
+    var cs = SERVICE (CONSOLE);
+    cs. logStringMessage ("backupProfile: " + phase);
+    var ext, nump, extp, bdp;
+    var pbs = SERVICE (PREF);
+    pbs = pbs. QI (nsIPrefBranch);
+    var ps = pbs. getBranch ("custombuttons.");
+    var profileDir = SERVICE (PROPERTIES). get ("ProfD", CI. nsIFile);
+    profileDir. append ("custombuttons");
+    var backupDir = profileDir. clone ();
+    var num = 5;
+    var makeFlag = true;
+    switch (phase)
+    {
+	case "profile-after-change":
+	    num = 1;
+	    ext = ".sbk";
+	    extp = "onSessionStartBackupsExtension";
+	    nump = "onSessionStartBackups";
+	    bdp = "onSessionStartBackupsDirectory";
+	    break;
+	case "profile-change-teardown":
+	    num = 1;
+	    ext = ".sbk2";
+	    extp = "onSessionEndBackupsExtension";
+	    nump = "onSessionEndBackups";
+	    bdp = "onSessionEndBackupsDirectory";
+	    makeFlag = false;
+	    break;
+	case "before-save-button":
+	    ext = ".bak";
+	    extp = "backupsExtension";
+	    nump = "backups";
+	    bdp = "backupsDirectory";
+	    break;
+	case "after-save-button":
+	    ext = ".cop";
+	    extp = "postSaveBackupsExtension";
+	    nump = "postSaveBackups";
+	    bdp = "postSaveBackupsDirectory";
+	    break;
+    }
+    try
+    {
+	num = Math. abs (ps. getIntPref (nump));
+	makeFlag = true;
+    }
+    catch (e) {}
+    try
+    {
+	ext = ps. getCharPref (extp);
+	makeFlag = true;
+    }
+    catch (e) {}
+    try
+    {
+	bdp = ps. getCharPref (bdp);
+	var d = COMPONENT (LOCAL_FILE);
+	d. initWithPath (bdp);
+	if (d. isDirectory ())
+	    backupDir = d;
+	makeFlag = true;
+    }
+    catch (e) {}
+    if (!makeFlag)
+	return;
+    cs. logStringMessage ("backupProfile: start");
+    makeBackup (profileDir, "buttonsoverlay.xul", backupDir, ext, num);
+    makeBackup (profileDir, "mwbuttonsoverlay.xul", backupDir, ext, num);
+    makeBackup (profileDir, "mcbuttonsoverlay.xul", backupDir, ext, num);
+    cs. logStringMessage ("backupProfile: stop");
+}
+
+function makeBackup (profileDir, fileName, backupDir, ext, num)
+{
+    var cs = SERVICE (CONSOLE);
+    cs. logStringMessage ("makeBackup: " + profileDir. path + ": " + fileName + ": " + backupDir. path + ": " + ext + ": " + num);
+    var bcnt = Math. abs (num);
+    if (bcnt > 32)
+	bcnt = 5;
+    var f1, f2, fn1, fn2;
+    for (var i = bcnt; i > 0; i--)
+    {
+	fn1 = fileName + i + ext;
+	f1 = backupDir. clone ();
+	f1. append (fn1);
+	fn2 = fileName + (i - 1 || "") + ext;
+	f2 = backupDir. clone ();
+	f2. append (fn2);
+	if (f2. exists () && f2. isFile ())
+	{
+	    if (f1. exists () && f2. isFile ())
+		f1. remove (false);
+	    if (!f1. exists ())
+		f2. copyTo (backupDir, fn1);
+	}
+    }
+    fn2 = fileName + ext;
+    f2 = backupDir. clone ();
+    f2. append (fn2);
+    f1 = profileDir. clone ();
+    f1. append (fileName);
+    if (f1. exists () && f1. isFile ())
+    {
+	if (f2. exists () && f2. isFile ())
+	    f2. remove (false);
+	if (!f2. exists ())
+	    f1. copyTo (backupDir, fn2);
+    }
+}
+
 function allowedSource (src)
 {
     var res = true;
@@ -239,22 +351,14 @@ Overlay. prototype =
 
 	    var file = dir. clone ();
 	    file. append (this. fileName);
-	    if (file. exists ())
-	    {
-		//creating backup
-		var backupfile = dir. clone ();
-		var backupfileName = this. fileName + ".bak";
-		backupfile. append (backupfileName);
-		if (backupfile. exists ())
-		    backupfile. remove (false);
-		file. copyTo (dir, backupfileName);
-	    }
+	    backupProfile ("before-save-button");
 
 	    var foStream = COMPONENT (FILE_OUTPUT_STREAM);
 	    var flags = PR_WRONLY | PR_CREATE_FILE | PR_TRUNCATE;
 	    foStream. init (file, flags, 0664, 0);
 	    foStream. write (data, data. length);
 	    foStream. close ();
+	    backupProfile ("after-save-button");
 	}
     };
 
@@ -1023,6 +1127,7 @@ cbCustomButtonsService. prototype =
 		dir. append ("custombuttons");
 		var file = dir. clone ();
 		file. append ("buttonsoverlay.xul");
+		backupProfile ("profile-after-change");
 		if (!file. exists ())
 		    this. makeOverlay ();
 		var info = SERVICE (XUL_APP_INFO);
@@ -1056,6 +1161,7 @@ cbCustomButtonsService. prototype =
 		os. removeObserver (this, "profile-change-teardown");
 		if (this. beingUninstalled)
 		    this. unPersistAll ();
+		backupProfile ("profile-change-teardown");
 		break;
 	    case "em-action-requested":
 		if (!(subject instanceof CI. nsIUpdateItem))
