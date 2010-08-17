@@ -33,6 +33,22 @@ function backupProfile (phase)
     var profileDir = SERVICE (PROPERTIES). get ("ProfD", CI. nsIFile);
     profileDir. append ("custombuttons");
     var backupDir = profileDir. clone ();
+    backupDir. append ("backup");
+    if (!backupDir. exists ())
+    {
+	try
+	{
+	    backupDir. create (DIRECTORY_TYPE, 0755);
+	}
+	catch (e)
+	{
+	    var msg = 'Custom Buttons error.]' +
+		'[Event: Creating custombuttons backup directory]' +
+		'[ ' + e;
+	    Components. utils. reportError (msg);
+	    return;
+	}
+    }
     var num = 3;
     var makeFlag = true;
     switch (phase)
