@@ -90,6 +90,8 @@ function backupProfile (phase)
 	bdp = ps. getCharPref (bdp);
 	var d = COMPONENT (LOCAL_FILE);
 	d. initWithPath (bdp);
+	if (!d. exists ())
+	    return;
 	if (d. isDirectory ())
 	    backupDir = d;
 	makeFlag = true;
