@@ -98,7 +98,7 @@ Editor. prototype =
    this. setEditorParameters (this. param);
   this. tempId = this. param. id || (new Date (). valueOf ());
   var ps = Components. classes ["@mozilla.org/preferences-service;1"]. getService (Components. interfaces. nsIPrefService). getBranch ("custombuttons.");
-  var cbMode = ps. getIntPref ("mode");
+  var cbMode = this. cbService. mode;
   var sab = cbMode & 2;
      this. saveButton. setAttribute ("icon", "save");
      this. saveButton. setAttribute ("disabled", "true");

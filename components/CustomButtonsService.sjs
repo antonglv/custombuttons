@@ -29,7 +29,7 @@ function backupProfile (phase)
     var ext, nump, extp, bdp;
     var pbs = SERVICE (PREF);
     pbs = pbs. QI (nsIPrefBranch);
-    var ps = pbs. getBranch ("custombuttons.");
+    var ps = pbs. getBranch ("extensions.custombuttons.");
     var profileDir = SERVICE (PROPERTIES). get ("ProfD", CI. nsIFile);
     profileDir. append ("custombuttons");
     var backupDir = profileDir. clone ();
@@ -569,14 +569,24 @@ cbCustomButtonsService. prototype =
 
 	get ps ()
 	{
-	    if (!this. _ps)
-	    {
-		var pbs = SERVICE (PREF);
-		pbs = pbs. QI (nsIPrefBranch);
-		this. _ps = pbs. getBranch ("custombuttons.");
-	    }
-	    return this. _ps;
+		if (!this. _ps)
+		{
+			var pbs = SERVICE (PREF);
+			pbs = pbs. QI (nsIPrefBranch);
+			this. _ps = pbs. getBranch ("extensions.custombuttons.");
+		}
+		return this. _ps;
 	},
+
+    get mode ()
+    {
+	return this. ps. getIntPref ("mode");
+    },
+
+    set mode (val)
+    {
+	this. ps. setIntPref ("mode", val);
+    },
 
 	QueryInterface: function (iid)
 	{

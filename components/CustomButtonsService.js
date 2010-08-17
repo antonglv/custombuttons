@@ -29,7 +29,7 @@ function backupProfile (phase)
     var ext, nump, extp, bdp;
     var pbs = Components. classes ["@mozilla.org/preferences-service;1"]. getService (Components. interfaces. nsIPrefService);
     pbs = pbs. QueryInterface (Components. interfaces. nsIPrefBranch);
-    var ps = pbs. getBranch ("custombuttons.");
+    var ps = pbs. getBranch ("extensions.custombuttons.");
     var profileDir = Components. classes ["@mozilla.org/file/directory_service;1"]. getService (Components. interfaces. nsIProperties). get ("ProfD", Components. interfaces. nsIFile);
     profileDir. append ("custombuttons");
     var backupDir = profileDir. clone ();
@@ -569,14 +569,24 @@ cbCustomButtonsService. prototype =
 
  get ps ()
  {
-     if (!this. _ps)
-     {
-  var pbs = Components. classes ["@mozilla.org/preferences-service;1"]. getService (Components. interfaces. nsIPrefService);
-  pbs = pbs. QueryInterface (Components. interfaces. nsIPrefBranch);
-  this. _ps = pbs. getBranch ("custombuttons.");
-     }
-     return this. _ps;
+  if (!this. _ps)
+  {
+   var pbs = Components. classes ["@mozilla.org/preferences-service;1"]. getService (Components. interfaces. nsIPrefService);
+   pbs = pbs. QueryInterface (Components. interfaces. nsIPrefBranch);
+   this. _ps = pbs. getBranch ("extensions.custombuttons.");
+  }
+  return this. _ps;
  },
+
+    get mode ()
+    {
+ return this. ps. getIntPref ("mode");
+    },
+
+    set mode (val)
+    {
+ this. ps. setIntPref ("mode", val);
+    },
 
  QueryInterface: function (iid)
  {

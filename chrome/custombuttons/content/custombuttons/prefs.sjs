@@ -14,6 +14,8 @@ Prefs. prototype =
 		return this. _ps;
 	},
 
+	cbs: SERVICE (CB),
+
 	handleCheckboxes: function (mode)
 	{
 		var setCheckboxesFlag = (mode || (mode == 0));
@@ -51,8 +53,7 @@ Prefs. prototype =
 
 	onLoad: function ()
 	{
-		var cbps = this. ps. getBranch ("custombuttons.");
-		var mode = cbps. getIntPref ("mode");
+		var mode = this. cbs. mode;
 		this. handleCheckboxes (mode);
 		var oFormatSelector = ELEMENT ("modebit3");
 		oFormatSelector. hidden = mode & CB_MODE_USE_XML_BUTTON_FORMAT;
@@ -64,8 +65,7 @@ Prefs. prototype =
 	{
 		window. removeEventListener ("command", this, false);
 		var mode = this. handleCheckboxes (null);
-		var cbps = this. ps. getBranch ("custombuttons.");
-		cbps. setIntPref ("mode", mode);
+		this. cbs. mode = mode;
 		return true;
 	},
 
