@@ -26,7 +26,7 @@ function backupProfile (phase)
 {
     var cs = SERVICE (CONSOLE);
     cs. logStringMessage ("backupProfile: " + phase);
-    var ext, nump, extp, bdp;
+    var ext, nump, bdp;
     var pbs = SERVICE (PREF);
     pbs = pbs. QI (nsIPrefBranch);
     var ps = pbs. getBranch ("extensions.custombuttons.");
@@ -40,27 +40,23 @@ function backupProfile (phase)
 	case "profile-after-change":
 	    num = 1;
 	    ext = ".sbk";
-	    extp = "onSessionStartBackupsExtension";
 	    nump = "onSessionStartBackups";
 	    bdp = "onSessionStartBackupsDirectory";
 	    break;
 	case "profile-change-teardown":
 	    num = 1;
 	    ext = ".sbk2";
-	    extp = "onSessionEndBackupsExtension";
 	    nump = "onSessionEndBackups";
 	    bdp = "onSessionEndBackupsDirectory";
 	    makeFlag = false;
 	    break;
 	case "before-save-button":
 	    ext = ".bak";
-	    extp = "backupsExtension";
 	    nump = "backups";
 	    bdp = "backupsDirectory";
 	    break;
 	case "after-save-button":
 	    ext = ".cop";
-	    extp = "postSaveBackupsExtension";
 	    nump = "postSaveBackups";
 	    bdp = "postSaveBackupsDirectory";
 	    break;
@@ -68,12 +64,6 @@ function backupProfile (phase)
     try
     {
 	num = Math. abs (ps. getIntPref (nump));
-	makeFlag = true;
-    }
-    catch (e) {}
-    try
-    {
-	ext = ps. getCharPref (extp);
 	makeFlag = true;
     }
     catch (e) {}
