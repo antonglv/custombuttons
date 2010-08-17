@@ -11,44 +11,44 @@ Custombuttons. prototype =
 	toolbarpaletteName: "BrowserToolbarPalette",
 	shouldAddToPalette: true,
 	cbService: null,
-	
+
 	get palette ()
 	{
 		if (!this. _palette)
 			this. _palette = this. getPalette ();
 		return this. _palette;
 	},
-	
+
 	get gToolbox ()
 	{
 		return ELEMENT ("navigator-toolbox") || // FF3b2 and lower
 			   ELEMENT ("browser-toolbox"); // see https://bugzilla.mozilla.org/show_bug.cgi?id=415099
 	},
-	
+
 	getPalette: function ()
 	{
 		return this. gToolbox. palette;
 	},
-	
+
 	pushMenuitem: function (sName, bPrimary)
 	{
 		var sId = "custombuttons-contextpopup-" + sName + (bPrimary? "": "-sub");
 		var oMenuitem = ELEMENT (sId);
 		oMenuitem. parentNode. appendChild (oMenuitem);
 	},
-	
+
 	addObserver: function (sNotificationName)
 	{
 		var os = SERVICE (OBSERVER);
 		os. addObserver (this, this. notificationPrefix + sNotificationName, false);
 	},
-	
+
 	removeObserver: function (sNotificationName)
 	{
 		var os = SERVICE (OBSERVER);
 		os. removeObserver (this, this. notificationPrefix + sNotificationName);
 	},
-	
+
 	init: function ()
 	{
 		this. cbService = SERVICE (CB);
@@ -64,7 +64,7 @@ Custombuttons. prototype =
 		var ps = SERVICE (PREF);
 		ps = ps. QI (nsIPrefBranch);
 		var cbps = ps. getBranch ("custombuttons.");
-		var mode = cbps. getIntPref ("mode");
+		var mode = this. cbService. mode;
 		if (ps. prefHasUserValue (pref))
 		{
 			mode |= (ps. getBoolPref (pref)? CB_MODE_SHOW_APPLY_BUTTON: 0);
@@ -74,13 +74,13 @@ Custombuttons. prototype =
 			}
 			catch (e) {}
 		}
-		cbps. setIntPref ("mode", mode);
+		this. cbService. mode = mode;
 		this. addObserver ("installButton");
 		this. addObserver ("updateButton");
 		this. addObserver ("cloneButton");
 		this. addObserver ("removeButton");
 	},
-	
+
 	close: function ()
 	{
 		this. cbService. unregister ();
@@ -92,7 +92,7 @@ Custombuttons. prototype =
 		window. removeEventListener ("unload", custombuttons, false);
 		window. removeEventListener ("keypress", custombuttons, true);
 	},
-	
+
 	copyAttributes: function (oSrcButton, oDstButton)
 	{
 		var atts = oSrcButton. attributes;
@@ -103,7 +103,7 @@ Custombuttons. prototype =
 			oDstButton. setAttribute (attr. name, oSrcButton. getAttribute (attr. name));
 		}
 	},
-	
+
 	RemoveButtonFromPalette: function (oButton)
 	{
 		var sId = oButton. getAttribute ("id");
@@ -118,7 +118,7 @@ Custombuttons. prototype =
 		    this. palette. removeChild (oPaletteButton);
 		}
 	},
-	
+
 	AddButtonToPalette: function (oButton)
 	{
 		this. RemoveButtonFromPalette (oButton);
@@ -132,7 +132,7 @@ Custombuttons. prototype =
 		this. copyAttributes (oButton, oPaletteButton);
 		this. palette. appendChild (oPaletteButton);
 	},
-	
+
 	persistCurrentSets: function (toolbarId, buttonId, newButtonId)
 	{
 		var toolbar = ELEMENT (toolbarId);
@@ -150,7 +150,7 @@ Custombuttons. prototype =
 		cs = cs. replace (/,$/, "");
 		toolbar. setAttribute ("currentset", cs);
 		document. persist (toolbarId, "currentset");
-		
+
 		//если это custom-toolbar, то исправляем атрибуты в toolbarSet...
 		var customindex = toolbar. getAttribute ("customindex");
 		if (customindex > 0)
@@ -166,7 +166,7 @@ Custombuttons. prototype =
 		if (ELEMENT ("aiostbx-belowtabs-toolbox"))
 			persistCurrentSets ();
 	},
-	
+
 	_cloneButton: function (oNewButton, sParentToolbarId, sClonedButtonId)
 	{
 		var oParentToolbar = ELEMENT (sParentToolbarId);
@@ -180,7 +180,7 @@ Custombuttons. prototype =
 		if (this. shouldAddToPalette)
 			this. AddButtonToPalette (oClone);
 	},
-	
+
 	cloneButton: function (oClonedButton)
 	{
 		var sParentToolbarId = oClonedButton. parentNode. id;
@@ -188,7 +188,7 @@ Custombuttons. prototype =
 		var sNewButtonId = this. cbService. cloneButton (oClonedButton);
 		this. persistCurrentSets (sParentToolbarId, sClonedButtonId, sNewButtonId);
 	},
-	
+
 	_removeButton: function (sParentToolbarId, sRemovedButtonId)
 	{
 		var cButtonsToRemove = document. getElementsByAttribute ("id", sRemovedButtonId);
@@ -208,7 +208,7 @@ Custombuttons. prototype =
 			this. RemoveButtonFromPalette (oRemovedButton);
 		oRemovedButton. parentNode. removeChild (oRemovedButton);
 	},
-	
+
 	removeButton: function (oRemovedButton)
 	{
 		var ps = SERVICE (PROMPT);
@@ -222,7 +222,7 @@ Custombuttons. prototype =
 		this. cbService. removeButton (oRemovedButton, bRemoveFromOverlay);
 		this. persistCurrentSets (sParentToolbarId, sRemovedButtonId, null);
 	},
-	
+
 	cbCloneNode: function (node)
 	{
 		var oClone = document. createElement (node. nodeName);
@@ -230,7 +230,7 @@ Custombuttons. prototype =
 	    	oClone. setAttribute ("removable", "true"); // Firefox >= 3.7
 		return oClone;
 	},
-	
+
 	// nsIObserver interface
 	observe: function (oSubject, sTopic, sData)
 	{
@@ -269,42 +269,42 @@ Custombuttons. prototype =
 				break;
 		}
 	},
-	
+
 	getButtonById: function (id)
 	{
 		var id2 = (isFinite (id)? "custombuttons-button": "") + id;
 		return this. palette. getElementsByAttribute ("id", id2) [0] || null;
 	},
-	
+
 	getButtonByNumber: function (num)
 	{
 		return ELEMENT ("custombuttons-button" + num);
 	},
-	
+
 	addButton: function (event)
 	{
 	    if (event)
 		event. stopPropagation ();
 	    this. openEditor ("");
 	},
-	
+
 	editButton: function (oBtn)
 	{
 		var oButton = oBtn || document. popupNode || null;
 		this. openEditor (oButton);
 	},
-	
+
 	makeButtonLink: function (action, sButtonId)
 	{
 		return this. cbService. makeButtonLink (document. documentURI, action, sButtonId);
 	},
-	
+
 	openEditor: function (oButton)
 	{
 		var link = this. makeButtonLink ("edit", oButton? oButton. id: "");
 		this. cbService. editButton (window, link, null);
 	},
-	
+
 	updateButton: function ()
 	{
 		var oButton = document. popupNode;
@@ -314,7 +314,7 @@ Custombuttons. prototype =
 		var link = this. makeButtonLink ("update", oButton. id);
 		this. cbService. updateButton (link, sURI);
 	},
-	
+
 	doButtonOperation: function (sOperation)
 	{
 		var oButton;
@@ -331,24 +331,24 @@ Custombuttons. prototype =
 				break;
 		}
 	},
-	
+
 	copyURI: function ()
 	{
         this. cbService. writeToClipboard (document. popupNode. URI);
 	},
-	
+
 	getNumber: function (id)
 	{
 		if (id. indexOf ("custombuttons-button") != -1)
 			return id. substring ("custombuttons-button". length);
 		return "";
 	},
-	
+
 	execute_oncommand_code: function (code, button)
 	{
 		custombutton. buttonCbExecuteCode ({}, button, code);
 	},
-	
+
 	onKeyPress: function (event)
 	{
 	    	var windowId = this. cbService. getWindowId (document. documentURI);
@@ -416,10 +416,10 @@ Custombuttons. prototype =
 				break;
 		}
 	},
-	
+
     /**  bookmarkButton(  )
       Author George Dunham
-    
+
       Args:
       Returns: Nothing
       Scope:	 private
@@ -433,7 +433,7 @@ Custombuttons. prototype =
         var Button = (oBtn)? oBtn: document. popupNode;
         this. makeBookmark (Button. URI, Button. name);
     },
-    
+
     makeBookmark: function (CbLink, sName)
     {
         BookmarksUtils. addBookmark (CbLink, sName);
@@ -456,7 +456,7 @@ function CustombuttonsST () {}
 CustombuttonsST. prototype =
 {
 	shouldAddToPalette: false,
-	
+
     makeBookmark: function (CbLink, sName)
     {
 		var uri = COMPONENT (SIMPLE_URI); // since there was 'bookmarkLink' execution problem
@@ -470,7 +470,7 @@ function CustombuttonsTB () {}
 CustombuttonsTB. prototype =
 {
 	toolbarpaletteName: "MailToolbarPalette",
-	
+
 	checkLightning: function ()
 	{
 		var result = false;
@@ -494,9 +494,9 @@ CustombuttonsTB. prototype =
 		} catch (e) {}
 		return result;
 	},
-	
+
 	lightning: false,
-	
+
 	init: function ()
 	{
 		SUPER (init, null);
@@ -528,13 +528,13 @@ CustombuttonsTB. prototype =
 	    else
 		this. lightning = this. checkLightning ();
 	},
-	
+
 	get gToolbox ()
 	{
 		return ELEMENT ("mail-toolbox") || // main window and message window
 			   ELEMENT ("compose-toolbox"); // compose message
 	},
-	
+
 	openEditor: function (oButton)
 	{
 		var mode = "";
@@ -588,12 +588,12 @@ CustombuttonsSB. prototype =
 {
 	toolbarpaletteName: "calendarToolbarPalette",
 	shouldAddToPalette: true,
-	
+
 	get gToolbox ()
 	{
 		return ELEMENT ("calendar-toolbox"); // calendar
 	},
-    
+
     makeBookmark: function (CbLink, sName) {}
 };
 EXTEND (CustombuttonsSB, CustombuttonsTB);
@@ -603,12 +603,12 @@ CustombuttonsNVU. prototype =
 {
 	toolbarpaletteName: "NvuToolbarPalette",
 	shouldAddToPalette: true,
-	
+
 	get gToolbox ()
 	{
 		return ELEMENT ("EditorToolbox"); // calendar
 	},
-    
+
     makeBookmark: function (CbLink, sName) {}
 };
 EXTEND (CustombuttonsNVU, CustombuttonsTB);
@@ -911,38 +911,38 @@ setPrefs: function ( sPrefId, prefValue ) //{{{
 	{
 		_cbService: SERVICE (CB),
 		_cbClipboard: [],
-		
+
 		Write: function (str)
 		{
 			this. _cbClipboard [0] = str;
 		},
-		
+
 		Clear: function ()
 		{
 			this. Write ("");
 		},
-		
+
 		Read: function ()
 		{
 			return this. _cbClipboard [0] || "";
 		},
-		
+
 		write: function (str)
 		{
 			this. _cbService. writeToClipboard (str);
 		},
-		
+
 		clear: function ()
 		{
 			this. write ("");
 		},
-		
+
 		read: function ()
 		{
 			return this. _cbService. readFromClipboard ();
 		}
 	},
-	
+
 	makeXML: function (xmlObject)
 	{
 		var res = null;

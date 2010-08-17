@@ -465,10 +465,20 @@ cbCustomButtonsService. prototype =
   {
    var pbs = Components. classes ["@mozilla.org/preferences-service;1"]. getService (Components. interfaces. nsIPrefService);
    pbs = pbs. QueryInterface (Components. interfaces. nsIPrefBranch);
-   this. _ps = pbs. getBranch ("custombuttons.");
+   this. _ps = pbs. getBranch ("extensions.custombuttons.");
   }
   return this. _ps;
  },
+
+    get mode ()
+    {
+ return this. ps. getIntPref ("mode");
+    },
+
+    set mode (val)
+    {
+ this. ps. setIntPref ("mode", val);
+    },
 
  QueryInterface: function (iid)
     {
