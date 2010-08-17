@@ -15,7 +15,7 @@
 // - Gives a possibility to create custom toolbarbuttons.
 // - This component is intended to provide common extension's service
 //
-// Author: Anton Glazatov (c) 2009
+// Author: Anton Glazatov (c) 2009-2010
 //
 // ***** END LICENSE BLOCK *****
 
