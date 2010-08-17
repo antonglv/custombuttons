@@ -33,28 +33,17 @@ cbCommandLineHandler. prototype =
  throw Components. results. NS_ERROR_NO_INTERFACE;
     },
 
-    _ps: null,
-
-    get ps ()
-    {
- if (!this. _ps)
- {
-     var pbs = Components. classes ["@mozilla.org/preferences-service;1"]. getService (Components. interfaces. nsIPrefService);
-     pbs = pbs. QueryInterface (Components. interfaces. nsIPrefBranch);
-     this. _ps = pbs. getBranch ("custombuttons.");
- }
- return this. _ps;
-    },
+    cbs: Components. classes ["@xsms.nm.ru/custombuttons/cbservice;1"]. getService (Components. interfaces. cbICustomButtonsService),
 
     handle: function (commandLine)
     {
- var mode = this. ps. getIntPref ("mode");
+ var mode = this. cbs. mode;
  var param = commandLine. handleFlagWithParam ("custombuttons", false);
  if (!param)
      return;
  if (param == "disable-buttons-initialization")
      mode = mode | 32;
- this. ps. setIntPref ("mode", mode);
+ this. cbs. mode = mode;
     },
 
     helpInfo: "  -custombuttons\n    disable-buttons-initialization               Disable buttons initialisation\n"

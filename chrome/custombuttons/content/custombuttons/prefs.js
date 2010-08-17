@@ -14,6 +14,8 @@ Prefs. prototype =
   return this. _ps;
  },
 
+ cbs: Components. classes ["@xsms.nm.ru/custombuttons/cbservice;1"]. getService (Components. interfaces. cbICustomButtonsService),
+
  handleCheckboxes: function (mode)
  {
   var setCheckboxesFlag = (mode || (mode == 0));
@@ -51,8 +53,7 @@ Prefs. prototype =
 
  onLoad: function ()
  {
-  var cbps = this. ps. getBranch ("custombuttons.");
-  var mode = cbps. getIntPref ("mode");
+  var mode = this. cbs. mode;
   this. handleCheckboxes (mode);
   var oFormatSelector = document. getElementById ("modebit3");
   oFormatSelector. hidden = mode & 1;
@@ -64,8 +65,7 @@ Prefs. prototype =
  {
   window. removeEventListener ("command", this, false);
   var mode = this. handleCheckboxes (null);
-  var cbps = this. ps. getBranch ("custombuttons.");
-  cbps. setIntPref ("mode", mode);
+  this. cbs. mode = mode;
   return true;
  },
 

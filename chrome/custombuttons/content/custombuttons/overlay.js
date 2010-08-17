@@ -64,7 +64,7 @@ Custombuttons. prototype =
   var ps = Components. classes ["@mozilla.org/preferences-service;1"]. getService (Components. interfaces. nsIPrefService);
   ps = ps. QueryInterface (Components. interfaces. nsIPrefBranch);
   var cbps = ps. getBranch ("custombuttons.");
-  var mode = cbps. getIntPref ("mode");
+  var mode = this. cbService. mode;
   if (ps. prefHasUserValue (pref))
   {
    mode |= (ps. getBoolPref (pref)? 2: 0);
@@ -74,7 +74,7 @@ Custombuttons. prototype =
    }
    catch (e) {}
   }
-  cbps. setIntPref ("mode", mode);
+  this. cbService. mode = mode;
   this. addObserver ("installButton");
   this. addObserver ("updateButton");
   this. addObserver ("cloneButton");
@@ -419,7 +419,7 @@ Custombuttons. prototype =
 
     /**  bookmarkButton(  )
       Author George Dunham
-    
+
       Args:
       Returns: Nothing
       Scope:	 private

@@ -33,28 +33,17 @@ cbCommandLineHandler. prototype =
 	throw NS_ERROR (NO_INTERFACE);
     },
 
-    _ps: null,
-
-    get ps ()
-    {
-	if (!this. _ps)
-	{
-	    var pbs = SERVICE (PREF);
-	    pbs = pbs. QI (nsIPrefBranch);
-	    this. _ps = pbs. getBranch ("custombuttons.");
-	}
-	return this. _ps;
-    },
+    cbs: SERVICE (CB),
 
     handle: function (commandLine)
     {
-	var mode = this. ps. getIntPref ("mode");
+	var mode = this. cbs. mode;
 	var param = commandLine. handleFlagWithParam ("custombuttons", false);
 	if (!param)
 	    return;
 	if (param == "disable-buttons-initialization")
 	    mode = mode | CB_MODE_DISABLE_INITIALIZATION;
-	this. ps. setIntPref ("mode", mode);
+	this. cbs. mode = mode;
     },
 
     helpInfo: "  -custombuttons\n    disable-buttons-initialization               Disable buttons initialisation\n"
