@@ -33,7 +33,7 @@ function backupProfile (phase)
     var profileDir = SERVICE (PROPERTIES). get ("ProfD", CI. nsIFile);
     profileDir. append ("custombuttons");
     var backupDir = profileDir. clone ();
-    var num = 5;
+    var num = 3;
     var makeFlag = true;
     switch (phase)
     {
