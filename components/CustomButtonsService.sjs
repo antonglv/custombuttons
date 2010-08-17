@@ -76,6 +76,8 @@ function backupProfile (phase)
 	    nump = "postSaveBackups";
 	    bdp = "postSaveBackupsDirectory";
 	    break;
+	default:
+	    return;
     }
     try
     {
