@@ -89,7 +89,7 @@ Editor. prototype =
 			this. setEditorParameters (this. param);
 		this. tempId = this. param. id || (new Date (). valueOf ());
 		var ps = SERVICE (PREF). getBranch ("custombuttons.");
-		var cbMode = ps. getIntPref ("mode");
+		var cbMode = this. cbService. mode;
 		var sab = cbMode & CB_MODE_SHOW_APPLY_BUTTON;
 		if (this. param. newButton || !sab)
 		{
@@ -369,7 +369,7 @@ Editor. prototype =
 		    return (res == RES_DONT_SAVE);
 		}
 	    }
-		
+
 	    return this. canClose;
 	},
 

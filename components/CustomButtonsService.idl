@@ -26,4 +26,5 @@ interface cbICustomButtonsService: nsISupports
 	string makeButtonLink (in AUTF8String documentURI, in string action, in string buttonId);
 	void alert (in string msgId);
   boolean allowedSource (in AUTF8String src);
+  attribute long mode;
 };

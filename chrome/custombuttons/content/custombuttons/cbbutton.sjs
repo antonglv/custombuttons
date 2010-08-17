@@ -45,8 +45,7 @@ var custombutton =
 		{
 			if (oBtn. hasAttribute ("cb-init"))
 			{
-				var ps = SERVICE (PREF). getBranch ("custombuttons.");
-				var mode = ps. getIntPref ("mode");
+				var mode = this. cbService. mode;
 				if (mode & CB_MODE_DISABLE_INITIALIZATION) // disable initialization
 				    return;
 				if (oBtn. parentNode && (oBtn. parentNode. nodeName != "toolbar") &&
@@ -265,10 +264,7 @@ var custombutton =
 
 	buttonGetURI: function (oBtn)
 	{
-		var ps = Components. classes ["@mozilla.org/preferences-service;1"].
-		getService (Components. interfaces. nsIPrefService).
-		getBranch ("custombuttons.");
-		var mode = ps. getIntPref ("mode");
+		var mode = this. cbService. mode;
 		if (mode & CB_MODE_USE_XML_BUTTON_FORMAT)
 			return this. xmlFormatURI (oBtn);
 		else if (mode & CB_MODE_USE_CB2_OLD_BUTTON_FORMAT)
