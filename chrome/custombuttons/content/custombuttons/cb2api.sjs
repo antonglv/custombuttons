@@ -152,7 +152,7 @@ custombuttons.getCbContextObj = function ( oBtn ) //{{{
 {
 	/**  Object mObj
 	Author:  SCClockDr
-	
+
 	Scope:    Private - Each instance of this object is unique.
 	Global - It's properties and methods are available
 	within the button's namedspace.
@@ -231,9 +231,9 @@ custombuttons.getCbContextObj = function ( oBtn ) //{{{
 		aItemIdx:["id","label","image","oncommand","command","acceltext","accesskey","allowevents",
 		"autocheck","checked","crop","description","disabled","key", "name",
 		"tabindex","type","validate","value"],
-		
+
 		broadcasterId: "",
-		
+
 		/**
 		 * @author Anton
 		 */
@@ -243,7 +243,7 @@ custombuttons.getCbContextObj = function ( oBtn ) //{{{
 				return this. oMenu. childNodes. length;
 			return 0;
 		},
-		
+
 		/*
 		 * @author Anton
 		 */
@@ -253,7 +253,7 @@ custombuttons.getCbContextObj = function ( oBtn ) //{{{
 				return this. oMenu. childNodes;
 			return [];
 		},
-		
+
 		/**
 		 * @author Anton
 		 * this method calls only once, when gCtxtObject created
@@ -275,10 +275,10 @@ custombuttons.getCbContextObj = function ( oBtn ) //{{{
 			oBroadcaster. setAttribute ("observes", "custombuttons-contextbroadcaster-root");
 			oBroadcasterset. appendChild (oBroadcaster);
 		},
-		
+
 		// Methods
 		/**  init(   )
-		
+
 		Scope:   global
 		Args:
 		Returns: Nothing
@@ -301,7 +301,7 @@ custombuttons.getCbContextObj = function ( oBtn ) //{{{
 			ct.remItem();
 		}, //}}} End Method init(  )
 		/**  setSub(  )
-		
+
 		Scope:   global
 		Args:
 		Returns: Nothing
@@ -314,7 +314,7 @@ custombuttons.getCbContextObj = function ( oBtn ) //{{{
 			this. mCtxtSub = true;
 		}, //}}} End Method setSub(  )
 		/**  setPri(  )
-		
+
 		Scope:   global
 		Args:
 		Returns: Nothing
@@ -327,7 +327,7 @@ custombuttons.getCbContextObj = function ( oBtn ) //{{{
 			this. mCtxtSub = false;
 		}, //}}} End Method setPri(  )
 		/**  getItem(  )
-		
+
 		Scope:   global
 		Args:
 		Returns: oItem
@@ -361,7 +361,7 @@ custombuttons.getCbContextObj = function ( oBtn ) //{{{
 			} // End if ( mCtxtSub )
 			return null;
 		}, //}}} End Method getItem(  )
-		
+
 		/*
 		 * @author Anton
 		 */
@@ -378,7 +378,7 @@ custombuttons.getCbContextObj = function ( oBtn ) //{{{
 			return oNewItem;
 		},
 		/**  insertBefore( oMenuItem )
-		
+
 		Scope:   global
 		Args:    oNew - Data Object
 		oChildNode - Node to insert before
@@ -400,7 +400,7 @@ custombuttons.getCbContextObj = function ( oBtn ) //{{{
 			} // End if ( mCtxtSub )
 			return oRet
 		}, //}}} End Method insertBefore( oNew, oChildNode )
-		
+
 		/**  insertAfter( oMenuItem, oChildNode )
 		Scope:   global
 		Args:    oNew - Data Object
@@ -421,9 +421,9 @@ custombuttons.getCbContextObj = function ( oBtn ) //{{{
 			} // End if ( mCtxtSub )
 			return oRet
 		}, //}}} End Method insertAfter( oNew, oChildNode )
-		
+
 		/**  addItem( oMenuItem )
-		
+
 		Scope:   global
 		Args:    oNew - Data Object
 		Returns: sRet - ItemId
@@ -438,13 +438,13 @@ custombuttons.getCbContextObj = function ( oBtn ) //{{{
 				var oRet = ""
 				var newItem = this. constructItem (oNew, true);
 				oRet = ct.oMenu.insertBefore( newItem, ct.oMenu.firstChild );
-				
+
 			} // End if ( mCtxtSub )
 			return oRet
 		}, //}}} End Method addItem( oNew )
-		
+
 		/**  populate( oData, mItem )
-		
+
 		Scope:   private
 		Args:    oData -
 		mItem -
@@ -459,7 +459,7 @@ custombuttons.getCbContextObj = function ( oBtn ) //{{{
 				if ( oData[ct.aItemIdx[i]] ) mItem.setAttribute( ct.aItemIdx[i], oData[ct.aItemIdx[i]] );
 			} // End for
 		}, //}}} End Method populate( oData, mItem )
-		
+
 		/*
 		 * @author Anton
 		 */
@@ -470,9 +470,9 @@ custombuttons.getCbContextObj = function ( oBtn ) //{{{
 				return cId;
 			return this. sIdPrefix + cId;
 		},
-		
+
 		/**  getItemsById( id )
-		
+
 		Scope:   global
 		Args:    id -
 		Returns: aRet
@@ -491,9 +491,9 @@ custombuttons.getCbContextObj = function ( oBtn ) //{{{
 			} // End for
 			return aRet;
 		}, //}}} End Method getItemsById( id )
-		
+
 		/**  remItem( id )
-		
+
 		Scope:   private
 		Args:    id -
 		Returns: Nothing
@@ -526,7 +526,7 @@ custombuttons.getCbContextObj = function ( oBtn ) //{{{
 			this.setPri();
 			this.listener = function(){};
 		} //}}} End Method deInit(  )
-		
+
 }; //}}} End Object mObj
 
 oRet.init( oBtn );
@@ -581,7 +581,7 @@ custombuttons.gQuot = { //{{{
 	savEvent: null, // save Event for handling doClick().
 	// Methods
 	/**  mHandler( evt, cButton )
-	
+
 	Scope:   private
 	Args:    evt -  Mouse click event used to direct code
 	execution based on the button clicked and
@@ -617,11 +617,11 @@ custombuttons.gQuot = { //{{{
 			break;
 		} // End switch ( evt.type )
 	},
-	
+
 	/**
 	 * Sets timer
 	 * @author Anton
-	 * 
+	 *
 	 */
 	setTimer: function ()
 	{
@@ -629,7 +629,7 @@ custombuttons.gQuot = { //{{{
 		this. oTimer. initWithCallback (this, this. dcDelay, TIMER_TYPE_ONE_SHOT);
 		this. dcWaitFlag = true;
 	},
-	
+
 	/**
 	 * nsITimerCallback interface implementation
 	 * Returns this object on nsITimerCallback interface query
@@ -639,7 +639,7 @@ custombuttons.gQuot = { //{{{
 	 *
 	 */
 	DEFINE_STD_QI (nsITimerCallback),
-	
+
 	/**
 	 * nsITimerCallback interface implementation
 	 * Receives timer notification
@@ -651,7 +651,7 @@ custombuttons.gQuot = { //{{{
 	{
 		this. doDoubleClick (this. savEvent);
 	},
-	
+
 	/**
 	 * Deletes timer
 	 * @Author Anton
@@ -665,13 +665,13 @@ custombuttons.gQuot = { //{{{
 		this. oTimer. cancel ();
 		this. oTimer = null;
 	},
-	
+
 	doDoubleClick: function (oEvent)
 	{
 		this. deleteTimer ();
 		this. click (oEvent)
 	},
-	
+
 	/**
 	* Construct callback method name for given event object
 	* @author Anton Glazatov
@@ -697,7 +697,7 @@ custombuttons.gQuot = { //{{{
 		} catch (e) {}
 		return sMethodName;
 	},
-	
+
 	/**
 	* Search and execute button's callback method or show context menu
 	* @author Anton Glazatov
@@ -714,9 +714,9 @@ custombuttons.gQuot = { //{{{
 		else
 			this. gShowPopup (oButton);
 	},
-	
+
 	/**  gShowPopup( node )
-	
+
 	Scope:   public
 	Args:    node - Button in focus
 	Returns: Nothing
@@ -750,7 +750,7 @@ custombuttons.gQuot = { //{{{
 		} // End else ( typeof popup.openPopup == CB2const.FUNCTION )
 	}  //}}} End Method gShowPopup( node )
 }; //}}} End Object   gQuot
-	
+
 /**  gQuot( evt, cButton )
 Author:  George Dunham aka: SCClockDr
 
@@ -764,7 +764,7 @@ Purpose: 1. Handle mouse click events.
 var gQuot = function( evt, cButton ) //{{{
 {
 	custombuttons.gQuot.mHandler( evt, cButton );
-} //}}} End Function gQuot( evt, cButton ) 
+} //}}} End Function gQuot( evt, cButton )
 
 /**  gShowPopup( node )
 Author:  George Dunham aka: SCClockDr
@@ -780,7 +780,7 @@ var gShowPopup = function( node ) //{{{
 {
 	custombuttons.gQuot.gShowPopup( node );
 }; //}}} End gShowPopup( node )
-	
+
 /**  getButtonParameters2( num )
 Author Yan, George Dunham
 
@@ -829,7 +829,10 @@ custombuttons. ButtonDim = function (oEvent, opacity)
 };
 custombuttons. getLocalString = function (oBtn, strId)
 {
-	var ln = this. getPrefs ("general.useragent.locale"). replace ("-", "_");
+	var psname = "general.";
+	psname += "useragent.";
+	psname += "locale";
+	var ln = this. getPrefs (psname). replace ("-", "_");
 	var props = oBtn. properties;
 	if (!props)
 		return strId;
@@ -945,7 +948,7 @@ custombuttonsUtils. createDebug = function (btn)
 		bugonlp: { value: true },
 		Func:	 "",
 		Name:	 "",
-		
+
 		finit: function (btn)
 		{
 			this. sVer = btn. getAttribute ("version");
@@ -953,17 +956,17 @@ custombuttonsUtils. createDebug = function (btn)
 			this. id   = btn. getAttribute ("id");
 			this. title =  "Button - [" + this. Name + "]";
 		},
-		
+
 		setErr: function (estr)
 		{
 			this. strerr. push ([estr]);
 		},
-		
+
 		confirm: function (msg, third)
 		{
 			custombuttons. confirmBox3 (this. title, msg, "Continue", "Stop", third);
 		},
-		
+
 		bug: function (str)
 		{
 			var msg = "";
@@ -975,7 +978,7 @@ custombuttonsUtils. createDebug = function (btn)
 				this. bugon. value = (button != 1);
 			}
 		},
-		
+
 		bugloop: function (str)
 		{
 			var msg = "";
@@ -987,18 +990,18 @@ custombuttonsUtils. createDebug = function (btn)
 				this. bugon. value = (button != 1);
 			}
 		},
-		
+
 		alert: function (msg)
 		{
 			this. prompts. alert (null, this. title, msg);
 		},
-		
+
 		warn: function (str)
 		{
 			var msg = this. swarn + str;
 			this. alert (msg);
 		},
-		
+
 		err: function (nerr)
 		{
 			var msg = "Error " + nerr + " ";
