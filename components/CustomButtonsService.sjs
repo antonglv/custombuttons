@@ -24,8 +24,6 @@
 
 function backupProfile (phase)
 {
-    var cs = SERVICE (CONSOLE);
-    cs. logStringMessage ("backupProfile: " + phase);
     var ext, nump, bdp;
     var pbs = SERVICE (PREF);
     pbs = pbs. QI (nsIPrefBranch);
@@ -99,17 +97,13 @@ function backupProfile (phase)
     catch (e) {}
     if (!makeFlag)
 	return;
-    cs. logStringMessage ("backupProfile: start");
     makeBackup (profileDir, "buttonsoverlay.xul", backupDir, ext, num);
     makeBackup (profileDir, "mwbuttonsoverlay.xul", backupDir, ext, num);
     makeBackup (profileDir, "mcbuttonsoverlay.xul", backupDir, ext, num);
-    cs. logStringMessage ("backupProfile: stop");
 }
 
 function makeBackup (profileDir, fileName, backupDir, ext, num)
 {
-    var cs = SERVICE (CONSOLE);
-    cs. logStringMessage ("makeBackup: " + profileDir. path + ": " + fileName + ": " + backupDir. path + ": " + ext + ": " + num);
     var bcnt = Math. abs (num);
     if (bcnt > 32)
 	bcnt = 5;
