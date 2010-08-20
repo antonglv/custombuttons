@@ -112,11 +112,14 @@ Editor. prototype =
   document. getElementById ("initCode"). addEditorObserver (this);
   document. getElementById ("help"). addEditorObserver (this);
   window. addEventListener ("mousedown", this, true);
-     // window manager may ignore screenX and screenY, so let's move window manually
-     var x = document. getElementById ("custombuttonsEditor"). getAttribute ("screenX");
-     var y = document. getElementById ("custombuttonsEditor"). getAttribute ("screenY");
-     if (x && y)
-  window. moveTo (x, y);
+     if (cbMode & 64)
+     {
+  // window manager may ignore screenX and screenY, so let's move window manually
+  var x = document. getElementById ("custombuttonsEditor"). getAttribute ("screenX");
+  var y = document. getElementById ("custombuttonsEditor"). getAttribute ("screenY");
+  if (x && y)
+      window. moveTo (x, y);
+     }
  },
 
  setEditorParameters: function (param)
