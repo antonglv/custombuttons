@@ -233,7 +233,8 @@ Editor. prototype =
 	selectImage: function ()
 	{
 		var fp = COMPONENT (FILE_PICKER);
-		fp. init (window, "Select an image", 0);
+	    	var fpdt = this. cbService. getLocaleString ("editorImageFilePickerDialogTitle");
+		fp. init (window, fpdt, 0);
 		fp. appendFilters (fp. filterImages);
 		var res = fp. show ();
 		if (res == fp. returnOK)

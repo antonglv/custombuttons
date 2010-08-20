@@ -233,7 +233,8 @@ Editor. prototype =
  selectImage: function ()
  {
   var fp = Components. classes ["@mozilla.org/filepicker;1"]. createInstance (Components. interfaces. nsIFilePicker);
-  fp. init (window, "Select an image", 0);
+      var fpdt = this. cbService. getLocaleString ("editorImageFilePickerDialogTitle");
+  fp. init (window, fpdt, 0);
   fp. appendFilters (fp. filterImages);
   var res = fp. show ();
   if (res == fp. returnOK)
