@@ -48,6 +48,7 @@ function backupProfile (phase)
 	}
     }
     var num = 3;
+    var forceBackup = true;
     var makeFlag = true;
     switch (phase)
     {
@@ -56,6 +57,7 @@ function backupProfile (phase)
 	    ext = ".sbk";
 	    nump = "onSessionStartBackups";
 	    bdp = "onSessionStartBackupsDirectory";
+	    forceBackup = false;
 	    break;
 	case "profile-change-teardown":
 	    num = 1;
@@ -63,6 +65,7 @@ function backupProfile (phase)
 	    nump = "onSessionEndBackups";
 	    bdp = "onSessionEndBackupsDirectory";
 	    makeFlag = false;
+	    forceBackup = false;
 	    break;
 	case "before-save-button":
 	    ext = ".bak";
@@ -70,6 +73,7 @@ function backupProfile (phase)
 	    bdp = "backupsDirectory";
 	    break;
 	case "after-save-button":
+	    num = 0;
 	    ext = ".cop";
 	    nump = "postSaveBackups";
 	    bdp = "postSaveBackupsDirectory";
@@ -97,17 +101,27 @@ function backupProfile (phase)
     catch (e) {}
     if (!makeFlag)
 	return;
-    makeBackup (profileDir, "buttonsoverlay.xul", backupDir, ext, num);
-    makeBackup (profileDir, "mwbuttonsoverlay.xul", backupDir, ext, num);
-    makeBackup (profileDir, "mcbuttonsoverlay.xul", backupDir, ext, num);
+    makeBackup (profileDir, "buttonsoverlay.xul", backupDir, ext, num, forceBackup);
+    makeBackup (profileDir, "mwbuttonsoverlay.xul", backupDir, ext, num, forceBackup);
+    makeBackup (profileDir, "mcbuttonsoverlay.xul", backupDir, ext, num, forceBackup);
 }
 
-function makeBackup (profileDir, fileName, backupDir, ext, num)
+function makeBackup (profileDir, fileName, backupDir, ext, num, forceBackup)
 {
     var bcnt = Math. abs (num);
     if (bcnt > 32)
 	bcnt = 5;
     var f1, f2, fn1, fn2;
+    f1 = profileDir. clone ();
+    f1. append (fileName);
+    if (f1. exists () && !forceBackup)
+    {
+	fn2 = fileName + ext;
+	f2 = backupDir. clone ();
+	f2. append (fn2);
+	if (f2. exists () && f2. isFile () && (f2. lastModifiedTime >= f1. lastModifiedTime))
+	    return;
+    }
     for (var i = bcnt; i > 0; i--)
     {
 	fn1 = fileName + i + ext;
