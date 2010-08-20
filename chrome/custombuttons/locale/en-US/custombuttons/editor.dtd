@@ -16,7 +16,7 @@
 <!ENTITY editor.code.tooltiptext "Executes on pressing the button">
 <!ENTITY editor.initCode "Initialization code">
 <!ENTITY editor.initCode.accesskey "I">
-<!ENTITY editor.initCode.tooltiptext "Executes on browser startup">
+<!ENTITY editor.initCode.tooltiptext "Executes on application window open">
 <!ENTITY editor.code.defaultValue "/*CODE*/">
 <!ENTITY editor.initCode.defaultValue "/*Initialization Code*/">
 <!ENTITY editor.Apply "Save">
