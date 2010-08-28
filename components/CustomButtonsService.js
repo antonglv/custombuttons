@@ -297,6 +297,14 @@ Overlay. prototype =
   var xulchan = ios. newChannel (uri, null, null);
   var instr = xulchan. open ();
   var dp = Components. classes ["@mozilla.org/xmlextras/domparser;1"]. createInstance (Components. interfaces. nsIDOMParser);
+  try
+  {
+      var fakeOverlayURI = ios. newURI ("chrome://custombuttons/content/buttonsoverlay.xul", null, null);
+      var chromeProtocolHandler = Components. classes ["@mozilla.org/network/protocol;1?name=chrome"]. getService ();
+      chromeProtocolHandler = chromeProtocolHandler. QueryInterface (Components. interfaces. nsIProtocolHandler);
+      var fakeOverlayChannel = chromeProtocolHandler. newChannel (fakeOverlayURI);
+      dp. init (fakeOverlayChannel. owner, ios. newURI (uri, null, null), null, null);
+  } catch (e) {}
   this. _overlayDocument = dp. parseFromStream (instr, null, instr. available (), "application/xml");
      }
      return this. _overlayDocument;
