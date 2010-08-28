@@ -15,5 +15,6 @@
 <!ENTITY custombuttons.prefs.disable_init "Schaltflächen-Initialisierung abschalten (wirkt sich nur auf neue Fenster aus)">
 <!ENTITY custombuttons.prefs.disable_init_in_customize_toolbar "Initialisierung im &quot;Symbolleiste anpassen&quot; Dialog verhindern">
 <!ENTITY custombuttons.prefs.enable_custombutton_protocol "Installation von Schaltflächen aus Mail-Nachrichten ermöglichen">
+<!ENTITY custombuttons.prefs.editor_save_size_and_position "Save size and position of editor windows separately for each custom button">
 
 <!ENTITY custombuttons.about.supportPageURL "Support Website besuchen">
