@@ -33,7 +33,13 @@ cbCommandLineHandler. prototype =
  throw Components. results. NS_ERROR_NO_INTERFACE;
     },
 
-    cbs: Components. classes ["@xsms.nm.ru/custombuttons/cbservice;1"]. getService (Components. interfaces. cbICustomButtonsService),
+    _cbs: null,
+    get cbs ()
+    {
+ if (!this. _cbs)
+     this. _cbs = Components. classes ["@xsms.nm.ru/custombuttons/cbservice;1"]. getService (Components. interfaces. cbICustomButtonsService);
+ return this. _cbs
+    },
 
     handle: function (commandLine)
     {
