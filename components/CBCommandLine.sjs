@@ -33,7 +33,13 @@ cbCommandLineHandler. prototype =
 	throw NS_ERROR (NO_INTERFACE);
     },
 
-    cbs: SERVICE (CB),
+    _cbs: null,
+    get cbs ()
+    {
+	if (!this. _cbs)
+	    this. _cbs = SERVICE (CB);
+	return this. _cbs
+    },
 
     handle: function (commandLine)
     {
