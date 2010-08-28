@@ -47,7 +47,7 @@ function backupProfile (phase)
 	    return;
 	}
     }
-    var num = 3;
+    var num = 2;
     var forceBackup = true;
     var makeFlag = true;
     switch (phase)
