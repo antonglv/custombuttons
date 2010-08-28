@@ -15,5 +15,6 @@
 <!ENTITY custombuttons.prefs.disable_init "Disable buttons initialization (Changes affect only new windows)">
 <!ENTITY custombuttons.prefs.disable_init_in_customize_toolbar "Disable initialization id &quot;Customize Toolbar&quot; dialog">
 <!ENTITY custombuttons.prefs.enable_custombutton_protocol "Enable install buttons from mail messages">
+<!ENTITY custombuttons.prefs.editor_save_size_and_position "Save size and position of editor windows separately for each custom button">
 
 <!ENTITY custombuttons.about.supportPageURL "Visit support page">
