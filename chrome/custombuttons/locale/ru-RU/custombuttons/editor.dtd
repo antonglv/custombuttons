@@ -28,8 +28,6 @@
 <!ENTITY editor.buttonSettings.hotKeyGroupbox "&quot;Горячая&quot; клавиша">
 <!ENTITY editor.buttonSettings.accelkey "Сочетание клавиш:">
 <!ENTITY editor.buttonSettings.disableDefaultKeyBehavior "Запретить стандартное действие для указанного сочетания клавиш">
-<!ENTITY editor.buttonSettings.initializationGroupbox "Инициализация">
-<!ENTITY editor.buttonSettings.initInCustomizeToolbarDialog "Разрешить инициализацию в диалоговом окне &quot;Настройка панелей инструментов&quot;">
 <!ENTITY editor.buttonSettings.addMoreKeys "Дополнительно…">
 
 <!ENTITY cbeditor.quickfindtextbox "Быстрый поиск: ">

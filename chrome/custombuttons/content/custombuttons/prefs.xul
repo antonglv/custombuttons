@@ -20,7 +20,6 @@
         <groupbox flex="1">
             <checkbox id="modebit1" label="&custombuttons.prefs.show_apply_button;"/>
 	    <checkbox id="modebit5" label="&custombuttons.prefs.disable_init;"/>
-            <checkbox id="modebit2" label="&custombuttons.prefs.disable_init_in_customize_toolbar;"/>
             <checkbox id="cbEnableCBProtocol"
             label="&custombuttons.prefs.enable_custombutton_protocol;"
             hidden="true"/>
