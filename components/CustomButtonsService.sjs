@@ -15,12 +15,142 @@
 // - Gives a possibility to create custom toolbarbuttons.
 // - This component is intended to provide common extension's service
 //
-// Author: Anton Glazatov (c) 2009
+// Author: Anton Glazatov (c) 2009-2010
 //
 // ***** END LICENSE BLOCK *****
 
 #include <project.hjs>
 #include <prio.hjs>
+
+function backupProfile (phase)
+{
+    var ext, nump, bdp;
+    var pbs = SERVICE (PREF);
+    pbs = pbs. QI (nsIPrefBranch);
+    var ps = pbs. getBranch ("extensions.custombuttons.");
+    var profileDir = SERVICE (PROPERTIES). get ("ProfD", CI. nsIFile);
+    profileDir. append ("custombuttons");
+    var backupDir = profileDir. clone ();
+    backupDir. append ("backup");
+    if (!backupDir. exists ())
+    {
+	try
+	{
+	    backupDir. create (DIRECTORY_TYPE, 0755);
+	}
+	catch (e)
+	{
+	    var msg = 'Custom Buttons error.]' +
+		'[Event: Creating custombuttons backup directory]' +
+		'[ ' + e;
+	    Components. utils. reportError (msg);
+	    return;
+	}
+    }
+    var num = 2;
+    var forceBackup = true;
+    var makeFlag = true;
+    switch (phase)
+    {
+	case "profile-after-change":
+	    num = 1;
+	    ext = ".sbk";
+	    nump = "onSessionStartBackups";
+	    bdp = "onSessionStartBackupsDirectory";
+	    forceBackup = false;
+	    break;
+	case "profile-change-teardown":
+	    num = 1;
+	    ext = ".sbk2";
+	    nump = "onSessionEndBackups";
+	    bdp = "onSessionEndBackupsDirectory";
+	    makeFlag = false;
+	    forceBackup = false;
+	    break;
+	case "before-save-button":
+	    ext = ".bak";
+	    nump = "backups";
+	    bdp = "backupsDirectory";
+	    break;
+	case "after-save-button":
+	    num = 0;
+	    ext = ".cop";
+	    nump = "postSaveBackups";
+	    bdp = "postSaveBackupsDirectory";
+	    break;
+	default:
+	    return;
+    }
+    try
+    {
+	num = Math. abs (ps. getIntPref (nump));
+	makeFlag = true;
+    }
+    catch (e) {}
+    try
+    {
+	bdp = ps. getCharPref (bdp);
+	var d = COMPONENT (LOCAL_FILE);
+	d. initWithPath (bdp);
+	if (!d. exists ())
+	    return;
+	if (d. isDirectory ())
+	    backupDir = d;
+	makeFlag = true;
+    }
+    catch (e) {}
+    if (!makeFlag)
+	return;
+    makeBackup (profileDir, "buttonsoverlay.xul", backupDir, ext, num, forceBackup);
+    makeBackup (profileDir, "mwbuttonsoverlay.xul", backupDir, ext, num, forceBackup);
+    makeBackup (profileDir, "mcbuttonsoverlay.xul", backupDir, ext, num, forceBackup);
+}
+
+function makeBackup (profileDir, fileName, backupDir, ext, num, forceBackup)
+{
+    var bcnt = Math. abs (num);
+    if (bcnt > 32)
+	bcnt = 5;
+    var f1, f2, fn1, fn2;
+    f1 = profileDir. clone ();
+    f1. append (fileName);
+    if (f1. exists () && !forceBackup)
+    {
+	fn2 = fileName + ext;
+	f2 = backupDir. clone ();
+	f2. append (fn2);
+	if (f2. exists () && f2. isFile () && (f2. lastModifiedTime >= f1. lastModifiedTime))
+	    return;
+    }
+    for (var i = bcnt; i > 0; i--)
+    {
+	fn1 = fileName + i + ext;
+	f1 = backupDir. clone ();
+	f1. append (fn1);
+	fn2 = fileName + (i - 1 || "") + ext;
+	f2 = backupDir. clone ();
+	f2. append (fn2);
+	if (f2. exists () && f2. isFile ())
+	{
+	    if (f1. exists () && f2. isFile ())
+		f1. remove (false);
+	    if (!f1. exists ())
+		f2. copyTo (backupDir, fn1);
+	}
+    }
+    fn2 = fileName + ext;
+    f2 = backupDir. clone ();
+    f2. append (fn2);
+    f1 = profileDir. clone ();
+    f1. append (fileName);
+    if (f1. exists () && f1. isFile ())
+    {
+	if (f2. exists () && f2. isFile ())
+	    f2. remove (false);
+	if (!f2. exists ())
+	    f1. copyTo (backupDir, fn2);
+    }
+}
 
 function allowedSource (src)
 {
@@ -167,6 +297,14 @@ Overlay. prototype =
 		var xulchan = ios. newChannel (uri, null, null);
 		var instr = xulchan. open ();
 		var dp = COMPONENT (DOM_PARSER);
+		try
+		{
+		    var fakeOverlayURI = ios. newURI ("chrome://custombuttons/content/buttonsoverlay.xul", null, null);
+		    var chromeProtocolHandler = CC ["@mozilla.org/network/protocol;1?name=chrome"]. getService ();
+		    chromeProtocolHandler = chromeProtocolHandler. QI (nsIProtocolHandler);
+		    var fakeOverlayChannel = chromeProtocolHandler. newChannel (fakeOverlayURI);
+		    dp. init (fakeOverlayChannel. owner, ios. newURI (uri, null, null), null, null);
+		} catch (e) {}
 		this. _overlayDocument = dp. parseFromStream (instr, null, instr. available (), "application/xml");
 	    }
 	    return this. _overlayDocument;
@@ -239,22 +377,14 @@ Overlay. prototype =
 
 	    var file = dir. clone ();
 	    file. append (this. fileName);
-	    if (file. exists ())
-	    {
-		//creating backup
-		var backupfile = dir. clone ();
-		var backupfileName = this. fileName + ".bak";
-		backupfile. append (backupfileName);
-		if (backupfile. exists ())
-		    backupfile. remove (false);
-		file. copyTo (dir, backupfileName);
-	    }
+	    backupProfile ("before-save-button");
 
 	    var foStream = COMPONENT (FILE_OUTPUT_STREAM);
 	    var flags = PR_WRONLY | PR_CREATE_FILE | PR_TRUNCATE;
 	    foStream. init (file, flags, 0664, 0);
 	    foStream. write (data, data. length);
 	    foStream. close ();
+	    backupProfile ("after-save-button");
 	}
     };
 
@@ -460,19 +590,29 @@ cbCustomButtonsService. prototype =
 	_ps: null,
 
 	CUSTOM_BUTTONS_EXTENSION_ID: "custombuttons@xsms.org",
-	pathToEditor: "chrome://custombuttons/content/editor.xul",
+	pathToEditor: "chrome://custombuttons/content/editor/editor.xul",
 	beingUninstalled: false,
 
 	get ps ()
 	{
-	    if (!this. _ps)
-	    {
-		var pbs = SERVICE (PREF);
-		pbs = pbs. QI (nsIPrefBranch);
-		this. _ps = pbs. getBranch ("custombuttons.");
-	    }
-	    return this. _ps;
+		if (!this. _ps)
+		{
+			var pbs = SERVICE (PREF);
+			pbs = pbs. QI (nsIPrefBranch);
+			this. _ps = pbs. getBranch ("extensions.custombuttons.");
+		}
+		return this. _ps;
 	},
+
+    get mode ()
+    {
+	return this. ps. getIntPref ("mode");
+    },
+
+    set mode (val)
+    {
+	this. ps. setIntPref ("mode", val);
+    },
 
 	QueryInterface: function (iid)
 	{
@@ -574,32 +714,32 @@ cbCustomButtonsService. prototype =
 
 	openEditor: function (opener, uri, param)
 	{
-		var cbedw = this. findEditor (opener, uri, param);
-	    	var wws = SERVICE (WINDOW_WATCHER);
-	    	var sEditorId = this. getEditorId (uri, param);
-		param. wrappedJSObject = param;
-		if (cbedw)
-		{
-			cbedw. focus ();
-			var app = new AppObject (param. windowId);
-			app. notifyObservers (param, "setEditorParameters", "");
-		}
-		else
-		{
-		    var editorUri = "chrome://custombuttons/content/editor/editor.xul";
-		    var mode = this. ps. getIntPref ("mode");
-		    if (mode & CB_MODE_SAVE_EDITOR_SIZE_SEPARATELY)
-			editorUri += "?editorId=" + sEditorId;
-			cbedw = wws. openWindow
-			(
-				opener,
-				editorUri,
-				sEditorId,
-				"chrome,resizable,dialog=no",
-				param
-			);
-			this. editors. push (cbedw);
-		}
+	    var cbedw = this. findEditor (opener, uri, param);
+	    var wws = SERVICE (WINDOW_WATCHER);
+	    var sEditorId = this. getEditorId (uri, param);
+	    param. wrappedJSObject = param;
+	    if (cbedw)
+	    {
+		cbedw. focus ();
+		var app = new AppObject (param. windowId);
+		app. notifyObservers (param, "setEditorParameters", "");
+	    }
+	    else
+	    {
+		var editorUri = this. pathToEditor;
+		var mode = this. ps. getIntPref ("mode");
+		if (mode & CB_MODE_SAVE_EDITOR_SIZE_SEPARATELY)
+		    editorUri += "?editorId=" + sEditorId;
+		cbedw = wws. openWindow
+		(
+		    opener,
+		    editorUri,
+		    sEditorId,
+		    "chrome,resizable,dialog=no",
+		    param
+		);
+		this. editors. push (cbedw);
+	    }
 	},
 
 	makeButton: function (button, param)
@@ -802,19 +942,19 @@ cbCustomButtonsService. prototype =
 
 	removeButton: function (removedButton, removeFromOverlay)
 	{
-		var documentURI = removedButton. ownerDocument. documentURI;
-		var buttonId = removedButton. getAttribute ("id");
-		var parentId = removedButton. parentNode. getAttribute ("id");
-		var windowId = this. getWindowId (documentURI);
-	    var editorId = "chrome://custombuttons/content/editor/editor.xul?editorId=custombuttons-editor@" + windowId + ":" + buttonId;
-		var app = new AppObject (windowId);
-		var button = app. getButton (buttonId);
-		if (button && removeFromOverlay)
-		{
-			button. parentNode. removeChild (button);
-			app. overlay. saveOverlayToProfile ();
-		}
-		app. notifyObservers (null, "removeButton", parentId + ":" + buttonId);
+	    var documentURI = removedButton. ownerDocument. documentURI;
+	    var buttonId = removedButton. getAttribute ("id");
+	    var parentId = removedButton. parentNode. getAttribute ("id");
+	    var windowId = this. getWindowId (documentURI);
+	    var editorId = this. pathToEditor + "?editorId=custombuttons-editor@" + windowId + ":" + buttonId;
+	    var app = new AppObject (windowId);
+	    var button = app. getButton (buttonId);
+	    if (button && removeFromOverlay)
+	    {
+		button. parentNode. removeChild (button);
+		app. overlay. saveOverlayToProfile ();
+	    }
+	    app. notifyObservers (null, "removeButton", parentId + ":" + buttonId);
 	    var mode = this. ps. getIntPref ("mode");
 	    if (mode & CB_MODE_SAVE_EDITOR_SIZE_SEPARATELY)
 		this. unPersist (editorId);
@@ -1014,7 +1154,6 @@ cbCustomButtonsService. prototype =
 		}
 		catch (e)
 		{
-		    Components. utils. reportError (e);
 		    os. addObserver (this, "em-action-requested", true);
 		}
 		os. addObserver (this, "profile-change-teardown", true);
@@ -1024,6 +1163,7 @@ cbCustomButtonsService. prototype =
 		dir. append ("custombuttons");
 		var file = dir. clone ();
 		file. append ("buttonsoverlay.xul");
+		backupProfile ("profile-after-change");
 		if (!file. exists ())
 		    this. makeOverlay ();
 		var info = SERVICE (XUL_APP_INFO);
@@ -1057,6 +1197,7 @@ cbCustomButtonsService. prototype =
 		os. removeObserver (this, "profile-change-teardown");
 		if (this. beingUninstalled)
 		    this. unPersistAll ();
+		backupProfile ("profile-change-teardown");
 		break;
 	    case "em-action-requested":
 		if (!(subject instanceof CI. nsIUpdateItem))

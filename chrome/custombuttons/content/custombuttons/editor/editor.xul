@@ -112,11 +112,6 @@
 					  id="help" multiline="true" flex="1"
 					  value=""/>
 			<vbox>
-				<groupbox>
-					<caption label="&editor.buttonSettings.initializationGroupbox;"/>
-					<checkbox id="initInCustomizeToolbarDialog"
-							  label="&editor.buttonSettings.initInCustomizeToolbarDialog;"/>
-				</groupbox>
 				<groupbox flex="1">
 					<caption label="&editor.buttonSettings.hotKeyGroupbox;"/>
 					<grid>

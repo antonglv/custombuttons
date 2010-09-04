@@ -16,7 +16,7 @@
 <!ENTITY editor.code.tooltiptext "Executes on pressing the button">
 <!ENTITY editor.initCode "Initialization code">
 <!ENTITY editor.initCode.accesskey "I">
-<!ENTITY editor.initCode.tooltiptext "Executes on browser startup">
+<!ENTITY editor.initCode.tooltiptext "Executes on application window open">
 <!ENTITY editor.code.defaultValue "/*CODE*/">
 <!ENTITY editor.initCode.defaultValue "/*Initialization Code*/">
 <!ENTITY editor.Apply "Save">
@@ -28,8 +28,6 @@
 <!ENTITY editor.buttonSettings.hotKeyGroupbox "&quot;Hot&quot; key">
 <!ENTITY editor.buttonSettings.accelkey "Hotkey:">
 <!ENTITY editor.buttonSettings.disableDefaultKeyBehavior "Disable default action for specified hotkey">
-<!ENTITY editor.buttonSettings.initializationGroupbox "Initialization">
-<!ENTITY editor.buttonSettings.initInCustomizeToolbarDialog "Enable initialization in &quot;Customize Toolbar&quot; dialog">
 <!ENTITY editor.buttonSettings.addMoreKeys "More…">
 
 <!ENTITY cbeditor.quickfindtextbox "Quick Find: ">

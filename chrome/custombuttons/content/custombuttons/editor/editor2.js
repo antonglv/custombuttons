@@ -98,7 +98,7 @@ Editor. prototype =
    this. setEditorParameters (this. param);
   this. tempId = this. param. id || (new Date (). valueOf ());
   var ps = Components. classes ["@mozilla.org/preferences-service;1"]. getService (Components. interfaces. nsIPrefService). getBranch ("custombuttons.");
-  var cbMode = ps. getIntPref ("mode");
+  var cbMode = this. cbService. mode;
   var sab = cbMode & 2;
      this. saveButton. setAttribute ("icon", "save");
      this. saveButton. setAttribute ("disabled", "true");
@@ -126,11 +126,14 @@ Editor. prototype =
   console. buttonid = this. param. id;
   this. console = console;
      }
-     // window manager may ignore screenX and screenY, so let's move window manually
-     var x = document. getElementById ("custombuttonsEditor"). getAttribute ("screenX");
-     var y = document. getElementById ("custombuttonsEditor"). getAttribute ("screenY");
-     if (x && y)
-  window. moveTo (x, y);
+     if (cbMode & 64)
+     {
+  // window manager may ignore screenX and screenY, so let's move window manually
+  var x = document. getElementById ("custombuttonsEditor"). getAttribute ("screenX");
+  var y = document. getElementById ("custombuttonsEditor"). getAttribute ("screenY");
+  if (x && y)
+      window. moveTo (x, y);
+     }
  },
 
     console: null,
@@ -170,7 +173,6 @@ Editor. prototype =
   document. getElementById ("code"). editor. transactionManager. clear ();
   document. getElementById ("initCode"). editor. transactionManager. clear ();
   var mode = this. param. mode;
-  document. getElementById ("initInCustomizeToolbarDialog"). checked = mode && (mode & 1) || false;
   document. getElementById ("disableDefaultKeyBehavior"). checked = mode && (mode & 2) || false;
   if (this. param. newButton)
    document. title = this. cbService. getLocaleString ("AddButtonEditorDialogTitle");
@@ -215,8 +217,7 @@ Editor. prototype =
    if (field)
     this. param [v] = field. value;
   }
-  this. param ["mode"] = document. getElementById ("initInCustomizeToolbarDialog"). checked? 1: 0;
-  this. param ["mode"] |= document. getElementById ("disableDefaultKeyBehavior"). checked? 2: 0;
+  this. param ["mode"] = document. getElementById ("disableDefaultKeyBehavior"). checked? 2: 0;
       this. notificationSender = true;
   this. cbService. installButton (this. param);
       this. notificationSender = false;
@@ -246,7 +247,8 @@ Editor. prototype =
  selectImage: function ()
  {
   var fp = Components. classes ["@mozilla.org/filepicker;1"]. createInstance (Components. interfaces. nsIFilePicker);
-  fp. init (window, "Select an image", 0);
+      var fpdt = this. cbService. getLocaleString ("editorImageFilePickerDialogTitle");
+  fp. init (window, fpdt, 0);
   fp. appendFilters (fp. filterImages);
   var res = fp. show ();
   if (res == fp. returnOK)

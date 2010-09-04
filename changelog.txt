@@ -1,4 +1,13 @@
 Changelog
+0.0.5.2
+- Removed: Buttons initialization in "Customize Toolbar dialog"
+- Removed: Export buttons into old custombutton:// URI formats
++ Added: Firefox 4.0b6pre compatibility
++ Added: Seamonkey 2.1b1pre compatibility
+* Implemented backups overlays
+! Changed: "custombuttons.mode" preference prefixed with "extensions." to compliance AMO rules
+# Fixed: Incorrect caret positioning when it moves in the presence of selected text
++ Added: Ability to save position and size of editor's windows separately for each button
 0.0.5.1
 + Added: Seamonkey 2.1a3pre compatibility
 + Added: Firefox 4.0b4pre compatibility

@@ -45,13 +45,10 @@ var custombutton =
 		{
 			if (oBtn. hasAttribute ("cb-init"))
 			{
-				var ps = SERVICE (PREF). getBranch ("custombuttons.");
-				var mode = ps. getIntPref ("mode");
+				var mode = this. cbService. mode;
 				if (mode & CB_MODE_DISABLE_INITIALIZATION) // disable initialization
 				    return;
-				if (oBtn. parentNode && (oBtn. parentNode. nodeName != "toolbar") &&
-				    ((mode & CB_MODE_DISABLE_INIT_IN_CTDIALOG_GLOBAL) ||
-				    !(oBtn. cbMode & CB_MODE_ENABLE_INIT_IN_CTDIALOG)))
+				if (oBtn. parentNode && (oBtn. parentNode. nodeName != "toolbar"))
 					return;
 				oBtn. cbInitCode = oBtn. getAttribute ("cb-init");
 				setTimeout (function () { oBtn. init (); }, 0);
@@ -178,35 +175,6 @@ var custombutton =
 		return 0;
 	},
 
-	buttonGetOldFormatURI: function(oBtn)
-	{
-		var uri = "custombutton://" + escape
-		(
-			[
-				oBtn. name,
-				oBtn. image,
-				oBtn. cbCommand,
-				oBtn. cbInitCode
-			]. join ("][")
-		);
-		return uri;
-	},
-
-	midFormatURI: function(oBtn)
-	{
-		var uri = "custombutton://" + escape
-		(
-			[
-				oBtn. name,
-				oBtn. image,
-				oBtn. cbCommand,
-				oBtn. cbInitCode,
-				oBtn. Help
-			]. join ("]▲[")
-		);
-		return uri;
-	},
-
 	buttonSetText: function(doc, nodeName, text, make_CDATASection)
 	{
 		var node = doc. getElementsByTagName (nodeName) [0], cds;
@@ -265,16 +233,7 @@ var custombutton =
 
 	buttonGetURI: function (oBtn)
 	{
-		var ps = Components. classes ["@mozilla.org/preferences-service;1"].
-		getService (Components. interfaces. nsIPrefService).
-		getBranch ("custombuttons.");
-		var mode = ps. getIntPref ("mode");
-		if (mode & CB_MODE_USE_XML_BUTTON_FORMAT)
-			return this. xmlFormatURI (oBtn);
-		else if (mode & CB_MODE_USE_CB2_OLD_BUTTON_FORMAT)
-			return this. midFormatURI (oBtn);
-		else
-			return this. buttonGetOldFormatURI (oBtn);
+		return this. xmlFormatURI (oBtn);
 	},
 
     buildExecutionContext: function (oButton, uri, executionContext)

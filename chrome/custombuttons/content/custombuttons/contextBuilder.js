@@ -2,6 +2,11 @@
  * @fileOverview This file used for building custom buttons runtime environment
  */
 
+var Cc = Components. classes;
+var Ci = Components. interfaces;
+var Cu = Components. utils;
+var Cr = Components. results;
+
 var phase = oButton. _initPhase? "init": "code";
 var id = oButton. id;
 var doc = document;
@@ -10,6 +15,7 @@ if ("custombuttonsUtils" in window)
 {
     var createDebug = custombuttonsUtils. createDebug;
     var createMsg = custombuttonsUtils. createMsg;
+    var cbu = custombuttonsUtils;
 }
 
 /**
@@ -24,7 +30,7 @@ function LOG (msg)
 	return;
     var name = oButton. name;
     var head = "[Custom Buttons: id: " + id + "@" + phase + ", line: " + Components. stack. caller. lineNumber + ", name: " + name + "]";
-    var cs = Components. classes ["@mozilla.org/consoleservice;1"]. getService (Components. interfaces. nsIConsoleService);
+    var cs = Cc ["@mozilla.org/consoleservice;1"]. getService (Ci. nsIConsoleService);
     cs. logStringMessage (head + (msg? ("\n" + msg): ""));
 }
 
@@ -35,7 +41,7 @@ function LOG (msg)
  * @since version 0.0.5.1
  * @param {String} eventType
  * @param {nsIDOMEventListener|function} eventHandler
- * @param {Boolean} captureFlag 
+ * @param {Boolean} captureFlag
  * @param {nsIDOMEventTarget} [eventTarget=window]
  * @throws {TypeError} If eventHandler is not a function or has not nsIDOMEventListener interface
  * @throws {TypeError} If eventTarget has not nsIDOMEventTarget interface
@@ -52,7 +58,7 @@ function addEventListener (eventType, eventHandler, captureFlag, eventTarget)
 	captureFlag: null,
 	eventTarget: null,
 	context: null,
-	
+
 	handleEvent: function (event)
 	{
 	    switch (typeof this. eventHandler)
@@ -66,7 +72,7 @@ function addEventListener (eventType, eventHandler, captureFlag, eventTarget)
 	    default:;
 	    }
 	},
-	
+
 	register: function ()
 	{
 	    try
@@ -75,7 +81,7 @@ function addEventListener (eventType, eventHandler, captureFlag, eventTarget)
 	    }
 	    catch (e) {}
 	},
-	
+
 	unregister: function ()
 	{
 	    try
@@ -86,7 +92,7 @@ function addEventListener (eventType, eventHandler, captureFlag, eventTarget)
 	}
     };
     handler. eventType = eventType;
-    if ((eventHandler instanceof Components. interfaces. nsIDOMEventListener) ||
+    if ((eventHandler instanceof Ci. nsIDOMEventListener) ||
 	(typeof (eventHandler) == "function") ||
 	((typeof (eventHandler) == "object") && (typeof (eventHandler ["handleEvent"]) == "function")))
 	handler. eventHandler = eventHandler;
@@ -95,7 +101,7 @@ function addEventListener (eventType, eventHandler, captureFlag, eventTarget)
     handler. captureFlag = captureFlag;
     if (!eventTarget)
 	eventTarget = window;
-    if (eventTarget instanceof Components. interfaces. nsIDOMEventTarget)
+    if (eventTarget instanceof Ci. nsIDOMEventTarget)
 	handler. eventTarget = eventTarget;
     else
 	throw new TypeError ("Custom Buttons: addEventListener: eventTarget hasn't interface nsIDOMEventTarget\n", uri, Components. stack. caller. lineNumber);

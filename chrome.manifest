@@ -29,7 +29,6 @@ overlay chrome://messenger/content/messengercompose/messengercompose.xul resourc
 
 ## Browser
 overlay chrome://browser/content/browser.xul chrome://custombuttons/content/tcbbutton.xul
-overlay chrome://global/content/customizeToolbar.xul chrome://custombuttons/content/tcbbutton.xul
 
 ## Firefox 3
 overlay chrome://browser/content/browser.xul chrome://custombuttons/content/overlay3b2.xul application={ec8030f7-c20a-464f-9b0e-13a3a9e97384} appversion>=3.0b1
@@ -53,13 +52,11 @@ overlay chrome://messenger/content/messengercompose/messengercompose.xul resourc
 overlay chrome://calendar/content/calendar.xul chrome://custombuttons/content/SunbirdOverlay.xul
 overlay chrome://calendar/content/calendar.xul chrome://custombuttons/content/tcbbutton.xul
 overlay chrome://calendar/content/calendar.xul resource://custombuttons/buttonsoverlay.xul
-overlay chrome://calendar/content/customizeToolbar.xul chrome://custombuttons/content/tcbbutton.xul
 
 ## Calendar
 overlay chrome://sunbird/content/calendar.xul chrome://custombuttons/content/CalendarOverlay.xul
 overlay chrome://sunbird/content/calendar.xul chrome://custombuttons/content/tcbbutton.xul
 overlay chrome://sunbird/content/calendar.xul resource://custombuttons/buttonsoverlay.xul
-overlay chrome://sunbird/content/customizeToolbar.xul chrome://custombuttons/content/tcbbutton.xul
 
 ## Editor (KompoZer)
 overlay chrome://editor/content/editor.xul chrome://custombuttons/content/EditorOverlay.xul
@@ -79,9 +76,6 @@ style chrome://navigator/content/navigator.xul chrome://custombuttons/skin/custo
 style chrome://navigator/content/navigator.xul chrome://custombuttons/content/overlay.css
 
 style chrome://global/content/customizeToolbar.xul chrome://custombuttons/skin/custombuttons.css
-##style chrome://global/content/customizeToolbar.xul chrome://custombuttons/content/overlay.css appversion>1.6
-style chrome://global/content/customizeToolbar.xul chrome://custombuttons/content/customizeToolbar.css
-style chrome://global/content/customizeToolbar.xul chrome://custombuttons/content/overlay1.5.css application={ec8030f7-c20a-464f-9b0e-13a3a9e97384} appversion<=1.6
 
 style chrome://messenger/content/messenger.xul chrome://custombuttons/skin/custombuttons.css
 style chrome://messenger/content/messenger.xul chrome://custombuttons/content/overlay.css

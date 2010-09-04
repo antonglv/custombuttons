@@ -9,11 +9,9 @@
 <!ENTITY custombuttons.buttonPopup.subCall "Aangepaste knop">
 
 <!ENTITY custombuttons_prefsDialog.title "Custom Buttons: instellingen">
-<!ENTITY custombuttons.prefs.use_xml_button_format "Nieuwe knopformaat gebruiken">
-<!ENTITY custombuttons.prefs.use_cb2_button_format "Oude knopformaat van Custom Buttons² gebruiken">
 <!ENTITY custombuttons.prefs.show_apply_button "Knop “Opslaan” in code-editor tonen">
 <!ENTITY custombuttons.prefs.disable_init "Initialisatie van knoppen uitschakelen (Wijzigingen zijn alleen van invloed op nieuwe vensters)">
-<!ENTITY custombuttons.prefs.disable_init_in_customize_toolbar "Initialisatie in dialoogvenster “Werkbalk aanpassen” uitschakelen">
 <!ENTITY custombuttons.prefs.enable_custombutton_protocol "Installatieknoppen in e-mailberichten inschakelen">
+<!ENTITY custombuttons.prefs.editor_save_size_and_position "Save size and position of editor windows separately for each custom button">
 
 <!ENTITY custombuttons.about.supportPageURL "Ondersteuningspagina bezoeken">

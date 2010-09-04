@@ -14,6 +14,8 @@ Prefs. prototype =
   return this. _ps;
  },
 
+ cbs: Components. classes ["@xsms.nm.ru/custombuttons/cbservice;1"]. getService (Components. interfaces. cbICustomButtonsService),
+
  handleCheckboxes: function (mode)
  {
   var setCheckboxesFlag = (mode || (mode == 0));
@@ -51,12 +53,8 @@ Prefs. prototype =
 
  onLoad: function ()
  {
-  var cbps = this. ps. getBranch ("custombuttons.");
-  var mode = cbps. getIntPref ("mode");
+  var mode = this. cbs. mode;
   this. handleCheckboxes (mode);
-  var oFormatSelector = document. getElementById ("modebit3");
-  oFormatSelector. hidden = mode & 1;
-  window. addEventListener ("command", this, false);
   this. sizeWindowToContent (true);
  },
 
@@ -64,8 +62,7 @@ Prefs. prototype =
  {
   window. removeEventListener ("command", this, false);
   var mode = this. handleCheckboxes (null);
-  var cbps = this. ps. getBranch ("custombuttons.");
-  cbps. setIntPref ("mode", mode);
+  this. cbs. mode = mode;
   return true;
  },
 
@@ -73,28 +70,6 @@ Prefs. prototype =
  {
   window. removeEventListener ("command", this, false);
   return true;
- },
-
- onCommand: function (oEvent)
- {
-  var oTarget = oEvent. target;
-  if (oTarget. nodeName == "checkbox")
-  {
-   if (oTarget. hasAttribute ("cbblocks"))
-   {
-    var sBlockedElementId = oTarget. getAttribute ("cbblocks");
-    var oBlockedElement = document. getElementById (sBlockedElementId);
-    oBlockedElement. hidden = oTarget. checked;
-    this. sizeWindowToContent (false);
-   }
-  }
- },
-
- // EventListener interface
- handleEvent: function (oEvent)
- {
-  if (oEvent. type == "command")
-      this. onCommand (oEvent);
  }
 };
 
@@ -153,5 +128,3 @@ TBPrefs. prototype =
 TBPrefs. prototype. __proto__ = Prefs. prototype; TBPrefs. prototype. __super = Prefs;
 
 var cbPrefs = new custombuttonsFactory (). Prefs;
-
-//window. addEventListener ("load", cbPrefs, false);

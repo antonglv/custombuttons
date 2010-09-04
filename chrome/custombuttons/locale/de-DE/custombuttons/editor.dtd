@@ -28,8 +28,6 @@
 <!ENTITY editor.buttonSettings.hotKeyGroupbox "Zugriffstaste">
 <!ENTITY editor.buttonSettings.accelkey "Hotkey:">
 <!ENTITY editor.buttonSettings.disableDefaultKeyBehavior "Standardzuordnung dieser Tastenkombination aufheben">
-<!ENTITY editor.buttonSettings.initializationGroupbox "Initialisierung">
-<!ENTITY editor.buttonSettings.initInCustomizeToolbarDialog "Initialisierung im &quot;Symbolleiste anpassen&quot; Dialog">
 <!ENTITY editor.buttonSettings.addMoreKeys "Mehr...">
 
 <!ENTITY cbeditor.quickfindtextbox "Schnellsuche: ">

@@ -98,7 +98,7 @@ Editor. prototype =
 			this. setEditorParameters (this. param);
 		this. tempId = this. param. id || (new Date (). valueOf ());
 		var ps = SERVICE (PREF). getBranch ("custombuttons.");
-		var cbMode = ps. getIntPref ("mode");
+		var cbMode = this. cbService. mode;
 		var sab = cbMode & CB_MODE_SHOW_APPLY_BUTTON;
 	    this. saveButton. setAttribute ("icon", "save");
 	    this. saveButton. setAttribute ("disabled", "true");
@@ -126,11 +126,14 @@ Editor. prototype =
 		console. buttonid = this. param. id;
 		this. console = console;
 	    }
-	    // window manager may ignore screenX and screenY, so let's move window manually
-	    var x = ELEMENT ("custombuttonsEditor"). getAttribute ("screenX");
-	    var y = ELEMENT ("custombuttonsEditor"). getAttribute ("screenY");
-	    if (x && y)
-		window. moveTo (x, y);
+	    if (cbMode & CB_MODE_SAVE_EDITOR_SIZE_SEPARATELY)
+	    {
+		// window manager may ignore screenX and screenY, so let's move window manually
+		var x = ELEMENT ("custombuttonsEditor"). getAttribute ("screenX");
+		var y = ELEMENT ("custombuttonsEditor"). getAttribute ("screenY");
+		if (x && y)
+		    window. moveTo (x, y);
+	    }
 	},
 
     console: null,
@@ -170,7 +173,6 @@ Editor. prototype =
 		ELEMENT ("code"). editor. transactionManager. clear ();
 		ELEMENT ("initCode"). editor. transactionManager. clear ();
 		var mode = this. param. mode;
-		ELEMENT ("initInCustomizeToolbarDialog"). checked = mode && (mode & CB_MODE_ENABLE_INIT_IN_CTDIALOG) || false;
 		ELEMENT ("disableDefaultKeyBehavior"). checked = mode && (mode & CB_MODE_DISABLE_DEFAULT_KEY_BEHAVIOR) || false;
 		if (this. param. newButton)
 			document. title = this. cbService. getLocaleString ("AddButtonEditorDialogTitle");
@@ -215,8 +217,7 @@ Editor. prototype =
 			if (field)
 				this. param [v] = field. value;
 		}
-		this. param ["mode"] = ELEMENT ("initInCustomizeToolbarDialog"). checked? CB_MODE_ENABLE_INIT_IN_CTDIALOG: 0;
-		this. param ["mode"] |= ELEMENT ("disableDefaultKeyBehavior"). checked? CB_MODE_DISABLE_DEFAULT_KEY_BEHAVIOR: 0;
+		this. param ["mode"] = ELEMENT ("disableDefaultKeyBehavior"). checked? CB_MODE_DISABLE_DEFAULT_KEY_BEHAVIOR: 0;
 	    	this. notificationSender = true;
 		this. cbService. installButton (this. param);
 	    	this. notificationSender = false;
@@ -246,7 +247,8 @@ Editor. prototype =
 	selectImage: function ()
 	{
 		var fp = COMPONENT (FILE_PICKER);
-		fp. init (window, "Select an image", 0);
+	    	var fpdt = this. cbService. getLocaleString ("editorImageFilePickerDialogTitle");
+		fp. init (window, fpdt, 0);
 		fp. appendFilters (fp. filterImages);
 		var res = fp. show ();
 		if (res == fp. returnOK)
@@ -415,7 +417,7 @@ Editor. prototype =
 		    return (res == RES_DONT_SAVE);
 		}
 	    }
-		
+
 	    return this. canClose;
 	},
 

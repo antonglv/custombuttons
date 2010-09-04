@@ -18,19 +18,12 @@
 
     <vbox>
         <groupbox flex="1">
-            <checkbox id="modebit0" cbblocks="modebit3"
-					  label="&custombuttons.prefs.use_xml_button_format;"/>
-			<hbox id="oldformatselector">
-				<spacer width="20"/>
-				<checkbox id="modebit3" label="&custombuttons.prefs.use_cb2_button_format;"/>
-			</hbox>
             <checkbox id="modebit1" label="&custombuttons.prefs.show_apply_button;"/>
 	    <checkbox id="modebit5" label="&custombuttons.prefs.disable_init;"/>
-            <checkbox id="modebit2" label="&custombuttons.prefs.disable_init_in_customize_toolbar;"/>
             <checkbox id="cbEnableCBProtocol"
             label="&custombuttons.prefs.enable_custombutton_protocol;"
             hidden="true"/>
-	    <checkbox id="modebit6" label="Save size and position of editor windows separately for each custom button"/>
+	    <checkbox id="modebit6" label="&custombuttons.prefs.editor_save_size_and_position;"/>
         </groupbox>
   </vbox>
 

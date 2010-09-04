@@ -152,7 +152,7 @@ custombuttons.getCbContextObj = function ( oBtn ) //{{{
 {
  /**  Object mObj
 	Author:  SCClockDr
-	
+
 	Scope:    Private - Each instance of this object is unique.
 	Global - It's properties and methods are available
 	within the button's namedspace.
@@ -278,7 +278,7 @@ custombuttons.getCbContextObj = function ( oBtn ) //{{{
 
   // Methods
   /**  init(   )
-		
+
 		Scope:   global
 		Args:
 		Returns: Nothing
@@ -301,7 +301,7 @@ custombuttons.getCbContextObj = function ( oBtn ) //{{{
    ct.remItem();
   }, //}}} End Method init( )
   /**  setSub(  )
-		
+
 		Scope:   global
 		Args:
 		Returns: Nothing
@@ -314,7 +314,7 @@ custombuttons.getCbContextObj = function ( oBtn ) //{{{
    this. mCtxtSub = true;
   }, //}}} End Method setSub( )
   /**  setPri(  )
-		
+
 		Scope:   global
 		Args:
 		Returns: Nothing
@@ -327,7 +327,7 @@ custombuttons.getCbContextObj = function ( oBtn ) //{{{
    this. mCtxtSub = false;
   }, //}}} End Method setPri( )
   /**  getItem(  )
-		
+
 		Scope:   global
 		Args:
 		Returns: oItem
@@ -378,7 +378,7 @@ custombuttons.getCbContextObj = function ( oBtn ) //{{{
    return oNewItem;
   },
   /**  insertBefore( oMenuItem )
-		
+
 		Scope:   global
 		Args:    oNew - Data Object
 		oChildNode - Node to insert before
@@ -423,7 +423,7 @@ custombuttons.getCbContextObj = function ( oBtn ) //{{{
   }, //}}} End Method insertAfter( oNew, oChildNode )
 
   /**  addItem( oMenuItem )
-		
+
 		Scope:   global
 		Args:    oNew - Data Object
 		Returns: sRet - ItemId
@@ -444,7 +444,7 @@ custombuttons.getCbContextObj = function ( oBtn ) //{{{
   }, //}}} End Method addItem( oNew )
 
   /**  populate( oData, mItem )
-		
+
 		Scope:   private
 		Args:    oData -
 		mItem -
@@ -472,7 +472,7 @@ custombuttons.getCbContextObj = function ( oBtn ) //{{{
   },
 
   /**  getItemsById( id )
-		
+
 		Scope:   global
 		Args:    id -
 		Returns: aRet
@@ -493,7 +493,7 @@ custombuttons.getCbContextObj = function ( oBtn ) //{{{
   }, //}}} End Method getItemsById( id )
 
   /**  remItem( id )
-		
+
 		Scope:   private
 		Args:    id -
 		Returns: Nothing
@@ -581,7 +581,7 @@ custombuttons.gQuot = { //{{{
  savEvent: null, // save Event for handling doClick().
  // Methods
  /**  mHandler( evt, cButton )
-	
+
 	Scope:   private
 	Args:    evt -  Mouse click event used to direct code
 	execution based on the button clicked and
@@ -621,7 +621,7 @@ custombuttons.gQuot = { //{{{
  /**
 	 * Sets timer
 	 * @author Anton
-	 * 
+	 *
 	 */
  setTimer: function ()
  {
@@ -716,7 +716,7 @@ custombuttons.gQuot = { //{{{
  },
 
  /**  gShowPopup( node )
-	
+
 	Scope:   public
 	Args:    node - Button in focus
 	Returns: Nothing
@@ -829,7 +829,10 @@ custombuttons. ButtonDim = function (oEvent, opacity)
 };
 custombuttons. getLocalString = function (oBtn, strId)
 {
- var ln = this. getPrefs ("general.useragent.locale"). replace ("-", "_");
+ var psname = "general.";
+ psname += "useragent.";
+ psname += "locale";
+ var ln = this. getPrefs (psname). replace ("-", "_");
  var props = oBtn. properties;
  if (!props)
   return strId;
