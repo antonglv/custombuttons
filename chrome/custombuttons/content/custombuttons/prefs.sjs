@@ -55,9 +55,6 @@ Prefs. prototype =
 	{
 		var mode = this. cbs. mode;
 		this. handleCheckboxes (mode);
-		var oFormatSelector = ELEMENT ("modebit3");
-		oFormatSelector. hidden = mode & CB_MODE_USE_XML_BUTTON_FORMAT;
-		window. addEventListener ("command", this, false);
 		this. sizeWindowToContent (true);
 	},
 
@@ -73,28 +70,6 @@ Prefs. prototype =
 	{
 		window. removeEventListener ("command", this, false);
 		return true;
-	},
-
-	onCommand: function (oEvent)
-	{
-		var oTarget = oEvent. target;
-		if (oTarget. nodeName == "checkbox")
-		{
-			if (oTarget. hasAttribute ("cbblocks"))
-			{
-				var sBlockedElementId = oTarget. getAttribute ("cbblocks");
-				var oBlockedElement = ELEMENT (sBlockedElementId);
-				oBlockedElement. hidden = oTarget. checked;
-				this. sizeWindowToContent (false);
-			}
-		}
-	},
-
-	// EventListener interface
-	handleEvent: function (oEvent)
-	{
-		if (oEvent. type == "command")
-		    this. onCommand (oEvent);
 	}
 };
 
@@ -153,5 +128,3 @@ TBPrefs. prototype =
 EXTENDS (TBPrefs, Prefs);
 
 var cbPrefs = new custombuttonsFactory (). Prefs;
-
-//window. addEventListener ("load", cbPrefs, false);
