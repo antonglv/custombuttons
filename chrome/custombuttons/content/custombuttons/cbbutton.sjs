@@ -177,35 +177,6 @@ var custombutton =
 		return 0;
 	},
 
-	buttonGetOldFormatURI: function(oBtn)
-	{
-		var uri = "custombutton://" + escape
-		(
-			[
-				oBtn. name,
-				oBtn. image,
-				oBtn. cbCommand,
-				oBtn. cbInitCode
-			]. join ("][")
-		);
-		return uri;
-	},
-
-	midFormatURI: function(oBtn)
-	{
-		var uri = "custombutton://" + escape
-		(
-			[
-				oBtn. name,
-				oBtn. image,
-				oBtn. cbCommand,
-				oBtn. cbInitCode,
-				oBtn. Help
-			]. join ("]▲[")
-		);
-		return uri;
-	},
-
 	buttonSetText: function(doc, nodeName, text, make_CDATASection)
 	{
 		var node = doc. getElementsByTagName (nodeName) [0], cds;
@@ -264,13 +235,7 @@ var custombutton =
 
 	buttonGetURI: function (oBtn)
 	{
-		var mode = this. cbService. mode;
-		if (mode & CB_MODE_USE_XML_BUTTON_FORMAT)
-			return this. xmlFormatURI (oBtn);
-		else if (mode & CB_MODE_USE_CB2_OLD_BUTTON_FORMAT)
-			return this. midFormatURI (oBtn);
-		else
-			return this. buttonGetOldFormatURI (oBtn);
+		return this. xmlFormatURI (oBtn);
 	},
 
     buildExecutionContext: function (oButton, uri, executionContext)

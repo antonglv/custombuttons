@@ -9,8 +9,6 @@
 <!ENTITY custombuttons.buttonPopup.subCall "Eigene Schaltfläche">
 
 <!ENTITY custombuttons_prefsDialog.title "Custom Buttons: Einstellungen">
-<!ENTITY custombuttons.prefs.use_xml_button_format "Neues Schaltflächenformat benutzen">
-<!ENTITY custombuttons.prefs.use_cb2_button_format "Altes Custom Buttons² Format benutzen">
 <!ENTITY custombuttons.prefs.show_apply_button "Zeige &quot;Übernehmen&quot; im Schaltflächen-Codeeditor">
 <!ENTITY custombuttons.prefs.disable_init "Schaltflächen-Initialisierung abschalten (wirkt sich nur auf neue Fenster aus)">
 <!ENTITY custombuttons.prefs.disable_init_in_customize_toolbar "Initialisierung im &quot;Symbolleiste anpassen&quot; Dialog verhindern">
