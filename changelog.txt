@@ -1,5 +1,6 @@
 Changelog
 0.0.5.2
+- Removed: Buttons initialization in "Customize Toolbar dialog"
 - Removed: Export buttons into old custombutton:// URI formats
 + Added: Firefox 4.0b6pre compatibility
 + Added: Seamonkey 2.1b1pre compatibility

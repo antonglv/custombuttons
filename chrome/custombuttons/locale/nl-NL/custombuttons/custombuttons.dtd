@@ -11,7 +11,6 @@
 <!ENTITY custombuttons_prefsDialog.title "Custom Buttons: instellingen">
 <!ENTITY custombuttons.prefs.show_apply_button "Knop “Opslaan” in code-editor tonen">
 <!ENTITY custombuttons.prefs.disable_init "Initialisatie van knoppen uitschakelen (Wijzigingen zijn alleen van invloed op nieuwe vensters)">
-<!ENTITY custombuttons.prefs.disable_init_in_customize_toolbar "Initialisatie in dialoogvenster “Werkbalk aanpassen” uitschakelen">
 <!ENTITY custombuttons.prefs.enable_custombutton_protocol "Installatieknoppen in e-mailberichten inschakelen">
 <!ENTITY custombuttons.prefs.editor_save_size_and_position "Save size and position of editor windows separately for each custom button">
 

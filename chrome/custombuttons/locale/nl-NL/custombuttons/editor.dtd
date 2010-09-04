@@ -28,8 +28,6 @@
 <!ENTITY editor.buttonSettings.hotKeyGroupbox "Sneltoets">
 <!ENTITY editor.buttonSettings.accelkey "Sneltoets:">
 <!ENTITY editor.buttonSettings.disableDefaultKeyBehavior "Standaardactie voor opgegeven sneltoets uitschakelen">
-<!ENTITY editor.buttonSettings.initializationGroupbox "Initialisatie">
-<!ENTITY editor.buttonSettings.initInCustomizeToolbarDialog "Initialisatie in dialoogvenster “Werkbalk aanpassen” inschakelen">
 <!ENTITY editor.buttonSettings.addMoreKeys "Meer…">
 
 <!ENTITY cbeditor.quickfindtextbox "Snel zoeken: ">

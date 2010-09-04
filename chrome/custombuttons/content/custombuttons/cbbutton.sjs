@@ -48,9 +48,7 @@ var custombutton =
 				var mode = this. cbService. mode;
 				if (mode & CB_MODE_DISABLE_INITIALIZATION) // disable initialization
 				    return;
-				if (oBtn. parentNode && (oBtn. parentNode. nodeName != "toolbar") &&
-				    ((mode & CB_MODE_DISABLE_INIT_IN_CTDIALOG_GLOBAL) ||
-				    !(oBtn. cbMode & CB_MODE_ENABLE_INIT_IN_CTDIALOG)))
+				if (oBtn. parentNode && (oBtn. parentNode. nodeName != "toolbar"))
 					return;
 				oBtn. cbInitCode = oBtn. getAttribute ("cb-init");
 				setTimeout (function () { oBtn. init (); }, 0);

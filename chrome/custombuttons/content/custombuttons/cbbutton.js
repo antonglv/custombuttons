@@ -48,9 +48,7 @@ var custombutton =
     var mode = this. cbService. mode;
     if (mode & 32) // disable initialization
         return;
-    if (oBtn. parentNode && (oBtn. parentNode. nodeName != "toolbar") &&
-        ((mode & 4) ||
-        !(oBtn. cbMode & 1)))
+    if (oBtn. parentNode && (oBtn. parentNode. nodeName != "toolbar"))
      return;
     oBtn. cbInitCode = oBtn. getAttribute ("cb-init");
     setTimeout (function () { oBtn. init (); }, 0);

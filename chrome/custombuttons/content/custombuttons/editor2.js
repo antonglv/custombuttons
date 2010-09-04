@@ -157,7 +157,6 @@ Editor. prototype =
   document. getElementById ("code"). editor. transactionManager. clear ();
   document. getElementById ("initCode"). editor. transactionManager. clear ();
   var mode = this. param. mode;
-  document. getElementById ("initInCustomizeToolbarDialog"). checked = mode && (mode & 1) || false;
   document. getElementById ("disableDefaultKeyBehavior"). checked = mode && (mode & 2) || false;
   if (this. param. newButton)
    document. title = this. cbService. getLocaleString ("AddButtonEditorDialogTitle");
@@ -202,8 +201,7 @@ Editor. prototype =
    if (field)
     this. param [v] = field. value;
   }
-  this. param ["mode"] = document. getElementById ("initInCustomizeToolbarDialog"). checked? 1: 0;
-  this. param ["mode"] |= document. getElementById ("disableDefaultKeyBehavior"). checked? 2: 0;
+  this. param ["mode"] = document. getElementById ("disableDefaultKeyBehavior"). checked? 2: 0;
       this. notificationSender = true;
   this. cbService. installButton (this. param);
       this. notificationSender = false;

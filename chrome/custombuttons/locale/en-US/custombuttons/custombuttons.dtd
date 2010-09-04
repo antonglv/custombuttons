@@ -11,7 +11,6 @@
 <!ENTITY custombuttons_prefsDialog.title "Custom Buttons: settings">
 <!ENTITY custombuttons.prefs.show_apply_button "Show &quot;Save&quot; button in code editor">
 <!ENTITY custombuttons.prefs.disable_init "Disable buttons initialization (use in case of problems with buttons, changes affect only new windows)">
-<!ENTITY custombuttons.prefs.disable_init_in_customize_toolbar "Disable initialization in &quot;Customize Toolbar&quot; dialog">
 <!ENTITY custombuttons.prefs.enable_custombutton_protocol "Enable install buttons from mail messages">
 <!ENTITY custombuttons.prefs.editor_save_size_and_position "Save size and position of editor windows separately for each custom button">
 
