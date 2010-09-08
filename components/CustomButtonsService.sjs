@@ -1074,6 +1074,37 @@ cbCustomButtonsService. prototype =
 
 	getWindowId: function (documentURI)
 	{
+var cs = SERVICE (CONSOLE);
+cs. logStringMessage ("getWindowId (" + documentURI + ")");
+	    var info = SERVICE (XUL_APP_INFO);
+	    switch (documentURI)
+	    {
+		case "chrome://browser/content/browser.xul":
+		    return "Firefox";
+		case "chrome://navigator/content/navigator.xul":
+		    return "SeaMonkey";
+		case "chrome://messenger/content/messenger.xul":
+		    if (info. name == "SeaMonkey")
+			return "SeaMonkeyMail";
+		    else
+			return "Thunderbird";
+		case "chrome://messenger/content/messageWindow.xul":
+		    if (info. name == "SeaMonkey")
+			return "SeaMonkeyMailWindow";
+		    else
+			return "ThunderbirdMailWindow";
+		case "chrome://messenger/content/messengercompose/messengercompose.xul":
+		    if (info. name == "SeaMonkey")
+			return "SeaMonkeyComposeWindow";
+		    else
+			return "ThunderbirdComposeWindow";
+		case "chrome://sunbird/content/calendar.xul":
+		case "chrome://calendar/content/calendar.xul":
+		    return "Sunbird";
+		case "chrome://editor/content/editor.xul":
+		    return "KompoZer";
+	    }
+/*
 	    var info = SERVICE (XUL_APP_INFO);
 	    var windowId = info. name;
 	    if (info. name == "Thunderbird")
@@ -1093,6 +1124,7 @@ cbCustomButtonsService. prototype =
 		windowId += "ComposeWindow";
 	    }
 	    return windowId;
+*/
 	},
 
 	makeButtonLink: function (documentURI, action, buttonId)

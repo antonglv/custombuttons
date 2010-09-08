@@ -1074,25 +1074,57 @@ cbCustomButtonsService. prototype =
 
  getWindowId: function (documentURI)
  {
+var cs = Components. classes ["@mozilla.org/consoleservice;1"]. getService (Components. interfaces. nsIConsoleService);
+cs. logStringMessage ("getWindowId (" + documentURI + ")");
      var info = Components. classes ["@mozilla.org/xre/app-info;1"]. getService (Components. interfaces. nsIXULAppInfo);
-     var windowId = info. name;
-     if (info. name == "Thunderbird")
+     switch (documentURI)
      {
-  if (documentURI == "chrome://messenger/content/messageWindow.xul")
-      windowId += "MailWindow";
-  else if (documentURI == "chrome://messenger/content/messengercompose/messengercompose.xul")
-  windowId += "ComposeWindow";
+  case "chrome://browser/content/browser.xul":
+      return "Firefox";
+  case "chrome://navigator/content/navigator.xul":
+      return "SeaMonkey";
+  case "chrome://messenger/content/messenger.xul":
+      if (info. name == "SeaMonkey")
+   return "SeaMonkeyMail";
+      else
+   return "Thunderbird";
+  case "chrome://messenger/content/messageWindow.xul":
+      if (info. name == "SeaMonkey")
+   return "SeaMonkeyMailWindow";
+      else
+   return "ThunderbirdMailWindow";
+  case "chrome://messenger/content/messengercompose/messengercompose.xul":
+      if (info. name == "SeaMonkey")
+   return "SeaMonkeyComposeWindow";
+      else
+   return "ThunderbirdComposeWindow";
+  case "chrome://sunbird/content/calendar.xul":
+  case "chrome://calendar/content/calendar.xul":
+      return "Sunbird";
+  case "chrome://editor/content/editor.xul":
+      return "KompoZer";
      }
-     else if (info. name == "SeaMonkey")
-     {
-  if (documentURI == "chrome://messenger/content/messenger.xul")
-      windowId += "Mail";
-  else if (documentURI == "chrome://messenger/content/messageWindow.xul")
-  windowId += "MailWindow";
-  else if (documentURI == "chrome://messenger/content/messengercompose/messengercompose.xul")
-  windowId += "ComposeWindow";
-     }
-     return windowId;
+/*
+	    var info = SERVICE (XUL_APP_INFO);
+	    var windowId = info. name;
+	    if (info. name == "Thunderbird")
+	    {
+		if (documentURI == "chrome://messenger/content/messageWindow.xul")
+		    windowId += "MailWindow";
+		else if (documentURI == "chrome://messenger/content/messengercompose/messengercompose.xul")
+		windowId += "ComposeWindow";
+	    }
+	    else if (info. name == "SeaMonkey")
+	    {
+		if (documentURI == "chrome://messenger/content/messenger.xul")
+		    windowId += "Mail";
+		else if (documentURI == "chrome://messenger/content/messageWindow.xul")
+		windowId += "MailWindow";
+		else if (documentURI == "chrome://messenger/content/messengercompose/messengercompose.xul")
+		windowId += "ComposeWindow";
+	    }
+	    return windowId;
+*/
  },
 
  makeButtonLink: function (documentURI, action, buttonId)

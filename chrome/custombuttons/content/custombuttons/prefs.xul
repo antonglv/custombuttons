@@ -13,7 +13,6 @@
         title="&custombuttons_prefsDialog.title;"
 		persist="screenX screenY">
 
-	<script type="application/x-javascript" src="chrome://custombuttons/content/cbfactory.js"/>
     <script type="application/x-javascript" src="chrome://custombuttons/content/prefs.js"/>
 
     <vbox>
