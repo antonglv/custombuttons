@@ -1074,8 +1074,6 @@ cbCustomButtonsService. prototype =
 
  getWindowId: function (documentURI)
  {
-var cs = Components. classes ["@mozilla.org/consoleservice;1"]. getService (Components. interfaces. nsIConsoleService);
-cs. logStringMessage ("getWindowId (" + documentURI + ")");
      var info = Components. classes ["@mozilla.org/xre/app-info;1"]. getService (Components. interfaces. nsIXULAppInfo);
      switch (documentURI)
      {
@@ -1104,27 +1102,7 @@ cs. logStringMessage ("getWindowId (" + documentURI + ")");
   case "chrome://editor/content/editor.xul":
       return "KompoZer";
      }
-/*
-	    var info = SERVICE (XUL_APP_INFO);
-	    var windowId = info. name;
-	    if (info. name == "Thunderbird")
-	    {
-		if (documentURI == "chrome://messenger/content/messageWindow.xul")
-		    windowId += "MailWindow";
-		else if (documentURI == "chrome://messenger/content/messengercompose/messengercompose.xul")
-		windowId += "ComposeWindow";
-	    }
-	    else if (info. name == "SeaMonkey")
-	    {
-		if (documentURI == "chrome://messenger/content/messenger.xul")
-		    windowId += "Mail";
-		else if (documentURI == "chrome://messenger/content/messageWindow.xul")
-		windowId += "MailWindow";
-		else if (documentURI == "chrome://messenger/content/messengercompose/messengercompose.xul")
-		windowId += "ComposeWindow";
-	    }
-	    return windowId;
-*/
+     return "Firefox";
  },
 
  makeButtonLink: function (documentURI, action, buttonId)
