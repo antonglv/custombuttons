@@ -127,4 +127,9 @@ TBPrefs. prototype =
 };
 EXTENDS (TBPrefs, Prefs);
 
-var cbPrefs = new custombuttonsFactory (). Prefs;
+var info = SERVICE (XUL_APP_INFO);
+var cbPrefs;
+if (["Thunderbird", "Seamonkey"]. indexOf (info. name) != -1)
+    cbPrefs = new TBPrefs ();
+else
+    cbPrefs = new Prefs ();

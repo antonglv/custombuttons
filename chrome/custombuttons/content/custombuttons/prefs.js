@@ -127,4 +127,9 @@ TBPrefs. prototype =
 };
 TBPrefs. prototype. __proto__ = Prefs. prototype; TBPrefs. prototype. __super = Prefs;
 
-var cbPrefs = new custombuttonsFactory (). Prefs;
+var info = Components. classes ["@mozilla.org/xre/app-info;1"]. getService (Components. interfaces. nsIXULAppInfo);
+var cbPrefs;
+if (["Thunderbird", "Seamonkey"]. indexOf (info. name) != -1)
+    cbPrefs = new TBPrefs ();
+else
+    cbPrefs = new Prefs ();
