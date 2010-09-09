@@ -84,6 +84,10 @@ function custombuttonsFactory ()
   this. cbService. editButton (window, link, param);
      };
      custombuttons. makeBookmark = function () {};
+     if (info. name == "SeaMonkey")
+  custombuttons. shouldAddToPalette = false;
+     if ((info. name == "Thunderbird") && (oVC. compare ("3.0", info. version) <= 0))
+  custombuttons. shouldAddToPalette = false;
      break;
  case "chrome://sunbird/content/calendar.xul": // Sunbird
  case "chrome://calendar/content/calendar.xul": // Sunbird
@@ -98,6 +102,8 @@ function custombuttonsFactory ()
   }
      );
      custombuttons. makeBookmark = function () {};
+     if (oVC. compare ("1.0b2pre", info. version) <= 0)
+  custombuttons. shouldAddToPalette = false;
      break;
  case "chrome://editor/content/editor.xul": // KompoZer
      custombuttons. toolbarpaletteName = "NvuToolbarPalette";
