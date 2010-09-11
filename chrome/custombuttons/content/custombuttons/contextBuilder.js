@@ -22,16 +22,19 @@ if ("custombuttonsUtils" in window)
  * Logs an message to Error Console
  * @since version 0.0.5.1
  * @param {String} msg A message to log to
+ * @since version 0.0.5.2
+ * @returns {String} the argument passed in
  */
 function LOG (msg)
 {
     var oButton = _doc. getElementById (_id);
     if (!oButton)
-	return;
+	return msg;
     var name = oButton. name;
     var head = "[Custom Buttons: id: " + _id + "@" + _phase + ", line: " + Components. stack. caller. lineNumber + ", name: " + name + "]";
     var cs = Cc ["@mozilla.org/consoleservice;1"]. getService (Ci. nsIConsoleService);
     cs. logStringMessage (head + (msg? ("\n" + msg): ""));
+    return msg;
 }
 
 /**
