@@ -162,7 +162,12 @@ function allowedSource (src)
     {
  var scheme = ios. extractScheme (src);
  var pfs = ios. getProtocolFlags (scheme);
- if (pfs & Components. interfaces. nsIProtocolHandler. URI_DOES_NOT_RETURN_DATA)
+ if (Components. interfaces. nsIProtocolHandler. URI_DOES_NOT_RETURN_DATA) // Firefox 3
+ {
+     if (pfs & Components. interfaces. nsIProtocolHandler. URI_DOES_NOT_RETURN_DATA) // Firefox 3
+  res = false;
+ }
+ else if (["http:", "file:", "data:", "resource:", "chrome:"]. indexOf (scheme) == -1) // Firefox 1.5, 2.0
      res = false;
     }
     catch (e)
