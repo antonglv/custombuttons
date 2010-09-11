@@ -26,7 +26,7 @@
 		<em:translator>fang5566: Chinese (Simplified) localization</em:translator>
 		<em:translator>peguca: Portuguese (Brazilian) localization</em:translator>
 		<em:translator>wladow: Slovak localization</em:translator>
-		<em:homepageURL>http://xsms.nm.ru/custombuttons/en/</em:homepageURL>
+		<em:homepageURL>http://custombuttons.mozdev.org/</em:homepageURL>
 		<em:optionsURL>chrome://custombuttons/content/prefs.xul</em:optionsURL>
 		<em:iconURL>chrome://custombuttons/skin/cbicon.png</em:iconURL>
 		<em:updateURL>http://custombuttons.mozdev.org/updateinfo/devupdate.rdf</em:updateURL>
