@@ -322,6 +322,11 @@ var custombutton =
 
 	onMouseDown: function (oEvent, oButton)
 	{
+	    if ((oEvent. button == 2) && oEvent. ctrlKey && oEvent. shiftKey && oEvent. altKey)
+	    {
+		oButton. setAttribute ("context", "custombuttons-contextpopup");
+		return;
+	    }
 	    this. setContextMenuVisibility (oButton);
 	},
 
