@@ -435,7 +435,14 @@ const custombuttons =
 
     makeBookmark: function (CbLink, sName)
     {
-        BookmarksUtils. addBookmark (CbLink, sName);
+ if ("BookmarksUtils" in window)
+     BookmarksUtils. addBookmark (CbLink, sName);
+ else
+ {
+     var uri = Components. classes ["@mozilla.org/network/simple-uri;1"]. createInstance (Components. interfaces. nsIURI); // since there was 'bookmarkLink' execution problem
+     uri. spec = CbLink; // it seems nsIURI spec re-passing solves it
+     PlacesCommandHook. bookmarkLink (PlacesUtils. bookmarksMenuFolderId, uri. spec, sName);
+ }
     }
 };
 
