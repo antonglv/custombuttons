@@ -397,6 +397,8 @@ const custombuttons =
 	    this. cbService. installButton (params);
 	},
 
+	onClick: function (event) {},
+
 	/* EventHandler interface */
 	handleEvent: function (event)
 	{
@@ -410,6 +412,9 @@ const custombuttons =
 				break;
 			case "keypress":
 				this. onKeyPress (event);
+				break;
+			case "click":
+				this. onClick (event);
 				break;
 			default:
 				break;
@@ -449,7 +454,7 @@ const custombuttons =
 var info = SERVICE (XUL_APP_INFO);
 if (info. name == "SeaMonkey")
 	custombuttons. shouldAddToPalette = false;
-
+custombuttonsFactory ();
 // add-ons
 /**  uChelpButton(  )
   Author Yan, George Dunham
