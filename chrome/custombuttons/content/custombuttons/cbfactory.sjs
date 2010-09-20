@@ -30,6 +30,36 @@ function custombuttonsFactory ()
 	    break;
 	case "chrome://messenger/content/messenger.xul": // Seamonkey, Thunderbird
 	case "chrome://messenger/content/messageWindow.xul": // Seamonkey, Thunderbird
+	    window. addEventListener ("click", custombuttons, true);
+	    custombuttons. onClick = function (event)
+	    {
+		var href;
+		var target = event. target;
+		if ((target instanceof HTMLAnchorElement) ||
+		    (target instanceof HTMLAreaElement) ||
+		    (target instanceof HTMLLinkElement))
+		{
+		    if (target. hasAttribute ("href"))
+			href = target. href;
+		}
+		else
+		{
+		    var linkNode = event. originalTarget;
+		    while (linkNode && !(linkNode instanceof HTMLAnchorElement))
+			linkNode = linkNode. parentNode;
+		    if (linkNode)
+			href = linkNode. href;
+		}
+		if (href && (href. indexOf ("custombutton://") == 0))
+		{
+		    var mode = this. cbService. mode;
+		    if (!(mode & CB_MODE_INSTALL_BUTTONS_FROM_EMAIL))
+			return;
+		    event. preventDefault ();
+		    event. stopPropagation ();
+		    this. cbService. installWebButton (null, href, true);
+		}
+	    };
 	case "chrome://messenger/content/messengercompose.xul": // Seamonkey, Thunderbird
 	    custombuttons. toolbarpaletteName = "MailToolbarPalette";
 	    if (document. documentURI == "chrome://messenger/content/messengercompose.xul")
@@ -38,14 +68,14 @@ function custombuttonsFactory ()
 	    {
 		return function ()
 		{
-		    fn ();
+		    fn. apply (custombuttons, []);
 		    var oBookmarkButtonMenuitem = ELEMENT ("custombuttons-contextpopup-bookmarkButton");
 		    oBookmarkButtonMenuitem. parentNode. removeChild (oBookmarkButtonMenuitem);
 		    oBookmarkButtonMenuitem = ELEMENT ("custombuttons-contextpopup-bookmarkButton-sub");
 		    oBookmarkButtonMenuitem. parentNode. removeChild (oBookmarkButtonMenuitem);
 		};
 	    }) (custombuttons. init);
-	    custombuttons. __defineGetter
+	    custombuttons. __defineGetter__
 	    (
 		"gToolbox",
 		function ()
@@ -93,7 +123,7 @@ function custombuttonsFactory ()
 	case "chrome://calendar/content/calendar.xul": // Sunbird
 	    custombuttons. toolbarpaletteName = "calendarToolbarPalette";
 	    custombuttons. shouldAddToPalette = true;
-	    custombuttons. __defineGetter
+	    custombuttons. __defineGetter__
 	    (
 		"gToolbox",
 		function ()
@@ -108,7 +138,7 @@ function custombuttonsFactory ()
 	case "chrome://editor/content/editor.xul": // KompoZer
 	    custombuttons. toolbarpaletteName = "NvuToolbarPalette";
 	    custombuttons. shouldAddToPalette = true;
-	    custombuttons. __defineGetter
+	    custombuttons. __defineGetter__
 	    (
 		"gToolbox",
 		function ()
@@ -120,4 +150,3 @@ function custombuttonsFactory ()
 	    break;
     }
 }
-

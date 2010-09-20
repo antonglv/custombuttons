@@ -76,13 +76,11 @@ Prefs. prototype =
 function TBPrefs () {}
 TBPrefs. prototype =
 {
- pn: "network.protocol-handler.expose.custombutton",
-
  _checkbox: null,
  get checkbox ()
  {
   if (!this. _checkbox)
-   this. _checkbox = document. getElementById ("cbEnableCBProtocol");
+   this. _checkbox = document. getElementById ("modebit7");
   return this. _checkbox;
  },
 
@@ -96,32 +94,7 @@ TBPrefs. prototype =
  onLoad: function ()
     {
   this. __super. prototype. onLoad. apply (this, []);
-  var state = this. ps. prefHasUserValue (this. pn) &&
-     this. ps. getBoolPref (this. pn);
-  this. checkbox. setAttribute ("checked", state);
   this. checkbox. removeAttribute ("hidden"); // checkbox visible only in Thunderbird
-  return true;
- },
-
- onAccept: function ()
- {
-  this. __super. prototype. onAccept. apply (this, []);
-  if (this. checkbox. hasAttribute ("checked") &&
-   (this. checkbox. getAttribute ("checked") == "true"))
-  {
-   this. ps. setBoolPref (this. pn, true);
-  }
-  else if (this. ps. prefHasUserValue (this. pn))
-  {
-   try
-   {
-    this. ps. deleteBranch (this. pn);
-   }
-   catch (e)
-   {
-    this. ps. setBoolPref (this. pn, false);
-   }
-  }
   return true;
  }
 };
@@ -129,7 +102,7 @@ TBPrefs. prototype. __proto__ = Prefs. prototype; TBPrefs. prototype. __super = 
 
 var info = Components. classes ["@mozilla.org/xre/app-info;1"]. getService (Components. interfaces. nsIXULAppInfo);
 var cbPrefs;
-if (["Thunderbird", "Seamonkey"]. indexOf (info. name) != -1)
+if (["Thunderbird", "SeaMonkey"]. indexOf (info. name) != -1)
     cbPrefs = new TBPrefs ();
 else
     cbPrefs = new Prefs ();

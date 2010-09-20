@@ -1207,6 +1207,25 @@ cbCustomButtonsService. prototype =
   }
   var uri = ios. newFileURI (dir);
   rph. setSubstitution ("custombuttons", uri);
+  // Here we check if the "network.protocol-handler.expose.custombutton" preference has user value
+  // It controls installation of custombuttons by means of custombutton:// links in Thunderbird 2.0
+  // If the preference exists and has 'true' value, we shall set corresponding mode bit and try to delete the preference
+  var ps = Components. classes ["@mozilla.org/preferences-service;1"]. getService (Components. interfaces. nsIPrefService);
+  ps = ps. QueryInterface (Components. interfaces. nsIPrefBranch);
+  var pn = "network.protocol-handler.expose.custombutton";
+  if (ps. prefHasUserValue (pn))
+  {
+      if (ps. getBoolPref (pn))
+   this. mode |= 128;
+      try
+      {
+   ps. deleteBranch (pn);
+      }
+      catch (e)
+      {
+   ps. setBoolPref (pn, false);
+      }
+  }
   break;
      case "profile-change-teardown":
   os. removeObserver (this, "profile-change-teardown");
