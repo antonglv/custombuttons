@@ -63,9 +63,6 @@ overlay chrome://editor/content/editor.xul chrome://custombuttons/content/Editor
 overlay chrome://editor/content/editor.xul chrome://custombuttons/content/tcbbutton.xul
 overlay chrome://editor/content/editor.xul resource://custombuttons/buttonsoverlay.xul
 
-##about dialog
-overlay chrome://mozapps/content/extensions/about.xul chrome://custombuttons/content/aboutOverlay.xul
-
 skin custombuttons classic/1.0 jar:chrome/custombuttons.jar!/skin/classic/
 
 style chrome://browser/content/browser.xul chrome://custombuttons/skin/custombuttons.css

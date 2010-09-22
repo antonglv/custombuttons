@@ -63,9 +63,6 @@ overlay	EDITOR/editor.xul		CBCONTENT/EditorOverlay.xul
 overlay	EDITOR/editor.xul		CBCONTENT/tcbbutton.xul
 overlay	EDITOR/editor.xul		CBOVERLAY/buttonsoverlay.xul
 
-##about dialog
-overlay	EXTENSIONS/about.xul	CBCONTENT/aboutOverlay.xul
-
 skin	custombuttons	classic/1.0	jar:chrome/custombuttons.jar!/skin/classic/
 
 style	BROWSER/browser.xul			CBSKIN/custombuttons.css

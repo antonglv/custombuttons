@@ -2,123 +2,151 @@
 
 function custombuttonsFactory ()
 {
-  var retobj = null;
-  var info = SERVICE (XUL_APP_INFO);
-  switch (info. name)
-  {
-    case "Firefox": // Firefox
-        var oVC = COMPONENT (VERSION_COMPARATOR);
-        if (oVC. compare ("3.0a1", info. version) <= 0)
-      	{
-	    if (oVC. compare ("3.1b3", info. version) <= 0)
-		retobj = this. CustombuttonsSTFactory;
-	    else
-		retobj = this. CustombuttonsMFFactory;
-	}
-      	else
-            retobj = this. CustombuttonsFactory;
-        break;
-    case "Browser": // strange name for Flock
-		retobj = this. CustombuttonsFactory;
-		break;
-	case "SeaMonkey":
-		switch (document. documentURI)
+    var info = SERVICE (XUL_APP_INFO);
+    var oVC = COMPONENT (VERSION_COMPARATOR);
+    switch (document. documentURI)
+    {
+	case "chrome://browser/content/browser.xul": // Firefox, Flock
+	    if (oVC. compare ("3.0a1", info. version) <= 0)
+	    {
+		custombuttons. makeBookmark = function (CbLink, sName)
 		{
-			case "chrome://navigator/content/navigator.xul":
-				retobj = this. CustombuttonsSTFactory;
-				break;
-			case "chrome://messenger/content/messenger.xul":
-				retobj = this. CustombuttonsTBFactory;
-				break;
-			case "chrome://messenger/content/messageWindow.xul":
-				retobj = this. CustombuttonsTBMWFactory;
-				break;
-			case "chrome://messenger/content/messengercompose/messengercompose.xul":
-				retobj = this. CustombuttonsTBMCFactory;
-				break;
-			default:
-			    retobj = this. CustombuttonsSTFactory;
-			    break;
-		}
-		break;
-    case "Thunderbird": // Thunderbird
-		switch (document. documentURI)
+		    var uri = COMPONENT (SIMPLE_URI); // since there was 'bookmarkLink' execution problem
+		    uri. spec = CbLink;               // it seems nsIURI spec re-passing solves it
+		    PlacesCommandHook. bookmarkLink (PlacesUtils. bookmarksMenuFolderId, uri. spec, sName);
+		};
+		if (oVC. compare ("3.1b3", info. version) <= 0)
+		    custombuttons. shouldAddToPalette = false;
+	    }
+	    break;
+	case "chrome://navigator/content/navigator.xul": // Seamonkey
+	    custombuttons. makeBookmark = function (CbLink, sName)
+	    {
+		var uri = COMPONENT (SIMPLE_URI); // since there was 'bookmarkLink' execution problem
+		uri. spec = CbLink;               // it seems nsIURI spec re-passing solves it
+		PlacesCommandHook. bookmarkLink (PlacesUtils. bookmarksMenuFolderId, uri. spec, sName);
+	    };
+	    custombuttons. shouldAddToPalette = false;
+	    break;
+	case "chrome://messenger/content/messenger.xul": // Seamonkey, Thunderbird
+	case "chrome://messenger/content/messageWindow.xul": // Seamonkey, Thunderbird
+	    window. addEventListener ("click", custombuttons, true);
+	    custombuttons. onClick = function (event)
+	    {
+		var href;
+		var target = event. target;
+		if ((target instanceof HTMLAnchorElement) ||
+		    (target instanceof HTMLAreaElement) ||
+		    (target instanceof HTMLLinkElement))
 		{
-			case "chrome://messenger/content/messenger.xul":
-				retobj = this. CustombuttonsTBFactory;
-				break;
-			case "chrome://messenger/content/messageWindow.xul":
-				retobj = this. CustombuttonsTBMWFactory;
-				break;
-			case "chrome://messenger/content/messengercompose/messengercompose.xul":
-			default: // message compose window
-				retobj = this. CustombuttonsTBMCFactory;
+		    if (target. hasAttribute ("href"))
+			href = target. href;
 		}
-		break;
-    case "Sunbird":
-		retobj = this. CustombuttonsSBFactory;
-		break;
-	case "KompoZer":
-		retobj = this. CustombuttonsNVUFactory;
-		break;
-  }
-  return retobj;
+		else
+		{
+		    var linkNode = event. originalTarget;
+		    while (linkNode && !(linkNode instanceof HTMLAnchorElement))
+			linkNode = linkNode. parentNode;
+		    if (linkNode)
+			href = linkNode. href;
+		}
+		if (href && (href. indexOf ("custombutton://") == 0))
+		{
+		    var mode = this. cbService. mode;
+		    if (!(mode & CB_MODE_INSTALL_BUTTONS_FROM_EMAIL))
+			return;
+		    event. preventDefault ();
+		    event. stopPropagation ();
+		    this. cbService. installWebButton (null, href, true);
+		}
+	    };
+	case "chrome://messenger/content/messengercompose.xul": // Seamonkey, Thunderbird
+	    custombuttons. toolbarpaletteName = "MailToolbarPalette";
+	    if (document. documentURI == "chrome://messenger/content/messengercompose.xul")
+		custombuttons. toolbarpaletteName = "MsgComposeToolbarPalette";
+	    custombuttons. init = (function (fn)
+	    {
+		return function ()
+		{
+		    fn. apply (custombuttons, []);
+		    var oBookmarkButtonMenuitem = ELEMENT ("custombuttons-contextpopup-bookmarkButton");
+		    oBookmarkButtonMenuitem. parentNode. removeChild (oBookmarkButtonMenuitem);
+		    oBookmarkButtonMenuitem = ELEMENT ("custombuttons-contextpopup-bookmarkButton-sub");
+		    oBookmarkButtonMenuitem. parentNode. removeChild (oBookmarkButtonMenuitem);
+		};
+	    }) (custombuttons. init);
+	    custombuttons. __defineGetter__
+	    (
+		"gToolbox",
+		function ()
+		{
+		    return ELEMENT ("mail-toolbox") || // main window and message window
+			   ELEMENT ("compose-toolbox"); // compose message
+		}
+	    );
+	    custombuttons. openEditor = function (oButton)
+	    {
+		var mode = "";
+		var param;
+		if ("gCurrentMode" in window)
+		{
+			var mode = window ["gCurrentMode"];
+			var mb = ELEMENT ("modeBroadcaster");
+			mode = mode || (mb? mb. getAttribute ("mode"): "");
+			if (document. popupNode && (document. popupNode. nodeName == "toolbar"))
+			{
+				if (document. popupNode. id == "mode-toolbar")
+					mode = "mode";
+				else if (document. popupNode. id == "calendar-toolbar")
+					mode = "calendar";
+				else if (document. popupNode. id == "task-toolbar")
+					mode = "task";
+			}
+		}
+		if (mode)
+		{
+			param = {};
+			param ["attributes"] = {};
+			param. attributes ["mode"] = mode;
+			param. wrappedJSObject = param;
+		}
+		var link = this. makeButtonLink ("edit", oButton? oButton. id: "");
+		this. cbService. editButton (window, link, param);
+	    };
+	    custombuttons. makeBookmark = function () {};
+	    if (info. name == "SeaMonkey")
+		custombuttons. shouldAddToPalette = false;
+	    if ((info. name == "Thunderbird") && (oVC. compare ("3.0", info. version) <= 0))
+		custombuttons. shouldAddToPalette = false;
+	    break;
+	case "chrome://sunbird/content/calendar.xul": // Sunbird
+	case "chrome://calendar/content/calendar.xul": // Sunbird
+	    custombuttons. toolbarpaletteName = "calendarToolbarPalette";
+	    custombuttons. shouldAddToPalette = true;
+	    custombuttons. __defineGetter__
+	    (
+		"gToolbox",
+		function ()
+		{
+		    return ELEMENT ("calendar-toolbox"); // calendar
+		}
+	    );
+	    custombuttons. makeBookmark = function () {};
+	    if (oVC. compare ("1.0b2pre", info. version) <= 0)
+		custombuttons. shouldAddToPalette = false;
+	    break;
+	case "chrome://editor/content/editor.xul": // KompoZer
+	    custombuttons. toolbarpaletteName = "NvuToolbarPalette";
+	    custombuttons. shouldAddToPalette = true;
+	    custombuttons. __defineGetter__
+	    (
+		"gToolbox",
+		function ()
+		{
+		    return ELEMENT ("EditorToolbox"); // calendar
+		}
+	    );
+	    custombuttons. makeBookmark = function () {};
+	    break;
+    }
 }
-custombuttonsFactory. prototype =
-{
-	CustombuttonsFactory:
-	{
-		DEFINE_GETTER (Custombuttons, Custombuttons),
-		DEFINE_GETTER (Editor, Editor),
-		DEFINE_GETTER (Prefs, Prefs)
-	},
-
-	CustombuttonsTBFactory:
-	{
-		DEFINE_GETTER (Custombuttons, CustombuttonsTB),
-		DEFINE_GETTER (Editor, TBEditor),
-		DEFINE_GETTER (Prefs, TBPrefs)
-	},
-
-	CustombuttonsTBMWFactory:
-	{
-		DEFINE_GETTER (Custombuttons, CustombuttonsTBMW),
-		DEFINE_GETTER (Editor, TBEditor),
-		DEFINE_GETTER (Prefs, TBPrefs)
-	},
-
-	CustombuttonsTBMCFactory:
-	{
-		DEFINE_GETTER (Custombuttons, CustombuttonsTBMC),
-		DEFINE_GETTER (Editor, TBEditor),
-		DEFINE_GETTER (Prefs, TBPrefs)
-	},
-
-	CustombuttonsMFFactory:
-	{
-		DEFINE_GETTER (Custombuttons, CustombuttonsMF),
-		DEFINE_GETTER (Editor, Editor),
-		DEFINE_GETTER (Prefs, Prefs)
-	},
-
-	CustombuttonsSTFactory:
-	{
-		DEFINE_GETTER (Custombuttons, CustombuttonsST),
-		DEFINE_GETTER (Editor, Editor),
-		DEFINE_GETTER (Prefs, Prefs)
-	},
-
-	CustombuttonsSBFactory:
-	{
-		DEFINE_GETTER (Custombuttons, CustombuttonsSB),
-		DEFINE_GETTER (Editor, TBEditor),
-		DEFINE_GETTER (Prefs, Prefs)
-	},
-
-	CustombuttonsNVUFactory:
-	{
-		DEFINE_GETTER (Custombuttons, CustombuttonsNVU),
-		DEFINE_GETTER (Editor, TBEditor),
-		DEFINE_GETTER (Prefs, Prefs)
-	}
-};

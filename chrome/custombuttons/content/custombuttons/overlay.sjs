@@ -1,8 +1,7 @@
 #include <project.hjs>
 #include <prio.hjs>
 
-function Custombuttons () {}
-Custombuttons. prototype =
+const custombuttons =
 {
 	ps: SERVICE (PREF). getBranch ("custombuttons.button"),
 	buttonParameters: ["name", "image", "code", "initCode", "accelkey", "help"],
@@ -398,6 +397,8 @@ Custombuttons. prototype =
 	    this. cbService. installButton (params);
 	},
 
+	onClick: function (event) {},
+
 	/* EventHandler interface */
 	handleEvent: function (event)
 	{
@@ -411,6 +412,9 @@ Custombuttons. prototype =
 				break;
 			case "keypress":
 				this. onKeyPress (event);
+				break;
+			case "click":
+				this. onClick (event);
 				break;
 			default:
 				break;
@@ -436,189 +440,21 @@ Custombuttons. prototype =
 
     makeBookmark: function (CbLink, sName)
     {
-        BookmarksUtils. addBookmark (CbLink, sName);
+	if ("BookmarksUtils" in window)
+	    BookmarksUtils. addBookmark (CbLink, sName);
+	else
+	{
+	    var uri = COMPONENT (SIMPLE_URI); // since there was 'bookmarkLink' execution problem
+	    uri. spec = CbLink;               // it seems nsIURI spec re-passing solves it
+	    PlacesCommandHook. bookmarkLink (PlacesUtils. bookmarksMenuFolderId, uri. spec, sName);
+	}
     }
 };
 
-function CustombuttonsMF () {}
-CustombuttonsMF. prototype =
-{
-    makeBookmark: function (CbLink, sName)
-    {
-		var uri = COMPONENT (SIMPLE_URI); // since there was 'bookmarkLink' execution problem
-		uri. spec = CbLink;               // it seems nsIURI spec re-passing solves it
-		PlacesCommandHook. bookmarkLink (PlacesUtils. bookmarksMenuFolderId, uri. spec, sName);
-    }
-};
-EXTEND (CustombuttonsMF, Custombuttons);
-
-function CustombuttonsST () {}
-CustombuttonsST. prototype =
-{
-	shouldAddToPalette: false,
-
-    makeBookmark: function (CbLink, sName)
-    {
-		var uri = COMPONENT (SIMPLE_URI); // since there was 'bookmarkLink' execution problem
-		uri. spec = CbLink;               // it seems nsIURI spec re-passing solves it
-		PlacesCommandHook. bookmarkLink (PlacesUtils. bookmarksMenuFolderId, uri. spec, sName);
-    }
-};
-EXTEND (CustombuttonsST, Custombuttons);
-
-function CustombuttonsTB () {}
-CustombuttonsTB. prototype =
-{
-	toolbarpaletteName: "MailToolbarPalette",
-
-	checkLightning: function ()
-	{
-		var result = false;
-	    	try
-		{
-		    var rs = SERVICE (RDF);
-		    var lightningUUID = "{e2fda1a4-762b-4020-b5ad-a41df1933103}";
-		    var res = rs. GetResource ("urn:mozilla:item:" + lightningUUID);
-		    if (res instanceof CI. nsIRDFResource)
-		    {
-			var em = SERVICE (EXTENSION_MANAGER);
-			if (em. getInstallLocation (lightningUUID))
-			{
-			    var ds = em. datasource;
-			    var res2 = rs. GetResource ("http://www.mozilla.org/2004/em-rdf#isDisabled");
-			    var t = ds. GetTarget (res, res2, true);
-			    if (t instanceof CI. nsIRDFLiteral)
-				result = (t. Value != "true");
-			}
-		    }
-		} catch (e) {}
-		return result;
-	},
-
-	lightning: false,
-
-	init: function ()
-	{
-		SUPER (init, null);
-		var oBookmarkButtonMenuitem = ELEMENT ("custombuttons-contextpopup-bookmarkButton");
-		oBookmarkButtonMenuitem. parentNode. removeChild (oBookmarkButtonMenuitem);
-		oBookmarkButtonMenuitem = ELEMENT ("custombuttons-contextpopup-bookmarkButton-sub");
-		oBookmarkButtonMenuitem. parentNode. removeChild (oBookmarkButtonMenuitem);
-	    if (!CI. nsIExtensionManager)
-	    {
-		try
-		{
-		    var env = {};
-		    Components. utils ["import"] ("resource://gre/modules/AddonManager.jsm", env);
-		    env. AddonManager. getAddonByID
-		    (
-			lightningUUID,
-			(function (cbObj)
-			 {
-			     return function (addon)
-			     {
-				 if (addon)
-				     cbObj. lightning = true;
-			     };
-			 }
-			) (this)
-		    );
-		} catch (e) {}
-	    }
-	    else
-		this. lightning = this. checkLightning ();
-	},
-
-	get gToolbox ()
-	{
-		return ELEMENT ("mail-toolbox") || // main window and message window
-			   ELEMENT ("compose-toolbox"); // compose message
-	},
-
-	openEditor: function (oButton)
-	{
-		var mode = "";
-		var param;
-		if (this. lightning && window ["gCurrentMode"])
-		{
-			var mode = window ["gCurrentMode"];
-			var mb = ELEMENT ("modeBroadcaster");
-			mode = mode || (mb? mb. getAttribute ("mode"): "");
-			if (document. popupNode && (document. popupNode. nodeName == "toolbar"))
-			{
-				if (document. popupNode. id == "mode-toolbar")
-					mode = "mode";
-				else if (document. popupNode. id == "calendar-toolbar")
-					mode = "calendar";
-				else if (document. popupNode. id == "task-toolbar")
-					mode = "task";
-			}
-		}
-		if (mode)
-		{
-			param = {};
-			param ["attributes"] = {};
-			param. attributes ["mode"] = mode;
-			param. wrappedJSObject = param;
-		}
-		var link = this. makeButtonLink ("edit", oButton? oButton. id: "");
-		this. cbService. editButton (window, link, param);
-	},
-
-    makeBookmark: function (CbLink, sName) {}
-};
-EXTENDS (CustombuttonsTB, Custombuttons);
-
-function CustombuttonsTBMW () {}
-CustombuttonsTBMW. prototype =
-{
-	toolbarpaletteName: "MailToolbarPalette"
-};
-EXTEND (CustombuttonsTBMW, CustombuttonsTB);
-
-function CustombuttonsTBMC () {}
-CustombuttonsTBMC. prototype =
-{
-	toolbarpaletteName: "MsgComposeToolbarPalette"
-};
-EXTEND (CustombuttonsTBMC, CustombuttonsTB);
-
-function CustombuttonsSB () {}
-CustombuttonsSB. prototype =
-{
-	toolbarpaletteName: "calendarToolbarPalette",
-	shouldAddToPalette: true,
-
-	get gToolbox ()
-	{
-		return ELEMENT ("calendar-toolbox"); // calendar
-	},
-
-    makeBookmark: function (CbLink, sName) {}
-};
-EXTEND (CustombuttonsSB, CustombuttonsTB);
-
-function CustombuttonsNVU () {}
-CustombuttonsNVU. prototype =
-{
-	toolbarpaletteName: "NvuToolbarPalette",
-	shouldAddToPalette: true,
-
-	get gToolbox ()
-	{
-		return ELEMENT ("EditorToolbox"); // calendar
-	},
-
-    makeBookmark: function (CbLink, sName) {}
-};
-EXTEND (CustombuttonsNVU, CustombuttonsTB);
-
-
-const custombuttons = new custombuttonsFactory (). Custombuttons;
 var info = SERVICE (XUL_APP_INFO);
 if (info. name == "SeaMonkey")
 	custombuttons. shouldAddToPalette = false;
-
+custombuttonsFactory ();
 // add-ons
 /**  uChelpButton(  )
   Author Yan, George Dunham

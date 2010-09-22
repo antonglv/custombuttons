@@ -162,7 +162,12 @@ function allowedSource (src)
     {
 	var scheme = ios. extractScheme (src);
 	var pfs = ios. getProtocolFlags (scheme);
-	if (pfs & Components. interfaces. nsIProtocolHandler. URI_DOES_NOT_RETURN_DATA)
+	if (CI. nsIProtocolHandler. URI_DOES_NOT_RETURN_DATA) // Firefox 3
+	{
+	    if (pfs & Components. interfaces. nsIProtocolHandler. URI_DOES_NOT_RETURN_DATA) // Firefox 3
+		res = false;
+	}
+	else if (["http:", "file:", "data:", "resource:", "chrome:"]. indexOf (scheme) == -1) // Firefox 1.5, 2.0
 	    res = false;
     }
     catch (e)
@@ -1075,24 +1080,34 @@ cbCustomButtonsService. prototype =
 	getWindowId: function (documentURI)
 	{
 	    var info = SERVICE (XUL_APP_INFO);
-	    var windowId = info. name;
-	    if (info. name == "Thunderbird")
+	    switch (documentURI)
 	    {
-		if (documentURI == "chrome://messenger/content/messageWindow.xul")
-		    windowId += "MailWindow";
-		else if (documentURI == "chrome://messenger/content/messengercompose/messengercompose.xul")
-		windowId += "ComposeWindow";
+		case "chrome://browser/content/browser.xul":
+		    return "Firefox";
+		case "chrome://navigator/content/navigator.xul":
+		    return "SeaMonkey";
+		case "chrome://messenger/content/messenger.xul":
+		    if (info. name == "SeaMonkey")
+			return "SeaMonkeyMail";
+		    else
+			return "Thunderbird";
+		case "chrome://messenger/content/messageWindow.xul":
+		    if (info. name == "SeaMonkey")
+			return "SeaMonkeyMailWindow";
+		    else
+			return "ThunderbirdMailWindow";
+		case "chrome://messenger/content/messengercompose/messengercompose.xul":
+		    if (info. name == "SeaMonkey")
+			return "SeaMonkeyComposeWindow";
+		    else
+			return "ThunderbirdComposeWindow";
+		case "chrome://sunbird/content/calendar.xul":
+		case "chrome://calendar/content/calendar.xul":
+		    return "Sunbird";
+		case "chrome://editor/content/editor.xul":
+		    return "KompoZer";
 	    }
-	    else if (info. name == "SeaMonkey")
-	    {
-		if (documentURI == "chrome://messenger/content/messenger.xul")
-		    windowId += "Mail";
-		else if (documentURI == "chrome://messenger/content/messageWindow.xul")
-		windowId += "MailWindow";
-		else if (documentURI == "chrome://messenger/content/messengercompose/messengercompose.xul")
-		windowId += "ComposeWindow";
-	    }
-	    return windowId;
+	    return "Firefox";
 	},
 
 	makeButtonLink: function (documentURI, action, buttonId)
@@ -1192,6 +1207,25 @@ cbCustomButtonsService. prototype =
 		}
 		var uri = ios. newFileURI (dir);
 		rph. setSubstitution ("custombuttons", uri);
+		// Here we check if the "network.protocol-handler.expose.custombutton" preference has user value
+		// It controls installation of custombuttons by means of custombutton:// links in Thunderbird 2.0
+		// If the preference exists and has 'true' value, we shall set corresponding mode bit and try to delete the preference
+		var ps = SERVICE (PREF);
+		ps = ps. QI (nsIPrefBranch);
+		var pn = "network.protocol-handler.expose.custombutton";
+		if (ps. prefHasUserValue (pn))
+		{
+		    if (ps. getBoolPref (pn))
+			this. mode |= CB_MODE_INSTALL_BUTTONS_FROM_EMAIL;
+		    try
+		    {
+			ps. deleteBranch (pn);
+		    }
+		    catch (e)
+		    {
+			ps. setBoolPref (pn, false);
+		    }
+		}
 		break;
 	    case "profile-change-teardown":
 		os. removeObserver (this, "profile-change-teardown");

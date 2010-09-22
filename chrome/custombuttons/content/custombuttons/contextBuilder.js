@@ -7,10 +7,10 @@ var Ci = Components. interfaces;
 var Cu = Components. utils;
 var Cr = Components. results;
 
-var phase = oButton. _initPhase? "init": "code";
-var id = oButton. id;
-var doc = document;
-var uri = buttonURI;
+var _phase = oButton. _initPhase? "init": "code";
+var _id = oButton. id;
+var _doc = document;
+var _uri = buttonURI;
 if ("custombuttonsUtils" in window)
 {
     var createDebug = custombuttonsUtils. createDebug;
@@ -22,16 +22,19 @@ if ("custombuttonsUtils" in window)
  * Logs an message to Error Console
  * @since version 0.0.5.1
  * @param {String} msg A message to log to
+ * @since version 0.0.5.2
+ * @returns {String} the argument passed in
  */
 function LOG (msg)
 {
-    var oButton = doc. getElementById (id);
+    var oButton = _doc. getElementById (_id);
     if (!oButton)
-	return;
+	return msg;
     var name = oButton. name;
-    var head = "[Custom Buttons: id: " + id + "@" + phase + ", line: " + Components. stack. caller. lineNumber + ", name: " + name + "]";
+    var head = "[Custom Buttons: id: " + _id + "@" + _phase + ", line: " + Components. stack. caller. lineNumber + ", name: " + name + "]";
     var cs = Cc ["@mozilla.org/consoleservice;1"]. getService (Ci. nsIConsoleService);
     cs. logStringMessage (head + (msg? ("\n" + msg): ""));
+    return msg;
 }
 
 /**
@@ -48,7 +51,7 @@ function LOG (msg)
  */
 function addEventListener (eventType, eventHandler, captureFlag, eventTarget)
 {
-    var oButton = doc. getElementById (id);
+    var oButton = _doc. getElementById (_id);
     if (!oButton)
 	return;
     var handler =
@@ -97,14 +100,14 @@ function addEventListener (eventType, eventHandler, captureFlag, eventTarget)
 	((typeof (eventHandler) == "object") && (typeof (eventHandler ["handleEvent"]) == "function")))
 	handler. eventHandler = eventHandler;
     else
-	throw new TypeError ("Custom Buttons: addEventListener: eventHandler isn't a function or hasn't nsIDOMEventListener interface", uri, Components. stack. caller. lineNumber);
+	throw new TypeError ("Custom Buttons: addEventListener: eventHandler isn't a function or hasn't nsIDOMEventListener interface", _uri, Components. stack. caller. lineNumber);
     handler. captureFlag = captureFlag;
     if (!eventTarget)
 	eventTarget = window;
     if (eventTarget instanceof Ci. nsIDOMEventTarget)
 	handler. eventTarget = eventTarget;
     else
-	throw new TypeError ("Custom Buttons: addEventListener: eventTarget hasn't interface nsIDOMEventTarget\n", uri, Components. stack. caller. lineNumber);
+	throw new TypeError ("Custom Buttons: addEventListener: eventTarget hasn't interface nsIDOMEventTarget\n", _uri, Components. stack. caller. lineNumber);
     handler. context = oButton;
     handler. register ();
     oButton. _handlers. push (handler);
@@ -120,7 +123,7 @@ function addEventListener (eventType, eventHandler, captureFlag, eventTarget)
  */
 function removeEventListener (eventType, eventHandler, captureFlag, eventTarget)
 {
-    var oButton = doc. getElementById (id);
+    var oButton = _doc. getElementById (_id);
     if (!oButton)
 	return;
     var handler;

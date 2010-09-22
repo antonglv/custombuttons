@@ -76,13 +76,11 @@ Prefs. prototype =
 function TBPrefs () {}
 TBPrefs. prototype =
 {
-	pn: "network.protocol-handler.expose.custombutton",
-
 	_checkbox: null,
 	get checkbox ()
 	{
 		if (!this. _checkbox)
-			this. _checkbox = ELEMENT ("cbEnableCBProtocol");
+			this. _checkbox = ELEMENT ("modebit7");
 		return this. _checkbox;
 	},
 
@@ -96,35 +94,15 @@ TBPrefs. prototype =
 	onLoad: function ()
     {
 		SUPER (onLoad);
-		var state = this. ps. prefHasUserValue (this. pn) &&
-					this. ps. getBoolPref (this. pn);
-		this. checkbox. setAttribute ("checked", state);
 		this. checkbox. removeAttribute ("hidden"); // checkbox visible only in Thunderbird
-		return true;
-	},
-
-	onAccept: function ()
-	{
-		SUPER (onAccept);
-		if (this. checkbox. hasAttribute ("checked") &&
-			(this. checkbox. getAttribute ("checked") == "true"))
-		{
-			this. ps. setBoolPref (this. pn, true);
-		}
-		else if (this. ps. prefHasUserValue (this. pn))
-		{
-			try
-			{
-				this. ps. deleteBranch (this. pn);
-			}
-			catch (e)
-			{
-				this. ps. setBoolPref (this. pn, false);
-			}
-		}
 		return true;
 	}
 };
 EXTENDS (TBPrefs, Prefs);
 
-var cbPrefs = new custombuttonsFactory (). Prefs;
+var info = SERVICE (XUL_APP_INFO);
+var cbPrefs;
+if (["Thunderbird", "SeaMonkey"]. indexOf (info. name) != -1)
+    cbPrefs = new TBPrefs ();
+else
+    cbPrefs = new Prefs ();
