@@ -7,7 +7,6 @@
 		 xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 	
 		 <!-- added -->
-	<script type="application/x-javascript" src="chrome://custombuttons/content/cbfactory.js"/>
 	<script type="application/x-javascript" src="chrome://custombuttons/content/overlay.js"/>
 	<script type="application/x-javascript" src="chrome://custombuttons/content/cb2api.js"/>
 	<!-- end added -->
