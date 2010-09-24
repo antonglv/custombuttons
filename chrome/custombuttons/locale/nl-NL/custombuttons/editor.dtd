@@ -13,10 +13,10 @@
 <!ENTITY editor.base64.tooltiptext "Converteert afbeelding naar base64-formaat (data:image/png;base64,…)">
 <!ENTITY editor.code "Code">
 <!ENTITY editor.code.accesskey "C">
-<!ENTITY editor.code.tooltiptext "Wordt uitgevoerd bij indrukken van de knop">
+<!ENTITY editor.code.tooltiptext "Wordt uitgevoerd bij het indrukken van de knop">
 <!ENTITY editor.initCode "Initialisatiecode">
 <!ENTITY editor.initCode.accesskey "I">
-<!ENTITY editor.initCode.tooltiptext "Wordt uitgevoerd bij opstarten van browser">
+<!ENTITY editor.initCode.tooltiptext "Wordt uitgevoerd bij het openen van het toepassingsvenster">
 <!ENTITY editor.code.defaultValue "/*CODE*/">
 <!ENTITY editor.initCode.defaultValue "/*Initialisatiecode*/">
 <!ENTITY editor.Apply "Opslaan">
