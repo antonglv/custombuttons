@@ -1229,6 +1229,7 @@ cbCustomButtonsService. prototype =
   break;
      case "profile-change-teardown":
   os. removeObserver (this, "profile-change-teardown");
+  os. removeObserver (this, "em-action-requested");
   if (this. beingUninstalled)
       this. unPersistAll ();
   backupProfile ("profile-change-teardown");
