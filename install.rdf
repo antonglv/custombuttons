@@ -32,6 +32,7 @@
 		<em:homepageURL>http://custombuttons.mozdev.org/</em:homepageURL>
 		<em:optionsURL>chrome://custombuttons/content/prefs.xul</em:optionsURL>
 		<em:iconURL>chrome://custombuttons/skin/cbicon.png</em:iconURL>
+		<em:unpack>true</em:unpack>
 		<em:updateURL>http://custombuttons.mozdev.org/updateinfo/devupdate.rdf</em:updateURL>
 		<em:updateKey>MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQD75OcbO/fLYAs4zJwTaVPEjjEiUESNzkDBBs5EQK+wC9XdFy8vFIqAIqHSpVKFku4EPs6uPWsqHFG4hgD1GdnFiAcksT+eO0a5jqZQmkIx++GyWbPxzfjqWjLcfErH1jUr1E5wbyY57ptTp3Rwv04McmJ2ZMVaeDDioPI+m7VzpwIDAQAB</em:updateKey>
 		
