@@ -8,7 +8,7 @@
 		<em:id>custombuttons@xsms.org</em:id>
 		<em:name>Custom Buttons</em:name>
 		<em:type>2</em:type>
-		<em:version>0.0.5.2pre8</em:version>
+		<em:version>0.0.5.2</em:version>
 		<em:description>Gives a possibility to create custom toolbarbuttons.</em:description>
 		<em:creator>Yan</em:creator>
 		<em:developer>Anton (custombuttonsextension@gmail.com)</em:developer>
@@ -33,8 +33,7 @@
 		<em:optionsURL>chrome://custombuttons/content/prefs.xul</em:optionsURL>
 		<em:iconURL>chrome://custombuttons/skin/cbicon.png</em:iconURL>
 		<em:unpack>true</em:unpack>
-		<em:updateURL>http://custombuttons.mozdev.org/updateinfo/devupdate.rdf</em:updateURL>
-		<em:updateKey>MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQD75OcbO/fLYAs4zJwTaVPEjjEiUESNzkDBBs5EQK+wC9XdFy8vFIqAIqHSpVKFku4EPs6uPWsqHFG4hgD1GdnFiAcksT+eO0a5jqZQmkIx++GyWbPxzfjqWjLcfErH1jUr1E5wbyY57ptTp3Rwv04McmJ2ZMVaeDDioPI+m7VzpwIDAQAB</em:updateKey>
+		<em:updateURL>https://www.mozdev.org/p/updates/custombuttons/custombuttons@xsms.org/update.rdf</em:updateURL>
 		
 		<!-- Firefox -->
 		<em:targetApplication>
