@@ -652,7 +652,7 @@
 					<![CDATA[
 						this. editor. beginningOfDocument ();
 						var brs = this. textbox. value. replace (/[^\n]/g, "");
-						if (((lineNumber & 0x80000000) < 0) || (lineNumber > brs. length))
+						if (lineNumber > brs. length)
 							this. editor. endOfDocument ();
 						else
 							while (lineNumber-- > 1)
