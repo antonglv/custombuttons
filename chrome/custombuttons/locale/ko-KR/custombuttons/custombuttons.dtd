@@ -1,0 +1,5 @@
+<!ENTITY custombuttons.viewMenu_Item "새 버튼 추가">
+<!ENTITY custombuttons.buttonPopup.edit "버튼 편집">
+<!ENTITY custombuttons.buttonPopup.remove "버튼 삭제">
+<!ENTITY custombuttons.buttonPopup.clone "버튼 복제">
+<!ENTITY custombuttons.buttonPopup.copyURI "클립보드로 복사">

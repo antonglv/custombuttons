@@ -1,0 +1,13 @@
+<!ENTITY editor.dialog.title "버튼 편집">
+<!ENTITY editor.name "이름 :">
+<!ENTITY editor.name.tooltiptext "버튼 레이블과 팝업 텍스트 정의">
+<!ENTITY editor.image "이미지 :">
+<!ENTITY editor.select "찾아보기...">
+<!ENTITY editor.base64 "&amp;#8658; base64">
+<!ENTITY editor.base64.tooltiptext "이미지를 base64 형식으로 변환 (data:image/png;base64,...)">
+<!ENTITY editor.code "코드">
+<!ENTITY editor.code.tooltiptext "버튼을 누르면 실행">
+<!ENTITY editor.initCode "초기화 코드">
+<!ENTITY editor.initCode.tooltiptext "브라우저 시작하면 실행">
+<!ENTITY editor.code.defaultValue "/*CODE*/">
+<!ENTITY editor.initCode.defaultValue "/*Initialization Code*/">
