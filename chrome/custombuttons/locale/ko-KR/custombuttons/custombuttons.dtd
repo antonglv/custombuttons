@@ -9,11 +9,8 @@
 <!ENTITY custombuttons.buttonPopup.subCall "맞춤 버튼">
 
 <!ENTITY custombuttons_prefsDialog.title "Custom Buttons : 설정">
-<!ENTITY custombuttons.prefs.use_xml_button_format "새 버튼 형식을 사용함">
-<!ENTITY custombuttons.prefs.use_cb2_button_format "이전의 Custom Buttons² 버튼 형식을 사용함">
 <!ENTITY custombuttons.prefs.show_apply_button "코드 편집기에 &quot;저장&quot; 버튼을 보이기">
 <!ENTITY custombuttons.prefs.disable_init "버튼 초기화를 사용 안 함 (변경사항은 오직 새 창에만 적용됨)">
-<!ENTITY custombuttons.prefs.disable_init_in_customize_toolbar "&quot;도구 모음 설정&quot; 대화상자의 초기화를 사용 안 함">
 <!ENTITY custombuttons.prefs.enable_custombutton_protocol "메일 메시지로부터 버튼을 설치함">
 <!ENTITY custombuttons.prefs.editor_save_size_and_position "Save size and position of editor windows separately for each custom button">
 
