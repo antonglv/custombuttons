@@ -28,8 +28,6 @@
 <!ENTITY editor.buttonSettings.hotKeyGroupbox "단축키">
 <!ENTITY editor.buttonSettings.accelkey "단축키 :">
 <!ENTITY editor.buttonSettings.disableDefaultKeyBehavior "지정한 단축키의 기본 동작을 사용 안 함">
-<!ENTITY editor.buttonSettings.initializationGroupbox "초기화">
-<!ENTITY editor.buttonSettings.initInCustomizeToolbarDialog "&quot;도구 모음 설정&quot; 대화상자에서 초기화를 사용함">
 <!ENTITY editor.buttonSettings.addMoreKeys "더 보기...">
 
 <!ENTITY cbeditor.quickfindtextbox "빠른 찾기 : ">
