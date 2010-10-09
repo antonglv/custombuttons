@@ -651,7 +651,7 @@
 				<body>
 					<![CDATA[
 						this. editor. beginningOfDocument ();
-						var brs = this. editor. rootElement. getElementsByTagName ("br");
+						var brs = this. textbox. value. replace (/[^\n]/g, "");
 						if (lineNumber > brs. length)
 							this. editor. endOfDocument ();
 						else
