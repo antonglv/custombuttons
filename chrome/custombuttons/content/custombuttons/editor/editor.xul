@@ -10,7 +10,7 @@
 		width="400"
 		height="400"
 		title="&editor.dialog.title;"
-		persist="width height screenX screenY"
+		persist="width height screenX screenY sizemode"
 		buttons="extra2,accept,cancel"
 		buttonlabelextra2="&editor.Apply;"
 		ondialogextra2="editor.updateButton()"
