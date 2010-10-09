@@ -23,6 +23,7 @@
 		<em:contributor>Lain_13: useful remarks</em:contributor>
 		<em:contributor>Dimanish: useful remarks</em:contributor>
 		<em:contributor>Other users of forum.mozilla-russia.org (forum.mozilla.ru) and custombuttons.mozdev.org: useful remarks and testing</em:contributor>
+		<em:translator>maybeecom: Korean localization</em:translator>
 		<em:translator>Ton: Dutch localization</em:translator>
 		<em:translator>Sven Giermann: German localization</em:translator>
 		<em:translator>Piotrek (Sullei): Polish localization</em:translator>
@@ -49,7 +50,7 @@
 			<Description>
 			  <em:id>{92650c4d-4b8e-4d2a-b7eb-24ecf4f6b63a}</em:id>
 			  <em:minVersion>2.0</em:minVersion>
-			  <em:maxVersion>2.1b1pre</em:maxVersion>
+			  <em:maxVersion>2.1b2</em:maxVersion>
 			</Description>
 		</em:targetApplication>
 		
