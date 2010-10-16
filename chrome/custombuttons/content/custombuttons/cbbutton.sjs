@@ -123,7 +123,6 @@ var custombutton =
 		    oBtn. onDestroy (reason);
 		}
 		catch (e) {}
-		oBtn. onDestroy = null;
 	    }
 	},
 
