@@ -22,7 +22,8 @@
 			<menuitem id="custombuttons-contextpopup-addnewbutton"
 				  class="menuitem-iconic"
 					  label="&custombuttons.viewMenu_Item;"
-					  oncommand="custombuttons.addButton()"/>
+					  oncommand="custombuttons.addButton()"
+					  observes="custombuttons-contextbroadcaster-primary"/>
 			<menuitem id="custombuttons-contextpopup-customize"
 				  class="menuitem-iconic"
 					  accesskey="&customizeToolbar.accesskey;"
