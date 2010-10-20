@@ -513,8 +513,10 @@ const custombuttons =
 		}
 	    };
 	case "chrome://messenger/content/messengercompose.xul": // Seamonkey, Thunderbird
+	case "chrome://messenger/content/messengercompose/messengercompose.xul": // Seamonkey 2.1b2pre
 	    custombuttons. toolbarpaletteName = "MailToolbarPalette";
-	    if (document. documentURI == "chrome://messenger/content/messengercompose.xul")
+	    if ((document. documentURI == "chrome://messenger/content/messengercompose.xul") ||
+		(document. documentURI == "chrome://messenger/content/messengercompose/messengercompose.xul"))
 		custombuttons. toolbarpaletteName = "MsgComposeToolbarPalette";
 	    custombuttons. init = (function (fn)
 	    {
