@@ -711,7 +711,7 @@ custombuttons.gQuot = { //{{{
 		var sMethodName = this. getMethodName (oEvent);
 		if (sMethodName && oButton [sMethodName])
 			oButton [sMethodName] (oEvent);
-		else
+		else if ((oButton. nodeName == "toolbarbutton") || (oButton. nodeName == "xul:toolbarbutton"))
 			this. gShowPopup (oButton);
 	},
 
