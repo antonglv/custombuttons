@@ -59,9 +59,9 @@ overlay	CALENDAR/calendar.xul	CBCONTENT/tcbbutton.xul
 overlay CALENDAR/calendar.xul	CBOVERLAY/buttonsoverlay.xul
 
 ## Editor (KompoZer)
-overlay	EDITOR/editor.xul		CBCONTENT/EditorOverlay.xul
-overlay	EDITOR/editor.xul		CBCONTENT/tcbbutton.xul
-overlay	EDITOR/editor.xul		CBOVERLAY/buttonsoverlay.xul
+overlay	EDITOR/editor.xul		CBCONTENT/EditorOverlay.xul KOMPOZERAPP
+overlay	EDITOR/editor.xul		CBCONTENT/tcbbutton.xul KOMPOZERAPP
+overlay	EDITOR/editor.xul		CBOVERLAY/buttonsoverlay.xul KOMPOZERAPP
 
 skin	custombuttons	classic/1.0	jar:chrome/custombuttons.jar!/skin/classic/
 

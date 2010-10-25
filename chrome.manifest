@@ -59,9 +59,9 @@ overlay chrome://sunbird/content/calendar.xul chrome://custombuttons/content/tcb
 overlay chrome://sunbird/content/calendar.xul resource://custombuttons/buttonsoverlay.xul
 
 ## Editor (KompoZer)
-overlay chrome://editor/content/editor.xul chrome://custombuttons/content/EditorOverlay.xul
-overlay chrome://editor/content/editor.xul chrome://custombuttons/content/tcbbutton.xul
-overlay chrome://editor/content/editor.xul resource://custombuttons/buttonsoverlay.xul
+overlay chrome://editor/content/editor.xul chrome://custombuttons/content/EditorOverlay.xul application={20aa4150-b5f4-11de-8a39-0800200c9a66}
+overlay chrome://editor/content/editor.xul chrome://custombuttons/content/tcbbutton.xul application={20aa4150-b5f4-11de-8a39-0800200c9a66}
+overlay chrome://editor/content/editor.xul resource://custombuttons/buttonsoverlay.xul application={20aa4150-b5f4-11de-8a39-0800200c9a66}
 
 skin custombuttons classic/1.0 jar:chrome/custombuttons.jar!/skin/classic/
 
