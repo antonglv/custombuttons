@@ -308,7 +308,14 @@ Overlay. prototype =
 		    var chromeProtocolHandler = CC ["@mozilla.org/network/protocol;1?name=chrome"]. getService ();
 		    chromeProtocolHandler = chromeProtocolHandler. QI (nsIProtocolHandler);
 		    var fakeOverlayChannel = chromeProtocolHandler. newChannel (fakeOverlayURI);
-		    dp. init (fakeOverlayChannel. owner, ios. newURI (uri, null, null), null, null);
+		    try
+		    {
+			dp. init (fakeOverlayChannel. owner, ios. newURI (uri, null, null), null, null);
+		    }
+		    catch (e)
+		    {
+			dp = COMPONENT (DOM_PARSER);
+		    }
 		} catch (e) {}
 		this. _overlayDocument = dp. parseFromStream (instr, null, instr. available (), "application/xml");
 	    }
