@@ -7,7 +7,7 @@
 
 <dialog xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
 		id="custombuttonsEditor"
-		width="400"
+		width="450"
 		height="400"
 		title="&editor.dialog.title;"
 		persist="width height screenX screenY sizemode"
