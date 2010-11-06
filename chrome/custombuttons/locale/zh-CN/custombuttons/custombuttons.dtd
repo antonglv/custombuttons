@@ -3,15 +3,13 @@
 <!ENTITY custombuttons.buttonPopup.remove "删除该按钮">
 <!ENTITY custombuttons.buttonPopup.clone "复制该按钮">
 <!ENTITY custombuttons.buttonPopup.copyURI "复制该按钮到剪贴板">
-<!ENTITY custombuttons.buttonPopup.bookmark "Bookmark Button">
-<!ENTITY custombuttons.buttonPopup.help "Button Help">
-<!ENTITY custombuttons.buttonPopup.update "Update Button">
-<!ENTITY custombuttons.buttonPopup.subCall "Custom Button">
-
-<!ENTITY custombuttons_prefsDialog.title "Custom Buttons: settings">
-<!ENTITY custombuttons.prefs.show_apply_button "Show &quot;Save&quot; button in code editor">
-<!ENTITY custombuttons.prefs.disable_init "Disable buttons initialization (Changes affect only new windows)">
-<!ENTITY custombuttons.prefs.enable_custombutton_protocol "Enable install buttons from mail messages">
-<!ENTITY custombuttons.prefs.editor_save_size_and_position "Save size and position of editor windows separately for each custom button">
-
-<!ENTITY custombuttons.about.supportPageURL "Visit support page">
+<!ENTITY custombuttons.buttonPopup.bookmark "按钮添加到书签">
+<!ENTITY custombuttons.buttonPopup.help "按钮帮助">
+<!ENTITY custombuttons.buttonPopup.update "更新按钮">
+<!ENTITY custombuttons.buttonPopup.subCall "自定义按钮">
+<!ENTITY custombuttons_prefsDialog.title "Custombuttons: 设置">
+<!ENTITY custombuttons.prefs.show_apply_button "在代码编辑器显示&quot;应用&quot;按钮">
+<!ENTITY custombuttons.prefs.disable_init "禁用按钮初始化 (在新窗口生效)">
+<!ENTITY custombuttons.prefs.enable_custombutton_protocol "启用从邮件中安装按钮">
+<!ENTITY custombuttons.prefs.editor_save_size_and_position "分别为每个按钮保存编辑窗口位置和大小">
+<!ENTITY custombuttons.about.supportPageURL "访问支持页">
