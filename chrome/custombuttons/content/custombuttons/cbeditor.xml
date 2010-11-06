@@ -653,7 +653,10 @@
 						this. editor. beginningOfDocument ();
 						var brs = this. textbox. value. replace (/[^\n]/g, "");
 						if (lineNumber > brs. length)
+						{
 							this. editor. endOfDocument ();
+							this. editor. selectionController. intraLineMove (false, false);
+						}
 						else
 							while (lineNumber-- > 1)
 								this. editor. selectionController. lineMove (true, false);
