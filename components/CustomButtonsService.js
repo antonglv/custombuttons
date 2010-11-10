@@ -167,7 +167,7 @@ function allowedSource (src)
      if (pfs & Components. interfaces. nsIProtocolHandler. URI_DOES_NOT_RETURN_DATA) // Firefox 3
   res = false;
  }
- else if (["http:", "file:", "data:", "resource:", "chrome:"]. indexOf (scheme) == -1) // Firefox 1.5, 2.0
+ else if (["http:", "file:", "data:", "resource:", "chrome:", "http", "file", "data", "resource", "chrome"]. indexOf (scheme) == -1) // Firefox 1.5, 2.0
      res = false;
     }
     catch (e)
