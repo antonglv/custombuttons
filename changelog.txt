@@ -3,8 +3,8 @@ Changelog
 + Added: ko-KR translation
 - Removed: Buttons initialization in "Customize Toolbar dialog"
 - Removed: Export buttons into old custombutton:// URI formats
-+ Added: Firefox 4.0b6pre compatibility
-+ Added: Seamonkey 2.1b1pre compatibility
++ Added: Firefox 4.0b8pre compatibility
++ Added: Seamonkey 2.1b2pre compatibility
 * Implemented backups overlays
 ! Changed: "custombuttons.mode" preference prefixed with "extensions." to compliance AMO rules
 # Fixed: Incorrect caret positioning when it moves in the presence of selected text
