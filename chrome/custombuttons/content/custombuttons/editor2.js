@@ -103,10 +103,7 @@ Editor. prototype =
      this. saveButton. setAttribute ("icon", "save");
      this. saveButton. setAttribute ("disabled", "true");
   if (this. param. newButton || !sab)
-  {
    this. saveButton. setAttribute ("hidden", "true");
-   document. getElementById ("cbUpdateButtonCommand"). setAttribute ("disabled", "true");
-  }
 
   document. getElementById ("code"). addEditorObserver (this);
   document. getElementById ("initCode"). addEditorObserver (this);
