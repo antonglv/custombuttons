@@ -1,4 +1,6 @@
 Changelog
+0.0.5.3
+# Fixed: buttons aren't initialized after dragging from "Customize Toolbar" dialog
 0.0.5.2
 + Added: ko-KR translation
 - Removed: Buttons initialization in "Customize Toolbar dialog"
