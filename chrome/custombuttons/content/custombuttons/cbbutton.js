@@ -8,6 +8,13 @@ var custombutton =
  {
      if (oBtn. destroy)
   oBtn. destroy ("constructor"); // to call onDestroy method, if exists
+     if ((document. documentURI == "chrome://global/content/customizeToolbar.xul") ||
+  (oBtn. parentNode && oBtn. parentNode. id. indexOf ("wrapper-") == 0))
+     {
+  if (oBtn. hasAttribute ("initialized"))
+      oBtn. removeAttribute ("initialized");
+  return;
+     }
      var windowId = this. cbService. getWindowId (document. documentURI);
      var cbd = Components. classes ["@xsms.nm.ru/custombuttons/cbkeymap;1"]. getService (Components. interfaces. cbIKeyMapService);
      cbd. Delete (windowId, oBtn. getAttribute ("id"));
@@ -47,8 +54,6 @@ var custombutton =
   {
       var mode = this. cbService. mode;
       if (mode & 32) // disable initialization
-   return;
-      if (oBtn. parentNode && (oBtn. parentNode. nodeName != "toolbar"))
    return;
       oBtn. cbInitCode = oBtn. getAttribute ("cb-init");
       setTimeout (function () { oBtn. init (); }, 0);

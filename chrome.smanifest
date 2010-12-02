@@ -29,6 +29,7 @@ overlay MESSENGERCOMPOSE/messengercompose.xul	CBOVERLAY/mcbuttonsoverlay.xul
 
 ## Browser
 overlay	BROWSER/browser.xul				CBCONTENT/tcbbutton.xul
+overlay GLOBAL/customizeToolbar.xul		CBCONTENT/tcbbutton.xul
 
 ## Firefox 3
 overlay	BROWSER/browser.xul			CBCONTENT/overlay3b2.xul   		 FIREFOXAPP appversion>=3.0b1
@@ -52,11 +53,13 @@ overlay MESSENGERCOMPOSE/messengercompose.xul	CBOVERLAY/mcbuttonsoverlay.xul
 overlay	SUNBIRD/calendar.xul	CBCONTENT/SunbirdOverlay.xul
 overlay	SUNBIRD/calendar.xul	CBCONTENT/tcbbutton.xul
 overlay SUNBIRD/calendar.xul	CBOVERLAY/buttonsoverlay.xul
+overlay	SUNBIRD/customizeToolbar.xul	CBCONTENT/tcbbutton.xul
 
 ## Calendar
 overlay	CALENDAR/calendar.xul	CBCONTENT/CalendarOverlay.xul
 overlay	CALENDAR/calendar.xul	CBCONTENT/tcbbutton.xul
 overlay CALENDAR/calendar.xul	CBOVERLAY/buttonsoverlay.xul
+overlay	CALENDAR/customizeToolbar.xul	CBCONTENT/tcbbutton.xul
 
 ## Editor (KompoZer)
 overlay	EDITOR/editor.xul		CBCONTENT/EditorOverlay.xul KOMPOZERAPP
@@ -73,6 +76,9 @@ style	SEAMONKEY/navigator.xul			CBSKIN/custombuttons.css
 style	SEAMONKEY/navigator.xul			CBCONTENT/overlay.css
 
 style	GLOBAL/customizeToolbar.xul	CBSKIN/custombuttons.css
+##style	GLOBAL/customizeToolbar.xul	CBCONTENT/overlay.css appversion>1.6
+style	GLOBAL/customizeToolbar.xul	CBCONTENT/customizeToolbar.css
+style	GLOBAL/customizeToolbar.xul	CBCONTENT/overlay1.5.css FIREFOXAPP appversion<=1.6
 
 style	MESSENGER/messenger.xul					CBSKIN/custombuttons.css
 style	MESSENGER/messenger.xul					CBCONTENT/overlay.css
