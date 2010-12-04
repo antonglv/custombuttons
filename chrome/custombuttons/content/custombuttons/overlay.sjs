@@ -180,11 +180,11 @@ const custombuttons =
 			this. AddButtonToPalette (oClone);
 	},
 
-	cloneButton: function (oClonedButton)
+	cloneButton: function (oClonedButton, asEmpty)
 	{
 		var sParentToolbarId = oClonedButton. parentNode. id;
 		var sClonedButtonId = oClonedButton. getAttribute ("id");
-		var sNewButtonId = this. cbService. cloneButton (oClonedButton);
+		var sNewButtonId = this. cbService. cloneButton (oClonedButton, asEmpty);
 		this. persistCurrentSets (sParentToolbarId, sClonedButtonId, sNewButtonId);
 	},
 
@@ -323,7 +323,7 @@ const custombuttons =
 		switch (sOperation)
 		{
 			case "clone":
-				this. cloneButton (oButton);
+				this. cloneButton (oButton, false);
 				break;
 			case "remove":
 				this. removeButton (oButton);
@@ -383,18 +383,7 @@ const custombuttons =
 	    event. preventDefault ();
 	    event. stopPropagation ();
 	    event. target. parentNode. hidePopup ();
-	    this. cloneButton (oButton);
-	    var newButtonLink = this. makeButtonLink ("update", oButton. nextSibling. id);
-	    var params = this. cbService. getButtonParameters (newButtonLink). wrappedJSObject;
-	    params. name = "";
-	    params. image = "";
-	    params. code = "";
-	    params. initCode = "";
-	    params. accelkey = "";
-	    params. mode = 0;
-	    params. help = "";
-	    params. wrappedJSObject = params;
-	    this. cbService. installButton (params);
+	    this. cloneButton (oButton, true);
 	},
 
 	onClick: function (event) {},

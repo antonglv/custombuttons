@@ -872,7 +872,7 @@ cbCustomButtonsService. prototype =
 	    }
 	},
 
-	cloneButton: function (clonedButton)
+	cloneButton: function (clonedButton, asEmpty)
 	{
 	    var documentURI = clonedButton. ownerDocument. documentURI;
 	    var buttonId = clonedButton. getAttribute ("id");
@@ -881,7 +881,15 @@ cbCustomButtonsService. prototype =
 	    var app = new AppObject (windowId);
 	    var button = app. getButton (buttonId);
 	    var newId = app. getNewID ();
-	    var newButton = button. cloneNode (true);
+	    var newButton;
+	    if (asEmpty)
+	    {
+		var param = getParamBlock ();
+		newButton = app. createNewButton ();
+		this. makeButton (newButton, param);
+	    }
+	    else
+		newButton = button. cloneNode (true);
 	    newButton. setAttribute ("id", newId);
 	    app. notifyObservers (newButton, "cloneButton", parentId + ":" + buttonId);
 	    app. saveButtonToOverlay (newButton);
