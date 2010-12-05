@@ -424,13 +424,6 @@ AppObject. prototype =
      this. _windowId = val;
      switch (val)
      {
-     case "Firefox":
-     case "SeaMonkey":
-     case "Browser":
-  this. overlayFileName = "buttonsoverlay.xul";
-  this. paletteId = "BrowserToolbarPalette";
-  this. notificationPrefix = "custombuttons:69423527-65a1-4b8f-bd7a-29593fc46d27:";
-  break;
      case "SeaMonkeyMail":
      case "Thunderbird":
   this. overlayFileName = "buttonsoverlay.xul";
@@ -460,6 +453,15 @@ AppObject. prototype =
   this. overlayFileName = "buttonsoverlay.xul";
   this. paletteId = "NvuToolbarPalette";
   this. notificationPrefix = "custombuttons:69423527-65a1-4b8f-bd7a-29593fc46d27:";
+  break;
+     case "Firefox":
+     case "SeaMonkey":
+     case "Browser":
+     default:
+  this. overlayFileName = "buttonsoverlay.xul";
+  this. paletteId = "BrowserToolbarPalette";
+  this. notificationPrefix = "custombuttons:69423527-65a1-4b8f-bd7a-29593fc46d27:";
+  break;
      }
      this. overlay = new Overlay (this. overlayPath, this. overlayFileName);
  },
