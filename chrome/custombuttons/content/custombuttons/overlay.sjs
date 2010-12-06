@@ -103,6 +103,22 @@ const custombuttons =
 		}
 	},
 
+	findButtons: function (id)
+	{
+	    var res = [];
+	    var btn = document. getElementById (id);
+	    if (btn)
+		res [res. length] = btn;
+	    var buttons = document. getElementsByAttribute ("id", id);
+	    for (var i = 0; i < buttons. length; i++)
+	    {
+		if (btn == buttons [i])
+		    continue;
+		res [res. length] = buttons [i];
+	    }
+	    return res;
+	},
+
 	RemoveButtonFromPalette: function (oButton)
 	{
 		var sId = oButton. getAttribute ("id");
@@ -190,7 +206,7 @@ const custombuttons =
 
 	_removeButton: function (sParentToolbarId, sRemovedButtonId)
 	{
-		var cButtonsToRemove = document. getElementsByAttribute ("id", sRemovedButtonId);
+		var cButtonsToRemove = this. findButtons (sRemovedButtonId);
 		var bRemoveFromOverlay = (cButtonsToRemove. length == 1);
 		var oParentToolbar = ELEMENT (sParentToolbarId);
 		var oRemovedButton = oParentToolbar. getElementsByAttribute ("id", sRemovedButtonId) [0];
@@ -247,7 +263,7 @@ const custombuttons =
 			case "updateButton":
 				var newButton, winButton;
 				var sId = oSubject. getAttribute ("id");
-				var winButtons = document. getElementsByAttribute ("id", sId);
+				var winButtons = this. findButtons (sId);
 				if (winButtons. length != 0)
 				{
 					for (var i = 0; i < winButtons. length; i++)
