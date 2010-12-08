@@ -1,5 +1,7 @@
 Changelog
 0.0.5.3
++ Added: sr translation
++ Added: it-IT translation
 # Fixed: buttons aren't initialized after dragging from "Customize Toolbar" dialog
 0.0.5.2
 + Added: ko-KR translation
