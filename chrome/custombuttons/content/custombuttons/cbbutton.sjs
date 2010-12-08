@@ -8,8 +8,7 @@ var custombutton =
 	{
 	    if (oBtn. destroy)
 		oBtn. destroy ("constructor"); // to call onDestroy method, if exists
-	    if ((document. documentURI == "chrome://global/content/customizeToolbar.xul") ||
-		(oBtn. parentNode && oBtn. parentNode. id. indexOf ("wrapper-") == 0))
+	    if (oBtn. parentNode && oBtn. parentNode. id. indexOf ("wrapper-") == 0)
 	    {
 		if (oBtn. hasAttribute ("initialized"))
 		    oBtn. removeAttribute ("initialized");
