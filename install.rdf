@@ -8,7 +8,7 @@
 		<em:id>custombuttons@xsms.org</em:id>
 		<em:name>Custom Buttons</em:name>
 		<em:type>2</em:type>
-		<em:version>0.0.5.3pre2</em:version>
+		<em:version>0.0.5.3pre3</em:version>
 		<em:description>Gives a possibility to create custom toolbarbuttons.</em:description>
 		<em:creator>Yan</em:creator>
 		<em:developer>Anton (custombuttonsextension@gmail.com)</em:developer>
@@ -45,7 +45,7 @@
 			<Description>
 				<em:id>{ec8030f7-c20a-464f-9b0e-13a3a9e97384}</em:id>
 				<em:minVersion>1.5</em:minVersion>
-                		<em:maxVersion>4.0b8pre</em:maxVersion>
+                		<em:maxVersion>4.0b9pre</em:maxVersion>
 			</Description>
 		</em:targetApplication>
 		
