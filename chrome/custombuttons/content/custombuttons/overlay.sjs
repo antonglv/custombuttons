@@ -10,6 +10,7 @@ const custombuttons =
 	toolbarpaletteName: "BrowserToolbarPalette",
 	shouldAddToPalette: true,
 	cbService: null,
+	loaded: false,
 
 	get palette ()
 	{
@@ -78,6 +79,14 @@ const custombuttons =
 		this. addObserver ("updateButton");
 		this. addObserver ("cloneButton");
 		this. addObserver ("removeButton");
+		this. loaded = true;
+		this. initButtons ();
+	},
+
+	initButtons: function ()
+	{
+	    for (var i = 0; i < custombutton. waitForInitialization. length; i++)
+		custombutton. buttonConstructor (custombutton. waitForInitialization [i]);
 	},
 
 	close: function ()

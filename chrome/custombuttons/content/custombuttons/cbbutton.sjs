@@ -3,9 +3,15 @@
 var custombutton =
     {
 	cbService: SERVICE (CB),
+	waitForInitialization: [],
 
 	buttonConstructor: function (oBtn)
 	{
+	    if (!("custombuttons" in window) || !custombuttons. loaded)
+	    {
+		this. waitForInitialization. push (oBtn);
+		return;
+	    }
 	    if (oBtn. destroy)
 		oBtn. destroy ("constructor"); // to call onDestroy method, if exists
 	    if (oBtn. parentNode && oBtn. parentNode. id. indexOf ("wrapper-") == 0)
