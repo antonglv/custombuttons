@@ -622,7 +622,7 @@
 					<![CDATA[
 						if (this. textbox. selectionStart == this. textbox. selectionEnd)
 							return;
-						var pRe = new RegExp (). compile ("(^ {0,7}\t)|(^ {1,8})");
+						var pRe = new RegExp ("(^ {0,7}\t)|(^ {1,8})");
 						this. indent ("outdent", pRe, "");
 						this. textbox. focus ();
 					]]>
@@ -704,7 +704,7 @@
 			<method name="toggleComments">
 				<body>
 					<![CDATA[
-						var pRe = new RegExp (). compile ("^//");
+						var pRe = new RegExp ("^//");
 						this. indent ("toggle", pRe, "//");
 						this. textbox. focus ();
 					]]>
