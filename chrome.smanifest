@@ -106,6 +106,7 @@ locale	custombuttons	pt-BR	jar:chrome/custombuttons.jar!/locale/pt-BR/custombutt
 locale	custombuttons	sk-SK	jar:chrome/custombuttons.jar!/locale/sk-SK/custombuttons/
 locale	custombuttons	zh-CN	jar:chrome/custombuttons.jar!/locale/zh-CN/custombuttons/
 locale	custombuttons	nl-NL	jar:chrome/custombuttons.jar!/locale/nl-NL/custombuttons/
+locale	custombuttons	nl	jar:chrome/custombuttons.jar!/locale/nl/custombuttons/
 locale	custombuttons	de-DE	jar:chrome/custombuttons.jar!/locale/de-DE/custombuttons/
 locale	custombuttons	ko-KR	jar:chrome/custombuttons.jar!/locale/ko-KR/custombuttons/
 locale	custombuttons	it-IT	jar:chrome/custombuttons.jar!/locale/it-IT/custombuttons/
