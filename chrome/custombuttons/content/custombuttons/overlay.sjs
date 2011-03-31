@@ -161,17 +161,17 @@ const custombuttons =
 	{
 		var toolbar = ELEMENT (toolbarId);
 		//Исправляем currentSet для toolbar
-		var repstr = "";
-		if (newButtonId)
-			repstr = buttonId + "," + newButtonId;
 		var cs = toolbar. getAttribute ("currentset");
-		var ar = cs. split (buttonId);
-		cs = ar. slice (0, 2). join (repstr);
-		if (ar. length > 2)
-			cs = cs + ar. slice (2). join ("");
-		cs = cs. replace (/^,/, "");
-		cs = cs. replace (/,,/g, ",");
-		cs = cs. replace (/,$/, "");
+		var ar = cs. split (",");
+		var ind = ar. indexOf (buttonId);
+		if (ind != -1)
+		{
+		    if (newButtonId)
+			ar. splice (ind, 1, buttonId, newButtonId);
+		    else
+			ar. splice (ind, 1);
+		    cs = ar. join (",");
+		}
 		toolbar. setAttribute ("currentset", cs);
 		document. persist (toolbarId, "currentset");
 
