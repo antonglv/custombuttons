@@ -793,8 +793,8 @@
 			<handler event="keypress" keycode="VK_F3" action="this.findNext(event.shiftKey)" modifiers="shift"/>
 			<handler event="keypress" key="a" action="event.preventDefault();this.toggleComments()" modifiers="control,shift"/>
 			<handler event="keypress" key="g" action="this.goToLine()" modifiers="control"/>
-			<handler event="keypress" key="f" action="this.newSearch(event)" modifiers="control"/>
-			<handler event="keypress" key="f" action="this.newSearch(event)" modifiers="control,shift"/>
+			<handler event="keypress" key="f" action="this.newSearch(false)" modifiers="control"/>
+			<handler event="keypress" key="f" action="this.newSearch(true)" modifiers="control,shift"/>
 			<handler event="keypress" key="h" action="this.searchAndReplace(event)" modifiers="control"/>
 			<handler event="keypress" key="h" action="this.searchAndReplace(event)" modifiers="control,shift"/>
 			<handler event="keypress" key="w" action="this.toggleWrapLines()" modifiers="control"/>
