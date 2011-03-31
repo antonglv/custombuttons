@@ -23,7 +23,7 @@
                         <label value="&finddialog.findtextbox;"/>
                         <textbox id="findtext"/>
                     </row>
-                    <row id="replacebox" align="cenrer" hidden="true">
+                    <row id="replacebox" align="center" hidden="true">
                         <label value="&finddialog.replacetextbox;"/>
                         <textbox id="replacetext"/>
                     </row>
