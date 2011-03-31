@@ -798,7 +798,7 @@
 			<handler event="keypress" key="h" action="this.searchAndReplace(event)" modifiers="control"/>
 			<handler event="keypress" key="h" action="this.searchAndReplace(event)" modifiers="control,shift"/>
 			<handler event="keypress" key="w" action="this.toggleWrapLines()" modifiers="control"/>
-			<handler event="keypress" key="/" action="this.startFastFind()" modifiers="control"/>
+			<handler event="keypress" key="/" action="this.startFastFind()" modifiers="control" preventdefault="true"/>
 			<handler event="keypress" keycode="VK_LEFT" action="this.moveCaret(true, event);"/>
 			<handler event="keypress" keycode="VK_RIGHT" action="this.moveCaret(false, event);"/>
 			
