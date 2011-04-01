@@ -6,6 +6,7 @@ var Cc = Components. classes;
 var Ci = Components. interfaces;
 var Cu = Components. utils;
 var Cr = Components. results;
+var self = oButton;
 var xulns = "http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul";
 var xhtmlns = "http://www.w3.org/1999/xhtml";
 
