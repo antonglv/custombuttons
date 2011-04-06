@@ -150,7 +150,17 @@
 			<constructor>
 				<![CDATA[
 					this. editor. transactionManager. clear ();
-					this. editor. wrapWidth = -1;
+					var ps = Components. classes ["@mozilla.org/preferences-service;1"].
+						 getService (Components. interfaces. nsIPrefService).
+						 getBranch ("extensions.custombuttons.editor.");
+					var wrapWidth = -1;
+					if (ps. prefHasUserValue ("wrapWidth"))
+						wrapWidth = ps. getIntPref ("wrapWidth");
+					if (this. hasAttribute ("wrapWidth"))
+						wrapWidth = this. getAttribute ("wrapWidth");
+					if ((wrapWidth != 0) && (wrapWidth != -1))
+						wrapWidth = -1;
+					this. editor. wrapWidth = wrapWidth;
 					this. finder = Components. classes ["@mozilla.org/embedcomp/rangefind;1"].
 								   createInstance (Components. interfaces. nsIFind);
 				]]>
@@ -695,7 +705,10 @@
 			<method name="toggleWrapLines">
 				<body>
 					<![CDATA[
-						this. editor. wrapWidth = -1 - this. editor. wrapWidth;
+						var wrapWidth = -1 - this. editor. wrapWidth;
+						this. editor. wrapWidth = wrapWidth;
+						this. setAttribute ("wrapWidth", wrapWidth);
+						document. persist (this. id, "wrapWidth");
 						this. scrollSelectionIntoView ();
 					]]>
 				</body>
