@@ -175,7 +175,7 @@ Editor. prototype =
    }
    else
    {
-    var link = this. cbService. makeButtonLink (this. param. windowId, "update", this. param. id);
+    var link = "custombutton://buttons/" + this. param. windowId + "/update/" + this. param. id;
     var res = this. cbService. updateButton (link, uri);
        if (res == 1) // Cancel
     return false;
