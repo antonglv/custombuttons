@@ -842,13 +842,16 @@ setPrefs: function ( sPrefId, prefValue ) //{{{
  Returns:   Nothing
  Called by: 1.
  Purpose:   1. Clear specified User preference
- changed by Anton 25.02.08
+ changed by Anton 09.04.2011
  */
  clearPrefs: function(sPrefId) //{{{
 {
   var nsIPrefBranchObj = this.ps.getBranch(null);
-  nsIPrefBranchObj.clearUserPref(sPrefId);
-  this.ps.savePrefFile( null );
+  try
+  {
+      nsIPrefBranchObj.clearUserPref(sPrefId);
+      this.ps.savePrefFile( null );
+  } catch (e) {}
 }, //}}} End Method clearPrefs( sPrefId )
 
 /**  readFile( fPath )
