@@ -117,7 +117,11 @@ interfaces components/CBKeyMapComponent.xpt
 component 86216795-2b22-470a-9388-785cb4b4101b components/CBKeyMapComponent.js
 contract @xsms.nm.ru/custombuttons/cbkeymap;1 86216795-2b22-470a-9388-785cb4b4101b
 
-interfaces components/CustomButtonsService.xpt
+interfaces components/CustomButtonsService.xpt application={ec8030f7-c20a-464f-9b0e-13a3a9e97384} appversion<5.0a2
+interfaces components/CustomButtonsService2.xpt application={ec8030f7-c20a-464f-9b0e-13a3a9e97384} appversion>=5.0a2
+interfaces components/CustomButtonsService.xpt application={92650c4d-4b8e-4d2a-b7eb-24ecf4f6b63a} appversion<2.2a1pre
+interfaces components/CustomButtonsService2.xpt application={92650c4d-4b8e-4d2a-b7eb-24ecf4f6b63a} appversion>=2.2a1pre
+interfaces components/CustomButtonsService.xpt application={3550f703-e582-4d05-9a08-453d09bdfdc6} application={a463f10c-3994-11da-9945-000d60ca027b} application={718e30fb-e89b-41dd-9da7-e25a45638b28} application={20aa4150-b5f4-11de-8a39-0800200c9a66}
 component 64d03940-83bc-4ac6-afc5-3cbf6a7147c5 components/CustomButtonsService.js
 contract @xsms.nm.ru/custombuttons/cbservice;1 64d03940-83bc-4ac6-afc5-3cbf6a7147c5
 category profile-after-change cbICustomButtonsService @xsms.nm.ru/custombuttons/cbservice;1

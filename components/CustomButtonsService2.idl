@@ -1,6 +1,6 @@
 #include "nsISupports.idl"
 #include "nsIDOMWindow.idl"
-#include "Gecko2/nsIDOMNode.idl"
+#include "Gecko5/nsIDOMNode.idl"
 
 [scriptable, uuid (64d03940-83bc-4ac6-afc5-3cbf6a7147c5)]
 interface cbICustomButtonsService: nsISupports
