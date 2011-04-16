@@ -1,13 +1,12 @@
 #include "nsISupports.idl"
 #include "nsIDOMWindow.idl"
-#include "nsIDOMNode.idl"
 
 [scriptable, uuid (64d03940-83bc-4ac6-afc5-3cbf6a7147c5)]
 interface cbICustomButtonsService: nsISupports
 {
 	void editButton (in nsIDOMWindow opener, in string buttonLink, in nsISupports param);
-  string cloneButton (in nsIDOMNode clonedButton, in boolean asEmpty);
-	void removeButton (in nsIDOMNode removedButton, in boolean removeFromOverlay);
+  string cloneButton (in nsISupports clonedButton, in boolean asEmpty);
+	void removeButton (in nsISupports removedButton, in boolean removeFromOverlay);
 	PRInt32 updateButton (in string buttonLink, in string buttonId);
 	nsISupports getButtonParameters (in string buttonLink);
 	nsISupports parseButtonURI (in AUTF8String uri);

@@ -876,6 +876,7 @@ cbCustomButtonsService. prototype =
 
 	cloneButton: function (clonedButton, asEmpty)
 	{
+	    clonedButton = clonedButton. QI (nsIDOMNode);
 	    var documentURI = clonedButton. ownerDocument. documentURI;
 	    var buttonId = clonedButton. getAttribute ("id");
 	    var parentId = clonedButton. parentNode. getAttribute ("id");
@@ -964,6 +965,7 @@ cbCustomButtonsService. prototype =
 
 	removeButton: function (removedButton, removeFromOverlay)
 	{
+	    removedButton = removedButton. QI (nsIDOMNode);
 	    var documentURI = removedButton. ownerDocument. documentURI;
 	    var buttonId = removedButton. getAttribute ("id");
 	    var parentId = removedButton. parentNode. getAttribute ("id");
