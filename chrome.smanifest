@@ -117,11 +117,7 @@ interfaces components/CBKeyMapComponent.xpt
 component 86216795-2b22-470a-9388-785cb4b4101b components/CBKeyMapComponent.js
 contract @xsms.nm.ru/custombuttons/cbkeymap;1 86216795-2b22-470a-9388-785cb4b4101b
 
-interfaces components/CustomButtonsService.xpt FIREFOXAPP appversion<5.0a2
-interfaces components/CustomButtonsService2.xpt FIREFOXAPP appversion>=5.0a2
-interfaces components/CustomButtonsService.xpt SEAMONKEYAPP appversion<2.2a1pre
-interfaces components/CustomButtonsService2.xpt SEAMONKEYAPP appversion>=2.2a1pre
-interfaces components/CustomButtonsService.xpt THUNDERBIRDAPP FLOCKAPP SUNBIRDAPP KOMPOZERAPP
+interfaces components/CustomButtonsService.xpt
 component 64d03940-83bc-4ac6-afc5-3cbf6a7147c5 components/CustomButtonsService.js
 contract @xsms.nm.ru/custombuttons/cbservice;1 64d03940-83bc-4ac6-afc5-3cbf6a7147c5
 category profile-after-change cbICustomButtonsService @xsms.nm.ru/custombuttons/cbservice;1
