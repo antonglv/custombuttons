@@ -109,6 +109,8 @@ Editor. prototype =
 		ELEMENT ("initCode"). addEditorObserver (this);
 		ELEMENT ("help"). addEditorObserver (this);
 		window. addEventListener ("mousedown", this, true);
+		window. addEventListener ("focus", this, true);
+		window. addEventListener ("blur", this, true);
 	    if (cbMode & CB_MODE_SAVE_EDITOR_SIZE_SEPARATELY)
 	    {
 		// window manager may ignore screenX and screenY, so let's move window manually
@@ -333,12 +335,15 @@ Editor. prototype =
 
 	destroy: function ()
 	{
+	    window. removeEventListener ("blur", this, true);
+	    window. removeEventListener ("focus", this, true);
 	    window. removeEventListener ("mousedown", this, true);
 	    ELEMENT ("code"). removeEditorObserver (this);
 	    ELEMENT ("initCode"). removeEditorObserver (this);
 	    ELEMENT ("help"). removeEditorObserver (this);
 
 		var os = SERVICE (OBSERVER);
+		os. notifyObservers (null, this. notificationPrefix + "edit:done", this. param. id);
 	    	os. removeObserver (this, this. notificationPrefix + "updateButton");
 		os. removeObserver (this, this. notificationPrefix + "setEditorParameters");
 		os. removeObserver (this, this. notificationPrefix + "updateImage");
@@ -352,9 +357,27 @@ Editor. prototype =
 
         handleEvent: function (event)
         {
-	    var cbtn = ELEMENT ("custombuttonsEditor"). getButton ("cancel");
-	    if (event. originalTarget == cbtn)
-		this. lastFocused = document. activeElement;
+	    switch (event. type)
+	    {
+		case "mousedown":
+		    var cbtn = ELEMENT ("custombuttonsEditor"). getButton ("cancel");
+		    if (event. originalTarget == cbtn)
+			this. lastFocused = document. activeElement;
+		    break;
+		case "focus":
+		    if (event. target != window)
+			return;
+		    var os = SERVICE (OBSERVER);
+		    os. notifyObservers (null, this. notificationPrefix + "edit:focus", this. param. id);
+		    break;
+		case "blur":
+		    if (event. target != window)
+			return;
+		    var os = SERVICE (OBSERVER);
+		    os. notifyObservers (null, this. notificationPrefix + "edit:blur", this. param. id);
+		    break;
+		default:;
+	    }
 	},
 
 	onCancel: function ()
