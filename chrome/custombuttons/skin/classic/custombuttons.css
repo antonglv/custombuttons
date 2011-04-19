@@ -35,6 +35,17 @@ toolbarbutton[id^='custombuttons-button'][initializeerror]{
 	opacity:0.5;
 }
 
+toolbarbutton[id^='custombuttons-button'][cb-edit-state='inactive']{
+    opacity: 0.5 !important;
+    outline: 2px solid red !important;
+    outline-offset: -2px !important;
+}
+
+toolbarbutton[id^='custombuttons-button'][cb-edit-state='active']{
+    outline: 3px groove red !important;
+    outline-offset: -3px !important;
+}
+
 menuitem[id^="custombuttons-contextpopup-"] {
    -moz-binding: url("chrome://global/content/bindings/menu.xml#menuitem-iconic") !important;
 }

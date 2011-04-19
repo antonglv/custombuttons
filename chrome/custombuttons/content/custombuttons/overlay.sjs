@@ -79,6 +79,8 @@ const custombuttons =
 		this. addObserver ("updateButton");
 		this. addObserver ("cloneButton");
 		this. addObserver ("removeButton");
+		this. addObserver ("edit:focus");
+		this. addObserver ("edit:blur");
 		this. loaded = true;
 		this. initButtons ();
 	},
@@ -92,6 +94,8 @@ const custombuttons =
 	close: function ()
 	{
 		this. cbService. unregister ();
+		this. removeObserver ("edit:blur");
+		this. removeObserver ("edit:focus");
 		this. removeObserver ("removeButton");
 		this. removeObserver ("cloneButton");
 		this. removeObserver ("updateButton");
@@ -291,6 +295,21 @@ const custombuttons =
 				if ((topic != "updateButton") || this. shouldAddToPalette)
 					this. AddButtonToPalette (newButton);
 				break;
+			case "edit:focus":
+			    var btn = document. getElementById (sData);
+			    if (btn)
+				btn. setAttribute ("cb-edit-state", "active");
+			    break;
+			case "edit:blur":
+			    var btn = document. getElementById (sData);
+			    if (btn)
+				btn. setAttribute ("cb-edit-state", "inactive");
+			    break;
+			case "edit:done":
+			    var btn = document. getElementById (sData);
+			    if (btn && btn. hasAttribute ("cb-edit-state"))
+				btn. removeAttribute ("cb-edit-state");
+			    break;
 		}
 	},
 
