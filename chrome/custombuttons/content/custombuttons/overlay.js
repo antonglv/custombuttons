@@ -81,6 +81,7 @@ const custombuttons =
   this. addObserver ("removeButton");
   this. addObserver ("edit:focus");
   this. addObserver ("edit:blur");
+  this. addObserver ("edit:done");
   this. loaded = true;
   this. initButtons ();
  },
@@ -94,6 +95,7 @@ const custombuttons =
  close: function ()
  {
   this. cbService. unregister ();
+  this. removeObserver ("edit:done");
   this. removeObserver ("edit:blur");
   this. removeObserver ("edit:focus");
   this. removeObserver ("removeButton");
