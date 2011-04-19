@@ -204,6 +204,8 @@ Editor. prototype =
 	    	this. notificationSender = true;
 		this. cbService. installButton (this. param);
 	    	this. notificationSender = false;
+		var os = SERVICE (OBSERVER);
+		os. notifyObservers (null, this. notificationPrefix + "edit:focus", this. param. id);
 		return true;
 	},
 
@@ -335,6 +337,8 @@ Editor. prototype =
 
 	destroy: function ()
 	{
+	    var cs = SERVICE (CONSOLE);
+	    cs. logStringMessage ("destroy…");
 	    window. removeEventListener ("blur", this, true);
 	    window. removeEventListener ("focus", this, true);
 	    window. removeEventListener ("mousedown", this, true);
@@ -347,6 +351,7 @@ Editor. prototype =
 	    	os. removeObserver (this, this. notificationPrefix + "updateButton");
 		os. removeObserver (this, this. notificationPrefix + "setEditorParameters");
 		os. removeObserver (this, this. notificationPrefix + "updateImage");
+	    cs. logStringMessage ("destroy done");
 	},
 
         // next field and method are needed to rewind focus to active element
@@ -373,6 +378,8 @@ Editor. prototype =
 		case "blur":
 		    if (event. target != window)
 			return;
+		    var cs = SERVICE (CONSOLE);
+		cs. logStringMessage ("blur");
 		    var os = SERVICE (OBSERVER);
 		    os. notifyObservers (null, this. notificationPrefix + "edit:blur", this. param. id);
 		    break;
