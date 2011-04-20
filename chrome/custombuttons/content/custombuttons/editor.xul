@@ -17,6 +17,7 @@
 		onload="editor.init();"
 		ondialogaccept="return editor.onAccept();"
 		ondialogcancel="return editor.onCancel();"
+		onbeforeunload="editor.destroy()"
 		onunload="editor.destroy();">
 
 	<script type="application/x-javascript" src="editor2.js"/>

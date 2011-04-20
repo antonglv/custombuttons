@@ -339,8 +339,11 @@ Editor. prototype =
  this. cbService. convertImageToRawData (this. param. windowId, this. param. id || this. tempId, aURL);
     },
 
+    _destroyed: false,
     destroy: function ()
     {
+ if (this. _destroyed)
+     return;
  window. removeEventListener ("blur", this, true);
  window. removeEventListener ("focus", this, true);
  window. removeEventListener ("mousedown", this, true);
@@ -353,6 +356,7 @@ Editor. prototype =
  os. removeObserver (this, this. notificationPrefix + "updateButton");
  os. removeObserver (this, this. notificationPrefix + "setEditorParameters");
  os. removeObserver (this, this. notificationPrefix + "updateImage");
+ this. _destroyed = true;
     },
 
     // next field and method are needed to rewind focus to active element
