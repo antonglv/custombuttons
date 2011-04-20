@@ -66,6 +66,12 @@ Editor. prototype =
 	return this. QueryInterface (iid);
     },
 
+    notifyObservers: function (oSubject, sTopic, sData)
+    {
+	var os = SERVICE (OBSERVER);
+	os. notifyObservers (oSubject, this. notificationPrefix + sTopic, sData);
+    },
+
     init: function ()
     {
 	this. cbService = SERVICE (CB);
@@ -204,8 +210,7 @@ Editor. prototype =
 	this. notificationSender = true;
 	this. cbService. installButton (this. param);
 	this. notificationSender = false;
-	var os = SERVICE (OBSERVER);
-	os. notifyObservers (null, this. notificationPrefix + "edit:focus", this. param. id);
+	this. notifyObservers (null, "edit:focus", this. param. id);
 	return true;
     },
 
@@ -314,8 +319,7 @@ Editor. prototype =
 	var image_input = ELEMENT ("image");
 	var aURL = COMPONENT (SUPPORTS_STRING);
 	aURL. data = image_input. value;
-	var os = SERVICE (OBSERVER);
-	os. notifyObservers (aURL, this. notificationPrefix + "updateIcon", this. param. id);
+	this. notifyObservers (aURL, "updateIcon", this. param. id);
     },
 
     convert_image: function ()
@@ -344,8 +348,8 @@ Editor. prototype =
 	ELEMENT ("initCode"). removeEditorObserver (this);
 	ELEMENT ("help"). removeEditorObserver (this);
 
+	this. notifyObservers (null, "edit:done", this. param. id);
 	var os = SERVICE (OBSERVER);
-	os. notifyObservers (null, this. notificationPrefix + "edit:done", this. param. id);
 	os. removeObserver (this, this. notificationPrefix + "updateButton");
 	os. removeObserver (this, this. notificationPrefix + "setEditorParameters");
 	os. removeObserver (this, this. notificationPrefix + "updateImage");
@@ -367,18 +371,12 @@ Editor. prototype =
 		    this. lastFocused = document. activeElement;
 		break;
 	    case "focus":
-		if (event. target != window)
-		    return;
-		var os = SERVICE (OBSERVER);
-		os. notifyObservers (null, this. notificationPrefix + "edit:focus", this. param. id);
-	    break;
 	    case "blur":
 		if (event. target != window)
 		    return;
-		var os = SERVICE (OBSERVER);
-		os. notifyObservers (null, this. notificationPrefix + "edit:blur", this. param. id);
+		this. notifyObservers (null, "edit:" + event. type, this. param. id);
 		break;
-	default:;
+	    default:;
 	}
     },
 
