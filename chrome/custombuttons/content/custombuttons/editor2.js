@@ -66,6 +66,12 @@ Editor. prototype =
  return this. QueryInterface (iid);
     },
 
+    notifyObservers: function (oSubject, sTopic, sData)
+    {
+ var os = Components. classes ["@mozilla.org/observer-service;1"]. getService (Components. interfaces. nsIObserverService);
+ os. notifyObservers (oSubject, this. notificationPrefix + sTopic, sData);
+    },
+
     init: function ()
     {
  this. cbService = Components. classes ["@xsms.nm.ru/custombuttons/cbservice;1"]. getService (Components. interfaces. cbICustomButtonsService);
@@ -204,8 +210,7 @@ Editor. prototype =
  this. notificationSender = true;
  this. cbService. installButton (this. param);
  this. notificationSender = false;
- var os = Components. classes ["@mozilla.org/observer-service;1"]. getService (Components. interfaces. nsIObserverService);
- os. notifyObservers (null, this. notificationPrefix + "edit:focus", this. param. id);
+ this. notifyObservers (null, "edit:focus", this. param. id);
  return true;
     },
 
@@ -314,8 +319,7 @@ Editor. prototype =
  var image_input = document. getElementById ("image");
  var aURL = Components. classes ["@mozilla.org/supports-string;1"]. createInstance (Components. interfaces. nsISupportsString);
  aURL. data = image_input. value;
- var os = Components. classes ["@mozilla.org/observer-service;1"]. getService (Components. interfaces. nsIObserverService);
- os. notifyObservers (aURL, this. notificationPrefix + "updateIcon", this. param. id);
+ this. notifyObservers (aURL, "updateIcon", this. param. id);
     },
 
     convert_image: function ()
@@ -344,8 +348,8 @@ Editor. prototype =
  document. getElementById ("initCode"). removeEditorObserver (this);
  document. getElementById ("help"). removeEditorObserver (this);
 
+ this. notifyObservers (null, "edit:done", this. param. id);
  var os = Components. classes ["@mozilla.org/observer-service;1"]. getService (Components. interfaces. nsIObserverService);
- os. notifyObservers (null, this. notificationPrefix + "edit:done", this. param. id);
  os. removeObserver (this, this. notificationPrefix + "updateButton");
  os. removeObserver (this, this. notificationPrefix + "setEditorParameters");
  os. removeObserver (this, this. notificationPrefix + "updateImage");
@@ -367,18 +371,12 @@ Editor. prototype =
       this. lastFocused = document. activeElement;
   break;
      case "focus":
-  if (event. target != window)
-      return;
-  var os = Components. classes ["@mozilla.org/observer-service;1"]. getService (Components. interfaces. nsIObserverService);
-  os. notifyObservers (null, this. notificationPrefix + "edit:focus", this. param. id);
-     break;
      case "blur":
   if (event. target != window)
       return;
-  var os = Components. classes ["@mozilla.org/observer-service;1"]. getService (Components. interfaces. nsIObserverService);
-  os. notifyObservers (null, this. notificationPrefix + "edit:blur", this. param. id);
+  this. notifyObservers (null, "edit:" + event. type, this. param. id);
   break;
- default:;
+     default:;
  }
     },
 
