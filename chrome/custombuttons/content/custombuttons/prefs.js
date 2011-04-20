@@ -64,6 +64,12 @@ Prefs. prototype =
   var mode = this. handleCheckboxes (null);
   this. cbs. mode = mode;
   return true;
+ },
+
+ onCancel: function ()
+ {
+  window. removeEventListener ("command", this, false);
+  return true;
  }
 };
 
