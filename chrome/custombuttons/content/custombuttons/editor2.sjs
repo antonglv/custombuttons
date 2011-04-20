@@ -125,6 +125,7 @@ Editor. prototype =
 	    if (x && y)
 		window. moveTo (x, y);
 	}
+	this. notifyObservers (null, "edit:focus", this. param. id);
     },
 
     setEditorParameters: function (param)
