@@ -72,6 +72,11 @@ Editor. prototype =
 	os. notifyObservers (oSubject, this. notificationPrefix + sTopic, sData);
     },
 
+    sendButtonHighlightNotification: function (reason)
+    {
+	this. notifyObservers (null, "edit:" + reason, this. param. id);
+    },
+
     init: function ()
     {
 	this. cbService = SERVICE (CB);
@@ -125,7 +130,7 @@ Editor. prototype =
 	    if (x && y)
 		window. moveTo (x, y);
 	}
-	this. notifyObservers (null, "edit:focus", this. param. id);
+	this. sendButtonHighlightNotification ("focus");
     },
 
     setEditorParameters: function (param)
@@ -211,7 +216,7 @@ Editor. prototype =
 	this. notificationSender = true;
 	this. cbService. installButton (this. param);
 	this. notificationSender = false;
-	this. notifyObservers (null, "edit:focus", this. param. id);
+	this. sendButtonHighlightNotification ("focus");
 	return true;
     },
 
@@ -352,7 +357,7 @@ Editor. prototype =
 	ELEMENT ("initCode"). removeEditorObserver (this);
 	ELEMENT ("help"). removeEditorObserver (this);
 
-	this. notifyObservers (null, "edit:done", this. param. id);
+	this. sendButtonHighlightNotification ("done");
 	var os = SERVICE (OBSERVER);
 	os. removeObserver (this, this. notificationPrefix + "updateButton");
 	os. removeObserver (this, this. notificationPrefix + "setEditorParameters");
@@ -379,7 +384,7 @@ Editor. prototype =
 	    case "blur":
 		if (event. target != window)
 		    return;
-		this. notifyObservers (null, "edit:" + event. type, this. param. id);
+		this. sendButtonHighlightNotification (event. type);
 		break;
 	    default:;
 	}

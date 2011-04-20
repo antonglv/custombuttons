@@ -4,18 +4,21 @@
 
 <!DOCTYPE dialog SYSTEM "chrome://custombuttons/locale/custombuttons.dtd">
 
-<dialog id="custombuttonsPrefsDialog"
+<prefwindow id="custombuttonsPrefsDialog"
         xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
-        buttons="accept, cancel"
         onload="cbPrefs.onLoad();"
         ondialogaccept="return cbPrefs.onAccept();"
-        ondialogcancel="return cbPrefs.onCancel();"
+        ondialogcancel="return cbPrefs.onAccept();"
         title="&custombuttons_prefsDialog.title;"
 		persist="screenX screenY">
 
     <script type="application/x-javascript" src="chrome://custombuttons/content/prefs.js"/>
 
-    <vbox>
+    <prefpane id="general" label="General">
+      <preferences>
+	<preference id="id1" name="id1" type="bool"/>
+	<preference id="id2" name="id2" type="bool"/>
+      </preferences>
         <groupbox flex="1">
             <checkbox id="modebit1" label="&custombuttons.prefs.show_apply_button;"/>
 	    <checkbox id="modebit5" label="&custombuttons.prefs.disable_init;"/>
@@ -24,6 +27,8 @@
             hidden="true"/>
 	    <checkbox id="modebit6" label="&custombuttons.prefs.editor_save_size_and_position;"/>
         </groupbox>
-  </vbox>
+  </prefpane>
+  <prefpane id="backup" label="Backup Settings">
+  </prefpane>
 
-</dialog>
+</prefwindow>
