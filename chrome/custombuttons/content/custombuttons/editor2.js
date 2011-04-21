@@ -117,6 +117,7 @@ Editor. prototype =
  this. addObserver ("updateImage");
  this. addObserver ("setEditorParameters");
  this. addObserver ("updateButton");
+ this. addObserver ("edit:another-instance-exists");
  this. setValues ();
  document. getElementById ("name"). focus ();
  if (this. param. editorParameters)
@@ -330,7 +331,15 @@ Editor. prototype =
    this. setValues ();
       this. changed = false;
   }
-     break;
+  break;
+     case "edit:another-instance-exists":
+  if (this. notificationSender)
+      return;
+  oSubject = oSubject. QueryInterface (Components. interfaces. nsISupportsPRBool);
+  var link = "custombutton://buttons/" + this. param. windowId + "/update/" + this. param. id;
+  if (link == sData)
+      oSubject. data = true;
+  break;
      default:;
  }
     },
@@ -362,6 +371,15 @@ Editor. prototype =
  this. cbService. convertImageToRawData (this. param. windowId, this. param. id || this. tempId, aURL);
     },
 
+    checkForAnotherInstanceExists: function ()
+    {
+ var link = "custombutton://buttons/" + this. param. windowId + "/update/" + this. param. id;
+ var aie = Components. classes ["@mozilla.org/supports-PRBool;1"]. createInstance (Components. interfaces. nsISupportsPRBool);
+ aie. data = false;
+ this. notifyObservers (aie, "edit:another-instance-exists", link);
+ return aie. data;
+    },
+
     _destroyed: false,
     destroy: function ()
     {
@@ -374,7 +392,9 @@ Editor. prototype =
  document. getElementById ("initCode"). removeEditorObserver (this);
  document. getElementById ("help"). removeEditorObserver (this);
 
- this. sendButtonHighlightNotification ("done");
+ var aie = this. checkForAnotherInstanceExists ();
+ this. sendButtonHighlightNotification (aie? "blur": "done");
+ this. removeObserver ("edit:another-instance-exists");
  this. removeObserver ("updateButton");
  this. removeObserver ("setEditorParameters");
  this. removeObserver ("updateImage");
