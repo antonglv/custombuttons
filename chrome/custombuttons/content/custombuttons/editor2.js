@@ -230,7 +230,7 @@ Editor. prototype =
  this. notificationSender = true;
  this. cbService. installButton (this. param);
  this. notificationSender = false;
- this. sendButtonHighlightNotification ("focus");
+ this. sendButtonHighlightNotification ("save");
  return true;
     },
 

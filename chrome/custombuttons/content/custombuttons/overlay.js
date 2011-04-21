@@ -82,6 +82,7 @@ const custombuttons =
   this. addObserver ("edit:focus");
   this. addObserver ("edit:blur");
   this. addObserver ("edit:done");
+  this. addObserver ("edit:save");
   this. loaded = true;
   this. initButtons ();
  },
@@ -95,6 +96,7 @@ const custombuttons =
  close: function ()
  {
   this. cbService. unregister ();
+  this. removeObserver ("edit:save");
   this. removeObserver ("edit:done");
   this. removeObserver ("edit:blur");
   this. removeObserver ("edit:focus");
@@ -311,6 +313,15 @@ const custombuttons =
        var btn = document. getElementById (sData);
        if (btn && btn. hasAttribute ("cb-edit-state"))
     btn. removeAttribute ("cb-edit-state");
+       if (btn && btn. hasAttribute ("cb-last-saved"))
+    btn. removeAttribute ("cb-last-saved");
+       break;
+   case "edit:save":
+       var lastSavedButton = document. getElementsByAttribute ("cb-last-saved", "true") [0];
+       if (lastSavedButton && lastSavedButton. hasAttribute ("cb-last-saved"))
+    lastSavedButton. removeAttribute ("cb-last-saved");
+       var btn = document. getElementById (sData);
+       btn. setAttribute ("cb-last-saved", "true");
        break;
   }
  },
