@@ -66,10 +66,25 @@ Editor. prototype =
  return this. QueryInterface (iid);
     },
 
+    addObserver: function (sNotificationName)
+    {
+ var os = Components. classes ["@mozilla.org/observer-service;1"]. getService (Components. interfaces. nsIObserverService);
+ os. addObserver (this, this. notificationPrefix + sNotificationName, false);
+    },
+
+    removeObserver: function (sNotificationName)
+    {
+ var os = Components. classes ["@mozilla.org/observer-service;1"]. getService (Components. interfaces. nsIObserverService);
+ os. removeObserver (this, this. notificationPrefix + sNotificationName);
+    },
+
+    notificationSender: false,
     notifyObservers: function (oSubject, sTopic, sData)
     {
  var os = Components. classes ["@mozilla.org/observer-service;1"]. getService (Components. interfaces. nsIObserverService);
+ this. notificationSender = true;
  os. notifyObservers (oSubject, this. notificationPrefix + sTopic, sData);
+ this. notificationSender = false;
     },
 
     sendButtonHighlightNotification: function (reason)
@@ -99,10 +114,9 @@ Editor. prototype =
  else
      this. param = window. arguments [0]. wrappedJSObject;
  this. notificationPrefix = this. cbService. getNotificationPrefix (this. param. windowId);
- var os = Components. classes ["@mozilla.org/observer-service;1"]. getService (Components. interfaces. nsIObserverService);
- os. addObserver (this, this. notificationPrefix + "updateImage", false);
- os. addObserver (this, this. notificationPrefix + "setEditorParameters", false);
- os. addObserver (this, this. notificationPrefix + "updateButton", false);
+ this. addObserver ("updateImage");
+ this. addObserver ("setEditorParameters");
+ this. addObserver ("updateButton");
  this. setValues ();
  document. getElementById ("name"). focus ();
  if (this. param. editorParameters)
@@ -177,7 +191,6 @@ Editor. prototype =
  document. title += ": " + this. param. id;
     },
 
-    notificationSender: false,
     updateButton: function ()
     {
  var uri = document. getElementById ("urlfield-textbox"). value;
@@ -358,10 +371,9 @@ Editor. prototype =
  document. getElementById ("help"). removeEditorObserver (this);
 
  this. sendButtonHighlightNotification ("done");
- var os = Components. classes ["@mozilla.org/observer-service;1"]. getService (Components. interfaces. nsIObserverService);
- os. removeObserver (this, this. notificationPrefix + "updateButton");
- os. removeObserver (this, this. notificationPrefix + "setEditorParameters");
- os. removeObserver (this, this. notificationPrefix + "updateImage");
+ this. removeObserver ("updateButton");
+ this. removeObserver ("setEditorParameters");
+ this. removeObserver ("updateImage");
  this. _destroyed = true;
     },
 
