@@ -56,6 +56,7 @@
 #define SCRIPT_ERROR_COMPONENT_CID "@mozilla.org/scripterror;1"
 #define SIMPLE_URI_COMPONENT_CID "@mozilla.org/network/simple-uri;1"
 #define SUPPORTS_ARRAY_COMPONENT_CID "@mozilla.org/supports-array;1"
+#define SUPPORTS_PR_BOOL_COMPONENT_CID "@mozilla.org/supports-PRBool;1"
 #define STRING_INPUT_STREAM_COMPONENT_CID "@mozilla.org/io/string-input-stream;1"
 #define SUPPORTS_STRING_COMPONENT_CID "@mozilla.org/supports-string;1"
 #define SUPPORTS_CSTRING_COMPONENT_CID "@mozilla.org/supports-cstring;1"
@@ -114,6 +115,7 @@
 #define SIMPLE_URI_COMPONENT_IID nsIURI
 #define STRING_INPUT_STREAM_COMPONENT_IID nsIStringInputStream
 #define SUPPORTS_ARRAY_COMPONENT_IID nsISupportsArray
+#define SUPPORTS_PR_BOOL_COMPONENT_IID nsISupportsPRBool
 #define SUPPORTS_STRING_COMPONENT_IID nsISupportsString
 #define SUPPORTS_CSTRING_COMPONENT_IID nsISupportsCString
 #define TEXT_TO_SUB_URI_COMPONENT_IID nsITextToSubURI
