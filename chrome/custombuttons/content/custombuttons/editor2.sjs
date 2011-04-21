@@ -301,33 +301,37 @@ Editor. prototype =
 	}
     },
 
-    observe: function (subject, topic, data)
+    observe: function (oSubject, sTopic, sData)
     {
-	if (topic == this. notificationPrefix + "updateImage")
+	var topic = sTopic. replace (this. notificationPrefix, "");
+	switch (topic)
 	{
-	    if ((data == this. param. id) ||
-		(data == this. tempId))
-	    {
-		var array = subject. QI (nsISupportsArray);
-		var contentType = array. GetElementAt (0). QI (nsISupportsString);
-		var dataString = array. GetElementAt (1). QI (nsISupportsString);
-		ELEMENT ("image"). value = MAKE_DATA_URI (contentType. data, dataString. data);
-	    }
-	}
-	else if (topic == this. notificationPrefix + "setEditorParameters")
-	{
-	    var param = subject. wrappedJSObject;
-	    if (this. param. id == param. id)
-		this. setEditorParameters (subject);
-	}
-	else if ((topic == this. notificationPrefix + "updateButton") &&
-		 (subject. getAttribute ("id") == this. param. id))
-	{
-	    var link = "custombutton://buttons/" + this. param. windowId + "/edit/" + this. param. id;
-	    this. param = this. cbService. getButtonParameters (link). wrappedJSObject;
-	    if (!this. notificationSender)
-		this. setValues ();
-	    this. changed = false;
+	    case "updateImage":
+		if ((sData == this. param. id) ||
+		    (sData == this. tempId))
+		{
+		    var array = oSubject. QI (nsISupportsArray);
+		    var contentType = array. GetElementAt (0). QI (nsISupportsString);
+		    var dataString = array. GetElementAt (1). QI (nsISupportsString);
+		    ELEMENT ("image"). value = MAKE_DATA_URI (contentType. data, dataString. data);
+		}
+		break;
+	    case "setEditorParameters":
+		var param = oSubject. wrappedJSObject;
+		if (this. param. id == param. id)
+		    this. setEditorParameters (oSubject);
+		break;
+	    case "updateButton":
+		if (oSubject. getAttribute ("id") == this. param. id)
+		{
+		    var link = "custombutton://buttons/" + this. param. windowId + "/edit/" + this. param. id;
+		    this. param = this. cbService. getButtonParameters (link). wrappedJSObject;
+		    if (!this. notificationSender)
+			this. setValues ();
+		    this. changed = false;
+		}
+	    break;
+	    default:;
 	}
     },
 
