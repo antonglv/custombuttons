@@ -418,8 +418,6 @@ Editor. prototype =
 		break;
 	    case "focus":
 	    case "blur":
-		if (event. target != window)
-		    return;
 		this. sendButtonHighlightNotification (event. type);
 		break;
 	    default:;
