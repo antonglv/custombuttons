@@ -155,7 +155,6 @@ Editor. prototype =
 	this. cbService = SERVICE (CB);
 	this. getParam ();
 	this. notificationPrefix = this. cbService. getNotificationPrefix (this. param. windowId);
-	this. addObservers ();
 	this. setValues ();
 	ELEMENT ("name"). focus ();
 	if (this. param. editorParameters)
@@ -169,6 +168,7 @@ Editor. prototype =
 	if (this. param. newButton || !sab)
 	    this. saveButton. setAttribute ("hidden", "true");
 
+	this. addObservers ();
 	this. addEventListeners ();
 	if (cbMode & CB_MODE_SAVE_EDITOR_SIZE_SEPARATELY)
 	{
