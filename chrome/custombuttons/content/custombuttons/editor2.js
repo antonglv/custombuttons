@@ -155,7 +155,6 @@ Editor. prototype =
  this. cbService = Components. classes ["@xsms.nm.ru/custombuttons/cbservice;1"]. getService (Components. interfaces. cbICustomButtonsService);
  this. getParam ();
  this. notificationPrefix = this. cbService. getNotificationPrefix (this. param. windowId);
- this. addObservers ();
  this. setValues ();
  document. getElementById ("name"). focus ();
  if (this. param. editorParameters)
@@ -169,6 +168,7 @@ Editor. prototype =
  if (this. param. newButton || !sab)
      this. saveButton. setAttribute ("hidden", "true");
 
+ this. addObservers ();
  this. addEventListeners ();
  if (cbMode & 64)
  {
