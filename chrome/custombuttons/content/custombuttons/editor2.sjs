@@ -92,9 +92,8 @@ Editor. prototype =
 	this. notifyObservers (null, "edit:" + reason, this. param. id);
     },
 
-    init: function ()
+    getParam: function ()
     {
-	this. cbService = SERVICE (CB);
 	if (!window. arguments || !window. arguments [0])
 	{
 	    var ios = SERVICE (IO);
@@ -113,11 +112,50 @@ Editor. prototype =
 	}
 	else
 	    this. param = window. arguments [0]. wrappedJSObject;
-	this. notificationPrefix = this. cbService. getNotificationPrefix (this. param. windowId);
+    },
+
+    addObservers: function ()
+    {
 	this. addObserver ("updateImage");
 	this. addObserver ("setEditorParameters");
 	this. addObserver ("updateButton");
 	this. addObserver ("edit:another-instance-exists");
+	ELEMENT ("code"). addEditorObserver (this);
+	ELEMENT ("initCode"). addEditorObserver (this);
+	ELEMENT ("help"). addEditorObserver (this);
+    },
+
+    removeObservers: function ()
+    {
+	ELEMENT ("code"). removeEditorObserver (this);
+	ELEMENT ("initCode"). removeEditorObserver (this);
+	ELEMENT ("help"). removeEditorObserver (this);
+	this. removeObserver ("edit:another-instance-exists");
+	this. removeObserver ("updateButton");
+	this. removeObserver ("setEditorParameters");
+	this. removeObserver ("updateImage");
+    },
+
+    addEventListeners: function ()
+    {
+	window. addEventListener ("mousedown", this, true);
+	window. addEventListener ("focus", this, true);
+	window. addEventListener ("blur", this, true);
+    },
+
+    removeEventListeners: function ()
+    {
+	window. removeEventListener ("blur", this, true);
+	window. removeEventListener ("focus", this, true);
+	window. removeEventListener ("mousedown", this, true);
+    },
+
+    init: function ()
+    {
+	this. cbService = SERVICE (CB);
+	this. getParam ();
+	this. notificationPrefix = this. cbService. getNotificationPrefix (this. param. windowId);
+	this. addObservers ();
 	this. setValues ();
 	ELEMENT ("name"). focus ();
 	if (this. param. editorParameters)
@@ -131,12 +169,7 @@ Editor. prototype =
 	if (this. param. newButton || !sab)
 	    this. saveButton. setAttribute ("hidden", "true");
 
-	ELEMENT ("code"). addEditorObserver (this);
-	ELEMENT ("initCode"). addEditorObserver (this);
-	ELEMENT ("help"). addEditorObserver (this);
-	window. addEventListener ("mousedown", this, true);
-	window. addEventListener ("focus", this, true);
-	window. addEventListener ("blur", this, true);
+	this. addEventListeners ();
 	if (cbMode & CB_MODE_SAVE_EDITOR_SIZE_SEPARATELY)
 	{
 	    // window manager may ignore screenX and screenY, so let's move window manually
@@ -385,19 +418,10 @@ Editor. prototype =
     {
 	if (this. _destroyed)
 	    return;
-	window. removeEventListener ("blur", this, true);
-	window. removeEventListener ("focus", this, true);
-	window. removeEventListener ("mousedown", this, true);
-	ELEMENT ("code"). removeEditorObserver (this);
-	ELEMENT ("initCode"). removeEditorObserver (this);
-	ELEMENT ("help"). removeEditorObserver (this);
-
+	this. removeEventListeners ();
 	var aie = this. checkForAnotherInstanceExists ();
 	this. sendButtonHighlightNotification (aie? "blur": "done");
-	this. removeObserver ("edit:another-instance-exists");
-	this. removeObserver ("updateButton");
-	this. removeObserver ("setEditorParameters");
-	this. removeObserver ("updateImage");
+	this. removeObservers ();
 	this. _destroyed = true;
     },
 

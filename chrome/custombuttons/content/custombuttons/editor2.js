@@ -92,9 +92,8 @@ Editor. prototype =
  this. notifyObservers (null, "edit:" + reason, this. param. id);
     },
 
-    init: function ()
+    getParam: function ()
     {
- this. cbService = Components. classes ["@xsms.nm.ru/custombuttons/cbservice;1"]. getService (Components. interfaces. cbICustomButtonsService);
  if (!window. arguments || !window. arguments [0])
  {
      var ios = Components. classes ["@mozilla.org/network/io-service;1"]. getService (Components. interfaces. nsIIOService);
@@ -113,11 +112,50 @@ Editor. prototype =
  }
  else
      this. param = window. arguments [0]. wrappedJSObject;
- this. notificationPrefix = this. cbService. getNotificationPrefix (this. param. windowId);
+    },
+
+    addObservers: function ()
+    {
  this. addObserver ("updateImage");
  this. addObserver ("setEditorParameters");
  this. addObserver ("updateButton");
  this. addObserver ("edit:another-instance-exists");
+ document. getElementById ("code"). addEditorObserver (this);
+ document. getElementById ("initCode"). addEditorObserver (this);
+ document. getElementById ("help"). addEditorObserver (this);
+    },
+
+    removeObservers: function ()
+    {
+ document. getElementById ("code"). removeEditorObserver (this);
+ document. getElementById ("initCode"). removeEditorObserver (this);
+ document. getElementById ("help"). removeEditorObserver (this);
+ this. removeObserver ("edit:another-instance-exists");
+ this. removeObserver ("updateButton");
+ this. removeObserver ("setEditorParameters");
+ this. removeObserver ("updateImage");
+    },
+
+    addEventListeners: function ()
+    {
+ window. addEventListener ("mousedown", this, true);
+ window. addEventListener ("focus", this, true);
+ window. addEventListener ("blur", this, true);
+    },
+
+    removeEventListeners: function ()
+    {
+ window. removeEventListener ("blur", this, true);
+ window. removeEventListener ("focus", this, true);
+ window. removeEventListener ("mousedown", this, true);
+    },
+
+    init: function ()
+    {
+ this. cbService = Components. classes ["@xsms.nm.ru/custombuttons/cbservice;1"]. getService (Components. interfaces. cbICustomButtonsService);
+ this. getParam ();
+ this. notificationPrefix = this. cbService. getNotificationPrefix (this. param. windowId);
+ this. addObservers ();
  this. setValues ();
  document. getElementById ("name"). focus ();
  if (this. param. editorParameters)
@@ -131,12 +169,7 @@ Editor. prototype =
  if (this. param. newButton || !sab)
      this. saveButton. setAttribute ("hidden", "true");
 
- document. getElementById ("code"). addEditorObserver (this);
- document. getElementById ("initCode"). addEditorObserver (this);
- document. getElementById ("help"). addEditorObserver (this);
- window. addEventListener ("mousedown", this, true);
- window. addEventListener ("focus", this, true);
- window. addEventListener ("blur", this, true);
+ this. addEventListeners ();
  if (cbMode & 64)
  {
      // window manager may ignore screenX and screenY, so let's move window manually
@@ -385,19 +418,10 @@ Editor. prototype =
     {
  if (this. _destroyed)
      return;
- window. removeEventListener ("blur", this, true);
- window. removeEventListener ("focus", this, true);
- window. removeEventListener ("mousedown", this, true);
- document. getElementById ("code"). removeEditorObserver (this);
- document. getElementById ("initCode"). removeEditorObserver (this);
- document. getElementById ("help"). removeEditorObserver (this);
-
+ this. removeEventListeners ();
  var aie = this. checkForAnotherInstanceExists ();
  this. sendButtonHighlightNotification (aie? "blur": "done");
- this. removeObserver ("edit:another-instance-exists");
- this. removeObserver ("updateButton");
- this. removeObserver ("setEditorParameters");
- this. removeObserver ("updateImage");
+ this. removeObservers ();
  this. _destroyed = true;
     },
 
