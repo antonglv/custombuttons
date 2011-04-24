@@ -49,6 +49,30 @@ const custombuttons =
 	os. removeObserver (this, this. notificationPrefix + sNotificationName);
     },
 
+    addObservers: function ()
+    {
+	this. addObserver ("installButton");
+	this. addObserver ("updateButton");
+	this. addObserver ("cloneButton");
+	this. addObserver ("removeButton");
+	this. addObserver ("edit:focus");
+	this. addObserver ("edit:blur");
+	this. addObserver ("edit:done");
+	this. addObserver ("edit:save");
+    },
+
+    removeObservers: function ()
+    {
+	this. removeObserver ("edit:save");
+	this. removeObserver ("edit:done");
+	this. removeObserver ("edit:blur");
+	this. removeObserver ("edit:focus");
+	this. removeObserver ("removeButton");
+	this. removeObserver ("cloneButton");
+	this. removeObserver ("updateButton");
+	this. removeObserver ("installButton");
+    },
+
     init: function ()
     {
 	this. cbService = SERVICE (CB);
@@ -75,14 +99,7 @@ const custombuttons =
 	    catch (e) {}
 	}
 	this. cbService. mode = mode;
-	this. addObserver ("installButton");
-	this. addObserver ("updateButton");
-	this. addObserver ("cloneButton");
-	this. addObserver ("removeButton");
-	this. addObserver ("edit:focus");
-	this. addObserver ("edit:blur");
-	this. addObserver ("edit:done");
-	this. addObserver ("edit:save");
+	this. addObservers ();
 	this. loaded = true;
 	this. initButtons ();
     },
@@ -96,14 +113,7 @@ const custombuttons =
     close: function ()
     {
 	this. cbService. unregister ();
-	this. removeObserver ("edit:save");
-	this. removeObserver ("edit:done");
-	this. removeObserver ("edit:blur");
-	this. removeObserver ("edit:focus");
-	this. removeObserver ("removeButton");
-	this. removeObserver ("cloneButton");
-	this. removeObserver ("updateButton");
-	this. removeObserver ("installButton");
+	this. removeObservers ();
 	window. removeEventListener ("load", custombuttons, false);
 	window. removeEventListener ("unload", custombuttons, false);
 	window. removeEventListener ("keypress", custombuttons, true);
@@ -301,14 +311,10 @@ const custombuttons =
 		    this. AddButtonToPalette (newButton);
 		break;
 	    case "edit:focus":
-		btn = document. getElementById (sData);
-		if (btn)
-		    btn. setAttribute ("cb-edit-state", "active");
-		break;
 	    case "edit:blur":
 		btn = document. getElementById (sData);
 		if (btn)
-		    btn. setAttribute ("cb-edit-state", "inactive");
+		    btn. setAttribute ("cb-edit-state", (topic == "edit:focus"? "active": "inactive"));
 		break;
 	    case "edit:done":
 		btn = document. getElementById (sData);
