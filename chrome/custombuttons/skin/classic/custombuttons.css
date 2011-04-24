@@ -42,7 +42,7 @@ toolbarbutton[id^='custombuttons-button'][cb-edit-state='inactive']{
 }
 
 toolbarbutton[id^='custombuttons-button'][cb-edit-state='active']{
-    outline: 2px groove red !important;
+    outline: 2px solid red !important;
     outline-offset: -3px !important;
 }
 
