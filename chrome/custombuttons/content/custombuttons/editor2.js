@@ -10,6 +10,8 @@ Editor. prototype =
     param: {},
     CNSISS: Components. interfaces. nsISupportsString,
     tempId: "",
+    state: "inactive",
+    lastSaved: false,
 
     QueryInterface: function (iid)
     {
@@ -89,6 +91,10 @@ Editor. prototype =
 
     sendButtonHighlightNotification: function (reason)
     {
+ if (reason == "save")
+     this. lastSaved = true;
+ else
+     this. state = reason;
  this. notifyObservers (null, "edit:" + reason, this. param. id);
     },
 
@@ -120,6 +126,8 @@ Editor. prototype =
  this. addObserver ("setEditorParameters");
  this. addObserver ("updateButton");
  this. addObserver ("edit:another-instance-exists");
+ this. addObserver ("edit:save");
+ this. addObserver ("custombuttons-initialized");
  document. getElementById ("code"). addEditorObserver (this);
  document. getElementById ("initCode"). addEditorObserver (this);
  document. getElementById ("help"). addEditorObserver (this);
@@ -130,6 +138,8 @@ Editor. prototype =
  document. getElementById ("code"). removeEditorObserver (this);
  document. getElementById ("initCode"). removeEditorObserver (this);
  document. getElementById ("help"). removeEditorObserver (this);
+ this. removeObserver ("custombuttons-initialized");
+ this. removeObserver ("edit:save");
  this. removeObserver ("edit:another-instance-exists");
  this. removeObserver ("updateButton");
  this. removeObserver ("setEditorParameters");
@@ -209,7 +219,7 @@ Editor. prototype =
  var field;
  for (var v in this. param)
  {
-     var field = document. getElementById (v);
+     field = document. getElementById (v);
      if (field && this. param [v])
   field. value = this. param [v];
  }
@@ -337,6 +347,7 @@ Editor. prototype =
 
     observe: function (oSubject, sTopic, sData)
     {
+ var link = "custombutton://buttons/" + this. param. windowId + "/update/" + this. param. id;
  var topic = sTopic. replace (this. notificationPrefix, "");
  switch (topic)
  {
@@ -358,7 +369,6 @@ Editor. prototype =
      case "updateButton":
   if (oSubject. getAttribute ("id") == this. param. id)
   {
-      var link = "custombutton://buttons/" + this. param. windowId + "/edit/" + this. param. id;
       this. param = this. cbService. getButtonParameters (link). wrappedJSObject;
       if (!this. notificationSender)
    this. setValues ();
@@ -369,9 +379,17 @@ Editor. prototype =
   if (this. notificationSender)
       return;
   oSubject = oSubject. QueryInterface (Components. interfaces. nsISupportsPRBool);
-  var link = "custombutton://buttons/" + this. param. windowId + "/update/" + this. param. id;
   if (link == sData)
       oSubject. data = true;
+  break;
+     case "edit:save":
+  if (this. param. id != sData)
+      this. lastSaved = false;
+  break;
+     case "custombuttons-initialized":
+  this. sendButtonHighlightNotification (this. state);
+  if (this. lastSaved)
+      this. sendButtonHighlightNotification ("save");
   break;
      default:;
  }

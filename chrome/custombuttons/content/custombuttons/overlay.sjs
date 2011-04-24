@@ -49,6 +49,15 @@ const custombuttons =
 	os. removeObserver (this, this. notificationPrefix + sNotificationName);
     },
 
+    notificationSender: false,
+    notifyObservers: function (oSubject, sTopic, sData)
+    {
+	var os = SERVICE (OBSERVER);
+	this. notificationSender = true;
+	os. notifyObservers (oSubject, this. notificationPrefix + sTopic, sData);
+	this. notificationSender = false;
+    },
+
     addObservers: function ()
     {
 	this. addObserver ("installButton");
@@ -102,6 +111,7 @@ const custombuttons =
 	this. addObservers ();
 	this. loaded = true;
 	this. initButtons ();
+	this. notifyObservers (null, "custombuttons-initialized", "");
     },
 
     initButtons: function ()
