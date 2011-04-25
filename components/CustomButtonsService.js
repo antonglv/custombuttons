@@ -702,6 +702,7 @@ cbCustomButtonsService. prototype =
 
  editButton: function (opener, buttonLink, param)
  {
+     opener = opener. QueryInterface (Components. interfaces. nsIDOMWindow);
      var oButtonParameters = this. getButtonParameters (buttonLink);
      if (param)
      {
