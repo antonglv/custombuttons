@@ -1,4 +1,13 @@
 Changelog
+0.0.5.4
++ Added: Firefox 6.0a1 compatibility
++ Added: Thunderbird 3.3a4pre compatibility
++ Added: SeaMonkey 2.2a1pre
++ Added: indication for the buttons are being edited
++ Added: (Editor) saving of the selected word wrap mode
++ Added: 'self' predefined variable
++ Added: nl translation
+# Fixed: Several minor bugs
 0.0.5.3
 + Added: Firefox 4.0 compatibility
 ! Changed: Now buttons wait for initialization till window will be loaded
