@@ -14,7 +14,14 @@ var custombutton =
      }
      if (oBtn. destroy)
   oBtn. destroy ("constructor"); // to call onDestroy method, if exists
-     if (oBtn. parentNode && oBtn. parentNode. id. indexOf ("wrapper-") == 0)
+     var toolbarpaletteItem = oBtn. parentNode;
+     while (toolbarpaletteItem)
+     {
+  if (toolbarpaletteItem. nodeName == "toolbarpaletteitem")
+      break;
+  toolbarpaletteItem = toolbarpaletteItem. parentNode;
+     }
+     if (toolbarpaletteItem && toolbarpaletteItem. id. indexOf ("wrapper-") == 0)
      {
   if (oBtn. hasAttribute ("initialized"))
       oBtn. removeAttribute ("initialized");
