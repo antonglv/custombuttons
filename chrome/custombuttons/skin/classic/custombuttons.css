@@ -36,7 +36,7 @@ toolbarbutton[id^='custombuttons-button'][initializeerror]{
 }
 
 toolbarbutton[id^='custombuttons-button'][cb-edit-state='inactive']{
-    opacity: 0.5 !important;
+    opacity: 0.75 !important;
     outline: 2px solid red !important;
     outline-offset: -3px !important;
 }
