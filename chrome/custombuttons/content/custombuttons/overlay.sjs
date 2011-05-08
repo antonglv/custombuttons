@@ -322,24 +322,33 @@ const custombuttons =
 		break;
 	    case "edit:focus":
 	    case "edit:blur":
-		btn = document. getElementById (sData);
-		if (btn)
-		    btn. setAttribute ("cb-edit-state", (topic == "edit:focus"? "active": "inactive"));
+		if (sData)
+		{
+		    btn = document. getElementById (sData);
+		    if (btn)
+			btn. setAttribute ("cb-edit-state", (topic == "edit:focus"? "active": "inactive"));
+		}
 		break;
 	    case "edit:done":
-		btn = document. getElementById (sData);
-		if (btn && btn. hasAttribute ("cb-edit-state"))
-		    btn. removeAttribute ("cb-edit-state");
-		if (btn && btn. hasAttribute ("cb-last-saved"))
-		    btn. removeAttribute ("cb-last-saved");
+		if (sData)
+		{
+		    btn = document. getElementById (sData);
+		    if (btn && btn. hasAttribute ("cb-edit-state"))
+			btn. removeAttribute ("cb-edit-state");
+		    if (btn && btn. hasAttribute ("cb-last-saved"))
+			btn. removeAttribute ("cb-last-saved");
+		}
 		break;
 	    case "edit:save":
 		var lastSavedButton = document. getElementsByAttribute ("cb-last-saved", "true") [0];
 		if (lastSavedButton && lastSavedButton. hasAttribute ("cb-last-saved"))
 		    lastSavedButton. removeAttribute ("cb-last-saved");
-		btn = document. getElementById (sData);
-		if (btn)
-		    btn. setAttribute ("cb-last-saved", "true");
+		if (sData)
+		{
+		    btn = document. getElementById (sData);
+		    if (btn)
+			btn. setAttribute ("cb-last-saved", "true");
+		}
 		break;
 	}
     },
