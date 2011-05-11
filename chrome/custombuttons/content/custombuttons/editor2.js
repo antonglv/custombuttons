@@ -47,6 +47,7 @@ Editor. prototype =
      this. saveButton. removeAttribute ("disabled");
  else
      this. saveButton. setAttribute ("disabled", "true");
+ document. getElementById ("code"). changed = document. getElementById ("initCode"). changed = document. getElementById ("help"). changed = val;
     },
 
     /* nsIEditorObserver */
