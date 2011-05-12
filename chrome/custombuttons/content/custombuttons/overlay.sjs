@@ -527,6 +527,7 @@ const custombuttons =
 // init custombuttons object in dependence of application and window
 (function ()
 {
+    var oBookmarkButtonMenuitem;
     var info = SERVICE (XUL_APP_INFO);
     var oVC = COMPONENT (VERSION_COMPARATOR);
     switch (document. documentURI)
@@ -601,7 +602,7 @@ const custombuttons =
 		    return function ()
 		    {
 			fn. apply (custombuttons, []);
-			var oBookmarkButtonMenuitem = ELEMENT ("custombuttons-contextpopup-bookmarkButton");
+			oBookmarkButtonMenuitem = ELEMENT ("custombuttons-contextpopup-bookmarkButton");
 			oBookmarkButtonMenuitem. parentNode. removeChild (oBookmarkButtonMenuitem);
 			oBookmarkButtonMenuitem = ELEMENT ("custombuttons-contextpopup-bookmarkButton-sub");
 			oBookmarkButtonMenuitem. parentNode. removeChild (oBookmarkButtonMenuitem);
@@ -664,6 +665,17 @@ const custombuttons =
 		    }
 		);
 		custombuttons. makeBookmark = function () {};
+		custombuttons. init = (function (fn)
+		{
+		    return function ()
+		    {
+			fn. apply (custombuttons, []);
+			oBookmarkButtonMenuitem = ELEMENT ("custombuttons-contextpopup-bookmarkButton");
+			oBookmarkButtonMenuitem. parentNode. removeChild (oBookmarkButtonMenuitem);
+			oBookmarkButtonMenuitem = ELEMENT ("custombuttons-contextpopup-bookmarkButton-sub");
+			oBookmarkButtonMenuitem. parentNode. removeChild (oBookmarkButtonMenuitem);
+		    };
+		}) (custombuttons. init);
 		if (oVC. compare ("1.0b2pre", info. version) <= 0)
 		    custombuttons. shouldAddToPalette = false;
 		break;
@@ -679,6 +691,17 @@ const custombuttons =
 		    }
 		);
 		custombuttons. makeBookmark = function () {};
+		custombuttons. init = (function (fn)
+		{
+		    return function ()
+		    {
+			fn. apply (custombuttons, []);
+			oBookmarkButtonMenuitem = ELEMENT ("custombuttons-contextpopup-bookmarkButton");
+			oBookmarkButtonMenuitem. parentNode. removeChild (oBookmarkButtonMenuitem);
+			oBookmarkButtonMenuitem = ELEMENT ("custombuttons-contextpopup-bookmarkButton-sub");
+			oBookmarkButtonMenuitem. parentNode. removeChild (oBookmarkButtonMenuitem);
+		    };
+		}) (custombuttons. init);
 		break;
     }
 }) ();
