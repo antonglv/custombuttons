@@ -2,7 +2,7 @@ Changelog
 0.0.5.4
 + Added: Firefox 6.0a1 compatibility
 + Added: Thunderbird 3.3a4pre compatibility
-+ Added: SeaMonkey 2.2a1pre
++ Added: SeaMonkey 2.2a1pre compatibility
 + Added: indication for the buttons are being edited
 + Added: (Editor) saving of the selected word wrap mode
 + Added: 'self' predefined variable
