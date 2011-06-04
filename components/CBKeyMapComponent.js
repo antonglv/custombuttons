@@ -47,6 +47,7 @@ cbKeyMapService. prototype =
 
  getKeyPrefix: function (event)
  {
+     event instanceof Components. interfaces. nsIDOMEvent;
   var prefix = "";
   if (event. altKey) prefix += "Alt+";
   if (event. ctrlKey) prefix += "Ctrl+";
@@ -73,6 +74,7 @@ cbKeyMapService. prototype =
 
  getKey: function (event)
  {
+     event instanceof Components. interfaces. nsIDOMEvent;
   var key = "";
   var keyCode = this. eventKeymap [event. keyCode];
   if (event. which && (keyCode != "RETURN") && (keyCode != "BACK_SPACE"))
@@ -84,6 +86,7 @@ cbKeyMapService. prototype =
 
  Get: function (windowId, event, count)
  {
+     event instanceof Components. interfaces. nsIDOMEvent;
   var key = this. getKeyPrefix (event) + this. getKey (event);
   var values = new Array ();
   var mode = false;
