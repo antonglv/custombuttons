@@ -11,7 +11,7 @@
 		 xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
 	<popupset id="mainPopupSet">
-		<menupopup id="custombuttons-contextpopup">
+		<menupopup id="custombuttons-contextpopup" onpopuphiding="document.popupNode=null;">
 			<menuitem id="custombuttons-contextpopup-addnewbutton"
 				  class="menuitem-iconic"
 					  label="&custombuttons.viewMenu_Item;"
