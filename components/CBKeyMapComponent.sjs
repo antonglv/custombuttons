@@ -1,22 +1,22 @@
 // ***** BEGIN LICENSE BLOCK *****
 // Version: MPL 1.1
-// 
+//
 // The contents of this file are subject to the Mozilla Public License Version
 // 1.1 (the "License"); you may not use this file except in compliance with
 // the License. You may obtain a copy of the License at
 // http://www.mozilla.org/MPL/
-// 
+//
 // Software distributed under the License is distributed on an "AS IS" basis,
 // WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License
 // for the specific language governing rights and limitations under the
 // License.
-// 
+//
 // Custom Buttons:
 // - Gives a possibility to create custom toolbarbuttons.
 // - This component is intended to support custombuttons "hot keys" definition
-// 
+//
 // Author: Anton Glazatov (c) 2008
-// 
+//
 // ***** END LICENSE BLOCK *****
 #include <project.hjs>
 
@@ -26,7 +26,7 @@ cbKeyMapService. prototype =
 	DEFINE_STD_QI (cbIKeyMapService),
 
     keymap: {},
-    
+
     Add: function (windowId, buttonId, key, disableDefaultAction)
     {
 		if (!windowId || !buttonId)
@@ -36,17 +36,18 @@ cbKeyMapService. prototype =
 		if (key)
 			this. keymap [windowId] [buttonId] = [key, disableDefaultAction];
 		else
-			this. Delete (windowId, buttonId); 
+			this. Delete (windowId, buttonId);
 	},
-	
+
 	Delete: function (windowId, buttonId)
 	{
 	    if (this. keymap [windowId] && this. keymap [windowId] [buttonId])
 		delete this. keymap [windowId] [buttonId];
 	},
-	
+
 	getKeyPrefix: function (event)
 	{
+	    event instanceof CI. nsIDOMEvent;
 		var prefix = "";
 		if (event. altKey) prefix += "Alt+";
 		if (event. ctrlKey) prefix += "Ctrl+";
@@ -54,7 +55,7 @@ cbKeyMapService. prototype =
 		if (event. metaKey) prefix += "Meta+";
 		return prefix;
 	},
-	
+
 	_eventKeymap: [],
 	get eventKeymap ()
 	{
@@ -70,10 +71,11 @@ cbKeyMapService. prototype =
 		}
 		return this. _eventKeymap;
 	},
-	
+
 	getKey: function (event)
 	{
-		var key = "";            
+	    event instanceof CI. nsIDOMEvent;
+		var key = "";
 		var keyCode = this. eventKeymap [event. keyCode];
 		if (event. which && (keyCode != "RETURN") && (keyCode != "BACK_SPACE"))
 			key = String. fromCharCode (event. which);
@@ -81,9 +83,10 @@ cbKeyMapService. prototype =
 			key = keyCode || ("UNKNOWN_" + event. keyCode);
 		return key;
 	},
-	
+
 	Get: function (windowId, event, count)
 	{
+	    event instanceof CI. nsIDOMEvent;
 		var key = this. getKeyPrefix (event) + this. getKey (event);
 		var values = new Array ();
 		var mode = false;
