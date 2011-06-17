@@ -531,7 +531,7 @@ CustombuttonsURIParser. prototype =
 				      (node. firstChild. nodeType == node. TEXT_NODE)))
 		result = node. textContent;
 	    else // CDATA
-		result = unescape (node. firstChild. textContent);
+		result = node. firstChild. textContent;
 	    return result;
 	},
 
