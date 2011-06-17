@@ -205,8 +205,7 @@ Editor. prototype =
      var textboxId = (phase == "code")? "code": "initCode";
      var textbox = document. getElementById (textboxId);
      textbox. focus ();
-     textbox. selectLine (lineNumber);
-     //textbox. scrollTo (lineNumber);
+     setTimeout (function () { textbox. selectLine (lineNumber); }, 0);
  }
  if (param. wrappedJSObject. updateButton == true)
  {
