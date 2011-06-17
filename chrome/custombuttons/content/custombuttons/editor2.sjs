@@ -55,12 +55,7 @@ Editor. prototype =
 	var codeEditor = ELEMENT ("code");
 	var initEditor = ELEMENT ("initCode");
 	var helpEditor = ELEMENT ("help");
-	if (codeEditor. changed ||
-	    initEditor. changed ||
-	    helpEditor. changed)
-	    this. changed = true;
-	else
-	    this. changed = false;
+	this. changed = true;
     },
 
     QueryReferent: function (iid)
