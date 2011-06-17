@@ -12,6 +12,12 @@ const custombuttons =
     cbService: null,
     loaded: false,
 
+    get popupNode ()
+    {
+	var cm = ELEMENT ("custombuttons-contextpopup");
+	return cm. triggerNode || document. popupNode || null;
+    },
+
     get palette ()
     {
 	if (!this. _palette)
@@ -373,7 +379,7 @@ const custombuttons =
 
     editButton: function (oBtn)
     {
-	var oButton = oBtn || document. popupNode || null;
+	var oButton = oBtn || this. popupNode;
 	this. openEditor (oButton);
     },
 
@@ -390,7 +396,7 @@ const custombuttons =
 
     updateButton: function ()
     {
-	var oButton = document. popupNode;
+	var oButton = this. popupNode;
 	if (!oButton)
 	    return;
 	var sURI = this. cbService. readFromClipboard ();
@@ -401,7 +407,7 @@ const custombuttons =
     doButtonOperation: function (sOperation)
     {
 	var oButton;
-	oButton = document. popupNode;
+	oButton = this. popupNode;
 	if (!oButton)
 	    return;
 	switch (sOperation)
@@ -417,7 +423,7 @@ const custombuttons =
 
     copyURI: function ()
     {
-        this. cbService. writeToClipboard (document. popupNode. URI);
+        this. cbService. writeToClipboard (this. popupNode. URI);
     },
 
     getNumber: function (id)
@@ -461,7 +467,7 @@ const custombuttons =
 	if ((event. button != 1) &&
 	    !((event. button == 0) && event. ctrlKey))
 	    return;
-	var oButton = document. popupNode;
+	var oButton = this. popupNode;
 	if (!oButton)
 	    return;
 	event. preventDefault ();
@@ -507,7 +513,7 @@ const custombuttons =
      **/
     bookmarkButton: function (oBtn)
     {
-        var Button = (oBtn)? oBtn: document. popupNode;
+        var Button = (oBtn)? oBtn: this. popupNode;
         this. makeBookmark (Button. URI, Button. name);
     },
 
@@ -626,13 +632,13 @@ const custombuttons =
 			mode = window ["gCurrentMode"];
 			var mb = ELEMENT ("modeBroadcaster");
 			mode = mode || (mb? mb. getAttribute ("mode"): "");
-			if (document. popupNode && (document. popupNode. nodeName == "toolbar"))
+			if (this. popupNode && (this. popupNode. nodeName == "toolbar"))
 			{
-			    if (document. popupNode. id == "mode-toolbar")
+			    if (this. popupNode. id == "mode-toolbar")
 				mode = "mode";
-			    else if (document. popupNode. id == "calendar-toolbar")
+			    else if (this. popupNode. id == "calendar-toolbar")
 			    mode = "calendar";
-			    else if (document. popupNode. id == "task-toolbar")
+			    else if (this. popupNode. id == "task-toolbar")
 			    mode = "task";
 			}
 		    }
@@ -729,7 +735,7 @@ const custombuttons =
 custombuttons.uChelpButton = function ( oBtn ) //{{{
 {
     // UPDATED: 11/8/2007 to accept oBtn as an arg.
-    var Button = ( oBtn )? oBtn : document.popupNode;
+    var Button = ( oBtn )? oBtn : this. popupNode;
     var bId = this.getNumber(Button.id); // <---
     var str = Button.getAttribute( "Help" ).split( "[,]" )[0] || Button.getAttribute( "help" ).split( "," )[1];
 
