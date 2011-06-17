@@ -234,9 +234,7 @@
 			<property name="value" onget="return this.textbox.value;"
 				  onset="return this.textbox.value=val;"/>
 
-			<field name="_numberOfUndoItemsOnLastSave">0</field>
-			<property name="changed" onget="return this.editor.transactionManager.numberOfUndoItems!=this._numberOfUndoItemsOnLastSave"
-				  		 onset="if(!val)this._numberOfUndoItemsOnLastSave=this.editor.transactionManager.numberOfUndoItems;return val;"/>
+			<property name="changed" onget="return this.editor.transactionManager.numberOfUndoItems!=0"/>
 
 			<method name="focus">
 			  <body>
