@@ -55,12 +55,7 @@ Editor. prototype =
  var codeEditor = document. getElementById ("code");
  var initEditor = document. getElementById ("initCode");
  var helpEditor = document. getElementById ("help");
- if (codeEditor. changed ||
-     initEditor. changed ||
-     helpEditor. changed)
-     this. changed = true;
- else
-     this. changed = false;
+ this. changed = true;
     },
 
     QueryReferent: function (iid)
