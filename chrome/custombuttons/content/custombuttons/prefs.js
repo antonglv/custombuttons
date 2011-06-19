@@ -58,7 +58,7 @@ Prefs. prototype =
 
  sizeWindowToContent: function (forced)
  {
-  if (window != this. getTopLevelWindow ()) // the editor is opened in some other window
+  if (window != this. getTopLevelWindow ()) // the preferences dialog is opened in some other window
       return;
   var oDialog = document. getElementById ("custombuttonsPrefsDialog");
   if (oDialog. hasAttribute ("width"))
