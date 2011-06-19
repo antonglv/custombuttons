@@ -41,8 +41,25 @@ Prefs. prototype =
    oElement. removeAttribute (sAttributeName);
  },
 
+ getTopLevelWindow: function ()
+ {
+     var res;
+     try
+     {
+  res = window. QueryInterface (Components. interfaces. nsIInterfaceRequestor).
+        getInterface (Components. interfaces. nsIWebNavigation).
+        QueryInterface (Components. interfaces. nsIDocShellTreeItem).
+        rootTreeItem. QueryInterface (Components. interfaces. nsIInterfaceRequestor).
+        getInterface (Components. interfaces. nsIDOMWindow);
+     }
+     catch (e) {}
+     return res;
+ },
+
  sizeWindowToContent: function (forced)
  {
+  if (window != this. getTopLevelWindow ()) // the editor is opened in some other window
+      return;
   var oDialog = document. getElementById ("custombuttonsPrefsDialog");
   if (oDialog. hasAttribute ("width"))
    this. removeAttribute (oDialog, "width");
