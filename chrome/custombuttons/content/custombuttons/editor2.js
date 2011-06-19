@@ -155,6 +155,69 @@ Editor. prototype =
  window. removeEventListener ("mousedown", this, true);
     },
 
+    getTopLevelWindow: function ()
+    {
+ var res;
+ try
+ {
+     res = window. QueryInterface (Components. interfaces. nsIInterfaceRequestor).
+    getInterface (Components. interfaces. nsIWebNavigation).
+    QueryInterface (Components. interfaces. nsIDocShellTreeItem).
+    rootTreeItem. QueryInterface (Components. interfaces. nsIInterfaceRequestor).
+    getInterface (Components. interfaces. nsIDOMWindow);
+ }
+ catch (e) {}
+ return res;
+    },
+
+    getOpener: function ()
+    {
+ var res = window. opener;
+ if (!res)
+     res = this. getTopLevelWindow ();
+ return res;
+    },
+
+    setWindowPositionAndSize: function ()
+    {
+ if (window != this. getTopLevelWindow ()) // the editor is opened in some other window
+     return;
+ var rs = Components. classes ["@mozilla.org/rdf/rdf-service;1"]. getService (Components. interfaces. nsIRDFService);
+ var ds = rs. GetDataSource ("rdf:local-store");
+ var res1 = rs. GetResource ("chrome://custombuttons/content/editor.xul#custombuttonsEditor");
+ // window manager may ignore screenX and screenY, so let's move window manually
+ var x = document. getElementById ("custombuttonsEditor"). getAttribute ("screenX");
+ var y = document. getElementById ("custombuttonsEditor"). getAttribute ("screenY");
+ if (!x || !y)
+ {
+     var res2 = rs. GetResource ("screenX");
+     x = ds. GetTarget (res1, res2, true);
+     void (x instanceof Components. interfaces. nsIRDFLiteral);
+     x = x && x. Value || null;
+     res2 = rs. GetResource ("screenY");
+     y = ds. GetTarget (res1, res2, true);
+     void (y instanceof Components. interfaces. nsIRDFLiteral);
+     y = y && y. Value || null;
+ }
+ if (x && y)
+     window. moveTo (x, y);
+
+ var w = document. getElementById ("custombuttonsEditor"). getAttribute ("width");
+ var h = document. getElementById ("custombuttonsEditor"). getAttribute ("height");
+ if (!w || !h)
+ {
+     res2 = rs. GetResource ("width");
+     w = ds. GetTarget (res1, res2, true);
+     void (w instanceof Components. interfaces. nsIRDFLiteral);
+     w = w && w. Value || 450;
+     res2 = rs. GetResource ("height");
+     h = ds. GetTarget (res1, res2, true);
+     void (h instanceof Components. interfaces. nsIRDFLiteral);
+     h = h && h. Value || 450;
+     window. resizeTo (w, h);
+ }
+    },
+
     init: function ()
     {
  this. cbService = Components. classes ["@xsms.nm.ru/custombuttons/cbservice;1"]. getService (Components. interfaces. cbICustomButtonsService);
@@ -175,14 +238,7 @@ Editor. prototype =
 
  this. addObservers ();
  this. addEventListeners ();
- if (cbMode & 64)
- {
-     // window manager may ignore screenX and screenY, so let's move window manually
-     var x = document. getElementById ("custombuttonsEditor"). getAttribute ("screenX");
-     var y = document. getElementById ("custombuttonsEditor"). getAttribute ("screenY");
-     if (x && y)
-  window. moveTo (x, y);
- }
+ this. setWindowPositionAndSize ();
  this. sendButtonHighlightNotification ("focus");
     },
 
@@ -309,20 +365,7 @@ Editor. prototype =
  if (fe != box. textbox. inputField)
      return;
  var code = box. value;
- var opener = window. opener;
- if (!opener)
- {
-     try
-     {
-  opener = window. QueryInterface (Components. interfaces. nsIInterfaceRequestor).
-      getInterface (Components. interfaces. nsIWebNavigation).
-      QueryInterface (Components. interfaces. nsIDocShellTreeItem).
-      rootTreeItem. QueryInterface (Components. interfaces. nsIInterfaceRequestor).
-      getInterface (Components. interfaces. nsIDOMWindow);
-     }
-     catch (e) {};
-
- }
+ var opener = this. getOpener ();
  if (opener)
  {
      var CB = opener. custombuttons;
