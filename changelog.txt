@@ -1,4 +1,12 @@
 Changelog
+0.0.5.5
+! Changed: logic to determine the presence of changes in the editor
+# Fixed: click on a custom button url in the Error Console may select an inappropriate line
+# Fixed: Button cannot be redistribute/reinstall from its URI if the button code contains percent encoding
+# Fixed: (Windows) content's context menu doesn't open after gQuot.showPopup method was called
+# Fixed: 'hot keys' don't work in Firefox 6
+Marked compatible with Firefox 7.0a1
+# Fixed: "Bookmark button" menuitem should not be displayed in Sunbird/KompoZer
 0.0.5.4
 + Added: Firefox 6.0a1 compatibility
 + Added: Thunderbird 3.3a4pre compatibility
