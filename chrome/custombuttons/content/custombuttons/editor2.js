@@ -468,6 +468,21 @@ Editor. prototype =
  return aie. data;
     },
 
+    switchAccessKeysState: function ()
+    {
+ var flag = (document. activeElement == document. getElementById ("accelkey"). inputField);
+ var attributeToRemove = flag? "accesskey": "_accesskey";
+ var attributeToSet = flag? "_accesskey": "accesskey";
+ var nodes = document. getElementsByAttribute (attributeToRemove, "*");
+ var node;
+ while (nodes. length != 0)
+ {
+     node = nodes [0];
+     node. setAttribute (attributeToSet, node. getAttribute (attributeToRemove));
+     node. removeAttribute (attributeToRemove);
+ }
+    },
+
     _destroyed: false,
     destroy: function ()
     {
@@ -497,6 +512,7 @@ Editor. prototype =
   break;
      case "focus":
      case "blur":
+  this. switchAccessKeysState ();
   this. sendButtonHighlightNotification (event. type);
   break;
      default:;
