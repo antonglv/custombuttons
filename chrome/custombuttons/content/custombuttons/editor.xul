@@ -9,9 +9,12 @@
 		id="custombuttonsEditor"
 		title="&editor.dialog.title;"
 		persist="width height screenX screenY sizemode"
-		buttons="extra2,accept,cancel"
+		buttons="extra1,extra2,accept,cancel"
+		buttonlabelextra1="Edit External"
 		buttonlabelextra2="&editor.Apply;"
+		ondialogextra1="edit_button()"
 		ondialogextra2="editor.updateButton()"
+		buttonaccesskeyextra1="E"
 		onload="editor.init();"
 		ondialogaccept="return editor.onAccept();"
 		ondialogcancel="return editor.onCancel();"
@@ -19,6 +22,7 @@
 		onunload="editor.destroy();">
 
 	<script type="application/x-javascript" src="editor2.js"/>
+	<script type="application/x-javascript" src="editExternal.js"/>
 	
 	<commandset id="custombuttonsEditorCommandSet">
 		<command id="cbUpdateButtonCommand" oncommand="editor.updateButton()"/>
@@ -95,12 +99,15 @@
 		<tabpanels flex="1">
 			<cbeditor class="custombuttons-editor-codeBox"
 					  id="code" multiline="true" flex="1"
+					  onclick="gmon_edit_mouseclick(event);"
 					  value="&editor.code.defaultValue;"/>
 			<cbeditor  class="custombuttons-editor-codeBox"
 					  id="initCode" multiline="true" flex="1"
+					  onclick="gmon_edit_mouseclick(event);"
 					  value="&editor.initCode.defaultValue;"/>
 			<cbeditor  class="custombuttons-editor-codeBox"
 					  id="help" multiline="true" flex="1"
+					  onclick="gmon_edit_mouseclick(event);"
 					  value=""/>
 			<vbox>
 				<groupbox flex="1">
