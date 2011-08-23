@@ -52,9 +52,6 @@ Editor. prototype =
     /* nsIEditorObserver */
     EditAction: function ()
     {
- var codeEditor = document. getElementById ("code");
- var initEditor = document. getElementById ("initCode");
- var helpEditor = document. getElementById ("help");
  this. changed = true;
     },
 
