@@ -36,7 +36,7 @@ function LOG (msg)
     var name = oButton. name;
     var head = "[Custom Buttons: id: " + _id + "@" + _phase + ", line: " + Components. stack. caller. lineNumber + ", name: " + name + "]";
     var cs = Cc ["@mozilla.org/consoleservice;1"]. getService (Ci. nsIConsoleService);
-    cs. logStringMessage (head + (msg? ("\n" + msg): ""));
+    cs. logStringMessage (head + (arguments. length? ("\n" + msg): ""));
     return msg;
 }
 
