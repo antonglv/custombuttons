@@ -15,7 +15,9 @@ const custombuttons =
     get popupNode ()
     {
 	var cm = ELEMENT ("custombuttons-contextpopup");
-	return cm. triggerNode || document. popupNode || null;
+	var res = cm. _cb_triggerNode || cm. triggerNode || document. popupNode || null;
+	delete cm. _cb_triggerNode;
+	return res;
     },
 
     get palette ()
