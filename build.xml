@@ -34,6 +34,7 @@
 			<include name="defaults/**/*.*"/>
 			<include name="components/**/*.*"/>
 			<include name="chrome/icons/**/*.*"/>
+			<include name="chrome/button.js"/>
 			<exclude name="build.number"/>
 		</patternset>
 		<patternset id="excludespatternset">
