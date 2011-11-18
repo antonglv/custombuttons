@@ -737,7 +737,7 @@ custombuttons.gQuot = { //{{{
 		var position = "overlap";
 		if ( typeof menuId != "string") menuId = "custombuttons-contextpopup";
 		var popup = document.getElementById( menuId );        // Get the menu
-		document.popupNode = node;                            // Post node to document.
+		document.popupNode = popup. _cb_triggerNode = node;   // Post node to document.
 		if (typeof popup.openPopup == "function") {    // Test for new popup function
 			var x = node.boxObject.width/1.6;                   // Set x OffSet
 			var y = node.boxObject.height/1.6;                  // Set y OffSet
