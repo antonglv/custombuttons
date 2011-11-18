@@ -1,6 +1,7 @@
 
 
 content custombuttons jar:chrome/custombuttons.jar!/content/custombuttons/
+content custombuttons-context chrome/
 
 ## Firefox
 overlay chrome://browser/content/browser.xul chrome://custombuttons/content/overlay.xul
@@ -66,6 +67,10 @@ overlay chrome://editor/content/editor.xul chrome://custombuttons/content/Editor
 overlay chrome://editor/content/editor.xul chrome://custombuttons/content/tcbbutton.xul application={20aa4150-b5f4-11de-8a39-0800200c9a66}
 overlay chrome://editor/content/editor.xul resource://custombuttons/buttonsoverlay.xul application={20aa4150-b5f4-11de-8a39-0800200c9a66}
 
+## JavaScript Console
+overlay chrome://global/content/console.xul chrome://custombuttons/content/consoleOverlay.xul
+overlay chrome://console2/content/console2.xul chrome://custombuttons/content/consoleOverlay.xul
+
 skin custombuttons classic/1.0 jar:chrome/custombuttons.jar!/skin/classic/
 
 style chrome://browser/content/browser.xul chrome://custombuttons/skin/custombuttons.css
@@ -95,9 +100,6 @@ style chrome://sunbird/content/calendar.xul chrome://custombuttons/content/overl
 
 style chrome://editor/content/editor.xul chrome://custombuttons/skin/custombuttons.css
 style chrome://editor/content/editor.xul chrome://custombuttons/content/overlay.css
-
-style chrome://global/content/console.xul chrome://custombuttons/content/console.css
-style chrome://console2/content/console2.xul chrome://custombuttons/content/console.css
 
 locale custombuttons en-US jar:chrome/custombuttons.jar!/locale/en-US/custombuttons/
 locale custombuttons ru-RU jar:chrome/custombuttons.jar!/locale/ru-RU/custombuttons/

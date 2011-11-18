@@ -272,7 +272,7 @@ var custombutton =
  buttonCbExecuteCode: function (event, oButton, code)
  {
      this. checkBind ();
-     var execurl = "chrome://custombuttons/content/button.js?windowId=";
+     var execurl = "chrome://custombuttons-context/content/button.js?windowId=";
      execurl += this. cbService. getWindowId (document. documentURI) + "&id=";
      execurl += oButton. id + "@";
      execurl += oButton. _initPhase? "init": "code";

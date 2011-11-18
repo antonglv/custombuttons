@@ -1,6 +1,7 @@
 #include <defs.inc>
 #include <manifest.inc>
 content	custombuttons	jar:chrome/custombuttons.jar!/content/custombuttons/
+content custombuttons-context	chrome/
 
 ## Firefox
 overlay	BROWSER/browser.xul	CBCONTENT/overlay.xul
@@ -66,6 +67,10 @@ overlay	EDITOR/editor.xul		CBCONTENT/EditorOverlay.xul KOMPOZERAPP
 overlay	EDITOR/editor.xul		CBCONTENT/tcbbutton.xul KOMPOZERAPP
 overlay	EDITOR/editor.xul		CBOVERLAY/buttonsoverlay.xul KOMPOZERAPP
 
+## JavaScript Console
+overlay GLOBAL/console.xul	CBCONTENT/consoleOverlay.xul
+overlay chrome://console2/content/console2.xul CBCONTENT/consoleOverlay.xul
+
 skin	custombuttons	classic/1.0	jar:chrome/custombuttons.jar!/skin/classic/
 
 style	BROWSER/browser.xul			CBSKIN/custombuttons.css
@@ -95,9 +100,6 @@ style	CALENDAR/calendar.xul	CBCONTENT/overlay.css
 
 style	EDITOR/editor.xul		CBSKIN/custombuttons.css
 style	EDITOR/editor.xul		CBCONTENT/overlay.css
-
-style	GLOBAL/console.xul	CBCONTENT/console.css
-style	chrome://console2/content/console2.xul CBCONTENT/console.css
 
 locale	custombuttons	en-US	jar:chrome/custombuttons.jar!/locale/en-US/custombuttons/
 locale	custombuttons	ru-RU	jar:chrome/custombuttons.jar!/locale/ru-RU/custombuttons/
