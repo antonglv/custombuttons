@@ -475,6 +475,8 @@ Editor. prototype =
  while (nodes. length != 0)
  {
      node = nodes [0];
+     if (!node. style. width)
+  node. style. width = node. boxObject. width + "px";
      node. setAttribute (attributeToSet, node. getAttribute (attributeToRemove));
      node. removeAttribute (attributeToRemove);
  }
