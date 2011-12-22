@@ -29,84 +29,84 @@ cbKeyMapService. prototype =
 
     Add: function (windowId, buttonId, key, disableDefaultAction)
     {
-		if (!windowId || !buttonId)
-			return;
-		if (!this. keymap [windowId])
-		    this. keymap [windowId] = {};
-		if (key)
-			this. keymap [windowId] [buttonId] = [key, disableDefaultAction];
-		else
-			this. Delete (windowId, buttonId);
+	if (!windowId || !buttonId)
+	    return;
+	    if (!this. keymap [windowId])
+		this. keymap [windowId] = {};
+	    if (key)
+		this. keymap [windowId] [buttonId] = [key, disableDefaultAction];
+	    else
+		this. Delete (windowId, buttonId);
 	},
 
-	Delete: function (windowId, buttonId)
-	{
-	    if (this. keymap [windowId] && this. keymap [windowId] [buttonId])
-		delete this. keymap [windowId] [buttonId];
-	},
+    Delete: function (windowId, buttonId)
+    {
+	if (this. keymap [windowId] && this. keymap [windowId] [buttonId])
+	    delete this. keymap [windowId] [buttonId];
+    },
 
-	getKeyPrefix: function (event)
-	{
-	    event instanceof CI. nsIDOMEvent;
-		var prefix = "";
-		if (event. altKey) prefix += "Alt+";
-		if (event. ctrlKey) prefix += "Ctrl+";
-		if (event. shiftKey) prefix += "Shift+";
-		if (event. metaKey) prefix += "Meta+";
-		return prefix;
-	},
+    getKeyPrefix: function (event)
+    {
+	event instanceof CI. nsIDOMEvent;
+	var prefix = "";
+	if (event. altKey) prefix += "Alt+";
+	if (event. ctrlKey) prefix += "Ctrl+";
+	if (event. shiftKey) prefix += "Shift+";
+	if (event. metaKey) prefix += "Meta+";
+	return prefix;
+    },
 
-	_eventKeymap: [],
-	get eventKeymap ()
+    _eventKeymap: [],
+    get eventKeymap ()
+    {
+	var i;
+	if (this. _eventKeymap. length == 0)
 	{
-	    var i;
-		if (this. _eventKeymap. length == 0)
-		{
-			var prefix = "DOM_VK_";
-			var ikey = Components. interfaces. nsIDOMKeyEvent;
-			for (i in ikey)
-			{
-				if (i. indexOf (prefix) == 0)
-					this. _eventKeymap [ikey [i]] = i. substr (prefix. length);
-			}
-		}
-		return this. _eventKeymap;
-	},
-
-	getKey: function (event)
-	{
-	    event instanceof CI. nsIDOMEvent;
-		var key = "";
-		var keyCode = this. eventKeymap [event. keyCode];
-		if (event. which && (keyCode != "RETURN") && (keyCode != "BACK_SPACE"))
-			key = String. fromCharCode (event. which);
-		else
-			key = keyCode || ("UNKNOWN_" + event. keyCode);
-		return key;
-	},
-
-	Get: function (windowId, event, count)
-	{
-	    event instanceof CI. nsIDOMEvent;
-		var key = this. getKeyPrefix (event) + this. getKey (event);
-		var values = new Array ();
-		var mode = false;
-	    	if (this. keymap [windowId])
-	    	{
-		    for (var i in this. keymap [windowId])
-		    {
-			if (this. keymap [windowId] [i] [0] == key)
-			{
-				values. push (i);
-				mode = mode || this. keymap [windowId] [i] [1];
-			}
-		    }
-		}
-		if (values. length != 0)
-			values. unshift (mode? "true": "");
-		count. value = values. length;
-		return values;
+	    var prefix = "DOM_VK_";
+	    var ikey = Components. interfaces. nsIDOMKeyEvent;
+	    for (i in ikey)
+	    {
+		if (i. indexOf (prefix) == 0)
+		    this. _eventKeymap [ikey [i]] = i. substr (prefix. length);
+	    }
 	}
+	return this. _eventKeymap;
+    },
+
+    getKey: function (event)
+    {
+	event instanceof CI. nsIDOMEvent;
+	var key = "";
+	var keyCode = this. eventKeymap [event. keyCode];
+	if (event. which && (keyCode != "RETURN") && (keyCode != "BACK_SPACE"))
+	    key = String. fromCharCode (event. which);
+	else
+	    key = keyCode || ("UNKNOWN_" + event. keyCode);
+	return key;
+    },
+
+    Get: function (windowId, event, count)
+    {
+	event instanceof CI. nsIDOMEvent;
+	var key = this. getKeyPrefix (event) + this. getKey (event);
+	var values = new Array ();
+	var mode = false;
+	if (this. keymap [windowId])
+	{
+	    for (var i in this. keymap [windowId])
+	    {
+		if (this. keymap [windowId] [i] [0] == key)
+		{
+		    values. push (i);
+		    mode = mode || this. keymap [windowId] [i] [1];
+		}
+	    }
+	}
+	if (values. length != 0)
+	    values. unshift (mode? "true": "");
+	count. value = values. length;
+	return values;
+    }
 };
 
 var Module =
@@ -116,7 +116,7 @@ var Module =
     ComponentName: "Custombuttons extension keymap service component",
 
     DEFINE_STD_MODULE_INTERFACE,
-	DEFINE_STD_CLASS_FACTORY (cbKeyMapService)
+    DEFINE_STD_CLASS_FACTORY (cbKeyMapService)
 };
 
 DEFINE_STD_NS_GET_MODULE (Module)
