@@ -59,6 +59,7 @@ cbKeyMapService. prototype =
 	_eventKeymap: [],
 	get eventKeymap ()
 	{
+	    var i;
 		if (this. _eventKeymap. length == 0)
 		{
 			var prefix = "DOM_VK_";
