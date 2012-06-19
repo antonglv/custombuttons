@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+
+<?xml-stylesheet href="chrome://custombuttons/skin/addons-overlay.css" type="text/css"?>
+
+<!DOCTYPE overlay [
+<!ENTITY % custombuttonsDTD SYSTEM "chrome://custombuttons/locale/custombuttons.dtd">
+%custombuttonsDTD;
+]>
+
+<overlay id="custombuttons-addons-overlay"
+	 xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+  <script type="application/x-javascript" src="chrome://custombuttons/content/addons-overlay.js" />
+
+  <richlistbox id="categories">
+    <richlistitem id="category-custombuttons" class="category"
+		  value="addons://list/custombuttons-button"
+		  name="&custombuttons;"/>
+  </richlistbox>
+
+  <vbox id="list-view">
+    <hbox id="custombuttons-sort-bar" class="view-header" pack="end" insertbefore="addon-list-empty">
+    </hbox>
+  </vbox>
+
+  <vbox id="addon-list-empty">
+    <hbox position="3">
+      <description id="custombuttons-no-buttons-note">nobuttons;</description>
+    </hbox>
+  </vbox>
+</overlay>
