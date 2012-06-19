@@ -33,6 +33,7 @@
 			<include name="license.txt"/>
 			<include name="defaults/**/*.*"/>
 			<include name="components/**/*.*"/>
+			<include name="modules/**/*.*"/>
 			<include name="chrome/icons/**/*.*"/>
 			<include name="chrome/button.js"/>
 			<exclude name="build.number"/>

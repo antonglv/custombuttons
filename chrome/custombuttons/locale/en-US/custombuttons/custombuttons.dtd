@@ -1,3 +1,5 @@
+<!ENTITY custombuttons "Custom Buttons">
+
 <!ENTITY custombuttons.viewMenu_Item "Add new button…">
 <!ENTITY custombuttons.buttonPopup.edit "Edit button…">
 <!ENTITY custombuttons.buttonPopup.remove "Delete button">
