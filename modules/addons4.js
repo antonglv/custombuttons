@@ -115,9 +115,9 @@ CustombuttonsButton. prototype =
     scope: AddonManager. SCOPE_PROFILE,
     name: "",
     pendingOperations: AddonManager. PENDING_NONE,
-    permissions: AddonManager. PERM_CAN_UNINSTALL | AddonManager. PERM_CAN_UPGRADE,
+    permissions: AddonManager. PERM_CAN_UNINSTALL,
     operationsRequiringRestart: AddonManager. OP_NEEDS_RESTART_NONE,
-    description: "",
+    description: null,
     iconURL: null,
     isActive: true,
 

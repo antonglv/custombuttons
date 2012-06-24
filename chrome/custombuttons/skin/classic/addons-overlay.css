@@ -1,0 +1,14 @@
+#category-custombuttons > .category-icon,
+.addon[type=user-custombuttons] .icon,
+#detail-view[type=user-custombuttons] #detail-icon
+{
+    list-style-image: url(chrome://custombuttons/skin/cbicon.png);
+}
+
+.addon.addon-view[type="custombuttons-button"] .details.button-link {
+  display: none !important;
+}
+
+#addonitem-popup[addontype="custombuttons-button"] #menuitem_showDetails {
+  display: none !important;
+}
