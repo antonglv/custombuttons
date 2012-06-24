@@ -12,6 +12,10 @@
 
   <script type="application/x-javascript" src="chrome://custombuttons/content/addons-overlay.js" />
 
+  <menupopup id="addonitem-popup">
+    <menuitem label="&custombuttons.buttonPopup.edit;" insertbefore="menuitem_showDetails"/>
+  </menupopup>
+
   <richlistbox id="categories">
     <richlistitem id="category-custombuttons" class="category"
 		  value="addons://list/custombuttons-button"
@@ -20,6 +24,9 @@
 
   <vbox id="list-view">
     <hbox id="custombuttons-sort-bar" class="view-header" pack="end" insertbefore="addon-list-empty">
+      <button id="add-new-custombutton" label="&custombuttons.viewMenu_Item;" class="addon-control"/>
+      <spacer flex="1"/>
+      <button id="custombuttons-sorting-name" label="&custombuttons.addons4.sortname;" class="sorter" sortBy="name" persist="checkState,checked"/>
     </hbox>
   </vbox>
 

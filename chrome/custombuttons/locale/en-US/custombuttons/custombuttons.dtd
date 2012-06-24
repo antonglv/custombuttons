@@ -17,3 +17,5 @@
 <!ENTITY custombuttons.prefs.editor_save_size_and_position "Save size and position of editor windows separately for each custom button">
 
 <!ENTITY custombuttons.about.supportPageURL "Visit support page">
+
+<!ENTITY custombuttons.addons4.sortname "Sort by name">
