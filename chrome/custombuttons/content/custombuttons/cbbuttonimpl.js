@@ -267,3 +267,4 @@ function cbExecuteCode ()
 
 var _ctxtObj = false;
 var _handlers = [];
+var _destructors = [];

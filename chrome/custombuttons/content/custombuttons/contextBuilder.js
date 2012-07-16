@@ -143,3 +143,26 @@ function removeEventListener (eventType, eventHandler, captureFlag, eventTarget)
 	}
     }
 }
+
+/**
+ * Adds a destructor
+ * The destructor should be function of one argument.
+ * It is called when the button is being destroyed
+ * (when the button is changed or removed or when window is closed)
+ * @since version 0.0.5.6
+ * @param {function} func
+ * @param {Object} [context=window]
+ * @throws {TypeError} If func is not a function
+ */
+function addDestructor (func, context)
+{
+    var oButton = _doc. getElementById (_id);
+    if (!oButton)
+	return;
+    if (typeof (func) != "function")
+	throw new TypeError ("Custom Buttons: addDestructor: func isn't a function", _uri, Components. stack. caller. lineNumber);
+    var destructor = {};
+    destructor ["destructor"] = func;
+    destructor ["context"] = context;
+    oButton. _destructors. push (destructor);
+}
