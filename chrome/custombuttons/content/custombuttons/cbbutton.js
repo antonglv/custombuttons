@@ -135,13 +135,28 @@ var custombutton =
   oBtn. _handlers [0]. unregister ();
   oBtn. _handlers. shift ();
      }
+     while (oBtn. _destructors. length != 0)
+     {
+  try
+  {
+      oBtn. _destructors [0]. destructor. apply (oBtn. _destructors [0]. context, [reason]);
+  }
+  catch (e)
+  {
+      Components. utils. reportError (e);
+  }
+  oBtn. _destructors. shift ();
+     }
      if (oBtn. onDestroy)
      {
   try
   {
       oBtn. onDestroy (reason);
   }
-  catch (e) {}
+  catch (e)
+  {
+      Components. utils. reportError (e);
+  }
      }
  },
 
