@@ -179,7 +179,7 @@ function checkfocus_window() {
     textBoxText  = sstream.read(sstream.available());
     encode = target.getAttribute("encode");
     if (textBoxText.length) {
-      target.value = utf.convertStringToUTF8(textBoxText, encode, true);
+      target.value = utf.convertStringToUTF8(textBoxText, encode, true, false);
     } else {
       target.value = "";
     }
@@ -317,4 +317,3 @@ function gettmpDir() {
 
 window.addEventListener("load", editinit, false);
 window.removeEventListener("unload", editinit, false);
-
