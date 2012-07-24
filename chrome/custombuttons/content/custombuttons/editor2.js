@@ -1,6 +1,5 @@
 
 
-
 function Editor () {}
 Editor. prototype =
 {
@@ -217,7 +216,7 @@ Editor. prototype =
 
     init: function ()
     {
- this. cbService = Components. classes ["@xsms.nm.ru/custombuttons/cbservice;1"]. getService (Components. interfaces. cbICustomButtonsService);
+ this. cbService = Components. classes ["@xsms.nm.ru/custombuttons/cbservice;1" /* CB_SERVICE_CID */]. getService (Components. interfaces. cbICustomButtonsService /* CB_SERVICE_IID */);
  this. getParam ();
  this. notificationPrefix = this. cbService. getNotificationPrefix (this. param. windowId);
  this. setValues ();
@@ -227,7 +226,7 @@ Editor. prototype =
  this. tempId = this. param. id || (new Date (). valueOf ());
  var ps = Components. classes ["@mozilla.org/preferences-service;1"]. getService (Components. interfaces. nsIPrefService). getBranch ("custombuttons.");
  var cbMode = this. cbService. mode;
- var sab = cbMode & 2;
+ var sab = cbMode & 2 /* CB_MODE_SHOW_APPLY_BUTTON */;
  this. saveButton. setAttribute ("icon", "save");
  this. saveButton. setAttribute ("disabled", "true");
  if (this. param. newButton || !sab)
@@ -273,7 +272,7 @@ Editor. prototype =
  document. getElementById ("code"). editor. transactionManager. clear ();
  document. getElementById ("initCode"). editor. transactionManager. clear ();
  var mode = this. param. mode;
- document. getElementById ("disableDefaultKeyBehavior"). checked = mode && (mode & 2) || false;
+ document. getElementById ("disableDefaultKeyBehavior"). checked = mode && (mode & 2 /* CB_MODE_DISABLE_DEFAULT_KEY_BEHAVIOR */) || false;
  if (this. param. newButton)
      document. title = this. cbService. getLocaleString ("AddButtonEditorDialogTitle");
  if (this. param. name)
@@ -316,7 +315,7 @@ Editor. prototype =
      if (field)
   this. param [v] = field. value;
  }
- this. param ["mode"] = document. getElementById ("disableDefaultKeyBehavior"). checked? 2: 0;
+ this. param ["mode"] = document. getElementById ("disableDefaultKeyBehavior"). checked? 2 /* CB_MODE_DISABLE_DEFAULT_KEY_BEHAVIOR */: 0;
  this. notificationSender = true;
  this. cbService. installButton (this. param);
  this. notificationSender = false;

@@ -92,7 +92,7 @@ const custombuttons =
 
     init: function ()
     {
- this. cbService = Components. classes ["@xsms.nm.ru/custombuttons/cbservice;1"]. getService (Components. interfaces. cbICustomButtonsService);
+ this. cbService = Components. classes ["@xsms.nm.ru/custombuttons/cbservice;1" /* CB_SERVICE_CID */]. getService (Components. interfaces. cbICustomButtonsService /* CB_SERVICE_IID */);
  this. cbService. register (window);
  var windowId = this. cbService. getWindowId (document. documentURI);
  this. notificationPrefix = this. cbService. getNotificationPrefix (windowId);
@@ -108,7 +108,7 @@ const custombuttons =
  var mode = this. cbService. mode;
  if (ps. prefHasUserValue (pref))
  {
-     mode |= (ps. getBoolPref (pref)? 2: 0);
+     mode |= (ps. getBoolPref (pref)? 2 /* CB_MODE_SHOW_APPLY_BUTTON */: 0);
      try
      {
   ps. deleteBranch (pref);
@@ -443,7 +443,7 @@ const custombuttons =
     onKeyPress: function (event)
     {
  var windowId = this. cbService. getWindowId (document. documentURI);
- var cbd = Components. classes ["@xsms.nm.ru/custombuttons/cbkeymap;1"]. getService (Components. interfaces. cbIKeyMapService);
+ var cbd = Components. classes ["@xsms.nm.ru/custombuttons/cbkeymap;1" /* CB_KEYMAP_SERVICE_CID */]. getService (Components. interfaces. cbIKeyMapService /* CB_KEYMAP_SERVICE_IID */);
  var lenobj = {};
  var ids = cbd. Get (windowId, event, /*prefixedKey,*/ lenobj);
  if (ids. length == 0)
@@ -592,7 +592,7 @@ const custombuttons =
       if (href && (href. indexOf ("custombutton://") == 0))
       {
    var mode = this. cbService. mode;
-   if (!(mode & 128))
+   if (!(mode & 128 /* CB_MODE_INSTALL_BUTTONS_FROM_EMAIL */))
        return;
    event. preventDefault ();
    event. stopPropagation ();
@@ -1007,7 +1007,7 @@ const custombuttonsUtils =
 
     gClipboard:
     {
- _cbService: Components. classes ["@xsms.nm.ru/custombuttons/cbservice;1"]. getService (Components. interfaces. cbICustomButtonsService),
+ _cbService: Components. classes ["@xsms.nm.ru/custombuttons/cbservice;1" /* CB_SERVICE_CID */]. getService (Components. interfaces. cbICustomButtonsService /* CB_SERVICE_IID */),
  _cbClipboard: [],
 
  Write: function (str)
