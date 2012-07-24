@@ -40,13 +40,11 @@
 			<exclude name="**/Thumbs.db"/>
 			<exclude name="**/*.sjs"/>
 			<exclude name="**/*.hjs"/>
-			<exclude name="**/*.ijs"/>
 			<exclude name="**/*.idl"/>
 			<exclude name="**/*.orig"/>
 			<exclude name="**/.*"/>
 		</patternset>
 		<uptodate property="checkLibs.forcedJSPreprocess" targetfile="build.number">
-			<srcfiles dir="${basedir}" includes="**/*.ijs"/>
 			<srcfiles dir="${basedir}" includes="**/*.hjs"/>
 		</uptodate>
 		<condition property="checkLibs.forcedPreprocess" value="false" else="true">
