@@ -41,8 +41,6 @@
 			<exclude name="**/*.sjs"/>
 			<exclude name="**/*.hjs"/>
 			<exclude name="**/*.ijs"/>
-			<exclude name="**/*.sxml"/>
-			<exclude name="**/*.ixml"/>
 			<exclude name="**/*.idl"/>
 			<exclude name="**/*.inc"/>
 			<exclude name="**/*.smanifest"/>
@@ -53,16 +51,12 @@
 			<srcfiles dir="${basedir}" includes="**/*.ijs"/>
 			<srcfiles dir="${basedir}" includes="**/*.hjs"/>
 		</uptodate>
-		<uptodate property="checkLibs.forcedXMLPreprocess" targetfile="build.number">
-			<srcfiles dir="${basedir}" includes="**/*.ixml"/>
-		</uptodate>
 		<uptodate property="checkLibs.forcedOtherPreprocess" targetfile="build.number">
 			<srcfiles dir="${basedir}" includes="**/*.inc"/>
 		</uptodate>
 		<condition property="checkLibs.forcedPreprocess" value="false" else="true">
 			<and>
 				<istrue value="${checkLibs.forcedJSPreprocess}"/>
-				<istrue value="${checkLibs.forcedXMLPreprocess}"/>
 				<istrue value="${checkLibs.forcedOtherPreprocess}"/>
 			</and>
 		</condition>
@@ -79,7 +73,6 @@
 	<target name="preprocess" depends="init" description="preprocess files">
 		<mapper id="preprocessormapper">
 			<mapper type="glob" from="*.sjs" to="*.js"/>
-			<mapper type="glob" from="*.sxml" to="*.xml"/>
 			<mapper type="glob" from="*.smanifest" to="*.manifest"/>
 		</mapper>
 		<apply executable="cpp.exe"
@@ -88,7 +81,6 @@
 			   force="${checkLibs.forcedPreprocess}"> <!-- and no jpp.bat needed now -->
 			<fileset dir="${basedir}">
 				<include name="**/*.sjs"/>
-				<include name="**/*.sxml"/>
 				<include name="**/*.smanifest"/>
 			</fileset>
 			<mapper refid="preprocessormapper"/>
@@ -117,7 +109,6 @@
 			   force="${checkLibs.forcedPreprocess}"> <!-- and no jpp.bat needed now -->
 			<fileset dir="${basedir}">
 				<include name="**/*.sjs"/>
-				<include name="**/*.sxml"/>
 				<include name="**/*.smanifest"/>
 			</fileset>
 			<mapper refid="preprocessormapper"/>
