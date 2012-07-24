@@ -1,9 +1,6 @@
 #ifndef PROJECT_HEADER_JS
 #define PROJECT_HEADER_JS
 
-#define NODEBUG
-
-#include <debug.hjs>
 #include <stdcomps.hjs>
 
 #define XULNS "http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
