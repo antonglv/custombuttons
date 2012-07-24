@@ -36,7 +36,6 @@
  * ***** END LICENSE BLOCK ***** */
 
 #include <project.hjs>
-#include <protocolhandler.hjs>
 
 const kSIMPLEURI_CONTRACTID = "@mozilla.org/network/simple-uri;1";
 const nsIURI = CI. nsIURI;
@@ -54,27 +53,27 @@ function CustombuttonProtocol (sProtocolName)
 }
 CustombuttonProtocol. prototype =
 {
-    
+
 	DEFINE_STD_QI (nsIProtocolHandler),
-	
+
 	defaultPort: -1,
 	protocolFlags: URI_NORELATIVE | URI_NOAUTH | URI_LOADABLE_BY_ANYONE |
 				   URI_NON_PERSISTABLE | URI_DOES_NOT_RETURN_DATA,
-	
+
 	scheme: "custombutton",
-	
+
 	allowPort: function (port, scheme)
 	{
 		return false;
 	},
-	
+
 	newURI: function (spec, charset, baseURI)
 	{
 		var uri = CC [kSIMPLEURI_CONTRACTID]. createInstance (nsIURI);
 		uri. spec = spec;
 		return uri;
 	},
-	
+
 	get chromeProtocolHandler ()
 	{
 		var chromeProtocolHandler = CC ["@mozilla.org/network/protocol;1?name=chrome"].
@@ -82,20 +81,20 @@ CustombuttonProtocol. prototype =
 		chromeProtocolHandler = chromeProtocolHandler. QI (nsIProtocolHandler);
 		return chromeProtocolHandler;
 	},
-	
+
 	get fakeOverlayURI ()
 	{
 		var fakeOverlayURI = "chrome://custombuttons/content/buttonsoverlay.xul";
 		return this. chromeProtocolHandler. newURI (fakeOverlayURI, null, null);
 	},
-	
+
 	fakeOverlayChannel: function ()
 	{
 		return this. chromeProtocolHandler. newChannel (this. fakeOverlayURI);
 	},
-	
+
 	sCbPrefix: "custombuttons://content/",
-	
+
 	getChromePrincipal: function ()
 	{
 		var ssm = SERVICE (SCRIPT_SECURITY_MANAGER);
@@ -110,7 +109,7 @@ CustombuttonProtocol. prototype =
 		}
 		return res;
 	},
-	
+
 	getJSVersion: function ()
 	{
 		var info = SERVICE (XUL_APP_INFO);
@@ -121,7 +120,7 @@ CustombuttonProtocol. prototype =
 		if (oVC. compare (pv, "1.8")   >= 0) return ";version=1.6";
 		return "";
 	},
-	
+
 	getXULTemplate: function ()
 	{
 		var ios = SERVICE (IO);
@@ -133,7 +132,7 @@ CustombuttonProtocol. prototype =
 		script. setAttribute ("type", "application/x-javascript" + this. getJSVersion ());
 		return doc;
 	},
-	
+
 	pumpDocumentToPipe: function (doc, pipe)
 	{
 		var bos = COMPONENT (BINARY_OUTPUT_STREAM);
@@ -142,7 +141,7 @@ CustombuttonProtocol. prototype =
 		xs. serializeToStream (doc, bos, "");
 		bos. close ();
 	},
-	
+
 	cbbuttonxulchannel: function (aURI)
 	{
 		var pipe = COMPONENT (PIPE);
@@ -158,7 +157,7 @@ CustombuttonProtocol. prototype =
 		chan. contentType = "application/vnd.mozilla.xul+xml";
 		return chan;
 	},
-	
+
 	getCustomButtonsFile: function (aURI, sFileName)
 	{
 		var cbs = SERVICE (CB);
@@ -187,7 +186,7 @@ CustombuttonProtocol. prototype =
 		channel. owner = this. getChromePrincipal ();
 		return channel;
 	},
-	
+
 	newChannel: function (aURI)
 	{
 		if (this. scheme == "custombuttons")
@@ -212,7 +211,7 @@ function CustombuttonsProtocolClassFactory (sProtocolName)
 CustombuttonsProtocolClassFactory. prototype =
 {
 	protocol: "",
-	
+
 	createInstance: function (outer, iid)
 	{
 		if (outer != null)
@@ -256,9 +255,9 @@ var Module =
 		}
 		return new CustombuttonsProtocolClassFactory (protocol);
 	},
-	
+
 	FIRST_TIME: true,
-	
+
 	registerSelf: function (componentManager, fileSpec, location, type)
 	{
 		if (this. FIRST_TIME)
@@ -277,7 +276,7 @@ var Module =
 				type
 			);
 	},
-	
+
 	unregisterSelf: function (componentManager, location, loaderStr) {}
 };
 
