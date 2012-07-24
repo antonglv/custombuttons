@@ -1,8 +1,0 @@
-#ifndef timer_hjs___
-#define timer_hjs___
-
-#define TIMER_TYPE_ONE_SHOT 0
-#define TIMER_TYPE_REPEATING_SLACK 1
-#define TIMER_TYPE_REPEATING_PRECISE 2
-
-#endif

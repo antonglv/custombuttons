@@ -626,7 +626,7 @@ custombuttons.gQuot = { //{{{
  setTimer: function ()
  {
   this. oTimer = Components. classes ["@mozilla.org/timer;1"]. createInstance (Components. interfaces. nsITimer);
-  this. oTimer. initWithCallback (this, this. dcDelay, 0);
+  this. oTimer. initWithCallback (this, this. dcDelay, Components. interfaces. nsITimer. TYPE_ONE_SHOT);
   this. dcWaitFlag = true;
  },
 
