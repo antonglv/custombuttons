@@ -12,10 +12,6 @@
   <property name="xpidlpath" location="${geckosdkpath}\bin"/>
   <property name="idlpath" location="${geckosdkpath}\idl"/>
   
-  <property name="xpistdlib" location="${basedir}\stdlib"/>
-  <property name="xpistdinc" location="${xpistdlib}\inc"/>
-  <property name="projectinc" location="${basedir}\inc"/>
-
   <property name="appname" value="custombuttons"/>
   <property name="jarname" value="custombuttons"/>
   <property name="xpiname" value="custombuttons"/>
@@ -38,93 +34,16 @@
     </patternset>
     <patternset id="excludespatternset">
       <exclude name="**/Thumbs.db"/>
-      <exclude name="**/*.sjs"/>
-      <exclude name="**/*.hjs"/>
       <exclude name="**/*.idl"/>
       <exclude name="**/*.orig"/>
       <exclude name="**/.*"/>
     </patternset>
-    <uptodate property="checkLibs.forcedJSPreprocess" targetfile="build.number">
-      <srcfiles dir="${basedir}" includes="**/*.hjs"/>
-    </uptodate>
-    <condition property="checkLibs.forcedPreprocess" value="false" else="true">
-      <and>
-	<istrue value="${checkLibs.forcedJSPreprocess}"/>
-	<istrue value="${checkLibs.forcedOtherPreprocess}"/>
-      </and>
-    </condition>
     <buildnumber/>
     <echo>Builds ${appname}-${Description.em:version}-${DSTAMP}</echo>
     <echo>Build No. ${build.number}</echo>
   </target>
   
-  <!--
-      ************************************************************************
-      * preprocess *.s* files
-      ************************************************************************
-  -->
-  <target name="preprocess" depends="init" description="preprocess files">
-    <mapper id="preprocessormapper">
-      <mapper type="glob" from="*.sjs" to="*.js"/>
-    </mapper>
-    <apply executable="cpp.exe"
-	   os="Windows,Windows XP"
-	   failonerror="true"
-	   force="${checkLibs.forcedPreprocess}"> <!-- and no jpp.bat needed now -->
-      <fileset dir="${basedir}">
-	<include name="**/*.sjs"/>
-      </fileset>
-      <mapper refid="preprocessormapper"/>
-      <arg value="-I"/>
-      <arg value="${xpistdlib}"/>
-      <arg value="-I"/>
-      <arg value="${xpistdinc}"/>
-      <arg value="-I"/>
-      <arg value="${projectinc}"/>
-      <arg value="-ansi"/>
-      <arg value="-P"/>
-      <arg value="-CC"/>
-      <srcfile/>
-      <redirector inputencoding="UTF-8" outputencoding="UTF-8">
-	<outputfilterchain>
-	  <linecontains negate="true"> <!-- and no grep needed now -->
-	    <contains value="{--exclude-this-line}"/>
-	  </linecontains>
-	</outputfilterchain>
-	<outputmapper refid="preprocessormapper"/>
-      </redirector>
-    </apply>
-    <apply executable="cpp"
-	   os="Linux"
-	   failonerror="true"
-	   force="${checkLibs.forcedPreprocess}"> <!-- and no jpp.bat needed now -->
-      <fileset dir="${basedir}">
-	<include name="**/*.sjs"/>
-      </fileset>
-      <mapper refid="preprocessormapper"/>
-      <arg value="-I"/>
-      <arg value="${xpistdlib}"/>
-      <arg value="-I"/>
-      <arg value="${xpistdinc}"/>
-      <arg value="-I"/>
-      <arg value="${projectinc}"/>
-      <arg value="-ansi"/>
-      <arg value="-P"/>
-      <arg value="-CC"/>
-      <arg value="-w"/>
-      <srcfile/>
-      <redirector inputencoding="UTF-8" outputencoding="UTF-8">
-	<outputfilterchain>
-	  <linecontains negate="true"> <!-- and no grep needed now -->
-	    <contains value="{--exclude-this-line}"/>
-	  </linecontains>
-	</outputfilterchain>
-	<outputmapper refid="preprocessormapper"/>
-      </redirector>
-    </apply>
-  </target>
-  
-  <target name="buildxpt" depends="init,preprocess">
+  <target name="buildxpt" depends="init">
     <fail unless="geckosdkpath">The path to gecko sdk (geckosdkpath property) not defined.
     Define it in build.properties (don't forget about double back slashes)</fail>
     <apply executable="xpidl.exe" dir="${xpidlpath}"
@@ -157,7 +76,7 @@
     </apply>
   </target>
   
-  <target name="buildjar" depends="init,preprocess">
+  <target name="buildjar" depends="init">
     <zip destfile="${basedir}/chrome/${jarname}.jar"
 	 compress="false" level="0">
       <fileset id="jarfileset" dir="${basedir}/chrome/${jarname}">
@@ -171,7 +90,7 @@
     </zip>
   </target>
   
-  <target name="buildxpiwithjar" depends="init,preprocess,buildxpt,buildjar"
+  <target name="buildxpiwithjar" depends="init,buildxpt,buildjar"
 	  if="keep_jar">
     <zip destfile="${xpiname}-${Description.em:version}-${DSTAMP}.xpi"
 	 compress="true" level="9">

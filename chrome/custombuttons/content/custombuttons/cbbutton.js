@@ -2,7 +2,7 @@
 
 var custombutton =
     {
- cbService: Components. classes ["@xsms.nm.ru/custombuttons/cbservice;1"]. getService (Components. interfaces. cbICustomButtonsService),
+ cbService: Components. classes ["@xsms.nm.ru/custombuttons/cbservice;1" /* CB_SERVICE_CID */]. getService (Components. interfaces. cbICustomButtonsService /* CB_SERVICE_IID */),
  waitForInitialization: [],
 
  buttonConstructor: function (oBtn)
@@ -28,7 +28,7 @@ var custombutton =
   return;
      }
      var windowId = this. cbService. getWindowId (document. documentURI);
-     var cbd = Components. classes ["@xsms.nm.ru/custombuttons/cbkeymap;1"]. getService (Components. interfaces. cbIKeyMapService);
+     var cbd = Components. classes ["@xsms.nm.ru/custombuttons/cbkeymap;1" /* CB_KEYMAP_SERVICE_CID */]. getService (Components. interfaces. cbIKeyMapService /* CB_KEYMAP_SERVICE_IID */);
      cbd. Delete (windowId, oBtn. getAttribute ("id"));
      if (!oBtn. hasAttribute ("cb-name"))
      {
@@ -42,7 +42,7 @@ var custombutton =
       windowId,
       oBtn. getAttribute ("id"),
       oBtn. getAttribute ("cb-accelkey"),
-      (oBtn. cbMode & 2)? true: false
+      (oBtn. cbMode & 2 /* CB_MODE_DISABLE_DEFAULT_KEY_BEHAVIOR */)? true: false
   );
      }
      if (oBtn. hasAttribute ("cb-oncommand"))
@@ -65,7 +65,7 @@ var custombutton =
   if (oBtn. hasAttribute ("cb-init"))
   {
       var mode = this. cbService. mode;
-      if (mode & 32) // disable initialization
+      if (mode & 32 /* CB_MODE_DISABLE_INITIALIZATION */) // disable initialization
    return;
       if (oBtn. parentNode && (oBtn. parentNode. nodeName != "toolbar") && (oBtn. parentNode. nodeName != "xul:toolbar"))
    return;
@@ -85,7 +85,7 @@ var custombutton =
      if (oBtn. hasAttribute ("cb-accelkey"))
      {
   var windowId = this. cbService. getWindowId (document. documentURI);
-  var cbd = Components. classes ["@xsms.nm.ru/custombuttons/cbkeymap;1"]. getService (Components. interfaces. cbIKeyMapService);
+  var cbd = Components. classes ["@xsms.nm.ru/custombuttons/cbkeymap;1" /* CB_KEYMAP_SERVICE_CID */]. getService (Components. interfaces. cbIKeyMapService /* CB_KEYMAP_SERVICE_IID */);
   cbd. Delete (windowId, oBtn. getAttribute ("id"));
      }
      if (oBtn. destroy)
