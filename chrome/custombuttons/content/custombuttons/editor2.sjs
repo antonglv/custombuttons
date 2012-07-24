@@ -1,5 +1,4 @@
 #include <project.hjs>
-#include <filepicker.hjs>
 
 function Editor () {}
 Editor. prototype =
