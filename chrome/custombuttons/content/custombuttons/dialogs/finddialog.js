@@ -10,7 +10,7 @@ var FindDialog =
    return;
   }
   var dlgType = window. arguments [0]. type;
-  var cbs = Components. classes ["@xsms.nm.ru/custombuttons/cbservice;1"]. getService (Components. interfaces. cbICustomButtonsService);
+  var cbs = Components. classes ["@xsms.nm.ru/custombuttons/cbservice;1" /* CB_SERVICE_CID */]. getService (Components. interfaces. cbICustomButtonsService /* CB_SERVICE_IID */);
   var dlgTitle = cbs. getLocaleString ("finddialogFindTitle");
   if (dlgType == "replace")
    dlgTitle = cbs. getLocaleString ("finddialogReplaceTitle");
