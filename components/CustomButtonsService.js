@@ -36,7 +36,7 @@ function backupProfile (phase)
     {
  try
  {
-     backupDir. create (1, 0755);
+     backupDir. create (1 /* DIRECTORY_TYPE */, 0755);
  }
  catch (e)
  {
@@ -376,7 +376,7 @@ Overlay. prototype =
      {
   try
   {
-      dir. create (1, 0755);
+      dir. create (1 /* DIRECTORY_TYPE */, 0755);
   }
   catch (e)
   {
@@ -392,7 +392,7 @@ Overlay. prototype =
      backupProfile ("before-save-button");
 
      var foStream = Components. classes ["@mozilla.org/network/file-output-stream;1"]. createInstance (Components. interfaces. nsIFileOutputStream);
-     var flags = 0x02 | 0x08 | 0x20;
+     var flags = 0x02 /* PR_WRONLY */ | 0x08 /* PR_CREATE_FILE */ | 0x20 /* PR_TRUNCATE */;
      foStream. init (file, flags, 0664, 0);
      foStream. write (data, data. length);
      foStream. close ();
@@ -648,7 +648,7 @@ cbCustomButtonsService. prototype =
  closeEditorDialogs: function ()
  {
      var mode = this. ps. getIntPref ("mode");
-     if (mode & 16)
+     if (mode & 16 /* CB_MODE_DO_NOT_CLOSE_EDITORS_ON_APPLICATION_CLOSE */)
   return;
      for (var i = 0; i < this. editors. length; i++)
      {
@@ -744,7 +744,7 @@ cbCustomButtonsService. prototype =
      {
   var editorUri = this. pathToEditor;
   var mode = this. ps. getIntPref ("mode");
-  if (mode & 64)
+  if (mode & 64 /* CB_MODE_SAVE_EDITOR_SIZE_SEPARATELY */)
       editorUri += "?editorId=" + sEditorId;
   cbedw = wws. openWindow
   (
@@ -982,7 +982,7 @@ cbCustomButtonsService. prototype =
      }
      app. notifyObservers (null, "removeButton", parentId + ":" + buttonId);
      var mode = this. ps. getIntPref ("mode");
-     if (mode & 64)
+     if (mode & 64 /* CB_MODE_SAVE_EDITOR_SIZE_SEPARATELY */)
   this. unPersist (editorId);
  },
 
@@ -1237,7 +1237,7 @@ cbCustomButtonsService. prototype =
   if (ps. prefHasUserValue (pn))
   {
       if (ps. getBoolPref (pn))
-   this. mode |= 128;
+   this. mode |= 128 /* CB_MODE_INSTALL_BUTTONS_FROM_EMAIL */;
       try
       {
    ps. deleteBranch (pn);
@@ -1275,7 +1275,7 @@ cbCustomButtonsService. prototype =
 var Module =
     {
  CLSID: Components. ID ("{64d03940-83bc-4ac6-afc5-3cbf6a7147c5}"),
- ContractID: "@xsms.nm.ru/custombuttons/cbservice;1",
+ ContractID: "@xsms.nm.ru/custombuttons/cbservice;1" /* CB_SERVICE_CID */,
  ComponentName: "Custom Buttons extension service",
  canUnload: function (componentManager) { return true; },
  getClassObject: function (componentManager, cid, iid)
