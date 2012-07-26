@@ -71,10 +71,10 @@ function wrapNode (insecNode)
 // Retrieves the window object for a node or returns null if it isn't possible
 function getWindow (node)
 {
- if (node && node. nodeType != 9)
+ if (node && node. nodeType != Components. interfaces. nsIDOMNode. DOCUMENT_NODE)
   node = node. ownerDocument;
 
- if (!node || node. nodeType != 9)
+ if (!node || node. nodeType != Components. interfaces. nsIDOMNode. DOCUMENT_NODE)
   return null;
 
  return node. defaultView;
@@ -97,33 +97,33 @@ cbContentPolicyComponent. prototype =
         mimeTypeGuess, extra)
  {
   if (!context)
-   return 1;
+   return Components. interfaces. nsIContentPolicy. ACCEPT;
 
   // HACKHACK: Pass the node though XPCOM to work around bug 337095
   var node = wrapNode (context);
   var wnd = getWindow (node);
   if (!wnd)
-   return 1;
+   return Components. interfaces. nsIContentPolicy. ACCEPT;
 
   // Only block in content windows
   var wndType = wnd. QueryInterface (Components. interfaces. nsIInterfaceRequestor).
        getInterface (Components. interfaces. nsIWebNavigation).
        QueryInterface (Components. interfaces. nsIDocShellTreeItem). itemType;
   if (wndType != Components. interfaces. nsIDocShellTreeItem. typeContent)
-   return 1;
+   return Components. interfaces. nsIContentPolicy. ACCEPT;
 
   if ((contentLocation. spec. indexOf ("custombutton://content/") == 0) ||
    (contentLocation. spec. indexOf ("custombuttons://content/") == 0) ||
    (contentLocation. spec. indexOf ("resource://custombuttons") == 0))
-   return -1;
+   return Components. interfaces. nsIContentPolicy. REJECT_REQUEST;
 
-  return 1;
+  return Components. interfaces. nsIContentPolicy. ACCEPT;
  },
 
  shouldProcess: function (contentType, contentLocation, requestOrigin,
         context, mimeType, extra)
  {
-  return 1;
+  return Components. interfaces. nsIContentPolicy. ACCEPT;
  }
  // end Adblock Plus code
 };
