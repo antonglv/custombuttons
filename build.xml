@@ -1,281 +1,107 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="Custom Buttons"
-		 default="buildxpi"
-		 basedir=".">
+	 default="buildxpi"
+	 basedir=".">
 
-	<description>
-		Gives a possibility to create custom toolbarbuttons.
-	</description>
+  <description>
+    Gives a possibility to create custom toolbarbuttons.
+  </description>
+  
+  <!-- set global properties for this build -->
+  <property file="build.properties"/>
+  <property name="xpidlpath" location="${geckosdkpath}\bin"/>
+  <property name="idlpath" location="${geckosdkpath}\idl"/>
+  
+  <property name="appname" value="custombuttons"/>
+  <property name="jarname" value="custombuttons"/>
+  <property name="xpiname" value="custombuttons"/>
+  <xmlproperty file="install.rdf" keepRoot="false"/>
+  
+  <property name="keep_jar" value="true"/>
+  
+  <target name="init">
+    <!-- Create the time stamp -->
+    <tstamp/>
+    <patternset id="xpipatternset">
+      <include name="chrome.manifest"/>
+      <include name="install.rdf"/>
+      <include name="changelog.txt"/>
+      <include name="license.txt"/>
+      <include name="defaults/**/*.*"/>
+      <include name="components/**/*.*"/>
+      <include name="modules/**/*.*"/>
+      <include name="chrome/icons/**/*.*"/>
+      <exclude name="build.number"/>
+    </patternset>
+    <patternset id="excludespatternset">
+      <exclude name="**/Thumbs.db"/>
+      <exclude name="**/*.idl"/>
+      <exclude name="**/*.orig"/>
+      <exclude name="**/.*"/>
+    </patternset>
+    <buildnumber/>
+    <echo>Builds ${appname}-${Description.em:version}-${DSTAMP}</echo>
+    <echo>Build No. ${build.number}</echo>
+  </target>
+  
+  <target name="buildxpt" depends="init">
+    <fail unless="geckosdkpath">The path to gecko sdk (geckosdkpath property) not defined.
+    Define it in build.properties (don't forget about double back slashes)</fail>
+    <apply executable="xpidl.exe" dir="${xpidlpath}"
+	   resolveExecutable="true" dest="${basedir}/components"
+	   os="Windows"
+	   failonerror="true">
+      <arg value="-m"/>
+      <arg value="typelib"/>
+      <arg value="-I"/>
+      <arg value="${idlpath}"/>
+      <arg value="-e"/>
+      <targetfile/>
+      <srcfile/>
+      <fileset dir="${basedir}/components" includes="*.idl"/>
+      <mapper type="glob" from="*.idl" to="*.xpt"/>
+    </apply>
+    <apply executable="xpidl" dir="${xpidlpath}"
+	   resolveExecutable="true" dest="${basedir}/components"
+	   os="Linux"
+	   failonerror="true">
+      <arg value="-m"/>
+      <arg value="typelib"/>
+      <arg value="-I"/>
+      <arg value="${idlpath}"/>
+      <arg value="-e"/>
+      <targetfile/>
+      <srcfile/>
+      <fileset dir="${basedir}/components" includes="*.idl"/>
+      <mapper type="glob" from="*.idl" to="*.xpt"/>
+    </apply>
+  </target>
+  
+  <target name="buildjar" depends="init">
+    <zip destfile="${basedir}/chrome/${jarname}.jar"
+	 compress="false" level="0">
+      <fileset id="jarfileset" dir="${basedir}/chrome/${jarname}">
+	<include name="**/*.*"/>
+	<patternset refid="excludespatternset"/>
+	<!-- common excludes -->
+	<exclude name="skin/classic/button1.png"/>
 	
-	<!-- set global properties for this build -->
-	<property file="build.properties"/>
-	<property name="xpidlpath" location="${geckosdkpath}\bin"/>
-	<property name="idlpath" location="${geckosdkpath}\idl"/>
-	
-	<property name="xpistdlib" location="${basedir}\stdlib"/>
-	<property name="xpistdinc" location="${xpistdlib}\inc"/>
-	<property name="projectinc" location="${basedir}\inc"/>
-
-	<property name="appname" value="custombuttons"/>
-	<property name="jarname" value="custombuttons"/>
-	<property name="xpiname" value="custombuttons"/>
-	<xmlproperty file="install.rdf" keepRoot="false"/>
-	
-	<property name="keep_jar" value="true"/>
-	
-	<target name="init">
-		<!-- Create the time stamp -->
-		<tstamp/>
-		<patternset id="xpipatternset">
-			<include name="chrome.manifest"/>
-			<include name="install.rdf"/>
-			<include name="changelog.txt"/>
-			<include name="license.txt"/>
-			<include name="defaults/**/*.*"/>
-			<include name="components/**/*.*"/>
-			<include name="modules/**/*.*"/>
-			<include name="chrome/icons/**/*.*"/>
-			<include name="chrome/button.js"/>
-			<exclude name="build.number"/>
-		</patternset>
-		<patternset id="excludespatternset">
-			<exclude name="**/Thumbs.db"/>
-			<exclude name="**/*.sjs"/>
-			<exclude name="**/*.hjs"/>
-			<exclude name="**/*.ijs"/>
-			<exclude name="**/*.sxml"/>
-			<exclude name="**/*.ixml"/>
-			<exclude name="**/*.idl"/>
-			<exclude name="**/*.inc"/>
-			<exclude name="**/*.smanifest"/>
-			<exclude name="**/*.orig"/>
-			<exclude name="**/.*"/>
-		</patternset>
-		<uptodate property="checkLibs.forcedJSPreprocess" targetfile="build.number">
-			<srcfiles dir="${basedir}" includes="**/*.ijs"/>
-			<srcfiles dir="${basedir}" includes="**/*.hjs"/>
-		</uptodate>
-		<uptodate property="checkLibs.forcedXMLPreprocess" targetfile="build.number">
-			<srcfiles dir="${basedir}" includes="**/*.ixml"/>
-		</uptodate>
-		<uptodate property="checkLibs.forcedOtherPreprocess" targetfile="build.number">
-			<srcfiles dir="${basedir}" includes="**/*.inc"/>
-		</uptodate>
-		<condition property="checkLibs.forcedPreprocess" value="false" else="true">
-			<and>
-				<istrue value="${checkLibs.forcedJSPreprocess}"/>
-				<istrue value="${checkLibs.forcedXMLPreprocess}"/>
-				<istrue value="${checkLibs.forcedOtherPreprocess}"/>
-			</and>
-		</condition>
-		<buildnumber/>
-		<echo>Builds ${appname}-${Description.em:version}-${DSTAMP}</echo>
-		<echo>Build No. ${build.number}</echo>
-	</target>
-	
-	<!--
-		************************************************************************
-		* preprocess *.s* files
-		************************************************************************
-	-->
-	<target name="preprocess" depends="init" description="preprocess files">
-		<mapper id="preprocessormapper">
-			<mapper type="glob" from="*.sjs" to="*.js"/>
-			<mapper type="glob" from="*.sxml" to="*.xml"/>
-			<mapper type="glob" from="*.smanifest" to="*.manifest"/>
-		</mapper>
-		<apply executable="cpp.exe"
-		       os="Windows,Windows XP"
-			   failonerror="true"
-			   force="${checkLibs.forcedPreprocess}"> <!-- and no jpp.bat needed now -->
-			<fileset dir="${basedir}">
-				<include name="**/*.sjs"/>
-				<include name="**/*.sxml"/>
-				<include name="**/*.smanifest"/>
-			</fileset>
-			<mapper refid="preprocessormapper"/>
-			<arg value="-I"/>
-			<arg value="${xpistdlib}"/>
-			<arg value="-I"/>
-			<arg value="${xpistdinc}"/>
-			<arg value="-I"/>
-			<arg value="${projectinc}"/>
-			<arg value="-ansi"/>
-			<arg value="-P"/>
-			<arg value="-CC"/>
-			<srcfile/>
-			<redirector inputencoding="UTF-8" outputencoding="UTF-8">
-				<outputfilterchain>
-					<linecontains negate="true"> <!-- and no grep needed now -->
-						<contains value="{--exclude-this-line}"/>
-					</linecontains>
-				</outputfilterchain>
-				<outputmapper refid="preprocessormapper"/>
-			</redirector>
-		</apply>
-		<apply executable="cpp"
-		       os="Linux"
-			   failonerror="true"
-			   force="${checkLibs.forcedPreprocess}"> <!-- and no jpp.bat needed now -->
-			<fileset dir="${basedir}">
-				<include name="**/*.sjs"/>
-				<include name="**/*.sxml"/>
-				<include name="**/*.smanifest"/>
-			</fileset>
-			<mapper refid="preprocessormapper"/>
-			<arg value="-I"/>
-			<arg value="${xpistdlib}"/>
-			<arg value="-I"/>
-			<arg value="${xpistdinc}"/>
-			<arg value="-I"/>
-			<arg value="${projectinc}"/>
-			<arg value="-ansi"/>
-			<arg value="-P"/>
-			<arg value="-CC"/>
-			<arg value="-w"/>
-			<srcfile/>
-			<redirector inputencoding="UTF-8" outputencoding="UTF-8">
-				<outputfilterchain>
-					<linecontains negate="true"> <!-- and no grep needed now -->
-						<contains value="{--exclude-this-line}"/>
-					</linecontains>
-				</outputfilterchain>
-				<outputmapper refid="preprocessormapper"/>
-			</redirector>
-		</apply>
-	</target>
-	
-	<target name="buildxpt" depends="init,preprocess">
-				<fail unless="geckosdkpath">The path to gecko sdk (geckosdkpath property) not defined.
-Define it in build.properties (don't forget about double back slashes)</fail>
-		<apply executable="xpidl.exe" dir="${xpidlpath}"
-			   resolveExecutable="true" dest="${basedir}/components"
-		       os="Windows"
-			   failonerror="true"> <!-- and no pack.bat needed now -->
-			<arg value="-m"/>
-			<arg value="typelib"/>
-			<arg value="-I"/>
-			<arg value="${idlpath}"/>
-			<arg value="-e"/>
-			<targetfile/>
-			<srcfile/>
-			<fileset dir="${basedir}/components" includes="*.idl"/>
-			<mapper type="glob" from="*.idl" to="*.xpt"/>
-		</apply>
-		<apply executable="xpidl" dir="${xpidlpath}"
-			   resolveExecutable="true" dest="${basedir}/components"
-		       os="Linux"
-			   failonerror="true"> <!-- and no pack.bat needed now -->
-			<arg value="-m"/>
-			<arg value="typelib"/>
-			<arg value="-I"/>
-			<arg value="${idlpath}"/>
-			<arg value="-e"/>
-			<targetfile/>
-			<srcfile/>
-			<fileset dir="${basedir}/components" includes="*.idl"/>
-			<mapper type="glob" from="*.idl" to="*.xpt"/>
-		</apply>
-	</target>
-	
-	<target name="buildjar" depends="init,preprocess">
-		<zip destfile="${basedir}/chrome/${jarname}.jar"
-			 compress="false" level="0"> <!-- and no 7-zip needed now -->
-			<fileset id="jarfileset" dir="${basedir}/chrome/${jarname}">
-				<include name="**/*.*"/>
-				<patternset refid="excludespatternset"/>
-				<!-- 0.0.3.8 excludes -->
-				<!--
-				<exclude name="content/custombuttons/customizeToolbars.xul"/>
-				<exclude name="content/custombuttons/customizeToolbars.js"/>
-				<exclude name="content/custombuttons/overlay3b2.xul"/>
-				-->
-				<!-- common excludes -->
-				<exclude name="content/custombuttons/editor.html"/>
-				<exclude name="content/custombuttons/addMoreKeysDialog.xul"/>
-				<exclude name="content/custombuttons/addMoreKeysDialog.js"/>
-				<exclude name="content/custombuttons/jsVer1.js"/>
-				<exclude name="content/custombuttons/jsVer2.js"/>
-				<exclude name="content/custombuttons/jsVer3.js"/>
-				<exclude name="content/custombuttons/jsVer4.js"/>
-				<exclude name="content/custombuttons/codeeditor2.xml"/>
-				<!-- 0.0.3.9 excludes -->
-				
-				<exclude name="content/custombuttons/cbbutton1.5.xul"/>
-				<!--
-				<exclude name="content/custombuttons/cbbutton.xul"/>
-				-->
-				<exclude name="content/custombuttons/cbbutton3.xul"/>
-				<exclude name="content/custombuttons/loader.js"/>
-				<!-- 0.0.4.0a excludes -->
-				
-				<exclude name="content/custombuttons/editor.js"/>
-				<exclude name="content/custombuttons/edit.xul"/>
-				<exclude name="skin/classic/button1.png"/>
-				<!-- 0.0.4.1 excludes -->
-				
-				<exclude name="content/custombuttons/codeeditor.xml"/>
-				<!-- 0.0.4.2a excludes -->
-				
-				<exclude name="content/custombuttons/buttonsoverlay.js"/>
-				
-			</fileset>
-
-		</zip>
-	</target>
-	
-	<target name="buildxpiwithoutjar" depends="init,preprocess,buildxpt"
-			unless="keep_jar">
-			<!--
-		<replaceregexp file="${basedir}/chrome.manifest" byline="true">
-			<regexp pattern="^(content\s+${appname}\s+)jar:chrome\/${jarname}\.jar!(\/\S*\/)$"/>
-  			<substitution expression="\1chrome/${appname}\2"/>
-		</replaceregexp>
-		<replaceregexp file="${basedir}/chrome.manifest" byline="true">
-			<regexp pattern="^(skin|locale)(\s+\S*\s+\S*\s+)jar:chrome\/${jarname}\.jar!(\/.*\/)$"/>
-  			<substitution expression="\1\2chrome/${jarname}\3"/>
-		</replaceregexp>
-			-->
-		<zip destfile="${xpiname}-${Description.em:version}-${DSTAMP}.xpi"
-			 compress="true" level="9"> <!-- and no 7-zip, pack.bat needed now -->
-			<fileset dir="${basedir}">
-				<patternset refid="xpipatternset"/>
-				<include name="chrome/**/*.*"/>
-				<exclude name="chrome/*.jar"/>
-				<patternset refid="excludespatternset"/>
-			</fileset>
-		</zip>
-	</target>
-	
-	<target name="buildxpiwithjar" depends="init,preprocess,buildxpt,buildjar"
-			if="keep_jar">
-			<!--
-		<replaceregexp file="${basedir}/chrome.manifest" byline="true">
-			<regexp pattern="^(content\s+${appname}*\s+)chrome\/${appname}(\/\S*\/)$"/>
-  			<substitution expression="\1jar:chrome\/${jarname}\.jar!\2"/>
-		</replaceregexp>
-		<replaceregexp file="${basedir}/chrome.manifest" byline="true">
-			<regexp pattern="^(skin|locale)(\s+\S*\s+\S*\s+)chrome\/${appname}(\/.*\/)$"/>
-  			<substitution expression="\1\2jar:chrome\/${jarname}\.jar!\3"/>
-		</replaceregexp>
-			-->
-		<zip destfile="${xpiname}-${Description.em:version}-${DSTAMP}.xpi"
-			 compress="true" level="9"> <!-- and no 7-zip, pack.bat needed now -->
-			<fileset dir="${basedir}">
-				<patternset refid="xpipatternset"/>
-				<include name="chrome/${jarname}.jar"/>
-				<patternset refid="excludespatternset"/>
-				<!-- common excludes -->
-				<exclude name="components/CBStorageService.xpt"/>
-				<exclude name="components/customhttpprotocol2.xpt"/>
-				<exclude name="components/customhttpprotocol3.xpt"/>
-				<exclude name="components/customhttpprotocol2.js"/>
-				<exclude name="components/customhttpprotocol3.js"/>
-				<exclude name="components/CBRDFService.js"/>
-			</fileset>
-		</zip>
-	</target>
-	
-	<target name="buildxpi" depends="buildxpiwithjar,buildxpiwithoutjar"/>
-	
+      </fileset>
+    </zip>
+  </target>
+  
+  <target name="buildxpiwithjar" depends="init,buildxpt,buildjar"
+	  if="keep_jar">
+    <zip destfile="${xpiname}-${Description.em:version}-${DSTAMP}.xpi"
+	 compress="true" level="9">
+      <fileset dir="${basedir}">
+	<patternset refid="xpipatternset"/>
+	<include name="chrome/${jarname}.jar"/>
+	<patternset refid="excludespatternset"/>
+      </fileset>
+    </zip>
+  </target>
+  
+  <target name="buildxpi" depends="buildxpiwithjar"/>
 </project>
+

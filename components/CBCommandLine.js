@@ -37,7 +37,7 @@ cbCommandLineHandler. prototype =
     get cbs ()
     {
  if (!this. _cbs)
-     this. _cbs = Components. classes ["@xsms.nm.ru/custombuttons/cbservice;1"]. getService (Components. interfaces. cbICustomButtonsService);
+     this. _cbs = Components. classes ["@xsms.nm.ru/custombuttons/cbservice;1" /* CB_SERVICE_CID */]. getService (Components. interfaces. cbICustomButtonsService /* CB_SERVICE_IID */);
  return this. _cbs
     },
 
@@ -48,7 +48,7 @@ cbCommandLineHandler. prototype =
  if (!param)
      return;
  if (param == "disable-buttons-initialization")
-     mode = mode | 32;
+     mode = mode | 32 /* CB_MODE_DISABLE_INITIALIZATION */;
  this. cbs. mode = mode;
     },
 
@@ -58,7 +58,7 @@ cbCommandLineHandler. prototype =
 var Module =
 {
     CLSID: Components. ID ("{cafd9345-65a1-46b2-944d-ff4a9725a609}"),
-    ContractID: "@mozilla.org/commandlinehandler/general-startup;1?type=custombuttons",
+    ContractID: "@mozilla.org/commandlinehandler/general-startup;1?type=custombuttons" /* CB_COMMAND_LINE_HANDLER_COMPONENT_CID */,
     ComponentName: "Custombuttons extension command line handler component",
 
     QueryInterface: function (iid)

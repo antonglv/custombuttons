@@ -44,12 +44,12 @@ const nsIURI = Components. interfaces. nsIURI;
 function CustombuttonProtocol (sProtocolName)
 {
  this. scheme = sProtocolName;
- this. protocolFlags = 1 | 2 | 64 |
-        1024;
+ this. protocolFlags = Components. interfaces. nsIProtocolHandler. URI_NORELATIVE | Components. interfaces. nsIProtocolHandler. URI_NOAUTH | Components. interfaces. nsIProtocolHandler. URI_LOADABLE_BY_ANYONE |
+        Components. interfaces. nsIProtocolHandler. URI_NON_PERSISTABLE;
  if (sProtocolName == "custombutton")
-  this. protocolFlags |= 2048;
+  this. protocolFlags |= Components. interfaces. nsIProtocolHandler. URI_DOES_NOT_RETURN_DATA;
  if (sProtocolName == "custombuttons")
-  this. protocolFlags |= 4096;
+  this. protocolFlags |= Components. interfaces. nsIProtocolHandler. URI_IS_LOCAL_RESOURCE;
  return this;
 }
 CustombuttonProtocol. prototype =
@@ -58,8 +58,8 @@ CustombuttonProtocol. prototype =
  QueryInterface: function (iid) { if (!iid. equals (Components. interfaces. nsIProtocolHandler) && !iid. equals (Components. interfaces. nsISupports)) throw Components. results. NS_ERROR_NO_INTERFACE; return this; },
 
  defaultPort: -1,
- protocolFlags: 1 | 2 | 64 |
-       1024 | 2048,
+ protocolFlags: Components. interfaces. nsIProtocolHandler. URI_NORELATIVE | Components. interfaces. nsIProtocolHandler. URI_NOAUTH | Components. interfaces. nsIProtocolHandler. URI_LOADABLE_BY_ANYONE |
+       Components. interfaces. nsIProtocolHandler. URI_NON_PERSISTABLE | Components. interfaces. nsIProtocolHandler. URI_DOES_NOT_RETURN_DATA,
 
  scheme: "custombutton",
 
