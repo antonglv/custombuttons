@@ -14,11 +14,11 @@ function onViewChanged (aEvent)
 {
     if ("addons://list/custombuttons-button" == gViewController.currentViewId)
     {
- document. documentElement. className += " custombuttons";
+	document. documentElement. className += " custombuttons";
     }
     else
     {
- document. documentElement. className = document. documentElement. className. replace (/ custombuttons/g, "");
+	document. documentElement. className = document. documentElement. className. replace (/ custombuttons/g, "");
     }
 };
 
