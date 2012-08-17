@@ -317,7 +317,10 @@ const custombuttons =
 			{
 			    winButton. destroy ("update");
 			}
-			catch (e) {}
+			catch (e)
+			{
+			    Components. utils. reportError (e);
+			}
 			winButton. parentNode. replaceChild (newButton, winButton);
 		    }
 		}
