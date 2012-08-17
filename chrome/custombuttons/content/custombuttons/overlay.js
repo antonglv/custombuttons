@@ -147,18 +147,7 @@ const custombuttons =
 
 	findButtons: function (id)
 	{
-	    var res = [];
-	    var btn = document. getElementById (id);
-	    if (btn)
-		res [res. length] = btn;
-	    var buttons = document. getElementsByAttribute ("id", id);
-	    for (var i = 0; i < buttons. length; i++)
-	    {
-		if (btn == buttons [i])
-		    continue;
-		res [res. length] = buttons [i];
-	    }
-	    return res;
+	    return Array. slice (document. getElementsByAttribute ("id", id));
 	},
 
 	RemoveButtonFromPalette: function (oButton)
