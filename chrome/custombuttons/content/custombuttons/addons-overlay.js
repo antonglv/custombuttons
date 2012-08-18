@@ -4,13 +4,13 @@
 Components.utils.import("resource://gre/modules/AddonManager.jsm");
 Components.utils.import("resource://custombuttons-modules/addons4.js");
 
-function init (aEvent)
+function cbInit (aEvent)
 {
-    window. addEventListener ("ViewChanged", onViewChanged, false);
-    onViewChanged ();
+    window. addEventListener ("ViewChanged", cbOnViewChanged, false);
+    cbOnViewChanged ();
 }
 
-function onViewChanged (aEvent)
+function cbOnViewChanged (aEvent)
 {
     if ("addons://list/custombuttons-button" == gViewController.currentViewId)
     {
@@ -22,4 +22,4 @@ function onViewChanged (aEvent)
     }
 };
 
-window. addEventListener ("load", init, false);
+window. addEventListener ("load", cbInit, false);
