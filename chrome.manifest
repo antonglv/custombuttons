@@ -73,6 +73,7 @@ overlay chrome://console2/content/console2.xul chrome://custombuttons/content/co
 
 ## Add-Ons Manager
 overlay about:addons chrome://custombuttons/content/addons-overlay.xul
+overlay chrome://mozapps/content/extensions/extensions.xul chrome://custombuttons/content/addons-overlay.xul
 resource custombuttons-modules modules/
 
 skin custombuttons classic/1.0 jar:chrome/custombuttons.jar!/skin/classic/
