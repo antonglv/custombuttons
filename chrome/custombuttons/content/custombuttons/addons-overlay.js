@@ -1,8 +1,8 @@
 /* ****
  *
  */
-Components.utils.import("resource://gre/modules/AddonManager.jsm");
-Components.utils.import("resource://custombuttons-modules/addons4.js");
+Components. utils. import ("resource://gre/modules/AddonManager.jsm");
+Components. utils. import ("resource://custombuttons-modules/addons4.js");
 
 function cbInit (aEvent)
 {
@@ -12,13 +12,13 @@ function cbInit (aEvent)
 
 function cbOnViewChanged (aEvent)
 {
-    if ("addons://list/custombuttons-button" == gViewController.currentViewId)
+    if ("addons://list/custombuttons-button" == gViewController. currentViewId)
     {
-	document. documentElement. className += " custombuttons";
+	document. documentElement. classList. add ("custombuttons");
     }
     else
     {
-	document. documentElement. className = document. documentElement. className. replace (/ custombuttons/g, "");
+	document. documentElement. classList. remove ("custombuttons");
     }
 };
 
