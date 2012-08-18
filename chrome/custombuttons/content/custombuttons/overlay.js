@@ -448,7 +448,10 @@ const custombuttons = {
 	    {
 		document. getElementById (ids [i]). cbExecuteCode ();
 	    }
-	    catch (e) {}
+	    catch (e)
+	    {
+		Components. utils. reportError (e);
+	    }
 	}
     },
 
