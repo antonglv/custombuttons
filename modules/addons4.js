@@ -1,5 +1,3 @@
-
-
 var EXPORTED_SYMBOLS = [];
 
 Components. utils. import ("resource://gre/modules/AddonManager.jsm");
@@ -37,20 +35,35 @@ var AddonProvider = {
 	aCallback ([]);
     },
 
+    makeButtonLink: function (paletteId, buttonId)
+    {
+	var res = "custombutton://buttons/";
+	var info = Components. classes ["@mozilla.org/xre/app-info;1"]. getService (Components. interfaces. nsIXULAppInfo);
+	switch (paletteId)
+	{
+	    case "BrowserToolbarPalette":
+		res += info. name + "/";
+		break;
+	}
+	res += "edit/" + buttonId;
+	return res;
+    },
+
     getAddonsByTypes: function AddonProvider_getAddonsByTypes (aTypes, aCallback) {
 	if (aTypes && (aTypes. indexOf (CB_ADDON_TYPE) == -1)) {
 	    aCallback ([]);
 	    return;
 	}
-	//var res = new CustombuttonsButton ({name: "test3"});
 	var res = [];
 	var doc = this. overlayDocument;
 	var btns = doc. getElementsByTagName ("toolbarbutton");
-	var btn, image;
+	var btn, image, btnLink;
 	for (var i = 0; i < btns. length; i++) {
 	    btn = new CustombuttonsButton ();
 	    btn. id = btns [i]. getAttribute ("id");
 	    btn. name = btns [i]. getAttribute ("label");
+	    btnLink = this. makeButtonLink (btns [i]. parentNode. id, btn. id);
+	    btn. buttonLink = btnLink;
 	    image = "chrome://custombuttons/skin/button.png";
 	    if (btns [i]. hasAttribute ("cb-stdicon")) {
 		switch (btns [i]. getAttribute ("cb-stdicon")) {
@@ -84,10 +97,7 @@ var AddonProvider = {
     }
 };
 
-function CustombuttonsButton (aButton) {
-    //this. _button = aButton;
-    //this. name = this. _button. name;
-}
+function CustombuttonsButton (aButton) {}
 // TODO: implement aboutURL, size, sourceURI
 CustombuttonsButton. prototype = {
     id: null,
