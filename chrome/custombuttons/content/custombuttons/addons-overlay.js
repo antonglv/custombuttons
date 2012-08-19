@@ -1,16 +1,27 @@
 /* ****
  *
  */
+(function () {
 Components. utils. import ("resource://gre/modules/AddonManager.jsm");
 Components. utils. import ("resource://custombuttons-modules/addons4.js");
 
-function cbInit (aEvent)
+function init (aEvent)
 {
-    window. addEventListener ("ViewChanged", cbOnViewChanged, false);
-    cbOnViewChanged ();
+    gViewController. commands. cmd_custombuttons_edit = {
+	isEnabled: function () {
+	     return true;
+	},
+	doCommand: function (aAddon)
+	{
+	    var cbs = Components. classes ["@xsms.nm.ru/custombuttons/cbservice;1" /* CB_SERVICE_CID */]. getService (Components. interfaces. cbICustomButtonsService /* CB_SERVICE_IID */);
+	    cbs. editButton (window, aAddon. buttonLink, null);
+	}
+    };
+    window. addEventListener ("ViewChanged", onViewChanged, false);
+    onViewChanged ();
 }
 
-function cbOnViewChanged (aEvent)
+function onViewChanged (aEvent)
 {
     if ("addons://list/custombuttons-button" == gViewController. currentViewId)
     {
@@ -22,4 +33,5 @@ function cbOnViewChanged (aEvent)
     }
 };
 
-window. addEventListener ("load", cbInit, false);
+window. addEventListener ("load", init, false);
+}) ();
