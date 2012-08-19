@@ -12,8 +12,14 @@
 
   <script type="application/x-javascript" src="chrome://custombuttons/content/addons-overlay.js" />
 
+  <commandset id="viewCommandSet">
+    <command id="cmd_custombuttons_edit"/>
+  </commandset>
+
   <menupopup id="addonitem-popup">
-    <menuitem label="&custombuttons.buttonPopup.edit;" insertbefore="menuitem_showDetails"/>
+    <menuitem label="&custombuttons.buttonPopup.edit;"
+	      insertbefore="menuitem_showDetails"
+	      command="cmd_custombuttons_edit"/>
   </menupopup>
 
   <richlistbox id="categories">
