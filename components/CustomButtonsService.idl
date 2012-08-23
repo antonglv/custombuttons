@@ -7,6 +7,7 @@ interface cbICustomButtonsService: nsISupports
   void editButton (in nsISupports opener, in string buttonLink, in nsISupports param);
   string cloneButton (in nsISupports clonedButton, in boolean asEmpty);
   void removeButton (in nsISupports removedButton, in boolean removeFromOverlay);
+  void uninstallButton (in AUTF8String buttonLink);
   PRInt32 updateButton (in string buttonLink, in string buttonId);
   nsISupports getButtonParameters (in string buttonLink);
   nsISupports parseButtonURI (in AUTF8String uri);
