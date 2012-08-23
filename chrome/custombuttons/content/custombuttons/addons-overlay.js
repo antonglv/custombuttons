@@ -33,7 +33,7 @@ function init (aEvent)
 
 function onViewChanged (aEvent)
 {
-    if ("addons://list/custombuttons-button" == gViewController. currentViewId)
+    if ("addons://list/custombuttons" == gViewController. currentViewId)
     {
 	document. documentElement. classList. add ("custombuttons");
     }
