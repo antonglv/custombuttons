@@ -9,10 +9,10 @@ var CB_ADDON_TYPE = "custombuttons-button";
 const Cu = Components. utils;
 
 var AddonProvider = {
-    get overlayDocument () {
+    getOverlayDocument: function (overlayFileName) {
 	var overlayDocument = null;
 	var ios = Components. classes ["@mozilla.org/network/io-service;1"]. getService (Components. interfaces. nsIIOService);
-	var uri = "resource://custombuttons/buttonsoverlay.xul";
+	var uri = "resource://custombuttons/" + overlayFileName;
 	var xulchan = ios. newChannel (uri, null, null);
 	var instr = xulchan. open ();
 	var dp = Components. classes ["@mozilla.org/xmlextras/domparser;1"]. createInstance (Components. interfaces. nsIDOMParser);
@@ -35,34 +35,56 @@ var AddonProvider = {
 	aCallback ([]);
     },
 
-    makeButtonLink: function (paletteId, buttonId)
+    makeButtonLink: function (overlayFileName, paletteId, buttonId)
     {
 	var res = "custombutton://buttons/";
 	var info = Components. classes ["@mozilla.org/xre/app-info;1"]. getService (Components. interfaces. nsIXULAppInfo);
 	switch (paletteId)
 	{
 	    case "BrowserToolbarPalette":
-		res += info. name + "/";
+		res += info. name; // Firefox, SeaMonkey, Browser
+		break;
+	    case "MailToolbarPalette":
+		res += info. name; // Thunderbird, SeaMonkey
+		if (("buttonsoverlay.xul" == overlayFileName) &&
+		    ("SeaMonkey" == info. name))
+		    res += "Mail"; // SeaMonkeyMail
+		else if ("mwbuttonsoverlay.xul" == overlayFileName)
+			res += "MailWindow"; // ThunderbirdMailWindow, SeaMonkeyMailWindow
+		break;
+	    case "MsgComposeToolbarPalette":
+		res += info. name + "ComposeWindow"; // ThunderbirdComposeWindow, SeaMonkeyComposeWindow
+		break;
+	    case "calendarToolbarPalette":
+		res += "Sunbird"; // Sunbird, Calendar
+		break;
+	    case "NvuToolbarPalette":
+		res += "KompoZer"; // KompoZer
+		break;
+	    default:
+		res += "Browser";
 		break;
 	}
-	res += "edit/" + buttonId;
+	res += "/edit/" + buttonId;
 	return res;
     },
 
-    getAddonsByTypes: function AddonProvider_getAddonsByTypes (aTypes, aCallback) {
-	if (aTypes && (aTypes. indexOf (CB_ADDON_TYPE) == -1)) {
-	    aCallback ([]);
-	    return;
-	}
+    collectButtonsFromOverlay: function (overlayFileName)
+    {
 	var res = [];
-	var doc = this. overlayDocument;
+	var doc;
+	try {
+	    doc = this. getOverlayDocument (overlayFileName);
+	} catch (e) {}
+	if (!doc)
+	    return res;
 	var btns = doc. getElementsByTagName ("toolbarbutton");
 	var btn, image, btnLink;
 	for (var i = 0; i < btns. length; i++) {
 	    btn = new CustombuttonsButton ();
 	    btn. id = btns [i]. getAttribute ("id");
 	    btn. name = btns [i]. getAttribute ("label");
-	    btnLink = this. makeButtonLink (btns [i]. parentNode. id, btn. id);
+	    btnLink = this. makeButtonLink (overlayFileName, btns [i]. parentNode. id, btn. id);
 	    btn. buttonLink = btnLink;
 	    image = "chrome://custombuttons/skin/button.png";
 	    if (btns [i]. hasAttribute ("cb-stdicon")) {
@@ -85,6 +107,21 @@ var AddonProvider = {
 	    btn. iconURL = image;
 	    res. push (btn);
 	}
+	return res;
+    },
+
+    getAddonsByTypes: function AddonProvider_getAddonsByTypes (aTypes, aCallback) {
+	if (aTypes && (aTypes. indexOf (CB_ADDON_TYPE) == -1)) {
+	    aCallback ([]);
+	    return;
+	}
+	var res = [];
+	var btns = this. collectButtonsFromOverlay ("buttonsoverlay.xul");
+	res = res. concat (btns);
+	btns = this. collectButtonsFromOverlay ("mwbuttonsoverlay.xul");
+	res = res. concat (btns);
+	btns = this. collectButtonsFromOverlay ("mcbuttonsoverlay.xul");
+	res = res. concat (btns);
 	aCallback (res);
     },
 
