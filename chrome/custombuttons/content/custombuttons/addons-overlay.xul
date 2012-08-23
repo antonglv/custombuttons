@@ -14,6 +14,7 @@
 
   <commandset id="viewCommandSet">
     <command id="cmd_custombuttons_edit"/>
+    <command id="cmd_custombuttons_add"/>
   </commandset>
 
   <menupopup id="addonitem-popup">
@@ -29,16 +30,24 @@
   </richlistbox>
 
   <vbox id="list-view">
-    <hbox id="custombuttons-sort-bar" class="view-header" pack="end" insertbefore="addon-list-empty">
-      <button id="add-new-custombutton" label="&custombuttons.viewMenu_Item;" class="addon-control"/>
+    <hbox id="custombuttons-sort-bar" class="view-header" pack="end" insertafter="addon-list-empty">
+      <button id="add-new-custombutton"
+	      label="&custombuttons.viewMenu_Item;"
+	      class="addon-control"
+	      command="cmd_custombuttons_add"/>
       <spacer flex="1"/>
       <button id="custombuttons-sorting-name" label="&custombuttons.addons4.sortname;" class="sorter" sortBy="name" persist="checkState,checked"/>
     </hbox>
   </vbox>
 
   <vbox id="addon-list-empty">
-    <hbox position="3">
-      <description id="custombuttons-no-buttons-note">nobuttons;</description>
-    </hbox>
+    <vbox id="custombuttons-no-buttons-block" align="center">
+      <hbox>
+	<description id="custombuttons-no-buttons-note">nobuttons;</description>
+      </hbox>
+      <button label="&custombuttons.viewMenu_Item;"
+	      class="addon-control"
+	      command="cmd_custombuttons_add"/>
+    </vbox>
   </vbox>
 </overlay>
