@@ -965,6 +965,20 @@ cbCustomButtonsService. prototype =
 	    }
 	},
 
+	_removeButton: function (windowId, toolbarId, buttonId, removeFromOverlay) {
+	    var app = new AppObject (windowId);
+	    var button = app. getButton (buttonId);
+	    if (button && removeFromOverlay) {
+		button. parentNode. removeChild (button);
+		app. overlay. saveOverlayToProfile ();
+	    }
+	    app. notifyObservers (null, "removeButton", toolbarId + ":" + buttonId);
+	    var editorId = this. pathToEditor + "?editorId=custombuttons-editor@" + windowId + ":" + buttonId;
+	    var mode = this. ps. getIntPref ("mode");
+	    if (mode & 64 /* CB_MODE_SAVE_EDITOR_SIZE_SEPARATELY */)
+		this. unPersist (editorId);
+	},
+
 	removeButton: function (removedButton, removeFromOverlay)
 	{
 	    removedButton = removedButton. QueryInterface (Components. interfaces. nsIDOMNode);
@@ -972,18 +986,12 @@ cbCustomButtonsService. prototype =
 	    var buttonId = removedButton. getAttribute ("id");
 	    var parentId = removedButton. parentNode. getAttribute ("id");
 	    var windowId = this. getWindowId (documentURI);
-	    var editorId = this. pathToEditor + "?editorId=custombuttons-editor@" + windowId + ":" + buttonId;
-	    var app = new AppObject (windowId);
-	    var button = app. getButton (buttonId);
-	    if (button && removeFromOverlay)
-	    {
-		button. parentNode. removeChild (button);
-		app. overlay. saveOverlayToProfile ();
-	    }
-	    app. notifyObservers (null, "removeButton", parentId + ":" + buttonId);
-	    var mode = this. ps. getIntPref ("mode");
-	    if (mode & 64 /* CB_MODE_SAVE_EDITOR_SIZE_SEPARATELY */)
-		this. unPersist (editorId);
+	    this. _removeButton (windowId, parentId, buttonId, removeFromOverlay);
+	},
+
+	uninstallButton: function (buttonLink) {
+	    var link = this. parseButtonLink (buttonLink);
+	    this. _removeButton (link. windowId, "", link. buttonId, true);
 	},
 
 	makeOverlay: function ()

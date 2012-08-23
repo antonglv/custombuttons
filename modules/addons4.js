@@ -151,7 +151,12 @@ CustombuttonsButton. prototype = {
     iconURL: null,
     isActive: true,
 
-    _button: null
+    _button: null,
+
+    uninstall: function () {
+	var cbs = Components. classes ["@xsms.nm.ru/custombuttons/cbservice;1" /* CB_SERVICE_CID */]. getService (Components. interfaces. cbICustomButtonsService /* CB_SERVICE_IID */);
+	cbs. uninstallButton (this. buttonLink);
+    }
 };
 
 var firstRun = true;
