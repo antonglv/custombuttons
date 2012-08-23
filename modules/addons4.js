@@ -4,7 +4,7 @@ Components. utils. import ("resource://gre/modules/AddonManager.jsm");
 Components. utils. import ("resource://gre/modules/Services.jsm");
 Components. utils. import ("resource://gre/modules/XPCOMUtils.jsm");
 
-var CB_ADDON_TYPE = "custombuttons-button";
+var CB_ADDON_TYPE = "custombuttons";
 
 const Cu = Components. utils;
 
