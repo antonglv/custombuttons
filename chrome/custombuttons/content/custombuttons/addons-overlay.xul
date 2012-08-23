@@ -30,24 +30,34 @@
   </richlistbox>
 
   <vbox id="list-view">
-    <hbox id="custombuttons-sort-bar" class="view-header" pack="end" insertafter="addon-list-empty">
-      <button id="add-new-custombutton"
+    <hbox id="custombuttons-sort-bar"
+	  class="view-header"
+	  pack="end"
+	  insertafter="addon-list-empty">
+      <button id="custombutons-add-new"
 	      label="&custombuttons.viewMenu_Item;"
 	      class="addon-control"
 	      command="cmd_custombuttons_add"/>
       <spacer flex="1"/>
-      <button id="custombuttons-sorting-name" label="&custombuttons.addons4.sortname;" class="sorter" sortBy="name" persist="checkState,checked"/>
+      <button id="custombuttons-sorting-name"
+	      label="&custombuttons.addons4.sortname;"
+	      class="sorter"
+	      sortBy="name"
+	      persist="checkState,checked"/>
     </hbox>
-  </vbox>
-
-  <vbox id="addon-list-empty">
-    <vbox id="custombuttons-no-buttons-block" align="center">
-      <hbox>
-	<description id="custombuttons-no-buttons-note">nobuttons;</description>
-      </hbox>
-      <button label="&custombuttons.viewMenu_Item;"
-	      class="addon-control"
-	      command="cmd_custombuttons_add"/>
+    <vbox id="custombuttons-list-empty"
+	  insertafter="addon-list-empty"
+	  class="alert-container"
+	  flex="1">
+      <spacer class="alert-spacer-before"/>
+      <vbox class="alert">
+	<label>&custombuttons.addons4.nobuttons;</label>
+	<button label="&custombuttons.viewMenu_Item;"
+		class="addon-control"
+		command="cmd_custombuttons_add"/>
+      </vbox>
+      <spacer class="alert-spacer-after"/>
     </vbox>
   </vbox>
+
 </overlay>
