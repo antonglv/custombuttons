@@ -24,7 +24,7 @@
 
   <richlistbox id="categories">
     <richlistitem id="category-custombuttons" class="category"
-		  value="addons://list/custombuttons-button"
+		  value="addons://list/custombuttons"
 		  name="&custombuttons;"/>
   </richlistbox>
 
