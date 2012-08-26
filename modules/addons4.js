@@ -35,7 +35,7 @@ var AddonProvider = {
 	aCallback ([]);
     },
 
-    makeButtonLink: function (overlayFileName, paletteId, buttonId)
+    makeButtonLink: function (overlayFileName, paletteId)
     {
 	var res = "custombutton://buttons/";
 	var info = Components. classes ["@mozilla.org/xre/app-info;1"]. getService (Components. interfaces. nsIXULAppInfo);
@@ -65,7 +65,7 @@ var AddonProvider = {
 		res += "Browser";
 		break;
 	}
-	res += "/edit/" + buttonId;
+	res += "/";
 	return res;
     },
 
@@ -79,13 +79,14 @@ var AddonProvider = {
 	if (!doc)
 	    return res;
 	var btns = doc. getElementsByTagName ("toolbarbutton");
-	var btn, image, btnLink;
+	var btn, image, btnLink, btnId;
 	for (var i = 0; i < btns. length; i++) {
+	    btnLink = this. makeButtonLink (overlayFileName, btns [i]. parentNode. id);
 	    btn = new CustombuttonsButton ();
-	    btn. id = btns [i]. getAttribute ("id");
+	    btnId = btns [i]. getAttribute ("id");
+	    btn. id = btnLink + btnId;
 	    btn. name = btns [i]. getAttribute ("label");
-	    btnLink = this. makeButtonLink (overlayFileName, btns [i]. parentNode. id, btn. id);
-	    btn. buttonLink = btnLink;
+	    btn. buttonLink = btnLink + "edit/" + btnId;
 	    image = "chrome://custombuttons/skin/button.png";
 	    if (btns [i]. hasAttribute ("cb-stdicon")) {
 		switch (btns [i]. getAttribute ("cb-stdicon")) {

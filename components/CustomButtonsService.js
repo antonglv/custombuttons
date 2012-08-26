@@ -973,6 +973,15 @@ cbCustomButtonsService. prototype =
 		app. overlay. saveOverlayToProfile ();
 	    }
 	    app. notifyObservers (null, "removeButton", toolbarId + ":" + buttonId);
+	    var am = {}, addon;
+	    try {
+		addon = {
+		    id: "custombutton://buttons/" + windowId + "/" + buttonId
+		};
+		Components. utils ["import"] ("resource://gre/modules/AddonManager.jsm", am);
+		am. AddonManagerPrivate. callAddonListeners ("onUninstalling", addon, false);
+		am. AddonManagerPrivate. callAddonListeners ("onUninstalled", addon);
+	    } catch (e) {}
 	    var editorId = this. pathToEditor + "?editorId=custombuttons-editor@" + windowId + ":" + buttonId;
 	    var mode = this. ps. getIntPref ("mode");
 	    if (mode & 64 /* CB_MODE_SAVE_EDITOR_SIZE_SEPARATELY */)
