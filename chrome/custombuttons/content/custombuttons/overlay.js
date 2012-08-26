@@ -149,10 +149,9 @@ const custombuttons = {
 	return Array. slice (document. getElementsByAttribute ("id", id));
     },
 
-    RemoveButtonFromPalette: function (oButton)
+    RemoveButtonFromPalette: function (sButtonId)
     {
-	var sId = oButton. getAttribute ("id");
-	var oPaletteButton = this. palette. getElementsByAttribute ("id", sId) [0];
+	var oPaletteButton = this. palette. getElementsByAttribute ("id", sButtonId) [0];
 	if (oPaletteButton)
 	{
 	    try
@@ -166,7 +165,7 @@ const custombuttons = {
 
     AddButtonToPalette: function (oButton)
     {
-	this. RemoveButtonFromPalette (oButton);
+	this. RemoveButtonFromPalette (oButton. getAttribute ("id"));
 	var sId = "custombuttons-template-button";
 	var oPaletteButton;
 	var cbpb = this. palette. getElementsByAttribute ("id", sId) [0];
@@ -236,22 +235,22 @@ const custombuttons = {
 
     _removeButton: function (sParentToolbarId, sRemovedButtonId)
     {
+	var oParentToolbar, oRemovedButton;
 	var cButtonsToRemove = this. findButtons (sRemovedButtonId);
-	var bRemoveFromOverlay = (cButtonsToRemove. length == 1);
-	var oParentToolbar = document. getElementById (sParentToolbarId);
-	var oRemovedButton = oParentToolbar. getElementsByAttribute ("id", sRemovedButtonId) [0];
+	var bRemoveFromOverlay = (cButtonsToRemove. length <= 1);
+	oParentToolbar = document. getElementById (sParentToolbarId);
+	if (oParentToolbar)
+	    oRemovedButton = oParentToolbar. getElementsByAttribute ("id", sRemovedButtonId) [0];
 	if (!oRemovedButton)
 	    oRemovedButton = document. getElementById (sRemovedButtonId);
-	if (!oRemovedButton)
-	    return;
-	try
-	{
-	    oRemovedButton. destroy ("delete");
+	if (oRemovedButton) {
+	    try {
+		oRemovedButton. destroy ("delete");
+	    } catch (oErr) {}
+	    oRemovedButton. parentNode. removeChild (oRemovedButton);
 	}
-	catch (oErr) {}
 	if (bRemoveFromOverlay)
-	    this. RemoveButtonFromPalette (oRemovedButton);
-	oRemovedButton. parentNode. removeChild (oRemovedButton);
+	    this. RemoveButtonFromPalette (sRemovedButtonId);
     },
 
     removeButton: function (oRemovedButton)
