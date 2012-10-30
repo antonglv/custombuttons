@@ -1087,6 +1087,8 @@ cbCustomButtonsService. prototype =
 		var clip = Components. classes ["@mozilla.org/widget/clipboard;1"]. getService (Components. interfaces. nsIClipboard);
 		var kGlobalClipboard = clip. kGlobalClipboard;
 		var trans = Components. classes ["@mozilla.org/widget/transferable;1"]. createInstance (Components. interfaces. nsITransferable);
+		if ("init" in trans)
+		    trans. init (null);
 		trans. addDataFlavor ("text/unicode");
 		clip. getData (trans, kGlobalClipboard);
 		trans. getTransferData ("text/unicode", str, strLength);
