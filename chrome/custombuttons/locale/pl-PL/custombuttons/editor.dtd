@@ -1,6 +1,7 @@
 <!ENTITY editor.dialog.help "Help">
 <!ENTITY editor.dialog.help.accesskey "H">
 <!ENTITY editor.dialog.title "Edycja przycisku">
+<!ENTITY editor.dialog.editexternal "Edit external…">
 <!ENTITY editor.name "Nazwa:">
 <!ENTITY editor.name.accesskey "N">
 <!ENTITY editor.name.tooltiptext "Ustala etykietkę przycisku, i tekst podpowiedzi">

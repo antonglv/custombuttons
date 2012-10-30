@@ -10,7 +10,7 @@
 		title="&editor.dialog.title;"
 		persist="width height screenX screenY sizemode"
 		buttons="extra1,extra2,accept,cancel"
-		buttonlabelextra1="Edit External"
+		buttonlabelextra1="&editor.dialog.editexternal;"
 		buttonlabelextra2="&editor.Apply;"
 		ondialogextra1="edit_button()"
 		ondialogextra2="editor.updateButton()"

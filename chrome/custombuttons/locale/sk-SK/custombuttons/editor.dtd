@@ -1,6 +1,7 @@
 <!ENTITY editor.dialog.help "Help">
 <!ENTITY editor.dialog.help.accesskey "H">
 <!ENTITY editor.dialog.title "Upraviť tlačidlo">
+<!ENTITY editor.dialog.editexternal "Edit external…">
 <!ENTITY editor.name "Názov:">
 <!ENTITY editor.name.accesskey "N">
 <!ENTITY editor.name.tooltiptext "Určuje text a bublinový popis tlačidla">
