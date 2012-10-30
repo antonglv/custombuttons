@@ -1,6 +1,7 @@
 <!ENTITY editor.dialog.help "Справка">
 <!ENTITY editor.dialog.help.accesskey "H">
 <!ENTITY editor.dialog.title "Редактирование кнопки">
+<!ENTITY editor.dialog.editexternal "Внешний редактор…">
 <!ENTITY editor.name "Имя:">
 <!ENTITY editor.name.accesskey "N">
 <!ENTITY editor.name.tooltiptext "Задаёт надпись на кнопке и всплывающую подсказку">

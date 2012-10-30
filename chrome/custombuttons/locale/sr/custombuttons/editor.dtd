@@ -1,6 +1,7 @@
 <!ENTITY editor.dialog.help "Помоћ">
 <!ENTITY editor.dialog.help.accesskey "о">
 <!ENTITY editor.dialog.title "Уреди дугме">
+<!ENTITY editor.dialog.editexternal "Edit external…">
 <!ENTITY editor.name "Назив:">
 <!ENTITY editor.name.accesskey "Н">
 <!ENTITY editor.name.tooltiptext "Одређује натпис на дугмету и искачући текст">
