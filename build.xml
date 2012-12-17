@@ -91,7 +91,7 @@
     </zip>
   </target>
   
-  <target name="buildxpiwithjar" depends="init,buildxpt,buildjar"
+  <target name="buildxpiwithjar" depends="init,buildjar"
 	  if="keep_jar">
     <zip destfile="${xpiname}-${Description.em:version}-${DSTAMP}.xpi"
 	 compress="true" level="9">
@@ -102,7 +102,9 @@
       </fileset>
     </zip>
   </target>
+
+  <target name="noxpi" depends="buildxpiwithjar"/>
   
-  <target name="buildxpi" depends="buildxpiwithjar"/>
+  <target name="buildxpi" depends="buildxpiwithjar,buildxpt"/>
 </project>
 
