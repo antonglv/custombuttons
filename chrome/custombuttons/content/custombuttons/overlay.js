@@ -306,7 +306,7 @@ const custombuttons = {
 		    }
 		    catch (e)
 		    {
-			Components. utils. reportError (e);
+			Components. utils. reportError ("Custom Buttons: " + [oSubject, sTopic, sData, e, e. stack]. join ("\n"));
 		    }
 		    winButton. parentNode. replaceChild (newButton, winButton);
 		}
@@ -458,7 +458,7 @@ const custombuttons = {
 	    }
 	    catch (e)
 	    {
-		Components. utils. reportError (e);
+		Components. utils. reportError ("Custom Buttons: " + [event, e, e. stack]. join ("\n"));
 	    }
 	}
     },
@@ -849,7 +849,7 @@ const custombuttonsUtils = {
 	    } // End if ( typeof aDefault != CB2const.VOID && !rRet )
 	}
 	catch(e) {
-	    alert([sPrefId, aDefault, e, e.stack]);
+	    Components. utils. reportError ("Custom Buttons: " + [sPrefId, aDefault, e, e. stack]. join ("\n"));
 	}
 	return lRet;
     }, //}}} End Method isPref( sPrefId, aDefault )
@@ -959,7 +959,7 @@ const custombuttonsUtils = {
 	try {
 	    netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
 	} catch (e) {
-	    alert("Permission to read file was denied.");
+	    Components. utils. reportError ("Custom Buttons: " + [fPath, e, e. stack]. join ("\n"));
 	}
 	file = Components. classes ["@mozilla.org/file/local;1"]. createInstance (Components. interfaces. nsILocalFile);
 	file.initWithPath( fPath );
@@ -998,7 +998,8 @@ const custombuttonsUtils = {
 	    strm.flush();
 	    strm.close();
 	}catch(ex){
-	    window.alert(ex.message+'nnn');
+	    Components. utils. reportError ("Custom Buttons: " + [fPath, e, e. stack]. join ("\n"));
+	    this. notifyError (fPath, "---", e, e. stack);
 	}
     },
 
@@ -1055,7 +1056,12 @@ const custombuttonsUtils = {
 	} catch (e) {}
 	XML. prettyPrinting = oldPrettyPrinting;
 	return res;
+    },
+
+    notifyError: function () {
+	Components. utils. reportError ("Custom Buttons: " + arguments. join ("\n"));
     }
+
 }; // -- custombuttonsUtils
 
 // Custombuttons API
