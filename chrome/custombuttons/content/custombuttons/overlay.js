@@ -955,20 +955,19 @@ const custombuttonsUtils = {
     {
 	var sRet = null;
 	var file = null;
-	fPath = (fPath.indexOf(':\\') > -1 )? fPath.replace(/\//g,'\\') : fPath;
 	try {
-	    netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+	    fPath = (fPath.indexOf(':\\') > -1 )? fPath.replace(/\//g,'\\') : fPath;
+	    file = Components. classes ["@mozilla.org/file/local;1"]. createInstance (Components. interfaces. nsILocalFile);
+	    file.initWithPath( fPath );
+	    var fis = Components. classes ["@mozilla.org/network/file-input-stream;1"]. createInstance (Components. interfaces. nsIFileInputStream);
+	    fis.init( file,0x01, 00004, null);
+	    var sis = Components. classes ["@mozilla.org/scriptableinputstream;1"]. createInstance (Components. interfaces. nsIScriptableInputStream);
+	    sis.init( fis );
+	    sRet = sis.read( sis.available() );
+	    sis. close ();
 	} catch (e) {
 	    Components. utils. reportError ("Custom Buttons: " + [fPath, e, e. stack]. join ("\n"));
 	}
-	file = Components. classes ["@mozilla.org/file/local;1"]. createInstance (Components. interfaces. nsILocalFile);
-	file.initWithPath( fPath );
-	var fis = Components. classes ["@mozilla.org/network/file-input-stream;1"]. createInstance (Components. interfaces. nsIFileInputStream);
-	fis.init( file,0x01, 00004, null);
-	var sis = Components. classes ["@mozilla.org/scriptableinputstream;1"]. createInstance (Components. interfaces. nsIScriptableInputStream);
-	sis.init( fis );
-	sRet = sis.read( sis.available() );
-	sis. close ();
 	return sRet;
     }, //}}} End Method readFile( fPath )
 
