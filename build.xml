@@ -93,7 +93,7 @@
   
   <target name="buildxpiwithjar" depends="init,buildjar"
 	  if="keep_jar">
-    <zip destfile="${xpiname}-${Description.em:version}-${DSTAMP}.xpi"
+    <zip destfile="${xpiname}.xpi"
 	 compress="true" level="9">
       <fileset dir="${basedir}">
 	<patternset refid="xpipatternset"/>
@@ -106,5 +106,26 @@
   <target name="noxpi" depends="buildxpiwithjar"/>
   
   <target name="buildxpi" depends="buildxpiwithjar,buildxpt"/>
+
+  <target name="release" depends="clean,init,buildjar"
+	  if="keep_jar">
+    <zip destfile="${xpiname}-${Description.em:version}-${DSTAMP}.xpi"
+	 compress="true" level="9">
+      <fileset dir="${basedir}">
+	<patternset refid="xpipatternset"/>
+	<include name="chrome/${jarname}.jar"/>
+	<patternset refid="excludespatternset"/>
+      </fileset>
+    </zip>
+  </target>
+
+  <target name="clean">
+    <delete>
+      <fileset dir="${basedir}">
+	<include name="**/*.xpi"/>
+	<include name="chrome/*.jar"/>
+      </fileset>
+    </delete>
+  </target>
 </project>
 
