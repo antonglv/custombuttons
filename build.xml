@@ -4,7 +4,7 @@
 	 basedir=".">
 
   <description>
-    Gives a possibility to create custom toolbarbuttons.
+    Custom Buttons add-on build file
   </description>
   
   <!-- set global properties for this build -->
@@ -103,12 +103,15 @@
     </zip>
   </target>
 
-  <target name="noxpi" depends="buildxpiwithjar"/>
+  <target name="noxpi" depends="buildxpiwithjar"
+	  description="Build add-on with no *.xpt compilation"/>
   
-  <target name="buildxpi" depends="buildxpiwithjar,buildxpt"/>
+  <target name="buildxpi" depends="buildxpiwithjar,buildxpt"
+	  description="Build add-on"/>
 
   <target name="release" depends="clean,init,buildjar"
-	  if="keep_jar">
+	  if="keep_jar"
+	  description="Make release build">
     <zip destfile="${xpiname}-${Description.em:version}-${DSTAMP}.xpi"
 	 compress="true" level="9">
       <fileset dir="${basedir}">
@@ -119,7 +122,7 @@
     </zip>
   </target>
 
-  <target name="clean">
+  <target name="clean" description="Remove *.jar and *.xpi files">
     <delete>
       <fileset dir="${basedir}">
 	<include name="**/*.xpi"/>
