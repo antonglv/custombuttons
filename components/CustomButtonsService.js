@@ -364,7 +364,17 @@ Overlay. prototype =
 		data = (new XML (data)). toXMLString ();
 		XML. prettyPrinting = oldPrettyPrinting;
 	    }
-	    catch (e) {}
+	    catch (e) {
+		data = data. replace (/ xmlns=""/g, ""). replace (
+		    /="[^"]+"/g,
+		    function (s) {
+			return s. replace (
+			    /[\x00-\x19]/g,
+			    function (chr) {
+				return "&#x" + chr. charCodeAt (0). toString (16). toUpperCase () + ";";
+			    });
+		    });
+	    }
 
 	    var uniConv = Components. classes ["@mozilla.org/intl/scriptableunicodeconverter"]. createInstance (Components. interfaces. nsIScriptableUnicodeConverter);
 	    uniConv. charset = "utf-8";
