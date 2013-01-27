@@ -1,3 +1,5 @@
+<!ENTITY custombuttons "Custom Buttons">
+
 <!ENTITY custombuttons.viewMenu_Item "Adicionar novo botão…">
 <!ENTITY custombuttons.buttonPopup.edit "Editar botão…">
 <!ENTITY custombuttons.buttonPopup.remove "Deletar botão">
@@ -15,3 +17,6 @@
 <!ENTITY custombuttons.prefs.editor_save_size_and_position "Save size and position of editor windows separately for each custom button">
 
 <!ENTITY custombuttons.about.supportPageURL "Visit support page">
+
+<!ENTITY custombuttons.addons4.sortname "Sort by name">
+<!ENTITY custombuttons.addons4.nobuttons "You don't have any custom button installed">

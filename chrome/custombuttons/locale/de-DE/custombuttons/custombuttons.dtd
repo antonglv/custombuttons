@@ -1,3 +1,5 @@
+<!ENTITY custombuttons "Custom Buttons">
+
 <!ENTITY custombuttons.viewMenu_Item "Schaltfläche hinzufügen...">
 <!ENTITY custombuttons.buttonPopup.edit "Schaltfläche bearbeiten...">
 <!ENTITY custombuttons.buttonPopup.remove "Schaltfläche löschen">
@@ -15,3 +17,6 @@
 <!ENTITY custombuttons.prefs.editor_save_size_and_position "Größe und Position der Bearbeiten-Fenster für jede Schaltfläche separat speichern">
 
 <!ENTITY custombuttons.about.supportPageURL "Support Website besuchen">
+
+<!ENTITY custombuttons.addons4.sortname "Sort by name">
+<!ENTITY custombuttons.addons4.nobuttons "You don't have any custom button installed">
