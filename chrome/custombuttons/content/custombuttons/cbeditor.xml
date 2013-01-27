@@ -146,7 +146,7 @@
 			</xul:vbox>
 		</content>
 		
-		<implementation implements="nsIEditorObserver,nsIDocumentStateListener">
+		<implementation implements="nsIEditorObserver">
 			<constructor>
 				<![CDATA[
 					this. editor. transactionManager. clear ();
@@ -175,10 +175,7 @@
 			    	if (this. _observer)
 			    		throw "Can't add another observer";
 			    	this. _observer = aObserver;
-				if (typeof (this. editor. addEditorObserver) == "function") // before Gecko 18?
-			    		this. editor. addEditorObserver (this);
-				else
-					this. editor. addDocumentStateListener (this);
+			    	this. editor. addEditorObserver (this);
 			    ]]>
 			  </body>
 			</method>
@@ -187,16 +184,12 @@
 			  <parameter name="aObserver"/>
 			  <body>
 			    <![CDATA[
-				if (typeof (this. editor. addEditorObserver) == "function") // before Gecko 18?
-			    		this. editor. removeEditorObserver (this);
-				else
-					this. editor. removeDocumentStateListener (this);
+			    	this. editor. removeEditorObserver (this);
 			    	this. _observer = null;
 			    ]]>
 			  </body>
 			</method>
 
-			<!-- nsIEditorObserver -->
 			<method name="EditAction">
 			  <body>
 			    <![CDATA[
@@ -205,21 +198,6 @@
 			    ]]>
 			  </body>
 			</method>
-
-			<!-- nsIDocumentStateListener -->
-			<method name="NotifyDocumentCreated"/>
-
-			<method name="NotifyDocumentStateChanged">
-			  <parameter name="nowDirty"/>
-			  <body>
-			    <![CDATA[
-				     if (this. _observer)
-				     	this. _observer. EditAction ();
-			    ]]>
-			  </body>
-			</method>
-
-			<method name="NotifyDocumentWillBeDestroyed"/>
 			
 			<field name="fastFindMode">false</field>
 			<field name="searchRange">null</field>
