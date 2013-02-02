@@ -8,7 +8,7 @@
      function init (aEvent) {
 	 gViewController. commands. cmd_custombuttons_edit = {
 	     isEnabled: function () {
-		 return true;
+		 return "addons://list/custombuttons" == gViewController. currentViewId;
 	     },
 	     doCommand: function (aAddon) {
 		 var cbs = Components. classes ["@xsms.nm.ru/custombuttons/cbservice;1" /* CB_SERVICE_CID */].
