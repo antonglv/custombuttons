@@ -31,7 +31,7 @@ var AddonProvider = {
 	return overlayDocument;
     },
 
-    getAddonById: function AddonProvider_getAddonById (aId, aCallback) {
+    getAddonByID: function AddonProvider_getAddonByID (aId, aCallback) {
 	aCallback ([]);
     },
 
