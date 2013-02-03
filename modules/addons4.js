@@ -1,48 +1,54 @@
 var EXPORTED_SYMBOLS = [];
 
+const Cc = Components. classes;
+const Ci = Components. interfaces;
+const Cu = Components. utils;
+
+const IO_SERVICE_CID = "@mozilla.org/network/io-service;1";
+const DOM_PARSER_CID = "@mozilla.org/xmlextras/domparser;1";
+const CHROME_PROTOCOL_HANDLER_CID = "@mozilla.org/network/protocol;1?name=chrome";
+const APP_INFO_CID = "@mozilla.org/xre/app-info;1";
+const CB_SERVICE_CID = "@xsms.nm.ru/custombuttons/cbservice;1";
+
+const IO_SERVICE_IID = Ci. nsIIOService;
+const DOM_PARSER_IID = Ci. nsIDOMParser;
+const PROTOCOL_HANDLER_IID = Ci. nsIProtocolHandler;
+const XUL_APP_INFO_IID = Ci. nsIXULAppInfo;
+const CB_SERVICE_IID = Ci. cbICustomButtonsService;
+
+var CB_ADDON_TYPE = "custombuttons";
+
 Components. utils. import ("resource://gre/modules/AddonManager.jsm");
 Components. utils. import ("resource://gre/modules/Services.jsm");
 Components. utils. import ("resource://gre/modules/XPCOMUtils.jsm");
 
-var CB_ADDON_TYPE = "custombuttons";
-
-const Cu = Components. utils;
-
 var AddonProvider = {
     getOverlayDocument: function (overlayFileName) {
 	var overlayDocument = null;
-	var ios = Components. classes ["@mozilla.org/network/io-service;1"].
-		  getService (Components. interfaces. nsIIOService);
+	var ios = Cc [IO_SERVICE_CID]. getService (IO_SERVICE_IID);
 	var uri = "resource://custombuttons/" + overlayFileName;
 	var xulchan = ios. newChannel (uri, null, null);
 	var instr = xulchan. open ();
-	var dp = Components. classes ["@mozilla.org/xmlextras/domparser;1"].
-		 createInstance (Components. interfaces. nsIDOMParser);
+	var dp = Cc [DOM_PARSER_CID]. createInstance (DOM_PARSER_IID);
 	try {
 	    var fakeOverlayURI = ios. newURI ("chrome://custombuttons/content/buttonsoverlay.xul", null, null);
-	    var chromeProtocolHandler = Components. classes ["@mozilla.org/network/protocol;1?name=chrome"]. getService ();
-	    chromeProtocolHandler = chromeProtocolHandler. QueryInterface (Components. interfaces. nsIProtocolHandler);
+	    var chromeProtocolHandler = Cc [CHROME_PROTOCOL_HANDLER_CID]. getService ();
+	    chromeProtocolHandler = chromeProtocolHandler. QueryInterface (PROTOCOL_HANDLER_IID);
 	    var fakeOverlayChannel = chromeProtocolHandler. newChannel (fakeOverlayURI);
 	    try {
 		dp. init (fakeOverlayChannel. owner, ios. newURI (uri, null, null), null, null);
 	    } catch (e) {
-		dp = Components. classes ["@mozilla.org/xmlextras/domparser;1"].
-		     createInstance (Components. interfaces. nsIDOMParser);
+		var dp = Cc [DOM_PARSER_CID]. createInstance (DOM_PARSER_IID);
 	    }
 	} catch (e) {}
 	overlayDocument = dp. parseFromStream (instr, null, instr. available (), "application/xml");
 	return overlayDocument;
     },
 
-    getAddonByID: function AddonProvider_getAddonByID (aId, aCallback) {
-	aCallback ([]);
-    },
-
     makeButtonLink: function (overlayFileName, paletteId)
     {
 	var res = "custombutton://buttons/";
-	var info = Components. classes ["@mozilla.org/xre/app-info;1"].
-		   getService (Components. interfaces. nsIXULAppInfo);
+	var info = Cc [APP_INFO_CID]. getService (XUL_APP_INFO_IID);
 	switch (paletteId)
 	{
 	    case "BrowserToolbarPalette":
@@ -130,6 +136,10 @@ var AddonProvider = {
 	aCallback (res);
     },
 
+    getAddonByID: function AddonProvider_getAddonByID (aId, aCallback) {
+	aCallback ([]);
+    },
+
     getInstallsByTypes: function (aTypes, aCallback) {
 	aCallback ([]);
     }
@@ -155,8 +165,7 @@ CustombuttonsButton. prototype = {
     _button: null,
 
     uninstall: function () {
-	var cbs = Components. classes ["@xsms.nm.ru/custombuttons/cbservice;1" /* CB_SERVICE_CID */].
-		  getService (Components. interfaces. cbICustomButtonsService /* CB_SERVICE_IID */);
+	var cbs = Cc [CB_SERVICE_CID]. getService (CB_SERVICE_IID);
 	cbs. uninstallButton (this. buttonLink);
     }
 };
