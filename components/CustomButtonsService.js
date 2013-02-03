@@ -1176,8 +1176,8 @@ cbCustomButtonsService. prototype =
 	    var arr = buttonLink. split ("/");
 	    var res = {};
 	    res. windowId = arr [3];
-	    res. phase = arr [4];
-	    res. buttonId = arr [5];
+	    res. phase = (arr. length == 6)? arr [4]: "";
+	    res. buttonId = (arr. length == 6)? arr [5]: arr [4];
 	    if (res. buttonId)
 	    {
 		var id = res. buttonId. split ("#");
