@@ -97,25 +97,13 @@ var AddonProvider = {
 	    btn. id = btnLink + btnId;
 	    btn. name = btns [i]. getAttribute ("label");
 	    btn. buttonLink = btnLink + "edit/" + btnId;
-	    image = "chrome://custombuttons/skin/button.png";
+	    btn. iconURL = "chrome://custombuttons/skin/button.png";
 	    if (btns [i]. hasAttribute ("cb-stdicon")) {
-		switch (btns [i]. getAttribute ("cb-stdicon")) {
-		case "custombuttons-stdicon-2":
-		    image = "chrome://custombuttons/skin/stdicons/rbutton.png";
-		    break;
-		case "custombuttons-stdicon-3":
-		    image = "chrome://custombuttons/skin/stdicons/gbutton.png";
-		    break;
-		case "custombuttons-stdicon-4":
-		    image = "chrome://custombuttons/skin/stdicons/bbutton.png";
-		    break;
-		default:;
-		}
+		btn. iconURL = btns [i]. getAttribute ("cb-stdicon");
 	    }
 	    if (btns [i]. hasAttribute ("image")) {
-		image = btns [i]. getAttribute ("image");
+		btn. iconURL = btns [i]. getAttribute ("image");
 	    }
-	    btn. iconURL = image;
 	    res. push (btn);
 	}
 	return res;
@@ -159,10 +147,36 @@ CustombuttonsButton. prototype = {
     permissions: AddonManager. PERM_CAN_UNINSTALL,
     operationsRequiringRestart: AddonManager. OP_NEEDS_RESTART_NONE,
     description: null,
-    iconURL: null,
     isActive: true,
 
     _button: null,
+
+    _iconURL: "chrome://custombuttons/skin/button.png",
+
+    get iconURL () {
+	return this. _iconURL;
+    },
+
+    set iconURL (url) {
+	switch (url) {
+	    case "":
+	    case "custombuttons-stdicon-1":
+		this. _iconURL = "chrome://custombuttons/skin/button.png";
+		break;
+	    case "custombuttons-stdicon-2":
+		this. _iconURL = "chrome://custombuttons/skin/stdicons/rbutton.png";
+		break;
+	    case "custombuttons-stdicon-3":
+		this. _iconURL = "chrome://custombuttons/skin/stdicons/gbutton.png";
+		break;
+	    case "custombuttons-stdicon-4":
+		this. _iconURL = "chrome://custombuttons/skin/stdicons/bbutton.png";
+		break;
+	    default:
+		this. _iconURL = url;
+		break;
+	}
+    },
 
     uninstall: function () {
 	var cbs = Cc [CB_SERVICE_CID]. getService (CB_SERVICE_IID);
