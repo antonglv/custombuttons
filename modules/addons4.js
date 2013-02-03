@@ -125,7 +125,14 @@ var AddonProvider = {
     },
 
     getAddonByID: function AddonProvider_getAddonByID (aId, aCallback) {
-	aCallback ([]);
+	var cb = new CustombuttonsButton (null);
+	var cbs = Cc [CB_SERVICE_CID]. getService (CB_SERVICE_IID);
+	var param = cbs. getButtonParameters (aId);
+	param = param. wrappedJSObject;
+	cb. id = aId;
+	cb. name = param. name;
+	cb. iconURL = param. image;
+	aCallback (cb);
     },
 
     getInstallsByTypes: function (aTypes, aCallback) {
