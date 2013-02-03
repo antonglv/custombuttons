@@ -238,7 +238,8 @@ const custombuttons = {
 	var oParentToolbar, oRemovedButton;
 	var cButtonsToRemove = this. findButtons (sRemovedButtonId);
 	var bRemoveFromOverlay = (cButtonsToRemove. length <= 1);
-	oParentToolbar = document. getElementById (sParentToolbarId);
+	if (sParentToolbarId)
+	    oParentToolbar = document. getElementById (sParentToolbarId);
 	if (oParentToolbar)
 	    oRemovedButton = oParentToolbar. getElementsByAttribute ("id", sRemovedButtonId) [0];
 	if (!oRemovedButton)
@@ -326,6 +327,8 @@ const custombuttons = {
 
     setButtonAttribute: function (sId, sAttribute, sValue)
     {
+	if (!sId)
+	    return;
 	var btn = document. getElementById (sId);
 	if (btn)
 	    btn. setAttribute (sAttribute, sValue);
@@ -341,11 +344,13 @@ const custombuttons = {
 	    this. setButtonAttribute (sData, "cb-edit-state", (topic == "edit:focus"? "active": "inactive"));
 	    break;
 	case "edit:done":
-	    btn = document. getElementById (sData);
-	    if (btn)
-	    {
-		btn. removeAttribute ("cb-edit-state");
-		btn. removeAttribute ("cb-last-saved");
+	    if (sData) {
+		btn = document. getElementById (sData);
+		if (btn)
+		{
+		    btn. removeAttribute ("cb-edit-state");
+		    btn. removeAttribute ("cb-last-saved");
+		}
 	    }
 	    break;
 	case "edit:save":
