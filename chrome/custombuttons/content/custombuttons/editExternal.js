@@ -13,7 +13,7 @@
 *
 * Alternatively, the contents of this file may be used under the
 * terms of the GNU General Public License Version 2 or later (the
-* "GPL"), in which case the provisions of the GPL are applicable 
+* "GPL"), in which case the provisions of the GPL are applicable
 * instead of those above.
 *
 *
@@ -38,7 +38,7 @@
 *
 * - LouCypher, external editor for Custom Buttons
 *              (2011/06/27)
-* 
+*
 * ***** END LICENSE BLOCK ***** */
 
 const Cc = Components.classes;
@@ -235,8 +235,8 @@ function edittarget(target) {
   } else {
     var filename = TmpFilenameTextarea();
   }
-  file.initWithPath(filename);    
-  file.create(file.NORMAL_FILE_TYPE, 0600);
+  file.initWithPath(filename);
+  file.create(file.NORMAL_FILE_TYPE, 6 << 6 /* 0600 */);
 
   // Write the data to the file.
   var ostr = Cc['@mozilla.org/network/file-output-stream;1'].
