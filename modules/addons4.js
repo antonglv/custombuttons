@@ -11,11 +11,13 @@ const Cu = Components. utils;
 var AddonProvider = {
     getOverlayDocument: function (overlayFileName) {
 	var overlayDocument = null;
-	var ios = Components. classes ["@mozilla.org/network/io-service;1"]. getService (Components. interfaces. nsIIOService);
+	var ios = Components. classes ["@mozilla.org/network/io-service;1"].
+		  getService (Components. interfaces. nsIIOService);
 	var uri = "resource://custombuttons/" + overlayFileName;
 	var xulchan = ios. newChannel (uri, null, null);
 	var instr = xulchan. open ();
-	var dp = Components. classes ["@mozilla.org/xmlextras/domparser;1"]. createInstance (Components. interfaces. nsIDOMParser);
+	var dp = Components. classes ["@mozilla.org/xmlextras/domparser;1"].
+		 createInstance (Components. interfaces. nsIDOMParser);
 	try {
 	    var fakeOverlayURI = ios. newURI ("chrome://custombuttons/content/buttonsoverlay.xul", null, null);
 	    var chromeProtocolHandler = Components. classes ["@mozilla.org/network/protocol;1?name=chrome"]. getService ();
@@ -24,7 +26,8 @@ var AddonProvider = {
 	    try {
 		dp. init (fakeOverlayChannel. owner, ios. newURI (uri, null, null), null, null);
 	    } catch (e) {
-		dp = Components. classes ["@mozilla.org/xmlextras/domparser;1"]. createInstance (Components. interfaces. nsIDOMParser);
+		dp = Components. classes ["@mozilla.org/xmlextras/domparser;1"].
+		     createInstance (Components. interfaces. nsIDOMParser);
 	    }
 	} catch (e) {}
 	overlayDocument = dp. parseFromStream (instr, null, instr. available (), "application/xml");
@@ -38,7 +41,8 @@ var AddonProvider = {
     makeButtonLink: function (overlayFileName, paletteId)
     {
 	var res = "custombutton://buttons/";
-	var info = Components. classes ["@mozilla.org/xre/app-info;1"]. getService (Components. interfaces. nsIXULAppInfo);
+	var info = Components. classes ["@mozilla.org/xre/app-info;1"].
+		   getService (Components. interfaces. nsIXULAppInfo);
 	switch (paletteId)
 	{
 	    case "BrowserToolbarPalette":
@@ -128,10 +132,6 @@ var AddonProvider = {
 
     getInstallsByTypes: function (aTypes, aCallback) {
 	aCallback ([]);
-    },
-
-    __noSuchMethod__: function (id) {
-	Cu. reportError ("__noSuchMethod__: " + id);
     }
 };
 
@@ -155,7 +155,8 @@ CustombuttonsButton. prototype = {
     _button: null,
 
     uninstall: function () {
-	var cbs = Components. classes ["@xsms.nm.ru/custombuttons/cbservice;1" /* CB_SERVICE_CID */]. getService (Components. interfaces. cbICustomButtonsService /* CB_SERVICE_IID */);
+	var cbs = Components. classes ["@xsms.nm.ru/custombuttons/cbservice;1" /* CB_SERVICE_CID */].
+		  getService (Components. interfaces. cbICustomButtonsService /* CB_SERVICE_IID */);
 	cbs. uninstallButton (this. buttonLink);
     }
 };
