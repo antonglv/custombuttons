@@ -29,6 +29,9 @@
 	     }
 	 };
 
+	 var sortButton = document. getElementById ("custombuttons-sorting-name");
+	 sortButton. addEventListener ("command", changeSort, false);
+
 	 window. addEventListener ("ViewChanged", onViewChanged, false);
 	 onViewChanged ();
      }
@@ -36,10 +39,31 @@
      function onViewChanged (aEvent) {
 	 if ("addons://list/custombuttons" == gViewController. currentViewId) {
 	     document. documentElement. classList. add ("custombuttons");
+	     applySort ();
 	 } else {
 	     document. documentElement. classList. remove ("custombuttons");
 	 }
-     };
+     }
+
+     function changeSort () {
+	 var sortButton = document. getElementById ("custombuttons-sorting-name");
+	 var checkState = (sortButton. getAttribute ("checkState") == "1")? "2": "1";
+	 sortButton. setAttribute ("checkState", checkState);
+	 applySort ();
+     }
+
+     function applySort () {
+	 var sortButton = document. getElementById ("custombuttons-sorting-name");
+	 var ascending = ("1" != sortButton. getAttribute ("checkState"));
+	 var list = document. getElementById ("addon-list");
+	 var elements = Array. slice (list. childNodes, 0);
+	 sortElements (elements, ["name"], ascending);
+	 while (list. hasChildNodes ())
+	     list. removeChild (list. lastChild);
+	 elements. forEach (function (element) {
+	     list. appendChild (element);
+	 });
+     }
 
      window. addEventListener ("load", init, false);
- }) ();
+}) ();
