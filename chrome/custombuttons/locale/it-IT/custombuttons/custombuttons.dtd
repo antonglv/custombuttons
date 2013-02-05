@@ -16,5 +16,5 @@
 <!ENTITY custombuttons.prefs.editor_save_size_and_position "Memorizza dimensioni e posizione per ogni finestra di modifica del pulsante">
 <!ENTITY custombuttons.about.supportPageURL "Visita il sito web">
 
-<!ENTITY custombuttons.addons4.sortname "Sort by name">
+<!ENTITY custombuttons.addons4.sortname "Name">
 <!ENTITY custombuttons.addons4.nobuttons "You don't have any custom button installed">
