@@ -16,5 +16,5 @@
 <!ENTITY custombuttons.prefs.editor_save_size_and_position "分别为每个按钮保存编辑窗口位置和大小">
 <!ENTITY custombuttons.about.supportPageURL "访问支持页">
 
-<!ENTITY custombuttons.addons4.sortname "Sort by name">
+<!ENTITY custombuttons.addons4.sortname "Name">
 <!ENTITY custombuttons.addons4.nobuttons "You don't have any custom button installed">

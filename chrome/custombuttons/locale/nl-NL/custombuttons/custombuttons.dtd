@@ -18,5 +18,5 @@
 
 <!ENTITY custombuttons.about.supportPageURL "Ondersteuningspagina bezoeken">
 
-<!ENTITY custombuttons.addons4.sortname "Sort by name">
+<!ENTITY custombuttons.addons4.sortname "Name">
 <!ENTITY custombuttons.addons4.nobuttons "You don't have any custom button installed">
