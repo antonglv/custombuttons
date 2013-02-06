@@ -15,6 +15,7 @@
   <commandset id="viewCommandSet">
     <command id="cmd_custombuttons_edit"/>
     <command id="cmd_custombuttons_add"/>
+    <command id="cmd_custombuttons_sortname" oncommand="cbAddonManager.changeSort()"/>
   </commandset>
 
   <menupopup id="addonitem-popup">
@@ -43,7 +44,8 @@
 	      label="&custombuttons.addons4.sortname;"
 	      class="sorter"
 	      sortBy="name"
-	      persist="checkState,checked"/>
+	      persist="checkState,checked"
+	      command="cmd_custombuttons_sortname"/>
     </hbox>
     <vbox id="custombuttons-list-empty"
 	  insertafter="addon-list-empty"
