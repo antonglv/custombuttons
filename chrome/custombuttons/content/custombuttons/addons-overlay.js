@@ -31,19 +31,19 @@ var cbAddonManager = {
 	};
 
 	gViewController. commands. cmd_custombuttons_add = {
-	     isEnabled: function () {
-		 return true;
-	     },
+	    isEnabled: function () {
+		return true;
+	    },
 
-	     doCommand: function (aAddon) {
-		 var cbs = Components. classes ["@xsms.nm.ru/custombuttons/cbservice;1"].
-			   getService (Components. interfaces. cbICustomButtonsService);
-		 cbs. editButton (window, "", null);
-	     }
-	 };
+	    doCommand: function (aAddon) {
+		var cbs = Components. classes ["@xsms.nm.ru/custombuttons/cbservice;1"].
+			  getService (Components. interfaces. cbICustomButtonsService);
+		cbs. editButton (window, "", null);
+	    }
+	};
 
-	 window. addEventListener ("ViewChanged", this, false);
-	 this. onViewChanged ();
+	window. addEventListener ("ViewChanged", this, false);
+	this. onViewChanged ();
     },
 
     destroy: function (aEvent) {
