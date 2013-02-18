@@ -403,7 +403,7 @@ Overlay. prototype =
 
 	    var foStream = Components. classes ["@mozilla.org/network/file-output-stream;1"]. createInstance (Components. interfaces. nsIFileOutputStream);
 	    var flags = 0x02 /* PR_WRONLY */ | 0x08 /* PR_CREATE_FILE */ | 0x20 /* PR_TRUNCATE */;
-	    foStream. init (file, flags, 0664, 0);
+	    foStream. init (file, flags, (6 << 6) | (6 << 3) | 4 /* 0664 */, 0);
 	    foStream. write (data, data. length);
 	    foStream. close ();
 	    backupProfile ("after-save-button");
