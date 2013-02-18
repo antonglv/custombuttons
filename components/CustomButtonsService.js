@@ -36,7 +36,7 @@ function backupProfile (phase)
     {
 	try
 	{
-	    backupDir. create (1 /* DIRECTORY_TYPE */, 0755);
+	    backupDir. create (Components. interfaces. nsIFile. DIRECTORY_TYPE, 0755);
 	}
 	catch (e)
 	{
@@ -386,7 +386,7 @@ Overlay. prototype =
 	    {
 		try
 		{
-		    dir. create (1 /* DIRECTORY_TYPE */, 0755);
+		    dir. create (Components. interfaces. nsIFile. DIRECTORY_TYPE, 0755);
 		}
 		catch (e)
 		{
