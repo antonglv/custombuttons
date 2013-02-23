@@ -1,4 +1,4 @@
-var EXPORTED_SYMBOLS = [];
+var EXPORTED_SYMBOLS = ["CustombuttonsButton"];
 
 const Cc = Components. classes;
 const Ci = Components. interfaces;
@@ -92,7 +92,7 @@ var AddonProvider = {
 	var btn, image, btnLink, btnId;
 	for (var i = 0; i < btns. length; i++) {
 	    btnLink = this. makeButtonLink (overlayFileName, btns [i]. parentNode. id);
-	    btn = new CustombuttonsButton ();
+	    btn = new CustombuttonsButton (null);
 	    btnId = btns [i]. getAttribute ("id");
 	    btn. id = btnLink + btnId;
 	    btn. name = btns [i]. getAttribute ("label");

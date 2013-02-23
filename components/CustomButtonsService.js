@@ -519,6 +519,7 @@ AppObject. prototype =
 	{
 	    var os = Components. classes ["@mozilla.org/observer-service;1"]. getService (Components. interfaces. nsIObserverService);
 	    os. notifyObservers (oSubject, this. notificationPrefix + sTopic, sData);
+	    os. notifyObservers (oSubject, "custombuttons:cb499e37-9269-407e-820f-edc9ab0dd698:" + sTopic, sData + "+" + this. notificationPrefix);
 	}
     };
 
