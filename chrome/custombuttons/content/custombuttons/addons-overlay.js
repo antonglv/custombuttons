@@ -109,7 +109,6 @@ var cbAddonManager = {
     makeButtonLink: function (notificationPrefix) {
 	var info = Components. classes ["@mozilla.org/xre/app-info;1"]. getService (Components. interfaces. nsIXULAppInfo);
 	var res = "custombutton://buttons/";
-	Components. utils. reportError ("notificationPrefix: " + notificationPrefix);
 	switch (notificationPrefix) {
 	    case "custombuttons:69423527-65a1-4b8f-bd7a-29593fc46d27:":
 		res += info. name;
@@ -162,7 +161,6 @@ var cbAddonManager = {
 	var topic = sTopic. replace (this. notificationPrefix, "");
 	switch (topic) {
 	    case "installButton":
-		try {
 		var btn = new CustombuttonsButton (null);
 		var notificationPrefix = aData. split ("+") [1];
 		var btnLink = this. makeButtonLink (notificationPrefix);
@@ -179,13 +177,8 @@ var cbAddonManager = {
 		var s = "";
 		for (var i in btn)
 		    s += i + ":" + btn [i] + "\n";
-		Components. utils. reportError ("s: " + s);
 		gListView. addItem (btn);
 		this. sortButtons ();
-		Components. utils. reportError ("done s:");
-		    } catch (e) {
-			Components. utils. reportError (e);
-		    }
 		break;
 	    case "updateButton":
 		break;
