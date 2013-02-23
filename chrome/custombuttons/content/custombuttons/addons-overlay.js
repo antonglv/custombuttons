@@ -6,6 +6,8 @@ Components. utils. import ("resource://gre/modules/AddonManager.jsm");
 Components. utils. import ("resource://custombuttons-modules/addons4.js");
 
 var cbAddonManager = {
+    notificationPrefix: "custombuttons:cb499e37-9269-407e-820f-edc9ab0dd698:",
+
     QueryInterface: function (iid) {
 	if (iid. equals (Components. interfaces. nsIObserver) ||
 	    iid. equals (Components. interfaces. nsIDOMEventListener) ||
@@ -42,6 +44,11 @@ var cbAddonManager = {
 	    }
 	};
 
+	this. addObserver ("installButton");
+	this. addObserver ("updateButton");
+	this. addObserver ("cloneButton");
+	this. addObserver ("removeButton");
+
 	window. addEventListener ("ViewChanged", this, false);
 	this. onViewChanged ();
     },
@@ -49,6 +56,21 @@ var cbAddonManager = {
     destroy: function (aEvent) {
 	window. removeEventListener ("ViewChanged", this, false);
 	window. removeEventListener ("unload", this, false);
+
+	this. removeObserver ("installButton");
+	this. removeObserver ("updateButton");
+	this. removeObserver ("cloneButton");
+	this. removeObserver ("removeButton");
+    },
+
+    addObserver: function (sNotificationName) {
+	var os = Components. classes ["@mozilla.org/observer-service;1"]. getService (Components. interfaces. nsIObserverService);
+	os. addObserver (this, this. notificationPrefix + sNotificationName, false);
+    },
+
+    removeObserver: function (sNotificationName) {
+	var os = Components. classes ["@mozilla.org/observer-service;1"]. getService (Components. interfaces. nsIObserverService);
+	os. removeObserver (this, this. notificationPrefix + sNotificationName);
     },
 
     onViewChanged: function (aEvent) {
@@ -84,6 +106,40 @@ var cbAddonManager = {
 	});
     },
 
+    makeButtonLink: function (notificationPrefix) {
+	var info = Components. classes ["@mozilla.org/xre/app-info;1"]. getService (Components. interfaces. nsIXULAppInfo);
+	var res = "custombutton://buttons/";
+	Components. utils. reportError ("notificationPrefix: " + notificationPrefix);
+	switch (notificationPrefix) {
+	    case "custombuttons:69423527-65a1-4b8f-bd7a-29593fc46d27:":
+		res += info. name;
+		break;
+	    case "custombuttons:69423527-65a1-4b8f-bd7a-29593fc46d28:":
+		if ("SeaMonkey" == info. name)
+		    res += "SeaMonkeyMail";
+		else
+		    res += "Thunderbird";
+		break;
+	    case "custombuttons:69423527-65a1-4b8f-bd7a-29593fc46d29:":
+		if ("SeaMonkey" == info. name)
+		    res += "SeaMonkeyMailWindow";
+		else
+		    res += "ThunderbirdMailWindow";
+		break;
+	    case "custombuttons:69423527-65a1-4b8f-bd7a-29593fc46d2a:":
+		if ("SeaMonkey" == info. name)
+		    res += "SeaMonkeyComposeWindow";
+		else
+		    res += "ThunderbirdComposeWindow";
+		break;
+	    default:
+		res += "Browser";
+		break;
+	}
+	res += "/";
+	return res;
+    },
+
     /* nsIDOMEventListener interface */
     handleEvent: function (aEvent) {
 	switch (aEvent. type) {
@@ -95,6 +151,47 @@ var cbAddonManager = {
 		break;
 	    case "ViewChanged":
 		this. onViewChanged (aEvent);
+		break;
+	    default:
+		break;
+	}
+    },
+
+    /* nsIObserver */
+    observe: function (oSubject, sTopic, aData) {
+	var topic = sTopic. replace (this. notificationPrefix, "");
+	switch (topic) {
+	    case "installButton":
+		try {
+		var btn = new CustombuttonsButton (null);
+		var notificationPrefix = aData. split ("+") [1];
+		var btnLink = this. makeButtonLink (notificationPrefix);
+		btn. id = btnLink + oSubject. getAttribute ("id");
+		btn. name = oSubject. getAttribute ("label");
+		btn. iconURL = "chrome://custombuttons/skin/button.png";
+		if (oSubject. hasAttribute ("cb-stdicon")) {
+		    btn. iconURL = oSubject. getAttribute ("cb-stdicon");
+		}
+		if (oSubject. hasAttribute ("image")) {
+		    btn. iconURL = oSubject. getAttribute ("image");
+		}
+		btn. buttonLink = btnLink + "edit/" + oSubject. getAttribute ("id");
+		var s = "";
+		for (var i in btn)
+		    s += i + ":" + btn [i] + "\n";
+		Components. utils. reportError ("s: " + s);
+		gListView. addItem (btn);
+		this. sortButtons ();
+		Components. utils. reportError ("done s:");
+		    } catch (e) {
+			Components. utils. reportError (e);
+		    }
+		break;
+	    case "updateButton":
+		break;
+	    case "cloneButton":
+		break;
+	    case "removeButton":
 		break;
 	    default:
 		break;
