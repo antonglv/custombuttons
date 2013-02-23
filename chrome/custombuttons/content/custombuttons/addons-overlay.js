@@ -89,7 +89,13 @@ var cbAddonManager = {
 	this. sortButtons ();
     },
 
+    isCustomButtonsView: function () {
+	return "addons://list/custombuttons" == gViewController. currentViewId;
+    },
+
     sortButtons: function () {
+	if (!this. isCustomButtonsView ())
+	    return;
 	var sortButton = document. getElementById ("custombuttons-sorting-name");
 	var checkState = sortButton. getAttribute ("checkState");
 	this. applySort (["name"], checkState != "1");
@@ -158,6 +164,8 @@ var cbAddonManager = {
 
     /* nsIObserver */
     observe: function (oSubject, sTopic, aData) {
+	if (!this. isCustomButtonsView ())
+	    return;
 	var topic = sTopic. replace (this. notificationPrefix, "");
 	switch (topic) {
 	    case "installButton":
