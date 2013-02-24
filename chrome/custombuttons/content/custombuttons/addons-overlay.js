@@ -169,6 +169,7 @@ var cbAddonManager = {
 	var topic = sTopic. replace (this. notificationPrefix, "");
 	switch (topic) {
 	    case "installButton":
+	    case "updateButton":
 		var btn = new CustombuttonsButton (null);
 		var notificationPrefix = aData. split ("+") [1];
 		var btnLink = this. makeButtonLink (notificationPrefix);
@@ -185,10 +186,12 @@ var cbAddonManager = {
 		var s = "";
 		for (var i in btn)
 		    s += i + ":" + btn [i] + "\n";
+		if ("updateButton" == topic) {
+		    var oldBtn = gListView. getListItemForID (btn. id);
+		    oldBtn. parentNode. removeChild (oldBtn);
+		}
 		gListView. addItem (btn);
 		this. sortButtons ();
-		break;
-	    case "updateButton":
 		break;
 	    case "cloneButton":
 		break;
