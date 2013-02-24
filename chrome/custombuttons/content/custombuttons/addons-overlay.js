@@ -194,6 +194,8 @@ var cbAddonManager = {
 		this. sortButtons ();
 		break;
 	    case "removeButton":
+		var btnId = notificationPrefix + aData. split ("+") [0]. split (":") [1];
+		gListView. removeItem (btnId);
 		break;
 	    default:
 		break;
