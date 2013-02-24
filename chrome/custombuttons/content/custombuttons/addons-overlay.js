@@ -170,6 +170,7 @@ var cbAddonManager = {
 	switch (topic) {
 	    case "installButton":
 	    case "updateButton":
+	    case "cloneButton":
 		var btn = new CustombuttonsButton (null);
 		var notificationPrefix = aData. split ("+") [1];
 		var btnLink = this. makeButtonLink (notificationPrefix);
@@ -192,8 +193,6 @@ var cbAddonManager = {
 		}
 		gListView. addItem (btn);
 		this. sortButtons ();
-		break;
-	    case "cloneButton":
 		break;
 	    case "removeButton":
 		break;
