@@ -166,14 +166,14 @@ var cbAddonManager = {
     observe: function (oSubject, sTopic, aData) {
 	if (!this. isCustomButtonsView ())
 	    return;
+	var notificationPrefix = aData. split ("+") [1];
+	var btnLink = this. makeButtonLink (notificationPrefix);
 	var topic = sTopic. replace (this. notificationPrefix, "");
 	switch (topic) {
 	    case "installButton":
 	    case "updateButton":
 	    case "cloneButton":
 		var btn = new CustombuttonsButton (null);
-		var notificationPrefix = aData. split ("+") [1];
-		var btnLink = this. makeButtonLink (notificationPrefix);
 		btn. id = btnLink + oSubject. getAttribute ("id");
 		btn. name = oSubject. getAttribute ("label");
 		btn. iconURL = "chrome://custombuttons/skin/button.png";
@@ -188,8 +188,7 @@ var cbAddonManager = {
 		for (var i in btn)
 		    s += i + ":" + btn [i] + "\n";
 		if ("updateButton" == topic) {
-		    var oldBtn = gListView. getListItemForID (btn. id);
-		    oldBtn. parentNode. removeChild (oldBtn);
+		    gListView. removeItem (btn. id);
 		}
 		gListView. addItem (btn);
 		this. sortButtons ();
