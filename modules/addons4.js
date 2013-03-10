@@ -125,14 +125,19 @@ var AddonProvider = {
     },
 
     getAddonByID: function AddonProvider_getAddonByID (aId, aCallback) {
-	var cb = new CustombuttonsButton (null);
-	var cbs = Cc [CB_SERVICE_CID]. getService (CB_SERVICE_IID);
-	var param = cbs. getButtonParameters (aId);
-	param = param. wrappedJSObject;
-	cb. id = aId;
-	cb. name = param. name;
-	cb. iconURL = param. image;
-	aCallback (cb);
+	var res = null;
+	if (aId. indexOf ("custombutton://buttons/") == 0) {
+	    var cbs = Cc [CB_SERVICE_CID]. getService (CB_SERVICE_IID);
+	    var param = cbs. getButtonParameters (aId);
+	    param = param. wrappedJSObject;
+	    if (!param. newButton) {
+		res = new CustombuttonsButton (null);
+		res. id = aId;
+		res. name = param. name;
+		res. iconURL = param. image;
+	    }
+	}
+	aCallback (res);
     },
 
     getInstallsByTypes: function (aTypes, aCallback) {
