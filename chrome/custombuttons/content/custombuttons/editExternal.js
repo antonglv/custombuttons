@@ -215,7 +215,8 @@ function editfile(target,filename) {
                 createInstance(Ci.nsIProcess);
   process.init(file);
   var args = [filename];
-  process.run(false, args, args.length);  // don't block
+  var run = "runw" in process ? process.runw : process.run;
+  run.call(process, false, args, args.length);  // don't block
   document.addEventListener("focus", checkfocus_window, true);
   return true;
 }
