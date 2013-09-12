@@ -965,7 +965,7 @@ const custombuttonsUtils = {
 	    file = Components. classes ["@mozilla.org/file/local;1"]. createInstance (Components. interfaces. nsILocalFile);
 	    file.initWithPath( fPath );
 	    var fis = Components. classes ["@mozilla.org/network/file-input-stream;1"]. createInstance (Components. interfaces. nsIFileInputStream);
-	    fis.init( file,0x01, 00004, null);
+	    fis.init( file,0x01, 4, null);
 	    var sis = Components. classes ["@mozilla.org/scriptableinputstream;1"]. createInstance (Components. interfaces. nsIScriptableInputStream);
 	    sis.init( fis );
 	    sRet = sis.read( sis.available() );
