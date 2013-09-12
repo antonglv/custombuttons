@@ -112,7 +112,7 @@ var custombutton =
 		while (oBtn. hasChildNodes ())
 		    oBtn. removeChild (oBtn. childNodes [0]);
 		oBtn. _initPhase = true;
-		oBtn. setAttribute ("initializeerror");
+		oBtn. setAttribute ("initializeerror", "true");
 		try
 		{
 		    this. buttonCbExecuteCode ({}, oBtn, oBtn. cbInitCode);
