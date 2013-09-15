@@ -142,9 +142,7 @@ __defineSetter__ (
 );
 
 function cbExecuteCode () {
-    Components. utils. reportError (1);
     custombutton. buttonCommand ({}, this);
-    Components. utils. reportError (2);
 }
 
 var _ctxtObj = false;
