@@ -18,13 +18,18 @@
 				var trg = e.originalTarget;
 				if(!/(?:^|\s)text-link(?:\s|$)/.test(trg.className))
 					return;
-				var link = trg.parentNode;
-				var href = link.getAttribute("href") || "";
+				var link = /(?:^|\s)webconsole-location(?:\s|$)/.test(trg.className)
+				? trg
+				: trg.parentNode;
+				var href = link.getAttribute("href")
+				|| link.getAttribute("title")
+				|| "";
 				if(href.substr(0, 48) != "chrome://custombuttons-context/content/button.js")
 					return;
 				e.preventDefault();
 				e.stopPropagation();
-				var line = link.getAttribute("line");
+				var line = link.getAttribute("line")
+				|| /:(\d+)$/.test(link.getAttribute("value")) && RegExp.$1;
 				var windowId = href.match(/windowId=(\w+)/)[1];
 				var phase = href.match(/@(\w+)/)[1];
 				var buttonId = href. match(/id=([\w-]+)/)[1];
@@ -35,8 +40,8 @@
 			},
 			handleEvent: function(e) {
 				switch(e.type) {
-					case "load":   this.init();         break;
-					case "unload": this.destroy();      break;
+					case "load":   this.init(); break;
+					case "unload": this.destroy(); break;
 					case "click":  this.handleClick(e);
 				}
 			}
