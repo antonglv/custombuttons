@@ -70,6 +70,7 @@ overlay chrome://editor/content/editor.xul resource://custombuttons/buttonsoverl
 ## JavaScript Console
 overlay chrome://global/content/console.xul chrome://custombuttons/content/consoleOverlay.xul
 overlay chrome://console2/content/console2.xul chrome://custombuttons/content/consoleOverlay.xul
+overlay chrome://browser/content/devtools/webconsole.xul chrome://custombuttons/content/consoleOverlay.xul
 
 ## Add-Ons Manager
 overlay about:addons chrome://custombuttons/content/addons-overlay.xul
