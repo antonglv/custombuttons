@@ -135,7 +135,7 @@ function removeEventListener (eventType, eventHandler, captureFlag, eventTarget)
     for (var i = 0; i < oButton. _handlers. length; i++)
     {
 	handler = oButton. _handlers [i];
-	if ((handler. eventType == eventType) && (handler. eventHandler == eventHandler) && (handler. captureFlag == handler. captureFlag) && (handler. eventTarget == eventTarget))
+	if ((handler. eventType == eventType) && (handler. eventHandler == eventHandler) && (handler. captureFlag == captureFlag) && (handler. eventTarget == eventTarget))
 	{
 	    handler. unregister ();
 	    oButton. _handlers. splice (i, 1);
