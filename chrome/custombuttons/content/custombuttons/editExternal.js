@@ -148,7 +148,7 @@ function edit_button() {
 
 function checkfocus_window() {
   var target, filename, timestamp, encode,
-      file, inst, sstream, utf, textBoxText;
+      file, istr, sstream, utf, textBoxText;
 
   if (_target.length<=0) return;
 
