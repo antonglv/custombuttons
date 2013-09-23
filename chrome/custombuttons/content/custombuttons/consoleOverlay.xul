@@ -16,11 +16,10 @@
 				if(e.button != 0)
 					return;
 				var trg = e.originalTarget;
-				if(!/(?:^|\s)text-link(?:\s|$)/.test(trg.className))
-					return;
-				var link = /(?:^|\s)webconsole-location(?:\s|$)/.test(trg.className)
-				? trg
-				: trg.parentNode;
+				if (!trg. classList. contains ("text-link") &&
+				    !trg. classList. contains ("location"))
+				    return;
+				var link = trg. classList. contains ("location")? trg: trg. parentNode;
 				var href = link.getAttribute("href")
 				|| link.getAttribute("title")
 				|| "";
@@ -29,6 +28,7 @@
 				e.preventDefault();
 				e.stopPropagation();
 				var line = link.getAttribute("line")
+				|| link. sourceLine
 				|| /:(\d+)$/.test(link.getAttribute("value")) && RegExp.$1;
 				var windowId = href.match(/windowId=(\w+)/)[1];
 				var phase = href.match(/@(\w+)/)[1];
