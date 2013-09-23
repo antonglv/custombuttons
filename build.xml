@@ -38,6 +38,8 @@
       <exclude name="**/Thumbs.db"/>
       <exclude name="**/*.idl"/>
       <exclude name="**/*.orig"/>
+      <exclude name="**/*.patch"/>
+      <exclude name="**/*.rej"/>
       <exclude name="**/.*"/>
     </patternset>
     <buildnumber/>
