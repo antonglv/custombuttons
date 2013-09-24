@@ -81,7 +81,7 @@ function getEditor() {
     let filePicker = Cc["@mozilla.org/filepicker;1"].
                      createInstance(nsIFilePicker);
     filePicker.init(window, "Select editor", nsIFilePicker.modeOpen);
-    filePicker.appendFilters(nsIFilePicker.filterApplication);
+    filePicker.appendFilters(nsIFilePicker.filterApps);
     filePicker.appendFilters(nsIFilePicker.filterAll);
     if (filePicker.show() == nsIFilePicker.returnOK) {
       if (filePicker.file.exists() && filePicker.file.isExecutable()) {
