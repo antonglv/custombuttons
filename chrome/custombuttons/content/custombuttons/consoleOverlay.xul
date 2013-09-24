@@ -16,10 +16,9 @@
 				if(e.button != 0)
 					return;
 				var trg = e.originalTarget;
-				if (!trg. classList. contains ("text-link") &&
-				    !trg. classList. contains ("location"))
+				if (!/\b(text-link|location)\b/. test (trg. className))
 				    return;
-				var link = trg. classList. contains ("location")? trg: trg. parentNode;
+				var link = (/\blocation\b/. test (trg. className))? trg: trg. parentNode;
 				var href = link.getAttribute("href")
 				|| link.getAttribute("title")
 				|| "";
