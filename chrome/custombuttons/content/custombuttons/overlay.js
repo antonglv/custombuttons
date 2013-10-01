@@ -1001,7 +1001,7 @@ const custombuttonsUtils = {
 	    strm.write( sData, sData.length );
 	    strm.flush();
 	    strm.close();
-	}catch(ex){
+	}catch(e){
 	    Components. utils. reportError ("Custom Buttons: " + [fPath, e, e. stack]. join ("\n"));
 	    this. notifyError (fPath, "---", e, e. stack);
 	}
