@@ -4,6 +4,7 @@ var custombutton = {
     waitForInitialization: [],
 
     buttonConstructor: function (oBtn) {
+	oBtn. removeAttribute ("initialized");
 	if (!("custombuttons" in window) ||
 	    !custombuttons. loaded) {
 	    this. waitForInitialization. push (oBtn);
