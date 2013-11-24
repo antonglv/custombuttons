@@ -59,8 +59,9 @@ var custombutton = {
 		if (mode & 32 /* CB_MODE_DISABLE_INITIALIZATION */) // disable initialization
 		    return;
 		if (oBtn. parentNode &&
-		    (oBtn. parentNode. nodeName != "toolbar") &&
-		    (oBtn. parentNode. nodeName != "xul:toolbar"))
+		    (oBtn. parentNode. localName != "toolbar") &&
+		    !/(?:^|\s)customization-target(?:\s|$)/.test(oBtn. parentNode. className) &&
+		    oBtn. parentNode. id != "PanelUI-contents")
 		    return;
 		oBtn. cbInitCode = oBtn. getAttribute ("cb-init");
 		setTimeout (function () { oBtn. init (); }, 0);
