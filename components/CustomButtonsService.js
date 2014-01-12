@@ -36,7 +36,7 @@ function backupProfile (phase)
     {
 	try
 	{
-	    backupDir. create (1 /* DIRECTORY_TYPE */, 0755);
+	    backupDir. create (Components. interfaces. nsIFile. DIRECTORY_TYPE, (7 << 6) | (5 << 3) | 5 /* 0755 */);
 	}
 	catch (e)
 	{
@@ -364,7 +364,17 @@ Overlay. prototype =
 		data = (new XML (data)). toXMLString ();
 		XML. prettyPrinting = oldPrettyPrinting;
 	    }
-	    catch (e) {}
+	    catch (e) {
+		data = data. replace (/ xmlns=""/g, ""). replace (
+		    /="[^"]+"/g,
+		    function (s) {
+			return s. replace (
+			    /[\x00-\x19]/g,
+			    function (chr) {
+				return "&#x" + chr. charCodeAt (0). toString (16). toUpperCase () + ";";
+			    });
+		    });
+	    }
 
 	    var uniConv = Components. classes ["@mozilla.org/intl/scriptableunicodeconverter"]. createInstance (Components. interfaces. nsIScriptableUnicodeConverter);
 	    uniConv. charset = "utf-8";
@@ -376,7 +386,7 @@ Overlay. prototype =
 	    {
 		try
 		{
-		    dir. create (1 /* DIRECTORY_TYPE */, 0755);
+		    dir. create (Components. interfaces. nsIFile. DIRECTORY_TYPE, (7 << 6) | (5 << 3) | 5 /* 0755 */);
 		}
 		catch (e)
 		{
@@ -393,7 +403,7 @@ Overlay. prototype =
 
 	    var foStream = Components. classes ["@mozilla.org/network/file-output-stream;1"]. createInstance (Components. interfaces. nsIFileOutputStream);
 	    var flags = 0x02 /* PR_WRONLY */ | 0x08 /* PR_CREATE_FILE */ | 0x20 /* PR_TRUNCATE */;
-	    foStream. init (file, flags, 0664, 0);
+	    foStream. init (file, flags, (6 << 6) | (6 << 3) | 4 /* 0664 */, 0);
 	    foStream. write (data, data. length);
 	    foStream. close ();
 	    backupProfile ("after-save-button");
@@ -509,6 +519,7 @@ AppObject. prototype =
 	{
 	    var os = Components. classes ["@mozilla.org/observer-service;1"]. getService (Components. interfaces. nsIObserverService);
 	    os. notifyObservers (oSubject, this. notificationPrefix + sTopic, sData);
+	    os. notifyObservers (oSubject, "custombuttons:cb499e37-9269-407e-820f-edc9ab0dd698:" + sTopic, sData + "+" + this. notificationPrefix);
 	}
     };
 
@@ -965,6 +976,29 @@ cbCustomButtonsService. prototype =
 	    }
 	},
 
+	_removeButton: function (windowId, toolbarId, buttonId, removeFromOverlay) {
+	    var app = new AppObject (windowId);
+	    var button = app. getButton (buttonId);
+	    if (button && removeFromOverlay) {
+		button. parentNode. removeChild (button);
+		app. overlay. saveOverlayToProfile ();
+	    }
+	    app. notifyObservers (null, "removeButton", toolbarId + ":" + buttonId);
+	    var am = {}, addon;
+	    try {
+		addon = {
+		    id: "custombutton://buttons/" + windowId + "/" + buttonId
+		};
+		Components. utils ["import"] ("resource://gre/modules/AddonManager.jsm", am);
+		am. AddonManagerPrivate. callAddonListeners ("onUninstalling", addon, false);
+		am. AddonManagerPrivate. callAddonListeners ("onUninstalled", addon);
+	    } catch (e) {}
+	    var editorId = this. pathToEditor + "?editorId=custombuttons-editor@" + windowId + ":" + buttonId;
+	    var mode = this. ps. getIntPref ("mode");
+	    if (mode & 64 /* CB_MODE_SAVE_EDITOR_SIZE_SEPARATELY */)
+		this. unPersist (editorId);
+	},
+
 	removeButton: function (removedButton, removeFromOverlay)
 	{
 	    removedButton = removedButton. QueryInterface (Components. interfaces. nsIDOMNode);
@@ -972,18 +1006,12 @@ cbCustomButtonsService. prototype =
 	    var buttonId = removedButton. getAttribute ("id");
 	    var parentId = removedButton. parentNode. getAttribute ("id");
 	    var windowId = this. getWindowId (documentURI);
-	    var editorId = this. pathToEditor + "?editorId=custombuttons-editor@" + windowId + ":" + buttonId;
-	    var app = new AppObject (windowId);
-	    var button = app. getButton (buttonId);
-	    if (button && removeFromOverlay)
-	    {
-		button. parentNode. removeChild (button);
-		app. overlay. saveOverlayToProfile ();
-	    }
-	    app. notifyObservers (null, "removeButton", parentId + ":" + buttonId);
-	    var mode = this. ps. getIntPref ("mode");
-	    if (mode & 64 /* CB_MODE_SAVE_EDITOR_SIZE_SEPARATELY */)
-		this. unPersist (editorId);
+	    this. _removeButton (windowId, parentId, buttonId, removeFromOverlay);
+	},
+
+	uninstallButton: function (buttonLink) {
+	    var link = this. parseButtonLink (buttonLink);
+	    this. _removeButton (link. windowId, "", link. buttonId, true);
 	},
 
 	makeOverlay: function ()
@@ -1070,6 +1098,8 @@ cbCustomButtonsService. prototype =
 		var clip = Components. classes ["@mozilla.org/widget/clipboard;1"]. getService (Components. interfaces. nsIClipboard);
 		var kGlobalClipboard = clip. kGlobalClipboard;
 		var trans = Components. classes ["@mozilla.org/widget/transferable;1"]. createInstance (Components. interfaces. nsITransferable);
+		if ("init" in trans)
+		    trans. init (null);
 		trans. addDataFlavor ("text/unicode");
 		clip. getData (trans, kGlobalClipboard);
 		trans. getTransferData ("text/unicode", str, strLength);
@@ -1147,8 +1177,8 @@ cbCustomButtonsService. prototype =
 	    var arr = buttonLink. split ("/");
 	    var res = {};
 	    res. windowId = arr [3];
-	    res. phase = arr [4];
-	    res. buttonId = arr [5];
+	    res. phase = (arr. length == 6)? arr [4]: "";
+	    res. buttonId = (arr. length == 6)? arr [5]: arr [4];
 	    if (res. buttonId)
 	    {
 		var id = res. buttonId. split ("#");
@@ -1272,46 +1302,60 @@ cbCustomButtonsService. prototype =
 	}
     };
 
-var Module =
+var Module = {
+    CLSID: Components. ID ("{64d03940-83bc-4ac6-afc5-3cbf6a7147c5}"),
+    ContractID: "@xsms.nm.ru/custombuttons/cbservice;1" /* CB_SERVICE_CID */,
+    ComponentName: "Custom Buttons extension service",
+    canUnload: function (componentManager) { return true; },
+    getClassObject: function (componentManager, cid, iid)
     {
-	CLSID: Components. ID ("{64d03940-83bc-4ac6-afc5-3cbf6a7147c5}"),
-	ContractID: "@xsms.nm.ru/custombuttons/cbservice;1" /* CB_SERVICE_CID */,
-	ComponentName: "Custom Buttons extension service",
-	canUnload: function (componentManager) { return true; },
-	getClassObject: function (componentManager, cid, iid)
-	{
-	    if (!cid. equals (this. CLSID))
-		throw new Error (NO_INTERFACE);;
-	    if (!iid. equals (Components. interfaces. nsIFactory))
-		throw new Error (NOT_IMPLEMENTED);;
-	    return this. CLASS_FACTORY;
-	},
+	if (!cid. equals (this. CLSID))
+	    throw new Error (NO_INTERFACE);;
+	if (!iid. equals (Components. interfaces. nsIFactory))
+	    throw new Error (NOT_IMPLEMENTED);;
+	return this. CLASS_FACTORY;
+    },
 
-	unregisterSelf: function ()
-	{
-	    var cm = Components. classes ["@mozilla.org/categorymanager;1"]. getService (Components. interfaces. nsICategoryManager);
-	    cm. deleteCategoryEntry ("app-startup", "service," + this. ContractID, true);
-	},
+    unregisterSelf: function ()
+    {
+	var cm = Components. classes ["@mozilla.org/categorymanager;1"]. getService (Components. interfaces. nsICategoryManager);
+	cm. deleteCategoryEntry ("app-startup", "service," + this. ContractID, true);
+    },
 
-	firstTime: true,
-	registerSelf: function (compMgr, fileSpec, location, type)
-	{
-	    if (this. firstTime)
-		this. firstTime = false;
-	    else
-		throw new Error (FACTORY_REGISTER_AGAIN);;
-            compMgr = compMgr. QueryInterface (Components. interfaces. nsIComponentRegistrar);
-	    compMgr. registerFactoryLocation
-	    (
-		this. CLSID, this. ComponentName, this. ContractID,
-		fileSpec, location, type
-	    );
-	    var cm = Components. classes ["@mozilla.org/categorymanager;1"]. getService (Components. interfaces. nsICategoryManager);
-	    cm. addCategoryEntry ("app-startup", this. ComponentName, "service," + this. ContractID, true, true);
-	},
+    firstTime: true,
+    registerSelf: function (compMgr, fileSpec, location, type)
+    {
+	if (this. firstTime)
+	    this. firstTime = false;
+	else
+	    throw new Error (FACTORY_REGISTER_AGAIN);;
+        compMgr = compMgr. QueryInterface (Components. interfaces. nsIComponentRegistrar);
+	compMgr. registerFactoryLocation
+	(
+	    this. CLSID, this. ComponentName, this. ContractID,
+	    fileSpec, location, type
+	);
+	var cm = Components. classes ["@mozilla.org/categorymanager;1"]. getService (Components. interfaces. nsICategoryManager);
+	cm. addCategoryEntry ("app-startup", this. ComponentName, "service," + this. ContractID, true, true);
+    },
 
-	CLASS_FACTORY: { QueryInterface: function (iid) { if (iid. equals (Components. interfaces. nsIFactory) || iid. equals (Components. interfaces. nsISupports)) return this; throw Components. results. NS_ERROR_NO_INTERFACE; }, createInstance: function (outer, iid) { if (outer != null) throw Components. results. NS_ERROR_NO_AGGREGATION; return (new cbCustomButtonsService ()). QueryInterface (iid); } }
-    };
+    CLASS_FACTORY:
+    {
+	QueryInterface: function (iid)
+	{
+	    if (iid. equals (Components. interfaces. nsIFactory) ||
+		iid. equals (Components. interfaces. nsISupports))
+		return this;
+	    throw Components. results. NS_ERROR_NO_INTERFACE;
+	},
+	createInstance: function (outer, iid)
+	{
+	    if (outer != null)
+		throw Components. results. NS_ERROR_NO_AGGREGATION;
+	    return (new cbCustomButtonsService ()). QueryInterface (iid);
+	}
+    }
+};
 
 function NSGetModule (componentManager, fileSpec) { return Module; }
 function NSGetFactory (cid) { return Module. CLASS_FACTORY; }

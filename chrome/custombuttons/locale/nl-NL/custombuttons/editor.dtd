@@ -1,6 +1,7 @@
 <!ENTITY editor.dialog.help "Help">
 <!ENTITY editor.dialog.help.accesskey "H">
 <!ENTITY editor.dialog.title "Knop bewerken">
+<!ENTITY editor.dialog.editexternal "Edit external…">
 <!ENTITY editor.name "Naam:">
 <!ENTITY editor.name.accesskey "N">
 <!ENTITY editor.name.tooltiptext "Definieert label- en pop-uptekst van knoppen">

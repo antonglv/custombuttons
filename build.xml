@@ -4,7 +4,7 @@
 	 basedir=".">
 
   <description>
-    Gives a possibility to create custom toolbarbuttons.
+    Custom Buttons add-on build file
   </description>
   
   <!-- set global properties for this build -->
@@ -29,13 +29,17 @@
       <include name="license.txt"/>
       <include name="defaults/**/*.*"/>
       <include name="components/**/*.*"/>
+      <include name="modules/**/*.*"/>
       <include name="chrome/icons/**/*.*"/>
+      <include name="chrome/button.js"/>
       <exclude name="build.number"/>
     </patternset>
     <patternset id="excludespatternset">
       <exclude name="**/Thumbs.db"/>
       <exclude name="**/*.idl"/>
       <exclude name="**/*.orig"/>
+      <exclude name="**/*.patch"/>
+      <exclude name="**/*.rej"/>
       <exclude name="**/.*"/>
     </patternset>
     <buildnumber/>
@@ -86,12 +90,30 @@
 	<exclude name="skin/classic/button1.png"/>
 	
       </fileset>
-
     </zip>
   </target>
   
-  <target name="buildxpiwithjar" depends="init,buildxpt,buildjar"
+  <target name="buildxpiwithjar" depends="init,buildjar"
 	  if="keep_jar">
+    <zip destfile="${xpiname}.xpi"
+	 compress="true" level="9">
+      <fileset dir="${basedir}">
+	<patternset refid="xpipatternset"/>
+	<include name="chrome/${jarname}.jar"/>
+	<patternset refid="excludespatternset"/>
+      </fileset>
+    </zip>
+  </target>
+
+  <target name="noxpi" depends="buildxpiwithjar"
+	  description="Build add-on with no *.xpt compilation"/>
+  
+  <target name="buildxpi" depends="buildxpiwithjar,buildxpt"
+	  description="Build add-on"/>
+
+  <target name="release" depends="clean,init,buildjar"
+	  if="keep_jar"
+	  description="Make release build">
     <zip destfile="${xpiname}-${Description.em:version}-${DSTAMP}.xpi"
 	 compress="true" level="9">
       <fileset dir="${basedir}">
@@ -101,7 +123,14 @@
       </fileset>
     </zip>
   </target>
-  
-  <target name="buildxpi" depends="buildxpiwithjar"/>
-  
+
+  <target name="clean" description="Remove *.jar and *.xpi files">
+    <delete>
+      <fileset dir="${basedir}">
+	<include name="**/*.xpi"/>
+	<include name="chrome/*.jar"/>
+      </fileset>
+    </delete>
+  </target>
 </project>
+

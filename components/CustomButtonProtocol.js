@@ -43,251 +43,259 @@ const nsIURI = Components. interfaces. nsIURI;
 
 function CustombuttonProtocol (sProtocolName)
 {
- this. scheme = sProtocolName;
- this. protocolFlags = Components. interfaces. nsIProtocolHandler. URI_NORELATIVE | Components. interfaces. nsIProtocolHandler. URI_NOAUTH | Components. interfaces. nsIProtocolHandler. URI_LOADABLE_BY_ANYONE |
+    this. scheme = sProtocolName;
+    this. protocolFlags = Components. interfaces. nsIProtocolHandler. URI_NORELATIVE | Components. interfaces. nsIProtocolHandler. URI_NOAUTH | Components. interfaces. nsIProtocolHandler. URI_LOADABLE_BY_ANYONE |
         Components. interfaces. nsIProtocolHandler. URI_NON_PERSISTABLE;
- if (sProtocolName == "custombutton")
-  this. protocolFlags |= Components. interfaces. nsIProtocolHandler. URI_DOES_NOT_RETURN_DATA;
- if (sProtocolName == "custombuttons")
-  this. protocolFlags |= Components. interfaces. nsIProtocolHandler. URI_IS_LOCAL_RESOURCE;
- return this;
+    if (sProtocolName == "custombutton")
+	this. protocolFlags |= Components. interfaces. nsIProtocolHandler. URI_DOES_NOT_RETURN_DATA;
+    if (sProtocolName == "custombuttons")
+	this. protocolFlags |= Components. interfaces. nsIProtocolHandler. URI_IS_LOCAL_RESOURCE;
+    return this;
 }
-CustombuttonProtocol. prototype =
-{
+CustombuttonProtocol. prototype = {
 
- QueryInterface: function (iid) { if (!iid. equals (Components. interfaces. nsIProtocolHandler) && !iid. equals (Components. interfaces. nsISupports)) throw Components. results. NS_ERROR_NO_INTERFACE; return this; },
+    QueryInterface: function (iid)
+    {
+	if (!iid. equals (Components. interfaces. nsIProtocolHandler) &&
+	    !iid. equals (Components. interfaces. nsISupports))
+	    throw Components. results. NS_ERROR_NO_INTERFACE;
+	return this;
+    },
 
- defaultPort: -1,
- protocolFlags: Components. interfaces. nsIProtocolHandler. URI_NORELATIVE | Components. interfaces. nsIProtocolHandler. URI_NOAUTH | Components. interfaces. nsIProtocolHandler. URI_LOADABLE_BY_ANYONE |
-       Components. interfaces. nsIProtocolHandler. URI_NON_PERSISTABLE | Components. interfaces. nsIProtocolHandler. URI_DOES_NOT_RETURN_DATA,
+    defaultPort: -1,
+    protocolFlags:	Components. interfaces. nsIProtocolHandler. URI_NORELATIVE |
+	Components. interfaces. nsIProtocolHandler. URI_NOAUTH |
+	Components. interfaces. nsIProtocolHandler. URI_LOADABLE_BY_ANYONE |
+	Components. interfaces. nsIProtocolHandler. URI_NON_PERSISTABLE |
+	Components. interfaces. nsIProtocolHandler. URI_DOES_NOT_RETURN_DATA,
 
- scheme: "custombutton",
+    scheme: "custombutton",
 
- allowPort: function (port, scheme)
- {
-  return false;
- },
+    allowPort: function (port, scheme)
+    {
+	return false;
+    },
 
- newURI: function (spec, charset, baseURI)
- {
-  var uri = Components. classes [kSIMPLEURI_CONTRACTID]. createInstance (nsIURI);
-  uri. spec = spec;
-  return uri;
- },
+    newURI: function (spec, charset, baseURI)
+    {
+	var uri = Components. classes [kSIMPLEURI_CONTRACTID]. createInstance (nsIURI);
+	uri. spec = spec;
+	return uri;
+    },
 
- get chromeProtocolHandler ()
- {
-  var chromeProtocolHandler = Components. classes ["@mozilla.org/network/protocol;1?name=chrome"].
-         getService ();
-  chromeProtocolHandler = chromeProtocolHandler. QueryInterface (Components. interfaces. nsIProtocolHandler);
-  return chromeProtocolHandler;
- },
+    get chromeProtocolHandler ()
+    {
+	var chromeProtocolHandler = Components. classes ["@mozilla.org/network/protocol;1?name=chrome"].
+	    getService ();
+	chromeProtocolHandler = chromeProtocolHandler. QueryInterface (Components. interfaces. nsIProtocolHandler);
+	return chromeProtocolHandler;
+    },
 
- get fakeOverlayURI ()
- {
-  var fakeOverlayURI = "chrome://custombuttons/content/buttonsoverlay.xul";
-  return this. chromeProtocolHandler. newURI (fakeOverlayURI, null, null);
- },
+    get fakeOverlayURI ()
+    {
+	var fakeOverlayURI = "chrome://custombuttons/content/buttonsoverlay.xul";
+	return this. chromeProtocolHandler. newURI (fakeOverlayURI, null, null);
+    },
 
- fakeOverlayChannel: function ()
- {
-  return this. chromeProtocolHandler. newChannel (this. fakeOverlayURI);
- },
+    fakeOverlayChannel: function ()
+    {
+	return this. chromeProtocolHandler. newChannel (this. fakeOverlayURI);
+    },
 
- sCbPrefix: "custombuttons://content/",
+    sCbPrefix: "custombuttons://content/",
 
- getChromePrincipal: function ()
- {
-  var ssm = Components. classes ["@mozilla.org/scriptsecuritymanager;1"]. getService (Components. interfaces. nsIScriptSecurityManager);
-  var res;
-  try
-  {
-   res = ssm. getCodebasePrincipal (this. fakeOverlayURI);
-  }
-  catch (e)
-  {
-   res = this. fakeOverlayChannel (). owner;
-  }
-  return res;
- },
+    getChromePrincipal: function ()
+    {
+	var ssm = Components. classes ["@mozilla.org/scriptsecuritymanager;1"]. getService (Components. interfaces. nsIScriptSecurityManager);
+	var res;
+	try
+	{
+	    res = ssm. getCodebasePrincipal (this. fakeOverlayURI);
+	}
+	catch (e)
+	{
+	    res = this. fakeOverlayChannel (). owner;
+	}
+	return res;
+    },
 
- getJSVersion: function ()
- {
-  var info = Components. classes ["@mozilla.org/xre/app-info;1"]. getService (Components. interfaces. nsIXULAppInfo);
-  var pv = info. platformVersion;
-  var oVC = Components. classes ["@mozilla.org/xpcom/version-comparator;1"]. createInstance (Components. interfaces. nsIVersionComparator);
-  if (oVC. compare (pv, "1.9") >= 0) return ";version=1.8";
-  if (oVC. compare (pv, "1.8.1") >= 0) return ";version=1.7";
-  if (oVC. compare (pv, "1.8") >= 0) return ";version=1.6";
-  return "";
- },
+    getJSVersion: function ()
+    {
+	var info = Components. classes ["@mozilla.org/xre/app-info;1"]. getService (Components. interfaces. nsIXULAppInfo);
+	var pv = info. platformVersion;
+	var oVC = Components. classes ["@mozilla.org/xpcom/version-comparator;1"]. createInstance (Components. interfaces. nsIVersionComparator);
+	if (oVC. compare (pv, "1.9") >= 0) return ";version=1.8";
+	if (oVC. compare (pv, "1.8.1") >= 0) return ";version=1.7";
+	if (oVC. compare (pv, "1.8") >= 0) return ";version=1.6";
+	return "";
+    },
 
- getXULTemplate: function ()
- {
-  var ios = Components. classes ["@mozilla.org/network/io-service;1"]. getService (Components. interfaces. nsIIOService);
-  var xulchan = ios. newChannel ("chrome://custombuttons/content/tcbbutton.xul", null, null);
-  var instr = xulchan. open ();
-  var dp = Components. classes ["@mozilla.org/xmlextras/domparser;1"]. createInstance (Components. interfaces. nsIDOMParser);
-  var doc = dp. parseFromStream (instr, null, instr. available (), "application/xml");
-  var script = doc. getElementsByTagName ("script") [0];
-  script. setAttribute ("type", "application/x-javascript" + this. getJSVersion ());
-  return doc;
- },
+    getXULTemplate: function ()
+    {
+	var ios = Components. classes ["@mozilla.org/network/io-service;1"]. getService (Components. interfaces. nsIIOService);
+	var xulchan = ios. newChannel ("chrome://custombuttons/content/tcbbutton.xul", null, null);
+	var instr = xulchan. open ();
+	var dp = Components. classes ["@mozilla.org/xmlextras/domparser;1"]. createInstance (Components. interfaces. nsIDOMParser);
+	var doc = dp. parseFromStream (instr, null, instr. available (), "application/xml");
+	var script = doc. getElementsByTagName ("script") [0];
+	script. setAttribute ("type", "application/x-javascript" + this. getJSVersion ());
+	return doc;
+    },
 
- pumpDocumentToPipe: function (doc, pipe)
- {
-  var bos = Components. classes ["@mozilla.org/binaryoutputstream;1"]. createInstance (Components. interfaces. nsIBinaryOutputStream);
-  bos. setOutputStream (pipe. outputStream);
-  var xs = Components. classes ["@mozilla.org/xmlextras/xmlserializer;1"]. createInstance (Components. interfaces. nsIDOMSerializer);
-  xs. serializeToStream (doc, bos, "");
-  bos. close ();
- },
+    pumpDocumentToPipe: function (doc, pipe)
+    {
+	var bos = Components. classes ["@mozilla.org/binaryoutputstream;1"]. createInstance (Components. interfaces. nsIBinaryOutputStream);
+	bos. setOutputStream (pipe. outputStream);
+	var xs = Components. classes ["@mozilla.org/xmlextras/xmlserializer;1"]. createInstance (Components. interfaces. nsIDOMSerializer);
+	xs. serializeToStream (doc, bos, "");
+	bos. close ();
+    },
 
- cbbuttonxulchannel: function (aURI)
- {
-  var pipe = Components. classes ["@mozilla.org/pipe;1"]. createInstance (Components. interfaces. nsIPipe);
-  pipe. init (true, true, 0, 0, null);
-  var doc = this. getXULTemplate ();
-  this. pumpDocumentToPipe (doc, pipe);
-  pipe. outputStream. close ();
-  var chan = Components. classes ["@mozilla.org/network/input-stream-channel;1"]. createInstance (Components. interfaces. nsIInputStreamChannel);
-  chan. contentStream = pipe. inputStream;
-  chan. QueryInterface (Components. interfaces. nsIChannel);
-  chan. setURI (aURI);
-  chan. owner = this. getChromePrincipal ();
-  chan. contentType = "application/vnd.mozilla.xul+xml";
-  return chan;
- },
+    cbbuttonxulchannel: function (aURI)
+    {
+	var pipe = Components. classes ["@mozilla.org/pipe;1"]. createInstance (Components. interfaces. nsIPipe);
+	pipe. init (true, true, 0, 0, null);
+	var doc = this. getXULTemplate ();
+	this. pumpDocumentToPipe (doc, pipe);
+	pipe. outputStream. close ();
+	var chan = Components. classes ["@mozilla.org/network/input-stream-channel;1"]. createInstance (Components. interfaces. nsIInputStreamChannel);
+	chan. contentStream = pipe. inputStream;
+	chan. QueryInterface (Components. interfaces. nsIChannel);
+	chan. setURI (aURI);
+	chan. owner = this. getChromePrincipal ();
+	chan. contentType = "application/vnd.mozilla.xul+xml";
+	return chan;
+    },
 
- getCustomButtonsFile: function (aURI, sFileName)
- {
-  var cbs = Components. classes ["@xsms.nm.ru/custombuttons/cbservice;1"]. getService (Components. interfaces. cbICustomButtonsService);
-  var dir = Components. classes ["@mozilla.org/file/directory_service;1"]. getService (Components. interfaces. nsIProperties). get ("ProfD", Components. interfaces. nsIFile); // get profile folder
-  dir. append ("custombuttons");
-  if (!dir. exists ())
-  {
-   if (sFileName == "buttonsoverlay.xul")
-    cbs. makeOverlay ();
-   else
-    return this. fakeOverlayChannel ();
-  }
-  var file = dir. clone ();
-  file. append (sFileName);
-  if (!file. exists ())
-  {
-   if (sFileName == "buttonsoverlay.xul")
-    cbs. makeOverlay ();
-   else
-    return this. fakeOverlayChannel ();
-  }
-  var ios = Components. classes ["@mozilla.org/network/io-service;1"]. getService (Components. interfaces. nsIIOService);
-  var uri = ios. newFileURI (file);
-  var channel = ios. newChannelFromURI (uri);
-  channel. originalURI = aURI;
-  channel. owner = this. getChromePrincipal ();
-  return channel;
- },
+    getCustomButtonsFile: function (aURI, sFileName)
+    {
+	var cbs = Components. classes ["@xsms.nm.ru/custombuttons/cbservice;1"]. getService (Components. interfaces. cbICustomButtonsService);
+	var dir = Components. classes ["@mozilla.org/file/directory_service;1"]. getService (Components. interfaces. nsIProperties). get ("ProfD", Components. interfaces. nsIFile); // get profile folder
+	dir. append ("custombuttons");
+	if (!dir. exists ())
+	{
+	    if (sFileName == "buttonsoverlay.xul")
+		cbs. makeOverlay ();
+	    else
+		return this. fakeOverlayChannel ();
+	}
+	var file = dir. clone ();
+	file. append (sFileName);
+	if (!file. exists ())
+	{
+	    if (sFileName == "buttonsoverlay.xul")
+		cbs. makeOverlay ();
+	    else
+		return this. fakeOverlayChannel ();
+	}
+	var ios = Components. classes ["@mozilla.org/network/io-service;1"]. getService (Components. interfaces. nsIIOService);
+	var uri = ios. newFileURI (file);
+	var channel = ios. newChannelFromURI (uri);
+	channel. originalURI = aURI;
+	channel. owner = this. getChromePrincipal ();
+	return channel;
+    },
 
- newChannel: function (aURI)
- {
-  if (this. scheme == "custombuttons")
-  {
-   var sFileName = aURI. spec. substring (this. sCbPrefix. length);
-   if (sFileName == "cbbutton.xul")
-    return this. cbbuttonxulchannel (aURI);
-   else
-    return this. getCustomButtonsFile (aURI, sFileName);
-  }
-  var cbs = Components. classes ["@xsms.nm.ru/custombuttons/cbservice;1"]. getService (Components. interfaces. cbICustomButtonsService);
-  cbs. installWebButton (null, aURI. spec, true);
-  return false;
- }
+    newChannel: function (aURI)
+    {
+	if (this. scheme == "custombuttons")
+	{
+	    var sFileName = aURI. spec. substring (this. sCbPrefix. length);
+	    if (sFileName == "cbbutton.xul")
+		return this. cbbuttonxulchannel (aURI);
+	    else
+		return this. getCustomButtonsFile (aURI, sFileName);
+	}
+	var cbs = Components. classes ["@xsms.nm.ru/custombuttons/cbservice;1"]. getService (Components. interfaces. cbICustomButtonsService);
+	cbs. installWebButton (null, aURI. spec, true);
+	return false;
+    }
 };
 
 function CustombuttonsProtocolClassFactory (sProtocolName)
 {
- this. protocol = sProtocolName;
- return this;
+    this. protocol = sProtocolName;
+    return this;
 }
 CustombuttonsProtocolClassFactory. prototype =
-{
- protocol: "",
+    {
+	protocol: "",
 
- createInstance: function (outer, iid)
- {
-  if (outer != null)
-   throw Components. results. NS_ERROR_NO_AGGREGATION;
-  if (!iid. equals (Components. interfaces. nsIProtocolHandler) &&
-   !iid. equals (Components. interfaces. nsISupports))
-   throw Components. results. NS_ERROR_NO_INTERFACE;
-  return new CustombuttonProtocol (this. protocol);
- }
-};
+	createInstance: function (outer, iid)
+	{
+	    if (outer != null)
+		throw Components. results. NS_ERROR_NO_AGGREGATION;
+	    if (!iid. equals (Components. interfaces. nsIProtocolHandler) &&
+		!iid. equals (Components. interfaces. nsISupports))
+		throw Components. results. NS_ERROR_NO_INTERFACE;
+	    return new CustombuttonProtocol (this. protocol);
+	}
+    };
 
 var Module =
-{
-    CLSID: [Components. ID ("{78D452B8-2CE8-4a7b-8A59-DA3C0960DAE7}"),
-   Components. ID ("{1c796f9e-9a22-4604-84e4-fa7c4b8d80a4}")],
-    ContractID: ["@mozilla.org/network/protocol;1?name=custombutton",
-     "@mozilla.org/network/protocol;1?name=custombuttons"],
-    ComponentName: ["Custombutton Protocol", "Custombuttons Extension Protocol"],
- protocolName: ["custombutton", "custombuttons"],
+    {
+	CLSID: [Components. ID ("{78D452B8-2CE8-4a7b-8A59-DA3C0960DAE7}"),
+		Components. ID ("{1c796f9e-9a22-4604-84e4-fa7c4b8d80a4}")],
+	ContractID: ["@mozilla.org/network/protocol;1?name=custombutton",
+		     "@mozilla.org/network/protocol;1?name=custombuttons"],
+	ComponentName: ["Custombutton Protocol", "Custombuttons Extension Protocol"],
+	protocolName: ["custombutton", "custombuttons"],
 
-    canUnload: function (componentManager)
- {
-  return true;
- },
+	canUnload: function (componentManager)
+	{
+	    return true;
+	},
 
- getClassObject: function (componentManager, cid, iid)
- {
-  if (!cid. equals (this. CLSID [0]) &&
-   !cid. equals (this. CLSID [1]))
-   throw Components. results. NS_ERROR_NO_INTERFACE;
-  if (!iid. equals (Components. interfaces. nsIFactory))
-   throw Components. results. NS_ERROR_NOT_IMPLEMENTED;
-  var protocol;
-  for (var i = 0; i < this. CLSID. length; i++)
-  {
-   if (cid. equals (this. CLSID [i]))
-   {
-    protocol = this. protocolName [i];
-    break;
-   }
-  }
-  return new CustombuttonsProtocolClassFactory (protocol);
- },
+	getClassObject: function (componentManager, cid, iid)
+	{
+	    if (!cid. equals (this. CLSID [0]) &&
+		!cid. equals (this. CLSID [1]))
+		throw Components. results. NS_ERROR_NO_INTERFACE;
+	    if (!iid. equals (Components. interfaces. nsIFactory))
+		throw Components. results. NS_ERROR_NOT_IMPLEMENTED;
+	    var protocol;
+	    for (var i = 0; i < this. CLSID. length; i++)
+	    {
+		if (cid. equals (this. CLSID [i]))
+		{
+		    protocol = this. protocolName [i];
+		    break;
+		}
+	    }
+	    return new CustombuttonsProtocolClassFactory (protocol);
+	},
 
- FIRST_TIME: true,
+	FIRST_TIME: true,
 
- registerSelf: function (componentManager, fileSpec, location, type)
- {
-  if (this. FIRST_TIME)
-   this. FIRST_TIME = false;
-  else
-   throw Components. results. NS_ERROR_FACTORY_REGISTER_AGAIN;
-  componentManager = componentManager. QueryInterface (Components. interfaces. nsIComponentRegistrar);
-  for (var i = 0; i < this. CLSID. length; i++)
-   componentManager. registerFactoryLocation
-   (
-    this. CLSID [i],
-    this. ComponentName [i],
-    this. ContractID [i],
-    fileSpec,
-    location,
-    type
-   );
- },
+	registerSelf: function (componentManager, fileSpec, location, type)
+	{
+	    if (this. FIRST_TIME)
+		this. FIRST_TIME = false;
+	    else
+		throw Components. results. NS_ERROR_FACTORY_REGISTER_AGAIN;
+	    componentManager = componentManager. QueryInterface (Components. interfaces. nsIComponentRegistrar);
+	    for (var i = 0; i < this. CLSID. length; i++)
+		componentManager. registerFactoryLocation
+	    (
+		this. CLSID [i],
+		this. ComponentName [i],
+		this. ContractID [i],
+		fileSpec,
+		location,
+		type
+	    );
+	},
 
- unregisterSelf: function (componentManager, location, loaderStr) {}
-};
+	unregisterSelf: function (componentManager, location, loaderStr) {}
+    };
 
 function NSGetFactory (cid)
 {
     var protocol;
     if (cid. equals (Components. ID ("{78D452B8-2CE8-4a7b-8A59-DA3C0960DAE7}")))
- protocol = "custombutton";
+	protocol = "custombutton";
     else if (cid. equals (Components. ID ("{1c796f9e-9a22-4604-84e4-fa7c4b8d80a4}")))
-     protocol = "custombuttons";
+    protocol = "custombuttons";
     return new CustombuttonsProtocolClassFactory (protocol);
 }
 function NSGetModule (componentManager, fileSpec) { return Module; }

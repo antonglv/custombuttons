@@ -175,7 +175,6 @@
 			    	if (this. _observer)
 			    		throw "Can't add another observer";
 			    	this. _observer = aObserver;
-			    	this. editor. addEditorObserver (this);
 			    ]]>
 			  </body>
 			</method>
@@ -184,7 +183,6 @@
 			  <parameter name="aObserver"/>
 			  <body>
 			    <![CDATA[
-			    	this. editor. removeEditorObserver (this);
 			    	this. _observer = null;
 			    ]]>
 			  </body>
@@ -829,7 +827,10 @@
 			<handler event="keypress" keycode="VK_RETURN">
 				<![CDATA[
 					if (event. originalTarget == this. textbox. inputField)
+					{
 						this. setNewLineIndent (event);
+						this. EditAction ();
+					}
 					this. findForward (event);
 				]]>
 			</handler>
@@ -847,7 +848,8 @@
 				<![CDATA[
 					if (event. originalTarget == this. qsTextbox. inputField)
 						this. onInput (event);
-						
+					else if (event. originalTarget == this. textbox. inputField)
+						this. EditAction ();
 				]]>
 			</handler>
 			

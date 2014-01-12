@@ -1,3 +1,5 @@
+<!ENTITY custombuttons "Custom Buttons">
+
 <!ENTITY custombuttons.viewMenu_Item "Добавить новую кнопку…">
 <!ENTITY custombuttons.buttonPopup.edit "Редактировать…">
 <!ENTITY custombuttons.buttonPopup.remove "Удалить">
@@ -15,3 +17,6 @@
 <!ENTITY custombuttons.prefs.editor_save_size_and_position "Сохранять размеры и позицию окон редактора отдельно для каждой кнопки">
 
 <!ENTITY custombuttons.about.supportPageURL "Открыть страницу поддержки">
+
+<!ENTITY custombuttons.addons4.sortname "Имя">
+<!ENTITY custombuttons.addons4.nobuttons "У вас нет установленных пользовательских кнопок">

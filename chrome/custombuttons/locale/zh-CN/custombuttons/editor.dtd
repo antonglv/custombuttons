@@ -1,6 +1,7 @@
 <!ENTITY editor.dialog.help "帮助">
 <!ENTITY editor.dialog.help.accesskey "H">
 <!ENTITY editor.dialog.title "编辑按钮">
+<!ENTITY editor.dialog.editexternal "Edit external…">
 <!ENTITY editor.name "名称:">
 <!ENTITY editor.name.accesskey "N">
 <!ENTITY editor.name.tooltiptext "定制按钮的文本和弹出文字">
