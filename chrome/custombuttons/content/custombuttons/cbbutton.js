@@ -58,7 +58,10 @@ var custombutton = {
 		var mode = this. cbService. mode;
 		if (mode & 32 /* CB_MODE_DISABLE_INITIALIZATION */) // disable initialization
 		    return;
-		if (!this. isButtonOnToolbar (oBtn))
+		if (oBtn. parentNode &&
+		    (oBtn. parentNode. localName != "toolbar") &&
+		    !/(?:^|\s)customization-target(?:\s|$)/.test(oBtn. parentNode. className) &&
+		    oBtn. parentNode. id != "PanelUI-contents")
 		    return;
 		oBtn. cbInitCode = oBtn. getAttribute ("cb-init");
 		setTimeout (function () { oBtn. init (); }, 0);
@@ -67,24 +70,6 @@ var custombutton = {
 		oBtn. setAttribute ("initialized", "true");
 	    }
 	}
-    },
-
-    isButtonOnToolbar: function (oBtn) {
-	if (!oBtn. parentNode)
-	    return false;
-
-	// regular toolbar
-	if (oBtn. parentNode. localName == "toolbar") //regular toolbar
-	    return true;
-
-	// australis toolbar has child hbox element
-	if (/(?:^|\s)customization-target(?:\s|$)/. test (oBtn. parentNode. className))
-	    return true;
-
-	// australis "Customize and Control" panel
-	if (oBtn. parentNode. id == "PanelUI-contents")
-	    return true;
-	return false;
     },
 
     buttonDestructor: function (oBtn) {
