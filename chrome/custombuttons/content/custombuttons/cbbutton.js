@@ -84,6 +84,7 @@ var custombutton = {
 	// australis "Customize and Control" panel
 	if (oBtn. parentNode. id == "PanelUI-contents")
 	    return true;
+	
 	return false;
     },
 
