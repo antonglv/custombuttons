@@ -1,7 +1,7 @@
 <!ENTITY editor.dialog.help "帮助">
 <!ENTITY editor.dialog.help.accesskey "H">
 <!ENTITY editor.dialog.title "编辑按钮">
-<!ENTITY editor.dialog.editexternal "Edit external…">
+<!ENTITY editor.dialog.editexternal "编辑外部…">
 <!ENTITY editor.name "名称:">
 <!ENTITY editor.name.accesskey "N">
 <!ENTITY editor.name.tooltiptext "定制按钮的文本和弹出文字">
@@ -9,7 +9,7 @@
 <!ENTITY editor.image.accesskey "m">
 <!ENTITY editor.select "浏览…">
 <!ENTITY editor.select.accesskey "o">
-<!ENTITY editor.base64 "&amp;#8658; base64">
+<!ENTITY editor.base64 "&#8658; base64">
 <!ENTITY editor.base64.accesskey "b">
 <!ENTITY editor.base64.tooltiptext "把图片转换到 base64 格式 (data:image/png;base64,...)">
 <!ENTITY editor.code "代码">
