@@ -7,6 +7,3 @@ if (!this. _handlers)
     Components. classes ["@mozilla.org/moz/jssubscript-loader;1"].
 	getService (Components. interfaces. mozIJSSubScriptLoader).
 	    loadSubScript ("chrome://custombuttons/content/cbbuttonimpl.js", this);
-
-if ("custombutton" in window)
-    custombutton. buttonConstructor (this);
