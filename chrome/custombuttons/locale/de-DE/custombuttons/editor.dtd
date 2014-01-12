@@ -1,6 +1,7 @@
 <!ENTITY editor.dialog.help "Hilfe">
 <!ENTITY editor.dialog.help.accesskey "H">
 <!ENTITY editor.dialog.title "Schaltfläche bearbeiten">
+<!ENTITY editor.dialog.editexternal "Edit external…">
 <!ENTITY editor.name "Name:">
 <!ENTITY editor.name.accesskey "N">
 <!ENTITY editor.name.tooltiptext "Legt den Text für die Beschriftung der Schaltfläche und des Popups fest">

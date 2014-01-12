@@ -1,6 +1,7 @@
 <!ENTITY editor.dialog.help "도움말">
 <!ENTITY editor.dialog.help.accesskey "H">
 <!ENTITY editor.dialog.title "버튼 편집">
+<!ENTITY editor.dialog.editexternal "Edit external…">
 <!ENTITY editor.name "이름 :">
 <!ENTITY editor.name.accesskey "N">
 <!ENTITY editor.name.tooltiptext "버튼의 이름과 툴팁 텍스트를 정의함">

@@ -1,6 +1,7 @@
 <!ENTITY editor.dialog.help "Contenuti guida del pulsante">
 <!ENTITY editor.dialog.help.accesskey "u">
 <!ENTITY editor.dialog.title "Modifica del pulsante">
+<!ENTITY editor.dialog.editexternal "Edit external…">
 <!ENTITY editor.name "Nome:">
 <!ENTITY editor.name.accesskey "N">
 <!ENTITY editor.name.tooltiptext "Definisce l'etichetta del pulsante ed il testo del tooltip">

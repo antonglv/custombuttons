@@ -1,6 +1,7 @@
 <!ENTITY editor.dialog.help "Help">
 <!ENTITY editor.dialog.help.accesskey "H">
 <!ENTITY editor.dialog.title "Editar botão">
+<!ENTITY editor.dialog.editexternal "Edit external…">
 <!ENTITY editor.name "Nome:">
 <!ENTITY editor.name.accesskey "N">
 <!ENTITY editor.name.tooltiptext "Define o local e o texto de poupup do botão">
