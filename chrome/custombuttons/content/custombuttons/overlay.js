@@ -179,6 +179,30 @@ const custombuttons = {
 
     persistCurrentSets: function (toolbarId, buttonId, newButtonId)
     {
+   // Firefox 29+ (Australis)
+   if ("CustomizableUI" in window) try
+   {
+       var placement = CustomizableUI.getPlacementOfWidget(buttonId);
+       var area = placement && placement.area;
+       var pos  = placement && placement.position;
+       if (newButtonId)
+       {
+           CustomizableUI.addWidgetToArea(
+               newButtonId,
+               area || CustomizableUI.AREA_NAVBAR,
+               typeof pos == "number" ? pos + 1 : undefined
+           );
+       }
+       else if (placement)
+       {
+           CustomizableUI.removeWidgetFromArea(buttonId);
+       }
+   }
+   catch(e)
+   {
+       Components.utils.reportError(e);
+   }
+
 	var toolbar = document. getElementById (toolbarId);
 	//Исправляем currentSet для toolbar
 	var cs = toolbar. getAttribute ("currentset");
