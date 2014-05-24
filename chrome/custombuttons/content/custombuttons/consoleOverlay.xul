@@ -16,7 +16,10 @@
 				if(e.button != 0)
 					return;
 				var trg = e.originalTarget;
-				if (!/\b(text-link|location)\b/. test (trg. className))
+				if (
+					!/\b(text-link|location)\b/. test (trg. className)
+					&& !/\b(text-link|location)\b/. test (trg. parentNode. className) // Firefox 29+
+				)
 				    return;
 				var link = (/\blocation\b/. test (trg. className))? trg: trg. parentNode;
 				var href = link.getAttribute("href")
