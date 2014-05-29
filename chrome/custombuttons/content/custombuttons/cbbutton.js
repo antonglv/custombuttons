@@ -302,6 +302,33 @@ var custombutton = {
 	    this. showBroadcast ("help", false);
 	if (bHideSeparator)
 	    this. showBroadcast ("customizeseparator", false);
+
+        if ("gCustomizeMode" in window && document. getElementsByClassName)
+        {
+            var inMenu = oButton. getAttribute ("cui-areatype") == "menu-panel";
+            var showItemsInNode = function (node, name, show)
+            {
+                Array. forEach
+                (
+                    node. getElementsByClassName ("customize-context-" + name),
+                    function (mi)
+                    {
+                        if (mi. classList. contains ("custombuttons-moveButtonItem"))
+                            this. showElement (mi, show);
+                    },
+                    this
+                );
+            }. bind (this);
+            var showItems = function (name, show)
+            {
+                showItemsInNode (document, name, show);
+                showItemsInNode (oButton, name, show); // Strange things may happens with anonymous (?) cloned menu
+            };
+            showItems ("moveToPanel", !inMenu);
+            showItems ("removeFromToolbar", !inMenu);
+            showItems ("moveToToolbar", inMenu);
+            showItems ("removeFromPanel", inMenu);
+        }
     },
 
     onMouseDown: function (oEvent, oButton)	{
