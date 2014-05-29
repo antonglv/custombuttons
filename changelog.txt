@@ -1,4 +1,16 @@
 Changelog
+0.0.5.7
+# Fixed: buttons doesn't initialize on Firefox with australis ui
+0.0.5.6
+Implemented synchronization of the custom buttons' list in the Add-ons Manager
+for operations with the buttons in the browser window
++ Added: Add-ons Manager integration
+# Fixed: bug 24576 "Edit…" menuitem opens "Add New Button" dialog"
+# Fixed: bug 24343 "All errors always come from the button with the same id"
+# Fixed: bug 24045 'Add functionality to use external editor for editing
+codes'
+# Fixed: (Editor) accesskeys should not work when the "Hot key" field is
+focused
 0.0.5.5
 ! Changed: logic to determine the presence of changes in the editor
 # Fixed: click on a custom button url in the Error Console may select an inappropriate line
