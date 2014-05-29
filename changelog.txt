@@ -1,4 +1,7 @@
 Changelog
+0.0.5.8
+# Fixed: Cloned buttons don't appear in new browser window (Firefox 29+)
+# Fixed: Support Browser Console in Firefox 29+
 0.0.5.7
 # Fixed: buttons doesn't initialize on Firefox with australis ui
 0.0.5.6
