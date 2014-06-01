@@ -114,8 +114,51 @@ const custombuttons = {
 	this. cbService. mode = mode;
 	this. addObservers ();
 	this. loaded = true;
+	// Be careful! This depends on setTimeout(..., 0) for buttons initialization!
+	setTimeout (function (_this) {
+	    _this. inheritToolbarContextMenu ();
+	}, 0, this);
 	this. initButtons ();
 	this. notifyObservers (null, "custombuttons-initialized", "");
+    },
+
+    inheritToolbarContextMenu: function ()
+    {
+        // Add "Move to ..." and "Remove from ..." items (Firefox 29+)
+        if (!("gCustomizeMode" in window) || !document. getElementsByClassName)
+            return;
+        var hasItems = false;
+        var sep, sepSub;
+        function addItem(name)
+        {
+            var mi = document. getElementsByClassName ("customize-context-" + name) [0];
+            if (!mi)
+                return;
+            if (!hasItems)
+            {
+                hasItems = true;
+                var miCustomize = document. getElementById ("custombuttons-contextpopup-customize");
+                var miCustomizeSub = document. getElementById ("custombuttons-contextpopup-customize-sub");
+                sep = document. createElement ("menuseparator");
+                sepSub = document. createElement ("menuseparator");
+                sep. id = "custombuttons-contextpopup-moveButtonSeparator";
+                sepSub. id = "custombuttons-contextpopup-moveButtonSeparator-sub";
+                miCustomize. parentNode. insertBefore (sep, miCustomize);
+                miCustomizeSub. parentNode. insertBefore (sepSub, miCustomizeSub);
+            }
+            var clone = mi. cloneNode (true);
+            var cloneSub = mi. cloneNode (true);
+            clone. id = "custombuttons-contextpopup-move-" + name;
+            cloneSub. id = "custombuttons-contextpopup-move-" + name + "-sub";
+            clone. className += " custombuttons-moveButtonItem menuitem-iconic";
+            cloneSub. className += " custombuttons-moveButtonItem menuitem-iconic";
+            sep. parentNode. insertBefore (clone, sep);
+            sepSub. parentNode. insertBefore (cloneSub, sepSub);
+        }
+        addItem ("moveToPanel");
+        addItem ("removeFromToolbar");
+        addItem ("moveToToolbar");
+        addItem ("removeFromPanel");
     },
 
     initButtons: function ()
