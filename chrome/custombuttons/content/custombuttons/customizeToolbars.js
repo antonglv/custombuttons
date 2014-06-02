@@ -1,69 +1,69 @@
 var cbCustomizeToolbarHandler =
-    {
+	{
 	templateButton: null,
 	palette: null,
 
 	handleEvent: function (event)
 	{
-	    if (event. type == "load")
-	    {
+		if (event. type == "load")
+		{
 		window. removeEventListener ("load", this, false);
 		this. hideTemplateButton ();
-	    }
-	    else if (event. type == "unload")
-	    {
+		}
+		else if (event. type == "unload")
+		{
 		window. removeEventListener ("unload", this, false);
 		this. restoreTemplateButton ();
-	    }
+		}
 	},
 
 	init: function ()
 	{
-	    var gToolbox;
-	    try
-	    {
+		var gToolbox;
+		try
+		{
 		if ("arguments" in window)
-		    gToolbox = window. arguments [0];
+			gToolbox = window. arguments [0];
 		else
-		    gToolbox = window. parent. document. getElementById ("navigator-toolbox");
+			gToolbox = window. parent. document. getElementById ("navigator-toolbox");
 		var palette = gToolbox. palette;
 		this. palette = palette;
 		for (var i = 0; i < palette. childNodes. length; i++)
 		{
-		    if (palette. childNodes [i]. id == "custombuttons-template-button")
-		    {
+			if (palette. childNodes [i]. id == "custombuttons-template-button")
+			{
 			this. templateButton = palette. childNodes [i];
 			palette. removeChild (palette. childNodes [i]);
 			break;
-		    }
+			}
 		}
 		window. addEventListener ("unload", this, false);
-	    }
-	    catch (e)
-	    {
+		}
+		catch (e)
+		{
 		window. addEventListener ("load", this, false);
-	    }
+		}
 	},
 
 	hideTemplateButton: function ()
 	{
-	    var templateButton = document. getElementById ("custombuttons-template-button");
-	    var templateButtonWrapper = templateButton;
-	    while (templateButtonWrapper)
-	    {
+		var templateButton = document. getElementById ("custombuttons-template-button");
+		var templateButtonWrapper = templateButton;
+		while (templateButtonWrapper)
+		{
 		if (templateButtonWrapper. nodeName == "toolbarpaletteitem")
-		    break;
+			break;
 		templateButtonWrapper = templateButtonWrapper. parentNode;
-	    }
-	    if (templateButtonWrapper)
+		}
+		if (templateButtonWrapper)
 		templateButtonWrapper. parentNode. removeChild (templateButtonWrapper);
 	},
 
 	restoreTemplateButton: function ()
 	{
-	    if (this. templateButton)
+		if (this. templateButton)
 		this. palette. appendChild (this. templateButton);
 	}
-    };
+	};
 
 cbCustomizeToolbarHandler. init ();

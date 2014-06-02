@@ -1,148 +1,148 @@
 function init () {
-    custombutton. buttonInit (this);
+	custombutton. buttonInit (this);
 }
 
 function destroy (reason) {
-    custombutton. buttonDestroy (this, reason);
+	custombutton. buttonDestroy (this, reason);
 }
 
 __defineGetter__ (
-    "parameters",
-    function () {
+	"parameters",
+	function () {
 	return custombutton. buttonGetParameters (this);
-    }
+	}
 );
 
 __defineGetter__ (
-    "cbAccelKey",
-    function () {
+	"cbAccelKey",
+	function () {
 	return custombutton. buttonGetCbAccelKey (this);
-    }
+	}
 );
 
 __defineGetter__ (
-    "image",
-    function () {
+	"image",
+	function () {
 	return custombutton. buttonGetImage (this);
-    }
+	}
 );
 
 __defineSetter__ (
-    "image",
-    function (val) {
+	"image",
+	function (val) {
 	if (custombutton. allowedSource (val))
-	    this. setAttribute ("image", val);
+		this. setAttribute ("image", val);
 	else
-	    this. setAttribute ("image", "");
-    }
+		this. setAttribute ("image", "");
+	}
 );
 
 __defineGetter__ (
-    "cbStdIcon",
-    function () {
+	"cbStdIcon",
+	function () {
 	return this. getAttribute ("cb-stdicon") || "";
-    }
+	}
 );
 
 __defineSetter__ (
-    "cbStdIcon",
-    function (val) {
+	"cbStdIcon",
+	function (val) {
 	this. setAttribute ("cb-stdicon", val);
 	return val;
-    }
+	}
 );
 
 __defineGetter__ (
-    "Help",
-    function () {
+	"Help",
+	function () {
 	return custombutton. buttonGetHelp (this);
-    }
+	}
 );
 
 __defineSetter__ (
-    "Help",
-    function (val) {
+	"Help",
+	function (val) {
 	this. setAttribute ("Help", val);
-    }
+	}
 );
 
 __defineGetter__ (
-    "cbMode",
-    function () {
+	"cbMode",
+	function () {
 	return custombutton. buttonGetCbMode (this);
-    }
+	}
 );
 
 function setText (doc, nodeName, text, make_CDATASection) {
-    custombutton. buttonSetText (doc, nodeName, text, make_CDATASection);
+	custombutton. buttonSetText (doc, nodeName, text, make_CDATASection);
 }
 
 __defineGetter__ (
-    "URI",
-    function () {
+	"URI",
+	function () {
 	return custombutton. buttonGetURI (this);
-    }
+	}
 );
 
 var _name = "";
 
 __defineGetter__ (
-    "name",
-    function () {
+	"name",
+	function () {
 	if (this. hasAttribute ("cb-name"))
-	    return this. getAttribute ("cb-name");
+		return this. getAttribute ("cb-name");
 	else
-	    return this. _name;
-    }
+		return this. _name;
+	}
 );
 
 __defineSetter__ (
-    "name",
-    function (val) {
+	"name",
+	function (val) {
 	if (!val)
-	    return;
+		return;
 	if (!this. hasAttribute ("label") ||
-	    !this. getAttribute ("label"))
-	    this. setAttribute ("label", val);
+		!this. getAttribute ("label"))
+		this. setAttribute ("label", val);
 	this. _name = val;
 	this. setAttribute ("cb-name", val);
-    }
+	}
 );
 
 var _cbCommand = null;
 var _initPhase = false;
 
 __defineGetter__ (
-    "cbCommand",
-    function () {
+	"cbCommand",
+	function () {
 	return this. getAttribute ("cb-oncommand") || "";
-    }
+	}
 );
 
 __defineSetter__ (
-    "cbCommand",
-    function (val) {}
+	"cbCommand",
+	function (val) {}
 );
 
 var _cbInitCode = null;
 
 __defineGetter__ (
-    "cbInitCode",
-    function () {
+	"cbInitCode",
+	function () {
 	return this. getAttribute ("cb-init") || "";
-    }
+	}
 );
 
 __defineSetter__ (
-    "cbInitCode",
-    function (val) {
+	"cbInitCode",
+	function (val) {
 	if (this. hasAttribute ("initialized"))
-	    this. removeAttribute ("initialized");
-    }
+		this. removeAttribute ("initialized");
+	}
 );
 
 function cbExecuteCode () {
-    custombutton. buttonCommand ({}, this);
+	custombutton. buttonCommand ({}, this);
 }
 
 var _ctxtObj = false;
