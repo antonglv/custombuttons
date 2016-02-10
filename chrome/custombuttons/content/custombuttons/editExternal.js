@@ -41,8 +41,8 @@
 *
 * ***** END LICENSE BLOCK ***** */
 
-const Cc = Components.classes;
-const Ci = Components.interfaces;
+var Cc = Components.classes;
+var Ci = Components.interfaces;
 
 //External Editor functions
 var _tmpdir=null,_dir_separator,_os;
@@ -131,7 +131,7 @@ function edituninit() {
 
 function gmon_edit_mouseclick(e) {
   // If it is necessary, the user please rewrite.
-  const ClikType = 1;// 0: left, 1: mid, 2: right
+  var ClikType = 1;// 0: left, 1: mid, 2: right
   if (e.button != ClikType) return;
   var target = e.target;
   //dump('gmon_edit_mouseclick');

@@ -38,8 +38,8 @@
 
 
 
-const kSIMPLEURI_CONTRACTID = "@mozilla.org/network/simple-uri;1";
-const nsIURI = Components. interfaces. nsIURI;
+var   kSIMPLEURI_CONTRACTID = "@mozilla.org/network/simple-uri;1";
+var   nsIURI = Components. interfaces. nsIURI;
 
 function CustombuttonProtocol (sProtocolName)
 {

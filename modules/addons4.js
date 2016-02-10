@@ -1,20 +1,20 @@
 var EXPORTED_SYMBOLS = ["CustombuttonsButton"];
 
-const Cc = Components. classes;
-const Ci = Components. interfaces;
-const Cu = Components. utils;
+var   Cc = Components. classes;
+var   Ci = Components. interfaces;
+var   Cu = Components. utils;
 
-const IO_SERVICE_CID = "@mozilla.org/network/io-service;1";
-const DOM_PARSER_CID = "@mozilla.org/xmlextras/domparser;1";
-const CHROME_PROTOCOL_HANDLER_CID = "@mozilla.org/network/protocol;1?name=chrome";
-const APP_INFO_CID = "@mozilla.org/xre/app-info;1";
-const CB_SERVICE_CID = "@xsms.nm.ru/custombuttons/cbservice;1";
+var   IO_SERVICE_CID = "@mozilla.org/network/io-service;1";
+var   DOM_PARSER_CID = "@mozilla.org/xmlextras/domparser;1";
+var   CHROME_PROTOCOL_HANDLER_CID = "@mozilla.org/network/protocol;1?name=chrome";
+var   APP_INFO_CID = "@mozilla.org/xre/app-info;1";
+var   CB_SERVICE_CID = "@xsms.nm.ru/custombuttons/cbservice;1";
 
-const IO_SERVICE_IID = Ci. nsIIOService;
-const DOM_PARSER_IID = Ci. nsIDOMParser;
-const PROTOCOL_HANDLER_IID = Ci. nsIProtocolHandler;
-const XUL_APP_INFO_IID = Ci. nsIXULAppInfo;
-const CB_SERVICE_IID = Ci. cbICustomButtonsService;
+var   IO_SERVICE_IID = Ci. nsIIOService;
+var   DOM_PARSER_IID = Ci. nsIDOMParser;
+var   PROTOCOL_HANDLER_IID = Ci. nsIProtocolHandler;
+var   XUL_APP_INFO_IID = Ci. nsIXULAppInfo;
+var   CB_SERVICE_IID = Ci. cbICustomButtonsService;
 
 var CB_ADDON_TYPE = "custombuttons";
 

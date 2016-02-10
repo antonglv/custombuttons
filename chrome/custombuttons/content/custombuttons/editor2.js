@@ -517,9 +517,9 @@ Editor. prototype =
 
 	onCancel: function ()
 	{
-	    const RES_SAVE = 0;
-	    const RES_CANCEL = 1;
-	    const RES_DONT_SAVE = 2;
+	    var RES_SAVE = 0;
+	    var RES_CANCEL = 1;
+	    var RES_DONT_SAVE = 2;
 	    var res;
 	    if (this. changed)
 	    {
