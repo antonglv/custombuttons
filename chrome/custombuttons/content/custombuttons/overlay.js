@@ -776,7 +776,7 @@ custombuttons.uChelpButton = function ( oBtn ) //{{{
 }; //}}} End Method uChelpButton( )
 
 // Custombuttons utils
-const custombuttonsUtils = {
+var custombuttonsUtils = {
     addMethodGate: function (srcObject, sMethodName, dstObject)
     {
 	dstObject [sMethodName] = function ()
@@ -1094,8 +1094,8 @@ const custombuttonsUtils = {
 
 // Custombuttons API
 
-const createMsg = custombuttonsUtils. createMsg;
-const gClipboard = custombuttonsUtils. gClipboard;
+var createMsg = custombuttonsUtils. createMsg;
+var gClipboard = custombuttonsUtils. gClipboard;
 
 custombuttonsUtils. addMethodGate (custombuttonsUtils, "isPref", custombuttons);
 custombuttonsUtils. addMethodGate (custombuttonsUtils, "getPrefs", custombuttons);
