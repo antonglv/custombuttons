@@ -121,6 +121,7 @@ locale custombuttons de-DE jar:chrome/custombuttons.jar!/locale/de-DE/custombutt
 locale custombuttons ko-KR jar:chrome/custombuttons.jar!/locale/ko-KR/custombuttons/
 locale custombuttons it-IT jar:chrome/custombuttons.jar!/locale/it-IT/custombuttons/
 locale custombuttons sr jar:chrome/custombuttons.jar!/locale/sr/custombuttons/
+locale custombuttons es-AR jar:chrome/custombuttons.jar!/locale/es-AR/custombuttons/
 
 ## XPCOM registration
 interfaces components/CBKeyMapComponent.xpt
