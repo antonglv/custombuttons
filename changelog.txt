@@ -1,4 +1,9 @@
 Changelog
+0.0.5.8.3
+# Fixed: 'cbu' object isn't available from button's code
+0.0.5.8.2
+# Fixed: Browser Console is not working properly on Firefox versions higher than 43
+# Fixed: custombuttons broken on Firefox 44+ due to changes were introduced to make Firefox compliant with the final ES6 standard
 0.0.5.8
 # Fixed: Cloned buttons don't appear in new browser window (Firefox 29+)
 # Fixed: Support Browser Console in Firefox 29+
