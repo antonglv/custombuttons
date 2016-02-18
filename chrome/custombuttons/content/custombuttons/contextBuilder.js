@@ -18,7 +18,7 @@ var _doc = document;
 var _uri = buttonURI;
 if ("custombuttonsUtils" in window)
 {
-	createDebug = custombuttonsUtils. createDebug;
+	var createDebug = custombuttonsUtils. createDebug;
 	var createMsg = custombuttonsUtils. createMsg;
 	var cbu = custombuttonsUtils;
 }
@@ -37,7 +37,7 @@ function LOG (msg)
 		return msg;
 	var name = oButton. name;
 	var head = "[Custom Buttons: id: " + _id + "@" + _phase + ", line: " + Components. stack. caller. lineNumber + ", name: " + name + "]";
-	cs = Cc ["@mozilla.org/consoleservice;1"]. getService (Ci. nsIConsoleService);
+	var cs = Cc ["@mozilla.org/consoleservice;1"]. getService (Ci. nsIConsoleService);
 	cs. logStringMessage (head + (arguments. length? ("\n" + msg): ""));
 	return msg;
 }
