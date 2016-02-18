@@ -1,3 +1,5 @@
+/* -*- mode: js; tab-width: 4; indent-tabs-mode: t; js-indent-level: 4 -*- */
+
 /**
  * @fileOverview This file used for building custom buttons runtime environment
  */
@@ -16,9 +18,9 @@ var _doc = document;
 var _uri = buttonURI;
 if ("custombuttonsUtils" in window)
 {
-    var createDebug = custombuttonsUtils. createDebug;
-    var createMsg = custombuttonsUtils. createMsg;
-    var cbu = custombuttonsUtils;
+	var createDebug = custombuttonsUtils. createDebug;
+	var createMsg = custombuttonsUtils. createMsg;
+	var cbu = custombuttonsUtils;
 }
 
 /**
@@ -30,14 +32,14 @@ if ("custombuttonsUtils" in window)
  */
 function LOG (msg)
 {
-    var oButton = _doc. getElementById (_id);
-    if (!oButton)
+	var oButton = _doc. getElementById (_id);
+	if (!oButton)
+		return msg;
+	var name = oButton. name;
+	var head = "[Custom Buttons: id: " + _id + "@" + _phase + ", line: " + Components. stack. caller. lineNumber + ", name: " + name + "]";
+	var cs = Cc ["@mozilla.org/consoleservice;1"]. getService (Ci. nsIConsoleService);
+	cs. logStringMessage (head + (arguments. length? ("\n" + msg): ""));
 	return msg;
-    var name = oButton. name;
-    var head = "[Custom Buttons: id: " + _id + "@" + _phase + ", line: " + Components. stack. caller. lineNumber + ", name: " + name + "]";
-    var cs = Cc ["@mozilla.org/consoleservice;1"]. getService (Ci. nsIConsoleService);
-    cs. logStringMessage (head + (arguments. length? ("\n" + msg): ""));
-    return msg;
 }
 
 /**
@@ -54,66 +56,66 @@ function LOG (msg)
  */
 function addEventListener (eventType, eventHandler, captureFlag, eventTarget)
 {
-    var oButton = _doc. getElementById (_id);
-    if (!oButton)
-	return;
-    var handler =
-    {
-	eventType: "",
-	eventHandler: null,
-	captureFlag: null,
-	eventTarget: null,
-	context: null,
+	var oButton = _doc. getElementById (_id);
+	if (!oButton)
+		return;
+	var handler =
+		{
+			eventType: "",
+			eventHandler: null,
+			captureFlag: null,
+			eventTarget: null,
+			context: null,
 
-	handleEvent: function (event)
-	{
-	    switch (typeof this. eventHandler)
-	    {
-	    case "function":
-		this. eventHandler. apply (this. context, [event]);
-		break;
-	    case "object":
-		this. eventHandler. handleEvent (event);
-		break;
-	    default:;
-	    }
-	},
+			handleEvent: function (event)
+			{
+				switch (typeof this. eventHandler)
+				{
+					case "function":
+					this. eventHandler. apply (this. context, [event]);
+					break;
+					case "object":
+					this. eventHandler. handleEvent (event);
+					break;
+					default:;
+				}
+			},
 
-	register: function ()
-	{
-	    try
-	    {
-		this. eventTarget. addEventListener (this. eventType, this, this. captureFlag);
-	    }
-	    catch (e) {}
-	},
+			register: function ()
+			{
+				try
+				{
+					this. eventTarget. addEventListener (this. eventType, this, this. captureFlag);
+				}
+				catch (e) {}
+			},
 
-	unregister: function ()
-	{
-	    try
-	    {
-		this. eventTarget. removeEventListener (this. eventType, this, this. captureFlag);
-	    }
-	    catch (e) {}
-	}
-    };
-    handler. eventType = eventType;
-    if ((eventHandler instanceof Ci. nsIDOMEventListener) ||
-	(typeof (eventHandler) == "function") ||
-	((typeof (eventHandler) == "object") && (typeof (eventHandler ["handleEvent"]) == "function")))
-	handler. eventHandler = eventHandler;
-    else
-	throw new TypeError ("Custom Buttons: addEventListener: eventHandler isn't a function or hasn't nsIDOMEventListener interface", _uri, Components. stack. caller. lineNumber);
-    handler. captureFlag = captureFlag;
-    if (!eventTarget)
-	eventTarget = window;
-    if (eventTarget instanceof Ci. nsIDOMEventTarget)
-	handler. eventTarget = eventTarget;
-    else
-	throw new TypeError ("Custom Buttons: addEventListener: eventTarget hasn't interface nsIDOMEventTarget\n", _uri, Components. stack. caller. lineNumber);
-    handler. context = oButton;
-    handler. register ();
-    oButton. _handlers. push (handler);
+			unregister: function ()
+			{
+				try
+				{
+					this. eventTarget. removeEventListener (this. eventType, this, this. captureFlag);
+				}
+				catch (e) {}
+			}
+		};
+	handler. eventType = eventType;
+	if ((eventHandler instanceof Ci. nsIDOMEventListener) ||
+		(typeof (eventHandler) == "function") ||
+		((typeof (eventHandler) == "object") && (typeof (eventHandler ["handleEvent"]) == "function")))
+		handler. eventHandler = eventHandler;
+	else
+		throw new TypeError ("Custom Buttons: addEventListener: eventHandler isn't a function or hasn't nsIDOMEventListener interface", _uri, Components. stack. caller. lineNumber);
+	handler. captureFlag = captureFlag;
+	if (!eventTarget)
+		eventTarget = window;
+	if (eventTarget instanceof Ci. nsIDOMEventTarget)
+		handler. eventTarget = eventTarget;
+	else
+		throw new TypeError ("Custom Buttons: addEventListener: eventTarget hasn't interface nsIDOMEventTarget\n", _uri, Components. stack. caller. lineNumber);
+	handler. context = oButton;
+	handler. register ();
+	oButton. _handlers. push (handler);
 }
 
 /**
@@ -126,22 +128,22 @@ function addEventListener (eventType, eventHandler, captureFlag, eventTarget)
  */
 function removeEventListener (eventType, eventHandler, captureFlag, eventTarget)
 {
-    var oButton = _doc. getElementById (_id);
-    if (!oButton)
-	return;
-    var handler;
-    if (!eventTarget)
-	eventTarget = window;
-    for (var i = 0; i < oButton. _handlers. length; i++)
-    {
-	handler = oButton. _handlers [i];
-	if ((handler. eventType == eventType) && (handler. eventHandler == eventHandler) && (handler. captureFlag == captureFlag) && (handler. eventTarget == eventTarget))
+	var oButton = _doc. getElementById (_id);
+	if (!oButton)
+		return;
+	var handler;
+	if (!eventTarget)
+		eventTarget = window;
+	for (var i = 0; i < oButton. _handlers. length; i++)
 	{
-	    handler. unregister ();
-	    oButton. _handlers. splice (i, 1);
-	    break;
+		handler = oButton. _handlers [i];
+		if ((handler. eventType == eventType) && (handler. eventHandler == eventHandler) && (handler. captureFlag == captureFlag) && (handler. eventTarget == eventTarget))
+		{
+			handler. unregister ();
+			oButton. _handlers. splice (i, 1);
+			break;
+		}
 	}
-    }
 }
 
 /**
@@ -156,13 +158,13 @@ function removeEventListener (eventType, eventHandler, captureFlag, eventTarget)
  */
 function addDestructor (func, context)
 {
-    var oButton = _doc. getElementById (_id);
-    if (!oButton)
-	return;
-    if (typeof (func) != "function")
-	throw new TypeError ("Custom Buttons: addDestructor: func isn't a function", _uri, Components. stack. caller. lineNumber);
-    var destructor = {};
-    destructor ["destructor"] = func;
-    destructor ["context"] = context;
-    oButton. _destructors. push (destructor);
+	var oButton = _doc. getElementById (_id);
+	if (!oButton)
+		return;
+	if (typeof (func) != "function")
+		throw new TypeError ("Custom Buttons: addDestructor: func isn't a function", _uri, Components. stack. caller. lineNumber);
+	var destructor = {};
+	destructor ["destructor"] = func;
+	destructor ["context"] = context;
+	oButton. _destructors. push (destructor);
 }
