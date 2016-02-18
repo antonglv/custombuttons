@@ -1,66 +1,67 @@
-var repprompt =
-{
- editor: null,
+/* -*- mode: js; tab-width: 4; indent-tabs-mode: t; js-indent-level: 4 -*- */
 
- init: function ()
- {
-  if (!window. arguments || !window. arguments [0])
-  {
-   window. close ();
-   return;
-  }
-  this. editor = window. arguments [0];
-  sizeToContent ();
-     moveToAlertPosition ();
- },
+var repprompt = {
+	editor: null,
 
- find: function ()
- {
-  if (!this. editor. find (false))
-   this. closeDialog ();
-  else
-   this. editor. wrapSelection ();
- },
+	init: function ()
+	{
+		if (!window. arguments || !window. arguments [0])
+		{
+			window. close ();
+			return;
+		}
+		this. editor = window. arguments [0];
+		sizeToContent ();
+		moveToAlertPosition ();
+	},
 
- onAccept: function ()
- {
-  this. editor. makeReplace ();
-  this. find ();
-  return false;
- },
+	find: function ()
+	{
+		if (!this. editor. find (false))
+			this. closeDialog ();
+		else
+			this. editor. wrapSelection ();
+	},
 
- onCancel: function ()
- {
-  this. closeDialog ();
-  return true;
- },
+	onAccept: function ()
+	{
+		this. editor. makeReplace ();
+		this. find ();
+		return false;
+	},
 
- onSkip: function ()
- {
-  if (!this. editor. skipReplace ())
-   this. closeDialog ();
-  else
-   this. editor. wrapSelection ();
- },
+	onCancel: function ()
+	{
+		this. closeDialog ();
+		return true;
+	},
 
- onReplaceAll: function ()
- {
-  this. editor. replaceAll ();
-  this. closeDialog ();
- },
+	onSkip: function ()
+	{
+		if (!this. editor. skipReplace ())
+			this. closeDialog ();
+		else
+			this. editor. wrapSelection ();
+	},
 
- destroy: function ()
- {
-  if (this. editor)
-  {
-   this. editor. stopReplace ();
-   this. editor = null;
-  }
- },
+	onReplaceAll: function ()
+	{
+		this. editor. replaceAll ();
+		this. closeDialog ();
+	},
 
- closeDialog: function ()
- {
-  this. destroy ();
-  window. close ();
- }
+	destroy: function ()
+	{
+		if (this. editor)
+		{
+			this. editor. stopReplace ();
+			this. editor = null;
+		}
+	},
+
+	closeDialog: function ()
+	{
+		this. destroy ();
+		window. close ();
+	}
 };
