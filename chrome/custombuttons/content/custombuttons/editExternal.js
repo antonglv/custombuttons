@@ -71,6 +71,13 @@ function editinit() {
 	}, false);
 }
 
+function clearPreference () {
+	var ps = Cc ["@mozilla.org/preferences-service;1"]. getService (Ci. nsIPrefService);
+    ps = ps. QueryInterface (Ci. nsIPrefBranch);
+    var cbps = ps. getBranch ("extensions.custombuttons.");
+    cbps. clearUserPref ("external_editor");
+}
+
 function getEditor() {
 	let pref = Cc["@mozilla.org/preferences-service;1"].
 		getService(Ci.nsIPrefService).
@@ -78,6 +85,20 @@ function getEditor() {
 	let editor = null;
 	try {
 		editor = pref.getCharPref("external_editor");
+		var file = Cc ["@mozilla.org/file/local;1"]. createInstance (Ci. nsILocalFile);
+		file. initWithPath (editor);
+		if (!file. exists ()) {
+			if (confirm ("Invalid editor file\nTry to select another?"))
+				throw ("Error_invalid_Editor_file");
+			clearPreference ();
+			return null;
+		}
+		if (!file. isExecutable ()) {
+			if (confirm ("Editor file is not executable\nTry to select another?"))
+				throw ("Error_Editor_not_executable");
+			clearPreference ();
+			return null;
+		}
 	} catch(ex) {
 		let nsIFilePicker = Ci.nsIFilePicker;
 		let filePicker = Cc["@mozilla.org/filepicker;1"].
