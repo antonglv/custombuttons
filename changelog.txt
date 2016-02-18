@@ -1,4 +1,6 @@
 Changelog
+0.0.5.8.5
+# Fixed: impossible to change external editor if it was uninstalled or path to it was changed
 0.0.5.8.4
 + Added: es-AR translation
 0.0.5.8.3
