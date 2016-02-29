@@ -1,4 +1,4 @@
-/* -*- mode: js; tab-width: 4; indent-tabs-mode: t; js-indent-level: 4 -*- */
+/* -*- mode: js; tab-width: 4; indent-tabs-mode: t; js-indent-level: 4; js-switch-indent-offset: 4 -*- */
 
 // ***** BEGIN LICENSE BLOCK *****
 // Version: MPL 1.1
@@ -21,13 +21,9 @@
 //
 // ***** END LICENSE BLOCK *****
 
-
-
-
 function cbCommandLineHandler () {}
 cbCommandLineHandler. prototype = {
-	QueryInterface: function (iid)
-	{
+	QueryInterface: function (iid) {
 		if (iid. equals (Components. interfaces. nsICommandLineHandler) ||
 			(iid. equals (Components. interfaces. nsISupports)))
 			return this;
@@ -35,16 +31,14 @@ cbCommandLineHandler. prototype = {
 	},
 
 	_cbs: null,
-	get cbs ()
-	{
+	get cbs () {
 		if (!this. _cbs)
 			this. _cbs = Components. classes ["@xsms.nm.ru/custombuttons/cbservice;1" /* CB_SERVICE_CID */].
 			getService (Components. interfaces. cbICustomButtonsService /* CB_SERVICE_IID */);
 		return this. _cbs
 	},
 
-	handle: function (commandLine)
-	{
+	handle: function (commandLine) {
 		var mode = this. cbs. mode;
 		var param = commandLine. handleFlagWithParam ("custombuttons", false);
 		if (!param)
@@ -62,16 +56,14 @@ var Module = {
 	ContractID: "@mozilla.org/commandlinehandler/general-startup;1?type=custombuttons" /* CB_COMMAND_LINE_HANDLER_COMPONENT_CID */,
 	ComponentName: "Custombuttons extension command line handler component",
 
-	QueryInterface: function (iid)
-	{
+	QueryInterface: function (iid) {
 		if (iid. equals (Components. interfaces. nsIModule) ||
 			iid. equals (Components. interfaces. nsISupports))
 			return this;
 		throw Components. results. NS_ERROR_NO_INTERFACE;
 	},
 
-	getClassObject: function (compMgr, cid, iid)
-	{
+	getClassObject: function (compMgr, cid, iid) {
 		if (!cid. equals (this. CLSID))
 			throw Components. results. NS_ERROR_NO_INTERFACE;
 		if (!iid. equals (Components. interfaces. nsIFactory))
@@ -80,8 +72,7 @@ var Module = {
 	},
 
 	firstTime: true,
-	registerSelf: function (compMgr, fileSpec, location, type)
-	{
+	registerSelf: function (compMgr, fileSpec, location, type) {
 		if (this. firstTime)
 			this. firstTime = false;
 		else
@@ -97,31 +88,26 @@ var Module = {
 
 	},
 
-	unregisterSelf: function (compMgr, location, type)
-	{
+	unregisterSelf: function (compMgr, location, type) {
 		compMgr = compMgr. QueryInterface (Components. interfaces. nsIComponentRegistrar);
 		compMgr. unregisterFactoryLocation (this. CID, location);
 		var cm = Components. classes ["@mozilla.org/categorymanager;1"]. getService (Components. interfaces. nsICategoryManager);
 		cm. deleteCategoryEntry ("command-line-handler", "m-custombuttons");
 	},
 
-	canUnload: function (compMgr)
-	{
+	canUnload: function (compMgr) {
 		return true;
 	},
 
-	CLASS_FACTORY:
-	{
-		QueryInterface: function (iid)
-		{
+	CLASS_FACTORY: {
+		QueryInterface: function (iid) {
 			if (iid. equals (Components. interfaces. nsIFactory) ||
 				iid. equals (Components. interfaces. nsISupports))
 				return this;
 			throw Components. results. NS_ERROR_NO_INTERFACE;
 		},
 
-		createInstance: function (outer, iid)
-		{
+		createInstance: function (outer, iid) {
 			if (outer != null)
 				throw Components. results. NS_ERROR_NO_AGGREGATION;
 			return (new cbCommandLineHandler ()). QueryInterface (iid);

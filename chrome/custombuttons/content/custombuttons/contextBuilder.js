@@ -1,4 +1,4 @@
-/* -*- mode: js; tab-width: 4; indent-tabs-mode: t; js-indent-level: 4 -*- */
+/* -*- mode: js; tab-width: 4; indent-tabs-mode: t; js-indent-level: 4; js-switch-indent-offset: 4 -*- */
 
 /**
  * @fileOverview This file used for building custom buttons runtime environment
@@ -16,8 +16,7 @@ var _phase = oButton. _initPhase? "init": "code";
 var _id = oButton. id;
 var _doc = document;
 var _uri = buttonURI;
-if ("custombuttonsUtils" in window)
-{
+if ("custombuttonsUtils" in window) {
 	var createDebug = custombuttonsUtils. createDebug;
 	var createMsg = custombuttonsUtils. createMsg;
 	var cbu = custombuttonsUtils;
@@ -30,8 +29,7 @@ if ("custombuttonsUtils" in window)
  * @since version 0.0.5.2
  * @returns {String} the argument passed in
  */
-function LOG (msg)
-{
+function LOG (msg) {
 	var oButton = _doc. getElementById (_id);
 	if (!oButton)
 		return msg;
@@ -54,51 +52,41 @@ function LOG (msg)
  * @throws {TypeError} If eventHandler is not a function or has not nsIDOMEventListener interface
  * @throws {TypeError} If eventTarget has not nsIDOMEventTarget interface
  */
-function addEventListener (eventType, eventHandler, captureFlag, eventTarget)
-{
+function addEventListener (eventType, eventHandler, captureFlag, eventTarget) {
 	var oButton = _doc. getElementById (_id);
 	if (!oButton)
 		return;
-	var handler =
-		{
-			eventType: "",
-			eventHandler: null,
-			captureFlag: null,
-			eventTarget: null,
-			context: null,
+	var handler = {
+		eventType: "",
+		eventHandler: null,
+		captureFlag: null,
+		eventTarget: null,
+		context: null,
 
-			handleEvent: function (event)
-			{
-				switch (typeof this. eventHandler)
-				{
-					case "function":
+		handleEvent: function (event) {
+			switch (typeof this. eventHandler) {
+				case "function":
 					this. eventHandler. apply (this. context, [event]);
 					break;
-					case "object":
+				case "object":
 					this. eventHandler. handleEvent (event);
 					break;
-					default:;
-				}
-			},
-
-			register: function ()
-			{
-				try
-				{
-					this. eventTarget. addEventListener (this. eventType, this, this. captureFlag);
-				}
-				catch (e) {}
-			},
-
-			unregister: function ()
-			{
-				try
-				{
-					this. eventTarget. removeEventListener (this. eventType, this, this. captureFlag);
-				}
-				catch (e) {}
+				default:;
 			}
-		};
+		},
+
+		register: function () {
+			try	{
+				this. eventTarget. addEventListener (this. eventType, this, this. captureFlag);
+			} catch (e) {}
+		},
+
+		unregister: function ()	{
+			try	{
+				this. eventTarget. removeEventListener (this. eventType, this, this. captureFlag);
+			} catch (e) {}
+		}
+	};
 	handler. eventType = eventType;
 	if ((eventHandler instanceof Ci. nsIDOMEventListener) ||
 		(typeof (eventHandler) == "function") ||
@@ -126,19 +114,19 @@ function addEventListener (eventType, eventHandler, captureFlag, eventTarget)
  * @param {Boolean} captureFlag
  * @param {nsIDOMEventTarget} [eventTarget=window]
  */
-function removeEventListener (eventType, eventHandler, captureFlag, eventTarget)
-{
+function removeEventListener (eventType, eventHandler, captureFlag, eventTarget) {
 	var oButton = _doc. getElementById (_id);
 	if (!oButton)
 		return;
 	var handler;
 	if (!eventTarget)
 		eventTarget = window;
-	for (var i = 0; i < oButton. _handlers. length; i++)
-	{
+	for (var i = 0; i < oButton. _handlers. length; i++) {
 		handler = oButton. _handlers [i];
-		if ((handler. eventType == eventType) && (handler. eventHandler == eventHandler) && (handler. captureFlag == captureFlag) && (handler. eventTarget == eventTarget))
-		{
+		if ((handler. eventType == eventType) &&
+			(handler. eventHandler == eventHandler) &&
+			(handler. captureFlag == captureFlag) &&
+			(handler. eventTarget == eventTarget)) {
 			handler. unregister ();
 			oButton. _handlers. splice (i, 1);
 			break;
@@ -156,8 +144,7 @@ function removeEventListener (eventType, eventHandler, captureFlag, eventTarget)
  * @param {Object} [context=window]
  * @throws {TypeError} If func is not a function
  */
-function addDestructor (func, context)
-{
+function addDestructor (func, context) {
 	var oButton = _doc. getElementById (_id);
 	if (!oButton)
 		return;

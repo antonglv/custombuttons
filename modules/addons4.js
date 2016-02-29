@@ -1,4 +1,4 @@
-/* -*- mode: js; tab-width: 4; indent-tabs-mode: t; js-indent-level: 4 -*- */
+/* -*- mode: js; tab-width: 4; indent-tabs-mode: t; js-indent-level: 4; js-switch-indent-offset: 4 -*- */
 
 var EXPORTED_SYMBOLS = ["CustombuttonsButton"];
 
@@ -47,42 +47,39 @@ var AddonProvider = {
 		return overlayDocument;
 	},
 
-	makeButtonLink: function (overlayFileName, paletteId)
-	{
+	makeButtonLink: function (overlayFileName, paletteId) {
 		var res = "custombutton://buttons/";
 		var info = Cc [APP_INFO_CID]. getService (XUL_APP_INFO_IID);
-		switch (paletteId)
-		{
+		switch (paletteId) {
 			case "BrowserToolbarPalette":
-			res += info. name; // Firefox, SeaMonkey, Browser
-			break;
+				res += info. name; // Firefox, SeaMonkey, Browser
+				break;
 			case "MailToolbarPalette":
-			res += info. name; // Thunderbird, SeaMonkey
-			if (("buttonsoverlay.xul" == overlayFileName) &&
-				("SeaMonkey" == info. name))
-				res += "Mail"; // SeaMonkeyMail
-			else if ("mwbuttonsoverlay.xul" == overlayFileName)
-				res += "MailWindow"; // ThunderbirdMailWindow, SeaMonkeyMailWindow
-			break;
+				res += info. name; // Thunderbird, SeaMonkey
+				if (("buttonsoverlay.xul" == overlayFileName) &&
+					("SeaMonkey" == info. name))
+					res += "Mail"; // SeaMonkeyMail
+				else if ("mwbuttonsoverlay.xul" == overlayFileName)
+					res += "MailWindow"; // ThunderbirdMailWindow, SeaMonkeyMailWindow
+				break;
 			case "MsgComposeToolbarPalette":
-			res += info. name + "ComposeWindow"; // ThunderbirdComposeWindow, SeaMonkeyComposeWindow
-			break;
+				res += info. name + "ComposeWindow"; // ThunderbirdComposeWindow, SeaMonkeyComposeWindow
+				break;
 			case "calendarToolbarPalette":
-			res += "Sunbird"; // Sunbird, Calendar
-			break;
+				res += "Sunbird"; // Sunbird, Calendar
+				break;
 			case "NvuToolbarPalette":
-			res += "KompoZer"; // KompoZer
-			break;
+				res += "KompoZer"; // KompoZer
+				break;
 			default:
-			res += "Browser";
-			break;
+				res += "Browser";
+				break;
 		}
 		res += "/";
 		return res;
 	},
 
-	collectButtonsFromOverlay: function (overlayFileName)
-	{
+	collectButtonsFromOverlay: function (overlayFileName) {
 		var res = [];
 		var doc;
 		try {
@@ -173,22 +170,22 @@ CustombuttonsButton. prototype = {
 
 	set iconURL (url) {
 		switch (url) {
-		case "":
-		case "custombuttons-stdicon-1":
-			this. _iconURL = "chrome://custombuttons/skin/button.png";
-			break;
-		case "custombuttons-stdicon-2":
-			this. _iconURL = "chrome://custombuttons/skin/stdicons/rbutton.png";
-			break;
-		case "custombuttons-stdicon-3":
-			this. _iconURL = "chrome://custombuttons/skin/stdicons/gbutton.png";
-			break;
-		case "custombuttons-stdicon-4":
-			this. _iconURL = "chrome://custombuttons/skin/stdicons/bbutton.png";
-			break;
-		default:
-			this. _iconURL = url;
-			break;
+			case "":
+			case "custombuttons-stdicon-1":
+				this. _iconURL = "chrome://custombuttons/skin/button.png";
+				break;
+			case "custombuttons-stdicon-2":
+				this. _iconURL = "chrome://custombuttons/skin/stdicons/rbutton.png";
+				break;
+			case "custombuttons-stdicon-3":
+				this. _iconURL = "chrome://custombuttons/skin/stdicons/gbutton.png";
+				break;
+			case "custombuttons-stdicon-4":
+				this. _iconURL = "chrome://custombuttons/skin/stdicons/bbutton.png";
+				break;
+			default:
+				this. _iconURL = url;
+				break;
 		}
 	},
 

@@ -1,4 +1,4 @@
-/* -*- mode: js; tab-width: 4; indent-tabs-mode: t; js-indent-level: 4 -*- */
+/* -*- mode: js; tab-width: 4; indent-tabs-mode: t; js-indent-level: 4; js-switch-indent-offset: 4 -*- */
 
 var custombutton = {
 	cbService: Components. classes ["@xsms.nm.ru/custombuttons/cbservice;1" /* CB_SERVICE_CID */].
@@ -305,24 +305,19 @@ var custombutton = {
 		if (bHideSeparator)
 			this. showBroadcast ("customizeseparator", false);
 
-		if ("gCustomizeMode" in window && document. getElementsByClassName)
-		{
+		if ("gCustomizeMode" in window && document. getElementsByClassName)	{
 			var inMenu = oButton. getAttribute ("cui-areatype") == "menu-panel";
-			var showItemsInNode = function (node, name, show)
-			{
-				Array. forEach
-				(
+			var showItemsInNode = function (node, name, show) {
+				Array. forEach (
 					node. getElementsByClassName ("customize-context-" + name),
-					function (mi)
-					{
+					function (mi) {
 						if (mi. classList. contains ("custombuttons-moveButtonItem"))
 							this. showElement (mi, show);
 					},
 					this
 				);
 			}. bind (this);
-			var showItems = function (name, show)
-			{
+			var showItems = function (name, show) {
 				showItemsInNode (document, name, show);
 				showItemsInNode (oButton, name, show); // Strange things may happens with anonymous (?) cloned menu
 			};

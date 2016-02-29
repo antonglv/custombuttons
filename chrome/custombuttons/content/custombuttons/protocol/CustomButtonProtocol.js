@@ -1,4 +1,4 @@
-/* -*- mode: js; tab-width: 4; indent-tabs-mode: t; js-indent-level: 4 -*- */
+/* -*- mode: js; tab-width: 4; indent-tabs-mode: t; js-indent-level: 4; js-switch-indent-offset: 4 -*- */
 
 /* ***** BEGIN LICENSE BLOCK *****
  * Version: MPL 1.1/GPL 2.0/LGPL 2.1
@@ -37,9 +37,6 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
-
-
-
 var	  kSIMPLEURI_CONTRACTID = "@mozilla.org/network/simple-uri;1";
 var	  nsIURI = Components. interfaces. nsIURI;
 
@@ -57,8 +54,7 @@ function CustombuttonProtocol (sProtocolName) {
 }
 CustombuttonProtocol. prototype = {
 
-	QueryInterface: function (iid)
-	{
+	QueryInterface: function (iid) {
 		if (!iid. equals (Components. interfaces. nsIProtocolHandler) &&
 			!iid. equals (Components. interfaces. nsISupports))
 			throw Components. results. NS_ERROR_NO_INTERFACE;
@@ -209,17 +205,17 @@ function CustombuttonsProtocolClassFactory (sProtocolName) {
 	return this;
 }
 CustombuttonsProtocolClassFactory. prototype = {
-		protocol: "",
+	protocol: "",
 
-		createInstance: function (outer, iid) {
-			if (outer != null)
-				throw Components. results. NS_ERROR_NO_AGGREGATION;
-			if (!iid. equals (Components. interfaces. nsIProtocolHandler) &&
-				!iid. equals (Components. interfaces. nsISupports))
-				throw Components. results. NS_ERROR_NO_INTERFACE;
-			return new CustombuttonProtocol (this. protocol);
-		}
-	};
+	createInstance: function (outer, iid) {
+		if (outer != null)
+			throw Components. results. NS_ERROR_NO_AGGREGATION;
+		if (!iid. equals (Components. interfaces. nsIProtocolHandler) &&
+			!iid. equals (Components. interfaces. nsISupports))
+			throw Components. results. NS_ERROR_NO_INTERFACE;
+		return new CustombuttonProtocol (this. protocol);
+	}
+};
 
 var Module = {
 	CLSID: [Components. ID ("{78D452B8-2CE8-4a7b-8A59-DA3C0960DAE7}"),

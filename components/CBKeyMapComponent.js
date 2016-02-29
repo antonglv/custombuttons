@@ -33,8 +33,7 @@ cbKeyMapService. prototype = {
 
 	keymap: {},
 
-	Add: function (windowId, buttonId, key, disableDefaultAction)
-	{
+	Add: function (windowId, buttonId, key, disableDefaultAction) {
 		if (!windowId || !buttonId)
 			return;
 		if (!this. keymap [windowId])
@@ -45,14 +44,12 @@ cbKeyMapService. prototype = {
 			this. Delete (windowId, buttonId);
 	},
 
-	Delete: function (windowId, buttonId)
-	{
+	Delete: function (windowId, buttonId) {
 		if (this. keymap [windowId] && this. keymap [windowId] [buttonId])
 			delete this. keymap [windowId] [buttonId];
 	},
 
-	getKeyPrefix: function (event)
-	{
+	getKeyPrefix: function (event) {
 		event instanceof Components. interfaces. nsIDOMEvent;
 		var prefix = "";
 		if (event. altKey) prefix += "Alt+";
@@ -63,15 +60,12 @@ cbKeyMapService. prototype = {
 	},
 
 	_eventKeymap: [],
-	get eventKeymap ()
-	{
+	get eventKeymap () {
 		var i;
-		if (this. _eventKeymap. length == 0)
-		{
+		if (this. _eventKeymap. length == 0) {
 			var prefix = "DOM_VK_";
 			var ikey = Components. interfaces. nsIDOMKeyEvent;
-			for (i in ikey)
-			{
+			for (i in ikey)	{
 				if (i. indexOf (prefix) == 0)
 					this. _eventKeymap [ikey [i]] = i. substr (prefix. length);
 			}
@@ -79,8 +73,7 @@ cbKeyMapService. prototype = {
 		return this. _eventKeymap;
 	},
 
-	getKey: function (event)
-	{
+	getKey: function (event) {
 		event instanceof Components. interfaces. nsIDOMEvent;
 		var key = "";
 		var keyCode = this. eventKeymap [event. keyCode];
@@ -91,18 +84,14 @@ cbKeyMapService. prototype = {
 		return key;
 	},
 
-	Get: function (windowId, event, count)
-	{
+	Get: function (windowId, event, count) {
 		event instanceof Components. interfaces. nsIDOMEvent;
 		var key = this. getKeyPrefix (event) + this. getKey (event);
 		var values = new Array ();
 		var mode = false;
-		if (this. keymap [windowId])
-		{
-			for (var i in this. keymap [windowId])
-			{
-				if (this. keymap [windowId] [i] [0] == key)
-				{
+		if (this. keymap [windowId]) {
+			for (var i in this. keymap [windowId]) {
+				if (this. keymap [windowId] [i] [0] == key)	{
 					values. push (i);
 					mode = mode || this. keymap [windowId] [i] [1];
 				}
@@ -120,12 +109,10 @@ var Module = {
 	ContractID: "@xsms.nm.ru/custombuttons/cbkeymap;1" /* CB_KEYMAP_SERVICE_CID */,
 	ComponentName: "Custombuttons extension keymap service component",
 
-	canUnload: function (componentManager)
-	{
+	canUnload: function (componentManager) {
 		return true;
 	},
-	getClassObject: function (componentManager, cid, iid)
-	{
+	getClassObject: function (componentManager, cid, iid) {
 		if (!cid. equals (this. CLSID))
 			throw Components. results. NS_ERROR_NO_INTERFACE;
 		if (!iid. equals (Components. interfaces. nsIFactory))
@@ -133,8 +120,7 @@ var Module = {
 		return this. CLASS_FACTORY;
 	},
 	FIRST_TIME: true,
-	registerSelf: function (componentManager, fileSpec, location, type)
-	{
+	registerSelf: function (componentManager, fileSpec, location, type)	{
 		if (this. FIRST_TIME)
 			this. FIRST_TIME = false;
 		else
@@ -143,17 +129,14 @@ var Module = {
 		componentManager. registerFactoryLocation (this. CLSID, this. ComponentName, this. ContractID, fileSpec, location, type);
 	},
 	unregisterSelf: function (componentManager, location, loaderStr) {},
-	CLASS_FACTORY:
-	{
-		QueryInterface: function (iid)
-		{
+	CLASS_FACTORY: {
+		QueryInterface: function (iid) {
 			if (iid. equals (Components. interfaces. nsIFactory) ||
 				iid. equals (Components. interfaces. nsISupports))
 				return this;
 			throw Components. results. NS_ERROR_NO_INTERFACE;
 		},
-		createInstance: function (outer, iid)
-		{
+		createInstance: function (outer, iid) {
 			if (outer != null)
 				throw Components. results. NS_ERROR_NO_AGGREGATION;
 			return (new cbKeyMapService ()). QueryInterface (iid);
