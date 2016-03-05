@@ -131,5 +131,44 @@
       </fileset>
     </delete>
   </target>
+
+  <target name="check-firefox-paths">
+    <fail unless="firefox.executable" message="The path to Firefox not defined. Define 'firefox.executable' property it in build.properties"/>
+    <fail message="The path ${firefox.executable} doesn't exist. Set right value to 'firefox.executable' property in build.properties">
+      <condition>
+	<not>
+	  <available file="${firefox.executable}"/>
+	</not>
+      </condition>
+    </fail>
+    <fail unless="firefox.profile" message="The name of Firefox profile not defined. Define 'firefox.profile' property in build.properties"/>
+    <dirname file="${firefox.executable}" property="firefox.dir"/>
+  </target>
+
+  <target name="firefox-log-to-console"
+	  depends="check-firefox-paths" unless="firefox.logfile">
+    <exec executable="${firefox.executable}"
+	  dir="${firefox.dir}" vmlauncher="false">
+      <arg value="--no-remote"/>
+      <arg value="-console"/>
+      <arg value="-P"/>
+      <arg value="${firefox.profile}"/>
+    </exec>
+  </target>
+
+  <target name="firefox-log-to-file"
+	  depends="check-firefox-paths" if="firefox.logfile">
+    <exec executable="${firefox.executable}"
+	  dir="${firefox.dir}"
+	  output="${firefox.logfile}">
+      <arg value="--no-remote"/>
+      <arg value="-P"/>
+      <arg value="${firefox.profile}"/>
+    </exec>
+  </target>
+
+  <target name="firefox" description="Run Firefox"
+	  depends="firefox-log-to-console,firefox-log-to-file">
+  </target>
 </project>
 
