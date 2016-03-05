@@ -48,8 +48,7 @@
   </target>
   
   <target name="buildxpt" depends="init">
-    <fail unless="geckosdkpath">The path to gecko sdk (geckosdkpath property) not defined.
-    Define it in build.properties (don't forget about double back slashes)</fail>
+    <fail unless="geckosdkpath" message="The path to gecko sdk not defined. Define 'geckosdkpath' property in build.properties"/>
     <apply executable="xpidl.exe" dir="${xpidlpath}"
 	   resolveExecutable="true" dest="${basedir}/components"
 	   os="Windows"

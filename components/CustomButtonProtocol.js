@@ -1,4 +1,4 @@
-/* -*- mode: js; tab-width: 4; indent-tabs-mode: t; js-indent-level: 4 -*- */
+/* -*- mode: js; tab-width: 4; indent-tabs-mode: t; js-indent-level: 4; js-switch-indent-offset: 4 -*- */
 
 /* ***** BEGIN LICENSE BLOCK *****
  * Version: MPL 1.1/GPL 2.0/LGPL 2.1
@@ -37,9 +37,6 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
-
-
-
 var	  kSIMPLEURI_CONTRACTID = "@mozilla.org/network/simple-uri;1";
 var	  nsIURI = Components. interfaces. nsIURI;
 
@@ -56,10 +53,11 @@ function CustombuttonProtocol (sProtocolName) {
 	return this;
 }
 CustombuttonProtocol. prototype = {
-
 	QueryInterface: function (iid)
 	{
 		if (!iid. equals (Components. interfaces. nsIProtocolHandler) &&
+			!iid. equals (Components. interfaces. nsIObserver) &&
+			!iid. equals (Components. interfaces. nsISupportsWeakReference) &&
 			!iid. equals (Components. interfaces. nsISupports))
 			throw Components. results. NS_ERROR_NO_INTERFACE;
 		return this;
@@ -194,6 +192,17 @@ CustombuttonProtocol. prototype = {
 		var cbs = Components. classes ["@xsms.nm.ru/custombuttons/cbservice;1"]. getService (Components. interfaces. cbICustomButtonsService);
 		cbs. installWebButton (null, aURI. spec, true);
 		return false;
+	},
+
+	observe: function (subject, topic, data) {
+		var os = Components. classes ["@mozilla.org/observer-service;1"]. getService (Components. interfaces. nsIObserverService);
+		switch (topic) {
+			case "app-startup":
+				os. addObserver (this, "profile-after-change", true);
+				break;
+			case "profile-after-change":
+				break;
+		}
 	}
 };
 
@@ -202,17 +211,17 @@ function CustombuttonsProtocolClassFactory (sProtocolName) {
 	return this;
 }
 CustombuttonsProtocolClassFactory. prototype = {
-		protocol: "",
+	protocol: "",
 
-		createInstance: function (outer, iid) {
-			if (outer != null)
-				throw Components. results. NS_ERROR_NO_AGGREGATION;
-			if (!iid. equals (Components. interfaces. nsIProtocolHandler) &&
-				!iid. equals (Components. interfaces. nsISupports))
-				throw Components. results. NS_ERROR_NO_INTERFACE;
-			return new CustombuttonProtocol (this. protocol);
-		}
-	};
+	createInstance: function (outer, iid) {
+		if (outer != null)
+			throw Components. results. NS_ERROR_NO_AGGREGATION;
+		if (!iid. equals (Components. interfaces. nsIProtocolHandler) &&
+			!iid. equals (Components. interfaces. nsISupports))
+			throw Components. results. NS_ERROR_NO_INTERFACE;
+		return new CustombuttonProtocol (this. protocol);
+	}
+};
 
 var Module = {
 	CLSID: [Components. ID ("{78D452B8-2CE8-4a7b-8A59-DA3C0960DAE7}"),
@@ -259,9 +268,15 @@ var Module = {
 				location,
 				type
 			);
+
+		var cm = Components. classes ["@mozilla.org/categorymanager;1"]. getService (Components. interfaces. nsICategoryManager);
+		cm. addCategoryEntry ("app-startup", this. ComponentName [0], "service," + this. ContractID [0], true, true);
 	},
 
-	unregisterSelf: function (componentManager, location, loaderStr) {}
+	unregisterSelf: function (componentManager, location, loaderStr) {
+		var cm = Components. classes ["@mozilla.org/categorymanager;1"]. getService (Components. interfaces. nsICategoryManager);
+		cm. deleteCategoryEntry ("app-startup", "service," + this. ContractID [0], true);
+	}
 };
 
 function NSGetFactory (cid) {
