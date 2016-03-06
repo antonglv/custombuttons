@@ -1,4 +1,4 @@
-/* -*- mode: js; tab-width: 4; indent-tabs-mode: t; js-indent-level: 4 -*- */
+/* -*- mode: js; tab-width: 4; indent-tabs-mode: t; js-indent-level: 4; js-switch-indent-offset: 4 -*- */
 
 var cbPromptDialog = {
 	type: "",
@@ -7,8 +7,7 @@ var cbPromptDialog = {
 	itemIndex: 0,
 	groupCounter: -1,
 
-	getParameterByName: function (name)
-	{
+	getParameterByName: function (name)	{
 		var parametersMap = {
 			"param": 0,
 			"array": 1,
@@ -26,23 +25,19 @@ var cbPromptDialog = {
 		return window. arguments [parametersMap [name]];
 	},
 
-	onAccept: function ()
-	{
+	onAccept: function () {
 		var groups = document. getElementsByTagName ("groupbox");
 		var param = this. getParameterByName ("param");
-		param. out =
-			{
-				chosen: [],
-			};
+		param. out = {
+			chosen: [],
+		};
 		var caption, items, ci, to, group, groupLabel, items;
-		for (var i = 0; i < groups. length; i++)
-		{
+		for (var i = 0; i < groups. length; i++) {
 			group = groups [i];
 			caption = group. getElementsByTagName ("caption") [0];
 			groupLabel = caption. getAttribute ("label");
 			var items = group. getElementsByAttribute (this. valueAttr, "true");
-			for (var j = 0; j < items. length; j++)
-			{
+			for (var j = 0; j < items. length; j++)	{
 				ci = items [j];
 				to = {};
 				to ["label"] = ci. getAttribute ("label");
@@ -56,49 +51,40 @@ var cbPromptDialog = {
 		return true;
 	},
 
-	onCancel: function ()
-	{
+	onCancel: function () {
 		return true;
 	},
 
-	alert: function (msg)
-	{
+	alert: function (msg) {
 		var ps = Components. classes ["@mozilla.org/embedcomp/prompt-service;1"]. getService (Components. interfaces. nsIPromptService);
 		var title = this. getParameterByName ("title");
 		ps. alert (window, title, msg);
 	},
 
-	onDisclosure: function ()
-	{
+	onDisclosure: function () {
 		this. alert (this. getParameterByName ("disclosure"));
 	},
 
-	onHelp: function ()
-	{
+	onHelp: function () {
 		this. alert (this. getParameterByName ("help"));
 	},
 
-	init: function ()
-	{
+	init: function () {
 		var ios = Components. classes ["@mozilla.org/network/io-service;1"]. getService (Components. interfaces. nsIIOService);
 		var url = ios. newURI (document. documentURI, null, null);
 		url = url. QueryInterface (Components. interfaces. nsIURL);
 		var q = url. query || "";
 		var dlgType = q. match (/type=(\w*)/);
 		dlgType = dlgType? dlgType [1]: "";
-		if (!dlgType || ((dlgType != "checkbox") && (dlgType != "radiobox")))
-		{
+		if (!dlgType || ((dlgType != "checkbox") && (dlgType != "radiobox"))) {
 			window. close ();
 			return;
 		}
 		this. type = dlgType;
-		if (this. type == "checkbox")
-		{
+		if (this. type == "checkbox") {
 			this. valueAttr = "checked";
 			this. itemName = "checkbox";
-		}
-		else
-		{
+		} else {
 			this. valueAttr = "selected";
 			this. itemName = "radio";
 		}
@@ -108,12 +94,9 @@ var cbPromptDialog = {
 		this. makeDialog ();
 	},
 
-	destroy: function ()
-	{
-	},
+	destroy: function () {},
 
-	makeGroup: function (index)
-	{
+	makeGroup: function (index)	{
 		this. groupCounter++;
 		var group = document. createElement ("groupbox");
 		var caption = document. createElement ("caption");
@@ -124,8 +107,7 @@ var cbPromptDialog = {
 			caption. setAttribute ("label", captionLabel [index]);
 		group. appendChild (caption);
 		document. documentElement. appendChild (group);
-		if (this. type == "radiobox")
-		{
+		if (this. type == "radiobox") {
 			var radiogroup = document. createElement ("radiogroup");
 			group. appendChild (radiogroup);
 			group = radiogroup;
@@ -133,8 +115,7 @@ var cbPromptDialog = {
 		return group;
 	},
 
-	makeItem: function (label, value)
-	{
+	makeItem: function (label, value) {
 		var item = document. createElement (this. itemName);
 		item. setAttribute ("label", label);
 		if (value)
@@ -143,18 +124,15 @@ var cbPromptDialog = {
 		return item;
 	},
 
-	makeDialog: function ()
-	{
+	makeDialog: function () {
 		var index = 0;
 		var group = this. makeGroup (index);
 		var arr = this. getParameterByName ("array");
 		var ce, label, value;
-		for (var i = 0; i < arr. length; i++)
-		{
+		for (var i = 0; i < arr. length; i++) {
 			ce = arr [i];
 			label = ce [0];
-			if (typeof (label) == "undefined")
-			{
+			if (typeof (label) == "undefined") {
 				index++;
 				group = this. makeGroup (index);
 				continue;
@@ -164,16 +142,14 @@ var cbPromptDialog = {
 		}
 	},
 
-	makeButton: function (button, label)
-	{
+	makeButton: function (button, label) {
 		if (!label)
 			button. setAttribute ("hidden", "true");
 		else
 			button. setAttribute ("label", label);
 	},
 
-	makeButtons: function ()
-	{
+	makeButtons: function () {
 		var dialog = document. documentElement;
 		var acceptButton = dialog. getButton ("accept");
 		var cancelButton = dialog. getButton ("cancel");
@@ -187,8 +163,7 @@ var cbPromptDialog = {
 		this. makeButton (disclosureButton, this. getParameterByName ("disclosurelabel"));
 	},
 
-	makeHeader: function ()
-	{
+	makeHeader: function ()	{
 		var hdr = document. getElementById ("dialogheader");
 		hdr. setAttribute ("title", this. getParameterByName ("head"));
 		hdr. setAttribute ("description", this. getParameterByName ("description"));

@@ -1,4 +1,4 @@
-/* -*- mode: js; tab-width: 4; indent-tabs-mode: t; js-indent-level: 4 -*- */
+/* -*- mode: js; tab-width: 4; indent-tabs-mode: t; js-indent-level: 4; js-switch-indent-offset: 4 -*- */
 
 var custombuttons = {
 	ps: Components. classes ["@mozilla.org/preferences-service;1"]. getService (Components. interfaces. nsIPrefService). getBranch ("custombuttons.button"),
@@ -10,62 +10,53 @@ var custombuttons = {
 	cbService: null,
 	loaded: false,
 
-	get popupNode ()
-	{
+	get popupNode () {
 		var cm = document. getElementById ("custombuttons-contextpopup");
 		var res = cm. _cb_triggerNode || cm. triggerNode || document. popupNode || null;
 		delete cm. _cb_triggerNode;
 		return res;
 	},
 
-	get palette ()
-	{
+	get palette () {
 		if (!this. _palette)
 			this. _palette = this. getPalette ();
 		return this. _palette;
 	},
 
-	get gToolbox ()
-	{
+	get gToolbox ()	{
 		return document. getElementById ("navigator-toolbox") || // FF3b2 and lower
 		document. getElementById ("browser-toolbox"); // see https://bugzilla.mozilla.org/show_bug.cgi?id=415099
 	},
 
-	getPalette: function ()
-	{
+	getPalette: function ()	{
 		return this. gToolbox. palette;
 	},
 
-	pushMenuitem: function (sName, bPrimary)
-	{
+	pushMenuitem: function (sName, bPrimary) {
 		var sId = "custombuttons-contextpopup-" + sName + (bPrimary? "": "-sub");
 		var oMenuitem = document. getElementById (sId);
 		oMenuitem. parentNode. appendChild (oMenuitem);
 	},
 
-	addObserver: function (sNotificationName)
-	{
+	addObserver: function (sNotificationName) {
 		var os = Components. classes ["@mozilla.org/observer-service;1"]. getService (Components. interfaces. nsIObserverService);
 		os. addObserver (this, this. notificationPrefix + sNotificationName, false);
 	},
 
-	removeObserver: function (sNotificationName)
-	{
+	removeObserver: function (sNotificationName) {
 		var os = Components. classes ["@mozilla.org/observer-service;1"]. getService (Components. interfaces. nsIObserverService);
 		os. removeObserver (this, this. notificationPrefix + sNotificationName);
 	},
 
 	notificationSender: false,
-	notifyObservers: function (oSubject, sTopic, sData)
-	{
+	notifyObservers: function (oSubject, sTopic, sData)	{
 		var os = Components. classes ["@mozilla.org/observer-service;1"]. getService (Components. interfaces. nsIObserverService);
 		this. notificationSender = true;
 		os. notifyObservers (oSubject, this. notificationPrefix + sTopic, sData);
 		this. notificationSender = false;
 	},
 
-	addObservers: function ()
-	{
+	addObservers: function () {
 		this. addObserver ("installButton");
 		this. addObserver ("updateButton");
 		this. addObserver ("cloneButton");
@@ -76,8 +67,7 @@ var custombuttons = {
 		this. addObserver ("edit:save");
 	},
 
-	removeObservers: function ()
-	{
+	removeObservers: function () {
 		this. removeObserver ("edit:save");
 		this. removeObserver ("edit:done");
 		this. removeObserver ("edit:blur");
@@ -88,8 +78,7 @@ var custombuttons = {
 		this. removeObserver ("installButton");
 	},
 
-	init: function ()
-	{
+	init: function () {
 		this. cbService = Components. classes ["@xsms.nm.ru/custombuttons/cbservice;1" /* CB_SERVICE_CID */]. getService (Components. interfaces. cbICustomButtonsService /* CB_SERVICE_IID */);
 		this. cbService. register (window);
 		var windowId = this. cbService. getWindowId (document. documentURI);
@@ -104,14 +93,11 @@ var custombuttons = {
 		ps = ps. QueryInterface (Components. interfaces. nsIPrefBranch);
 		var cbps = ps. getBranch ("custombuttons.");
 		var mode = this. cbService. mode;
-		if (ps. prefHasUserValue (pref))
-		{
+		if (ps. prefHasUserValue (pref)) {
 			mode |= (ps. getBoolPref (pref)? 2 /* CB_MODE_SHOW_APPLY_BUTTON */: 0);
-			try
-			{
+			try	{
 				ps. deleteBranch (pref);
-			}
-			catch (e) {}
+			} catch (e) {}
 		}
 		this. cbService. mode = mode;
 		this. addObservers ();
@@ -120,14 +106,12 @@ var custombuttons = {
 		this. notifyObservers (null, "custombuttons-initialized", "");
 	},
 
-	initButtons: function ()
-	{
+	initButtons: function () {
 		for (var i = 0; i < custombutton. waitForInitialization. length; i++)
 			custombutton. buttonConstructor (custombutton. waitForInitialization [i]);
 	},
 
-	close: function ()
-	{
+	close: function () {
 		this. cbService. unregister ();
 		this. removeObservers ();
 		window. removeEventListener ("load", custombuttons, false);
@@ -135,38 +119,30 @@ var custombuttons = {
 		window. removeEventListener ("keypress", custombuttons, true);
 	},
 
-	copyAttributes: function (oSrcButton, oDstButton)
-	{
+	copyAttributes: function (oSrcButton, oDstButton) {
 		var atts = oSrcButton. attributes;
 		var attr;
-		for (var i = 0; i < atts. length; i++)
-		{
+		for (var i = 0; i < atts. length; i++) {
 			attr = atts. item (i);
 			oDstButton. setAttribute (attr. name, oSrcButton. getAttribute (attr. name));
 		}
 	},
 
-	findButtons: function (id)
-	{ // There are may be several buttons with same id (some extensions like All-in-One Sidebar extension may clone buttons)
+	findButtons: function (id) { // There are may be several buttons with same id (some extensions like All-in-One Sidebar extension may clone buttons)
 		return Array. slice (document. getElementsByAttribute ("id", id));
 	},
 
-	RemoveButtonFromPalette: function (sButtonId)
-	{
+	RemoveButtonFromPalette: function (sButtonId) {
 		var oPaletteButton = this. palette. getElementsByAttribute ("id", sButtonId) [0];
-		if (oPaletteButton)
-		{
-			try
-			{
+		if (oPaletteButton)	{
+			try	{
 				oPaletteButton. destroy ("remove_from_palette");
-			}
-			catch (e) {}
+			} catch (e) {}
 			this. palette. removeChild (oPaletteButton);
 		}
 	},
 
-	AddButtonToPalette: function (oButton)
-	{
+	AddButtonToPalette: function (oButton) {
 		this. RemoveButtonFromPalette (oButton. getAttribute ("id"));
 		var sId = "custombuttons-template-button";
 		var oPaletteButton;
@@ -179,39 +155,32 @@ var custombuttons = {
 		this. palette. appendChild (oPaletteButton);
 	},
 
-	persistCurrentSets: function (toolbarId, buttonId, newButtonId)
-	{
+	persistCurrentSets: function (toolbarId, buttonId, newButtonId)	{
 		// Firefox 29+ (Australis)
-		if ("CustomizableUI" in window) try
-		{
-			var placement = CustomizableUI.getPlacementOfWidget(buttonId);
-			var area = placement && placement.area;
-			var pos	 = placement && placement.position;
-			if (newButtonId)
-			{
-				CustomizableUI.addWidgetToArea(
-					newButtonId,
-					area || CustomizableUI.AREA_NAVBAR,
-					typeof pos == "number" ? pos + 1 : undefined
-				);
+		if ("CustomizableUI" in window)
+			try	{
+				var placement = CustomizableUI. getPlacementOfWidget (buttonId);
+				var area = placement && placement. area;
+				var pos	 = placement && placement. position;
+				if (newButtonId) {
+					CustomizableUI. addWidgetToArea (
+						newButtonId,
+						area || CustomizableUI.AREA_NAVBAR,
+						typeof pos == "number" ? pos + 1 : undefined
+					);
+				} else if (placement) {
+					CustomizableUI. removeWidgetFromArea (buttonId);
+				}
+			} catch(e) {
+				Components.utils.reportError(e);
 			}
-			else if (placement)
-			{
-				CustomizableUI.removeWidgetFromArea(buttonId);
-			}
-		}
-		catch(e)
-		{
-			Components.utils.reportError(e);
-		}
 
 		var toolbar = document. getElementById (toolbarId);
 		//Исправляем currentSet для toolbar
 		var cs = toolbar. getAttribute ("currentset");
 		var ar = cs. split (",");
 		var ind = ar. indexOf (buttonId);
-		if (ind != -1)
-		{
+		if (ind != -1) {
 			if (newButtonId)
 				ar. splice (ind, 1, buttonId, newButtonId);
 			else
@@ -223,8 +192,7 @@ var custombuttons = {
 
 		//если это custom-toolbar, то исправляем атрибуты в toolbarSet...
 		var customindex = toolbar. getAttribute ("customindex");
-		if (customindex > 0)
-		{
+		if (customindex > 0) {
 			var attrName = "toolbar" + customindex;
 			var toolbarSet = document. getElementById ("customToolbars");
 			var oldSet = toolbarSet. getAttribute (attrName);
@@ -237,8 +205,7 @@ var custombuttons = {
 			persistCurrentSets ();
 	},
 
-	_cloneButton: function (oNewButton, sParentToolbarId, sClonedButtonId)
-	{
+	_cloneButton: function (oNewButton, sParentToolbarId, sClonedButtonId) {
 		var oParentToolbar = document. getElementById (sParentToolbarId);
 		var oClonedButton = oParentToolbar. getElementsByAttribute ("id", sClonedButtonId) [0];
 		if (!oClonedButton)
@@ -251,16 +218,14 @@ var custombuttons = {
 			this. AddButtonToPalette (oClone);
 	},
 
-	cloneButton: function (oClonedButton, asEmpty)
-	{
+	cloneButton: function (oClonedButton, asEmpty) {
 		var sParentToolbarId = oClonedButton. parentNode. id;
 		var sClonedButtonId = oClonedButton. getAttribute ("id");
 		var sNewButtonId = this. cbService. cloneButton (oClonedButton, asEmpty);
 		this. persistCurrentSets (sParentToolbarId, sClonedButtonId, sNewButtonId);
 	},
 
-	_removeButton: function (sParentToolbarId, sRemovedButtonId)
-	{
+	_removeButton: function (sParentToolbarId, sRemovedButtonId) {
 		var oParentToolbar, oRemovedButton;
 		var cButtonsToRemove = this. findButtons (sRemovedButtonId);
 		var bRemoveFromOverlay = (cButtonsToRemove. length <= 1);
@@ -280,8 +245,7 @@ var custombuttons = {
 			this. RemoveButtonFromPalette (sRemovedButtonId);
 	},
 
-	removeButton: function (oRemovedButton)
-	{
+	removeButton: function (oRemovedButton)	{
 		var ps = Components. classes ["@mozilla.org/embedcomp/prompt-service;1"]. getService (Components. interfaces. nsIPromptService);
 		var str = document. getElementById ("cbStrings"). getString ("RemoveConfirm"). replace (/%s/gi, oRemovedButton. name);
 		if (!ps. confirm (null, "Custom Buttons", str))
@@ -294,8 +258,7 @@ var custombuttons = {
 		this. persistCurrentSets (sParentToolbarId, sRemovedButtonId, null);
 	},
 
-	cbCloneNode: function (node)
-	{
+	cbCloneNode: function (node) {
 		var oClone = document. createElement (node. nodeName);
 		this. copyAttributes (node, oClone);
 		oClone. setAttribute ("removable", "true"); // Firefox >= 3.7
@@ -303,56 +266,48 @@ var custombuttons = {
 	},
 
 	// nsIObserver interface
-	observe: function (oSubject, sTopic, sData)
-	{
+	observe: function (oSubject, sTopic, sData)	{
 		var ta = sData. split (":");
 		var topic = sTopic. replace (this. notificationPrefix, "");
 		var btn;
-		switch (topic)
-		{
+		switch (topic) {
 			case "removeButton":
-			this. _removeButton (ta [0], ta [1]);
-			break;
+				this. _removeButton (ta [0], ta [1]);
+				break;
 			case "cloneButton":
-			this. _cloneButton (oSubject, ta [0], ta [1]);
-			break;
+				this. _cloneButton (oSubject, ta [0], ta [1]);
+				break;
 			case "installButton":
 			case "updateButton":
-			var newButton, winButton;
-			var sId = oSubject. getAttribute ("id");
-			var winButtons = this. findButtons (sId);
-			if (winButtons. length != 0)
-			{
-				for (var i = 0; i < winButtons. length; i++)
-				{
-					newButton = this. cbCloneNode (oSubject);
-					winButton = winButtons [i];
-					try
-					{
-						winButton. destroy ("update");
+				var newButton, winButton;
+				var sId = oSubject. getAttribute ("id");
+				var winButtons = this. findButtons (sId);
+				if (winButtons. length != 0) {
+					for (var i = 0; i < winButtons. length; i++) {
+						newButton = this. cbCloneNode (oSubject);
+						winButton = winButtons [i];
+						try	{
+							winButton. destroy ("update");
+						} catch (e)	{
+							Components. utils. reportError ("Custom Buttons: " + [oSubject, sTopic, sData, e, e. stack]. join ("\n"));
+						}
+						winButton. parentNode. replaceChild (newButton, winButton);
 					}
-					catch (e)
-					{
-						Components. utils. reportError ("Custom Buttons: " + [oSubject, sTopic, sData, e, e. stack]. join ("\n"));
-					}
-					winButton. parentNode. replaceChild (newButton, winButton);
 				}
-			}
-			newButton = this. cbCloneNode (oSubject);
-			if ((topic != "updateButton") || this. shouldAddToPalette)
-				this. AddButtonToPalette (newButton);
-			break;
+				newButton = this. cbCloneNode (oSubject);
+				if ((topic != "updateButton") || this. shouldAddToPalette)
+					this. AddButtonToPalette (newButton);
+				break;
 			case "edit:focus":
 			case "edit:blur":
 			case "edit:done":
 			case "edit:save":
-			this. handleEditorNotification (topic, sData);
-			break;
+				this. handleEditorNotification (topic, sData);
+				break;
 		}
 	},
 
-	setButtonAttribute: function (sId, sAttribute, sValue)
-	{
+	setButtonAttribute: function (sId, sAttribute, sValue) {
 		if (!sId)
 			return;
 		var btn = document. getElementById (sId);
@@ -360,71 +315,61 @@ var custombuttons = {
 			btn. setAttribute (sAttribute, sValue);
 	},
 
-	handleEditorNotification: function (topic, sData)
-	{
+	handleEditorNotification: function (topic, sData) {
 		var btn;
-		switch (topic)
-		{
+		switch (topic) {
 			case "edit:focus":
 			case "edit:blur":
-			this. setButtonAttribute (sData, "cb-edit-state", (topic == "edit:focus"? "active": "inactive"));
-			break;
+				this. setButtonAttribute (sData, "cb-edit-state", (topic == "edit:focus"? "active": "inactive"));
+				break;
 			case "edit:done":
-			if (sData) {
-				btn = document. getElementById (sData);
-				if (btn)
-				{
-					btn. removeAttribute ("cb-edit-state");
-					btn. removeAttribute ("cb-last-saved");
+				if (sData) {
+					btn = document. getElementById (sData);
+					if (btn) {
+						btn. removeAttribute ("cb-edit-state");
+						btn. removeAttribute ("cb-last-saved");
+					}
 				}
-			}
-			break;
+				break;
 			case "edit:save":
-			var lastSavedButton = document. getElementsByAttribute ("cb-last-saved", "true") [0];
-			if (lastSavedButton)
-				lastSavedButton. removeAttribute ("cb-last-saved");
-			this. setButtonAttribute (sData, "cb-last-saved", "true");
-			break;
+				var lastSavedButton = document. getElementsByAttribute ("cb-last-saved", "true") [0];
+				if (lastSavedButton)
+					lastSavedButton. removeAttribute ("cb-last-saved");
+				this. setButtonAttribute (sData, "cb-last-saved", "true");
+				break;
 		}
 	},
 
-	getButtonById: function (id)
-	{
+	getButtonById: function (id) {
 		var id2 = (isFinite (id)? "custombuttons-button": "") + id;
 		return this. palette. getElementsByAttribute ("id", id2) [0] || null;
 	},
 
-	getButtonByNumber: function (num)
-	{
+	getButtonByNumber: function (num) {
 		return document. getElementById ("custombuttons-button" + num);
 	},
 
-	addButton: function (event)
-	{
+	addButton: function (event) {
 		if (event)
 			event. stopPropagation ();
 		this. openEditor ("");
 	},
 
-	editButton: function (oBtn)
-	{
+	editButton: function (oBtn)	{
 		var oButton = oBtn || this. popupNode;
 		this. openEditor (oButton);
 	},
 
-	makeButtonLink: function (action, sButtonId)
-	{
+	makeButtonLink: function (action, sButtonId) {
 		return this. cbService. makeButtonLink (document. documentURI, action, sButtonId);
 	},
 
-	openEditor: function (oButton)
-	{
+	openEditor: function (oButton) {
 		var link = this. makeButtonLink ("edit", oButton? oButton. id: "");
 		this. cbService. editButton (window, link, null);
 	},
 
-	updateButton: function ()
-	{
+	updateButton: function () {
 		var oButton = this. popupNode;
 		if (!oButton)
 			return;
@@ -433,42 +378,36 @@ var custombuttons = {
 		this. cbService. updateButton (link, sURI);
 	},
 
-	doButtonOperation: function (sOperation)
-	{
+	doButtonOperation: function (sOperation) {
 		var oButton;
 		oButton = this. popupNode;
 		if (!oButton)
 			return;
-		switch (sOperation)
-		{
+		switch (sOperation)	{
 			case "clone":
-			this. cloneButton (oButton, false);
-			break;
+				this. cloneButton (oButton, false);
+				break;
 			case "remove":
-			this. removeButton (oButton);
-			break;
+				this. removeButton (oButton);
+				break;
 		}
 	},
 
-	copyURI: function ()
-	{
+	copyURI: function () {
 		this. cbService. writeToClipboard (this. popupNode. URI);
 	},
 
-	getNumber: function (id)
-	{
+	getNumber: function (id) {
 		if (id. indexOf ("custombuttons-button") != -1)
 			return id. substring ("custombuttons-button". length);
 		return "";
 	},
 
-	execute_oncommand_code: function (code, button)
-	{
+	execute_oncommand_code: function (code, button) {
 		custombutton. buttonCbExecuteCode ({}, button, code);
 	},
 
-	onKeyPress: function (event)
-	{
+	onKeyPress: function (event) {
 		var windowId = this. cbService. getWindowId (document. documentURI);
 		var cbd = Components. classes ["@xsms.nm.ru/custombuttons/cbkeymap;1" /* CB_KEYMAP_SERVICE_CID */]. getService (Components. interfaces. cbIKeyMapService /* CB_KEYMAP_SERVICE_IID */);
 		var lenobj = {};
@@ -476,26 +415,20 @@ var custombuttons = {
 		if (ids. length == 0)
 			return;
 		var mode = (ids. shift () == "true");
-		if (mode)
-		{
+		if (mode) {
 			event. stopPropagation ();
 			event. preventDefault ();
 		}
-		for (var i = 0; i < ids. length; i++)
-		{
-			try
-			{
+		for (var i = 0; i < ids. length; i++) {
+			try	{
 				document. getElementById (ids [i]). cbExecuteCode ();
-			}
-			catch (e)
-			{
+			} catch (e)	{
 				Components. utils. reportError ("Custom Buttons: " + [event, e, e. stack]. join ("\n"));
 			}
 		}
 	},
 
-	handleMenuClick: function (event)
-	{
+	handleMenuClick: function (event) {
 		if ((event. button != 1) &&
 			!((event. button == 0) && event. ctrlKey))
 			return;
@@ -511,24 +444,22 @@ var custombuttons = {
 	onClick: function (event) {},
 
 	/* EventHandler interface */
-	handleEvent: function (event)
-	{
-		switch (event. type)
-		{
+	handleEvent: function (event) {
+		switch (event. type) {
 			case "load":
-			this. init ();
-			break;
+				this. init ();
+				break;
 			case "unload":
-			this. close ();
-			break;
+				this. close ();
+				break;
 			case "keypress":
-			this. onKeyPress (event);
-			break;
+				this. onKeyPress (event);
+				break;
 			case "click":
-			this. onClick (event);
-			break;
+				this. onClick (event);
+				break;
 			default:
-			break;
+				break;
 		}
 	},
 
@@ -543,18 +474,15 @@ var custombuttons = {
 		 UPDATED: 11/12/2007 to improve stability.
 		 changed by Anton 24.02.08
 	**/
-	bookmarkButton: function (oBtn)
-	{
+	bookmarkButton: function (oBtn)	{
 		var Button = (oBtn)? oBtn: this. popupNode;
 		this. makeBookmark (Button. URI, Button. name);
 	},
 
-	makeBookmark: function (CbLink, sName)
-	{
+	makeBookmark: function (CbLink, sName) {
 		if ("BookmarksUtils" in window)
 			BookmarksUtils. addBookmark (CbLink, sName);
-		else
-		{
+		else {
 			var uri = Components. classes ["@mozilla.org/network/simple-uri;1"]. createInstance (Components. interfaces. nsIURI); // since there was 'bookmarkLink' execution problem
 			uri. spec = CbLink; // it seems nsIURI spec re-passing solves it
 			PlacesCommandHook. bookmarkLink (PlacesUtils. bookmarksMenuFolderId, uri. spec, sName);
@@ -567,175 +495,153 @@ var custombuttons = {
 	var oBookmarkButtonMenuitem;
 	var info = Components. classes ["@mozilla.org/xre/app-info;1"]. getService (Components. interfaces. nsIXULAppInfo);
 	var oVC = Components. classes ["@mozilla.org/xpcom/version-comparator;1"]. createInstance (Components. interfaces. nsIVersionComparator);
-	switch (document. documentURI)
-	{
+	switch (document. documentURI) {
 		case "chrome://browser/content/browser.xul": // Firefox, Flock
-		if (oVC. compare ("3.0a1", info. version) <= 0)
-		{
-			custombuttons. makeBookmark = function (CbLink, sName)
-			{
-				var uri = Components. classes ["@mozilla.org/network/simple-uri;1"]. createInstance (Components. interfaces. nsIURI); // since there was 'bookmarkLink' execution problem
-				uri. spec = CbLink; // it seems nsIURI spec re-passing solves it
-				PlacesCommandHook. bookmarkLink (PlacesUtils. bookmarksMenuFolderId, uri. spec, sName);
-			};
-			if (oVC. compare ("3.1b3", info. version) <= 0)
-				custombuttons. shouldAddToPalette = false;
-		}
-		break;
-		case "chrome://navigator/content/navigator.xul": // Seamonkey
-		custombuttons. makeBookmark = function (CbLink, sName)
-		{
-			var uri = Components. classes ["@mozilla.org/network/simple-uri;1"]. createInstance (Components. interfaces. nsIURI); // since there was 'bookmarkLink' execution problem
-			if ("BookmarksUtils" in window)
-				BookmarksUtils. addBookmark (CbLink, sName);
-			else
-			{
-				uri. spec = CbLink; // it seems nsIURI spec re-passing solves it
-				PlacesCommandHook. bookmarkLink (PlacesUtils. bookmarksMenuFolderId, uri. spec, sName);
+			if (oVC. compare ("3.0a1", info. version) <= 0)	{
+				custombuttons. makeBookmark = function (CbLink, sName) {
+					var uri = Components. classes ["@mozilla.org/network/simple-uri;1"]. createInstance (Components. interfaces. nsIURI); // since there was 'bookmarkLink' execution problem
+					uri. spec = CbLink; // it seems nsIURI spec re-passing solves it
+					PlacesCommandHook. bookmarkLink (PlacesUtils. bookmarksMenuFolderId, uri. spec, sName);
+				};
+				if (oVC. compare ("3.1b3", info. version) <= 0)
+					custombuttons. shouldAddToPalette = false;
 			}
-		};
-		custombuttons. shouldAddToPalette = false;
-		break;
+			break;
+		case "chrome://navigator/content/navigator.xul": // Seamonkey
+			custombuttons. makeBookmark = function (CbLink, sName) {
+				var uri = Components. classes ["@mozilla.org/network/simple-uri;1"]. createInstance (Components. interfaces. nsIURI); // since there was 'bookmarkLink' execution problem
+				if ("BookmarksUtils" in window)
+					BookmarksUtils. addBookmark (CbLink, sName);
+				else {
+					uri. spec = CbLink; // it seems nsIURI spec re-passing solves it
+					PlacesCommandHook. bookmarkLink (PlacesUtils. bookmarksMenuFolderId, uri. spec, sName);
+				}
+			};
+			custombuttons. shouldAddToPalette = false;
+			break;
 		case "chrome://messenger/content/messenger.xul": // Seamonkey, Thunderbird
 		case "chrome://messenger/content/messageWindow.xul": // Seamonkey, Thunderbird
-		window. addEventListener ("click", custombuttons, true);
-		custombuttons. onClick = function (event)
-		{
-			var href;
-			var target = event. target;
-			if ((target instanceof HTMLAnchorElement) ||
-				(target instanceof HTMLAreaElement) ||
-				(target instanceof HTMLLinkElement))
-			{
-				if (target. hasAttribute ("href"))
-					href = target. href;
-			}
-			else
-			{
-				var linkNode = event. originalTarget;
-				while (linkNode && !(linkNode instanceof HTMLAnchorElement))
-					linkNode = linkNode. parentNode;
-				if (linkNode)
-					href = linkNode. href;
-			}
-			if (href && (href. indexOf ("custombutton://") == 0))
-			{
-				var mode = this. cbService. mode;
-				if (!(mode & 128 /* CB_MODE_INSTALL_BUTTONS_FROM_EMAIL */))
-					return;
-				event. preventDefault ();
-				event. stopPropagation ();
-				this. cbService. installWebButton (null, href, true);
-			}
-		};
+			window. addEventListener ("click", custombuttons, true);
+			custombuttons. onClick = function (event) {
+				var href;
+				var target = event. target;
+				if ((target instanceof HTMLAnchorElement) ||
+					(target instanceof HTMLAreaElement) ||
+					(target instanceof HTMLLinkElement)) {
+					if (target. hasAttribute ("href"))
+						href = target. href;
+				} else {
+					var linkNode = event. originalTarget;
+					while (linkNode && !(linkNode instanceof HTMLAnchorElement))
+						linkNode = linkNode. parentNode;
+					if (linkNode)
+						href = linkNode. href;
+				}
+				if (href && (href. indexOf ("custombutton://") == 0)) {
+					var mode = this. cbService. mode;
+					if (!(mode & 128 /* CB_MODE_INSTALL_BUTTONS_FROM_EMAIL */))
+						return;
+					event. preventDefault ();
+					event. stopPropagation ();
+					this. cbService. installWebButton (null, href, true);
+				}
+			};
 		case "chrome://messenger/content/messengercompose.xul": // Seamonkey, Thunderbird
 		case "chrome://messenger/content/messengercompose/messengercompose.xul": // Seamonkey 2.1b2pre
-		custombuttons. toolbarpaletteName = "MailToolbarPalette";
-		if ((document. documentURI == "chrome://messenger/content/messengercompose.xul") ||
-			(document. documentURI == "chrome://messenger/content/messengercompose/messengercompose.xul"))
-			custombuttons. toolbarpaletteName = "MsgComposeToolbarPalette";
-		custombuttons. init = (function (fn)
-							   {
-								   return function ()
-								   {
-									   fn. apply (custombuttons, []);
-									   oBookmarkButtonMenuitem = document. getElementById ("custombuttons-contextpopup-bookmarkButton");
-									   oBookmarkButtonMenuitem. parentNode. removeChild (oBookmarkButtonMenuitem);
-									   oBookmarkButtonMenuitem = document. getElementById ("custombuttons-contextpopup-bookmarkButton-sub");
-									   oBookmarkButtonMenuitem. parentNode. removeChild (oBookmarkButtonMenuitem);
-								   };
-							   }) (custombuttons. init);
-		custombuttons. __defineGetter__
-		(
-			"gToolbox",
-			function ()
-			{
-				return document. getElementById ("mail-toolbox") || // main window and message window
-				document. getElementById ("compose-toolbox"); // compose message
-			}
-		);
-		custombuttons. openEditor = function (oButton)
-		{
-			var mode = "";
-			var param;
-			if ("gCurrentMode" in window)
-			{
-				mode = window ["gCurrentMode"];
-				var mb = document. getElementById ("modeBroadcaster");
-				mode = mode || (mb? mb. getAttribute ("mode"): "");
-				if (this. popupNode && (this. popupNode. nodeName == "toolbar"))
-				{
-					if (this. popupNode. id == "mode-toolbar")
-						mode = "mode";
-					else if (this. popupNode. id == "calendar-toolbar")
-						mode = "calendar";
-					else if (this. popupNode. id == "task-toolbar")
-						mode = "task";
+			custombuttons. toolbarpaletteName = "MailToolbarPalette";
+			if ((document. documentURI == "chrome://messenger/content/messengercompose.xul") ||
+				(document. documentURI == "chrome://messenger/content/messengercompose/messengercompose.xul"))
+				custombuttons. toolbarpaletteName = "MsgComposeToolbarPalette";
+			custombuttons. init = (function (fn) {
+				return function () {
+					fn. apply (custombuttons, []);
+					oBookmarkButtonMenuitem = document. getElementById ("custombuttons-contextpopup-bookmarkButton");
+					oBookmarkButtonMenuitem. parentNode. removeChild (oBookmarkButtonMenuitem);
+					oBookmarkButtonMenuitem = document. getElementById ("custombuttons-contextpopup-bookmarkButton-sub");
+					oBookmarkButtonMenuitem. parentNode. removeChild (oBookmarkButtonMenuitem);
+				};
+			}) (custombuttons. init);
+			custombuttons. __defineGetter__ (
+				"gToolbox",
+				function ()	{
+					return document. getElementById ("mail-toolbox") || // main window and message window
+					document. getElementById ("compose-toolbox"); // compose message
 				}
-			}
-			if (mode)
-			{
-				param = {};
-				param ["attributes"] = {};
-				param. attributes ["mode"] = mode;
-				param. wrappedJSObject = param;
-			}
-			var link = this. makeButtonLink ("edit", oButton? oButton. id: "");
-			this. cbService. editButton (window, link, param);
-		};
-		custombuttons. makeBookmark = function () {};
-		if (info. name == "SeaMonkey")
-			custombuttons. shouldAddToPalette = false;
-		if ((info. name == "Thunderbird") && (oVC. compare ("3.0", info. version) <= 0))
-			custombuttons. shouldAddToPalette = false;
-		break;
+			);
+			custombuttons. openEditor = function (oButton) {
+				var mode = "";
+				var param;
+				if ("gCurrentMode" in window) {
+					mode = window ["gCurrentMode"];
+					var mb = document. getElementById ("modeBroadcaster");
+					mode = mode || (mb? mb. getAttribute ("mode"): "");
+					if (this. popupNode && (this. popupNode. nodeName == "toolbar")) {
+						if (this. popupNode. id == "mode-toolbar")
+							mode = "mode";
+						else if (this. popupNode. id == "calendar-toolbar")
+							mode = "calendar";
+						else if (this. popupNode. id == "task-toolbar")
+							mode = "task";
+					}
+				}
+				if (mode) {
+					param = {};
+					param ["attributes"] = {};
+					param. attributes ["mode"] = mode;
+					param. wrappedJSObject = param;
+				}
+				var link = this. makeButtonLink ("edit", oButton? oButton. id: "");
+				this. cbService. editButton (window, link, param);
+			};
+			custombuttons. makeBookmark = function () {};
+			if (info. name == "SeaMonkey")
+				custombuttons. shouldAddToPalette = false;
+			if ((info. name == "Thunderbird") && (oVC. compare ("3.0", info. version) <= 0))
+				custombuttons. shouldAddToPalette = false;
+			break;
 		case "chrome://sunbird/content/calendar.xul": // Sunbird
 		case "chrome://calendar/content/calendar.xul": // Sunbird
-		custombuttons. toolbarpaletteName = "calendarToolbarPalette";
-		custombuttons. shouldAddToPalette = true;
-		custombuttons. __defineGetter__
-		(
-			"gToolbox",
-			function ()
-			{
-				return document. getElementById ("calendar-toolbox"); // calendar
-			}
-		);
-		custombuttons. makeBookmark = function () {};
-		custombuttons. init = (function (fn) {
-			return function () {
-				fn. apply (custombuttons, []);
-				oBookmarkButtonMenuitem = document. getElementById ("custombuttons-contextpopup-bookmarkButton");
-				oBookmarkButtonMenuitem. parentNode. removeChild (oBookmarkButtonMenuitem);
-				oBookmarkButtonMenuitem = document. getElementById ("custombuttons-contextpopup-bookmarkButton-sub");
-				oBookmarkButtonMenuitem. parentNode. removeChild (oBookmarkButtonMenuitem);
-			};
-		}) (custombuttons. init);
-		if (oVC. compare ("1.0b2pre", info. version) <= 0)
-			custombuttons. shouldAddToPalette = false;
-		break;
+			custombuttons. toolbarpaletteName = "calendarToolbarPalette";
+			custombuttons. shouldAddToPalette = true;
+			custombuttons. __defineGetter__	(
+				"gToolbox",
+				function () {
+					return document. getElementById ("calendar-toolbox"); // calendar
+				}
+			);
+			custombuttons. makeBookmark = function () {};
+			custombuttons. init = (function (fn) {
+				return function () {
+					fn. apply (custombuttons, []);
+					oBookmarkButtonMenuitem = document. getElementById ("custombuttons-contextpopup-bookmarkButton");
+					oBookmarkButtonMenuitem. parentNode. removeChild (oBookmarkButtonMenuitem);
+					oBookmarkButtonMenuitem = document. getElementById ("custombuttons-contextpopup-bookmarkButton-sub");
+					oBookmarkButtonMenuitem. parentNode. removeChild (oBookmarkButtonMenuitem);
+				};
+			}) (custombuttons. init);
+			if (oVC. compare ("1.0b2pre", info. version) <= 0)
+				custombuttons. shouldAddToPalette = false;
+			break;
 		case "chrome://editor/content/editor.xul": // KompoZer
-		custombuttons. toolbarpaletteName = "NvuToolbarPalette";
-		custombuttons. shouldAddToPalette = true;
-		custombuttons. __defineGetter__
-		(
-			"gToolbox",
-			function ()
-			{
-				return document. getElementById ("EditorToolbox"); // calendar
-			}
-		);
-		custombuttons. makeBookmark = function () {};
-		custombuttons. init = (function (fn) {
-			return function () {
-				fn. apply (custombuttons, []);
-				oBookmarkButtonMenuitem = document. getElementById ("custombuttons-contextpopup-bookmarkButton");
-				oBookmarkButtonMenuitem. parentNode. removeChild (oBookmarkButtonMenuitem);
-				oBookmarkButtonMenuitem = document. getElementById ("custombuttons-contextpopup-bookmarkButton-sub");
-				oBookmarkButtonMenuitem. parentNode. removeChild (oBookmarkButtonMenuitem);
-			};
-		}) (custombuttons. init);
-		break;
+			custombuttons. toolbarpaletteName = "NvuToolbarPalette";
+			custombuttons. shouldAddToPalette = true;
+			custombuttons. __defineGetter__	(
+				"gToolbox",
+				function ()	{
+					return document. getElementById ("EditorToolbox"); // calendar
+				}
+			);
+			custombuttons. makeBookmark = function () {};
+			custombuttons. init = (function (fn) {
+				return function () {
+					fn. apply (custombuttons, []);
+					oBookmarkButtonMenuitem = document. getElementById ("custombuttons-contextpopup-bookmarkButton");
+					oBookmarkButtonMenuitem. parentNode. removeChild (oBookmarkButtonMenuitem);
+					oBookmarkButtonMenuitem = document. getElementById ("custombuttons-contextpopup-bookmarkButton-sub");
+					oBookmarkButtonMenuitem. parentNode. removeChild (oBookmarkButtonMenuitem);
+				};
+			}) (custombuttons. init);
+			break;
 	}
 }) ();
 
@@ -775,12 +681,9 @@ custombuttons.uChelpButton = function ( oBtn ) //{{{
 
 // Custombuttons utils
 var custombuttonsUtils = {
-	addMethodGate: function (srcObject, sMethodName, dstObject)
-	{
-		dstObject [sMethodName] = function ()
-		{
-			return function ()
-			{
+	addMethodGate: function (srcObject, sMethodName, dstObject)	{
+		dstObject [sMethodName] = function () {
+			return function () {
 				return srcObject [sMethodName]. apply (srcObject, arguments);
 			};
 		} ();
@@ -899,17 +802,17 @@ var custombuttonsUtils = {
 		var rRet = null;
 		var nsIPrefBranchObj = this.ps.getBranch( null );
 		switch ( nsIPrefBranchObj.getPrefType( sPrefId ) ){
-		case 32: // string
-			rRet = nsIPrefBranchObj.getCharPref( sPrefId );
-			break;
-		case 64: // number
-			rRet = nsIPrefBranchObj.getIntPref( sPrefId );
-			break;
-		case 128: // boolean
-			rRet = nsIPrefBranchObj.getBoolPref( sPrefId );
-			break;
-		default:
-			rRet = null;
+			case 32: // string
+				rRet = nsIPrefBranchObj.getCharPref( sPrefId );
+				break;
+			case 64: // number
+				rRet = nsIPrefBranchObj.getIntPref( sPrefId );
+				break;
+			case 128: // boolean
+				rRet = nsIPrefBranchObj.getBoolPref( sPrefId );
+				break;
+			default:
+				rRet = null;
 		}
 		return rRet;
 	}, //}}} End Method getPrefs( sPrefId )
@@ -930,21 +833,21 @@ var custombuttonsUtils = {
 	{
 		var nsIPrefBranchObj = this.ps.getBranch(null);
 		switch (typeof prefValue){
-		case "undefined":
-			break;
-		case "string":
-			nsIPrefBranchObj.setCharPref( sPrefId, prefValue );
-			this.ps.savePrefFile( null );
-			break;
-		case "number":
-			nsIPrefBranchObj.setIntPref( sPrefId, prefValue );
-			this.ps.savePrefFile( null );
-			break;
-		case "boolean":
-			nsIPrefBranchObj.setBoolPref( sPrefId, prefValue );
-			this.ps.savePrefFile( null );
-			break;
-		default:
+			case "undefined":
+				break;
+			case "string":
+				nsIPrefBranchObj.setCharPref( sPrefId, prefValue );
+				this.ps.savePrefFile( null );
+				break;
+			case "number":
+				nsIPrefBranchObj.setIntPref( sPrefId, prefValue );
+				this.ps.savePrefFile( null );
+				break;
+			case "boolean":
+				nsIPrefBranchObj.setBoolPref( sPrefId, prefValue );
+				this.ps.savePrefFile( null );
+				break;
+			default:
 		}
 	}, //}}} End Method setPrefs( sPrefId, prefValue )
 
@@ -1065,17 +968,14 @@ var custombuttonsUtils = {
 		}
 	},
 
-	makeXML: function (xmlObject)
-	{
+	makeXML: function (xmlObject) {
 		var res = null;
 		var oldPrettyPrinting = XML. prettyPrinting;
 		XML. prettyPrinting = false;
-		try
-		{
+		try	{
 			if (typeof (xmlObject) == "string")
 				xmlObject = new XML (xmlObject);
-			res = new DOMParser (). parseFromString
-			(
+			res = new DOMParser (). parseFromString	(
 				xmlObject. toXMLString (),
 				"application/xml"
 			). documentElement;

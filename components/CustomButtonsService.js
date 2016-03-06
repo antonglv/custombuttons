@@ -21,6 +21,9 @@
 //
 // ***** END LICENSE BLOCK *****
 
+
+
+
 function backupProfile (phase) {
 	var ext, nump, bdp;
 	var pbs = Components. classes ["@mozilla.org/preferences-service;1"]. getService (Components. interfaces. nsIPrefService);
@@ -1059,11 +1062,9 @@ cbCustomButtonsService. prototype =	{
 		var os = Components. classes ["@mozilla.org/observer-service;1"]. getService (Components. interfaces. nsIObserverService);
 		switch (topic) {
 			case "app-startup":
-				LOG ("app-startup");
 				os. addObserver (this, "profile-after-change", true);
 				break;
 			case "profile-after-change":
-				LOG ("profile-after-change");
 				try	{
 					var am = {};
 					Components. utils ["import"] ("resource://gre/modules/AddonManager.jsm", am);
@@ -1147,11 +1148,7 @@ var Module = {
 	CLSID: Components. ID ("{64d03940-83bc-4ac6-afc5-3cbf6a7147c5}"),
 	ContractID: "@xsms.nm.ru/custombuttons/cbservice;1" /* CB_SERVICE_CID */,
 	ComponentName: "Custom Buttons extension service",
-	
-	canUnload: function (componentManager) {
-		return true;
-	},
-	
+	canUnload: function (componentManager) { return true; },
 	getClassObject: function (componentManager, cid, iid) {
 		if (!cid. equals (this. CLSID))
 			throw new Error (NO_INTERFACE);;
@@ -1161,7 +1158,6 @@ var Module = {
 	},
 
 	unregisterSelf: function () {
-		LOG ("unregister self");
 		var cm = Components. classes ["@mozilla.org/categorymanager;1"]. getService (Components. interfaces. nsICategoryManager);
 		cm. deleteCategoryEntry ("app-startup", "service," + this. ContractID, true);
 	},
@@ -1177,7 +1173,6 @@ var Module = {
 			this. CLSID, this. ComponentName, this. ContractID,
 			fileSpec, location, type
 		);
-		LOG ("add category entry");
 		var cm = Components. classes ["@mozilla.org/categorymanager;1"]. getService (Components. interfaces. nsICategoryManager);
 		cm. addCategoryEntry ("app-startup", this. ComponentName, "service," + this. ContractID, true, true);
 	},
@@ -1196,23 +1191,23 @@ var Module = {
 		}
 	}
 };
-function LOG (msg) {
-	var head = "----------------------------------------------------------------------";
-	var body = "-                                                                    -";
-	var msgbody = body. split ("");
-	var j = 3;
-	for (var i = 0; i < msg. length; i++) {
-		if (j == 67) {
-			msgbody [j] = "…";
-			break;
-		}
-		msgbody [j++] = msg. charAt (i);
+
+// Register protocol in child process, should be placed here to initialize at app startup
+var Services;
+try {
+	Components.utils["import"]("resource://gre/modules/Services.jsm");
+	if("ppmm" in Services) {
+		Services.ppmm.loadProcessScript("chrome://custombuttons/content/protocol/CustomButtonProtocol-process.js", true);
+		Services.ppmm.addMessageListener("CustomButtons:protocol:installWebButton", function(msg) {
+			var cbs = Components.classes["@xsms.nm.ru/custombuttons/cbservice;1"]
+				.getService(Components.interfaces.cbICustomButtonsService);
+			cbs.installWebButton(null, msg.data.spec, true);
+		});
 	}
-	var r = [head, body, msgbody. join (""), body, head, ""]. join ("\n");
-	dump(r);
 }
-LOG ("before NSGetModule")
+catch(e) {
+	Services && Components.utils.reportError(e);
+}
+
 function NSGetModule (componentManager, fileSpec) { return Module; }
-LOG ("before NSGetFactory")
 function NSGetFactory (cid) { return Module. CLASS_FACTORY; }
-LOG ("after NSGetFactory");

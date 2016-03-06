@@ -1,10 +1,8 @@
-/* -*- mode: js; tab-width: 4; indent-tabs-mode: t; js-indent-level: 4 -*- */
+/* -*- mode: js; tab-width: 4; indent-tabs-mode: t; js-indent-level: 4; js-switch-indent-offset: 4 -*- */
 
 var FindDialog = {
-	init: function ()
-	{
-		if (!window. arguments || !window. arguments [0])
-		{
+	init: function () {
+		if (!window. arguments || !window. arguments [0]) {
 			window. close ();
 			return;
 		}
@@ -14,8 +12,7 @@ var FindDialog = {
 		if (dlgType == "replace")
 			dlgTitle = cbs. getLocaleString ("finddialogReplaceTitle");
 		document. title = dlgTitle;
-		if (dlgType == "replace")
-		{
+		if (dlgType == "replace") {
 			document. getElementById ("replacebox"). removeAttribute ("hidden");
 			document. getElementById ("promptreplace"). removeAttribute ("hidden");
 		}
@@ -24,8 +21,7 @@ var FindDialog = {
 		moveToAlertPosition ();
 	},
 
-	setValues: function ()
-	{
+	setValues: function () {
 		var arg = window. arguments [0];
 		document. getElementById ("findtext"). value = arg. searchString;
 		document. getElementById ("replacetext"). value = arg. replaceText;
@@ -35,8 +31,7 @@ var FindDialog = {
 		document. getElementById ("direction"). value = direction;
 	},
 
-	onAccept: function ()
-	{
+	onAccept: function () {
 		var arg = window. arguments [0];
 		arg. searchString = document. getElementById ("findtext"). value;
 		arg. replaceText = document. getElementById ("replacetext"). value;

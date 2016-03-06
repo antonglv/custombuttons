@@ -1,4 +1,4 @@
-/* -*- mode: js; tab-width: 4; indent-tabs-mode: t; js-indent-level: 4 -*- */
+/* -*- mode: js; tab-width: 4; indent-tabs-mode: t; js-indent-level: 4; js-switch-indent-offset: 4 -*- */
 
 // ***** BEGIN LICENSE BLOCK *****
 // Version: MPL 1.1
@@ -29,39 +29,31 @@
 //
 // ***** END LICENSE BLOCK *****
 
-
-
-
 var info = Components. classes ["@mozilla.org/xre/app-info;1"]. getService (Components. interfaces. nsIXULAppInfo);
 var oVC = Components. classes ["@mozilla.org/xpcom/version-comparator;1"]. createInstance (Components. interfaces. nsIVersionComparator);
-if (oVC. compare (info. platformVersion, "1.8.0.5") < 0)
-{
+if (oVC. compare (info. platformVersion, "1.8.0.5") < 0) {
 	// Adblock Plus code
 	//HACKHACK: need a way to get an implicit wrapper for nodes because of bug 337095 (fixed in Gecko 1.8.0.5)
-	var fakeFactory =
-		{
-			createInstance: function (outer, iid)
-			{
-				return outer;
-			},
+	var fakeFactory = {
+		createInstance: function (outer, iid) {
+			return outer;
+		},
 
-			QueryInterface: function (iid)
-			{
-				if (iid. equals (Components. interfaces. nsISupports) ||
-					iid. equals (Components. interfaces. nsIFactory))
-					return this;
+		QueryInterface: function (iid) {
+			if (iid. equals (Components. interfaces. nsISupports) ||
+				iid. equals (Components. interfaces. nsIFactory))
+				return this;
 
-				throw Components. results. NS_ERROR_NO_INTERFACE;
-			}
-		};
+			throw Components. results. NS_ERROR_NO_INTERFACE;
+		}
+	};
 	var array = Components. classes ["@mozilla.org/supports-array;1"]. createInstance (Components. interfaces. nsISupportsArray);
 	array. AppendElement (fakeFactory);
 	fakeFactory = array. GetElementAt (0). QueryInterface (Components. interfaces. nsIFactory);
 	array = null;
 }
 
-function wrapNode (insecNode)
-{
+function wrapNode (insecNode) {
 	var info = Components. classes ["@mozilla.org/xre/app-info;1"]. getService (Components. interfaces. nsIXULAppInfo);
 	var oVC = Components. classes ["@mozilla.org/xpcom/version-comparator;1"]. createInstance (Components. interfaces. nsIVersionComparator);
 	if (oVC. compare (info. platformVersion, "1.8.0.5") < 0)
@@ -71,8 +63,7 @@ function wrapNode (insecNode)
 }
 
 // Retrieves the window object for a node or returns null if it isn't possible
-function getWindow (node)
-{
+function getWindow (node) {
 	if (node && node. nodeType != Components. interfaces. nsIDOMNode. DOCUMENT_NODE)
 		node = node. ownerDocument;
 
@@ -85,8 +76,7 @@ function getWindow (node)
 
 function cbContentPolicyComponent () {}
 cbContentPolicyComponent. prototype = {
-	QueryInterface: function (iid)
-	{
+	QueryInterface: function (iid) {
 		if (!iid. equals (Components. interfaces. nsIContentPolicy) &&
 			!iid. equals (Components. interfaces. nsISupports))
 			throw Components. results. NS_ERROR_NO_INTERFACE;
@@ -95,8 +85,7 @@ cbContentPolicyComponent. prototype = {
 
 	// Adblock Plus code
 	shouldLoad: function (contentType, contentLocation, requestOrigin, context,
-						  mimeTypeGuess, extra)
-	{
+						  mimeTypeGuess, extra)	{
 		if (!context)
 			return Components. interfaces. nsIContentPolicy. ACCEPT;
 
@@ -122,8 +111,7 @@ cbContentPolicyComponent. prototype = {
 	},
 
 	shouldProcess: function (contentType, contentLocation, requestOrigin,
-							 context, mimeType, extra)
-	{
+							 context, mimeType, extra) {
 		return Components. interfaces. nsIContentPolicy. ACCEPT;
 	}
 	// end Adblock Plus code
@@ -144,45 +132,38 @@ var Module = {
 	},
 
 	FIRST_TIME: true,
-	registerSelf: function (componentManager, fileSpec, location, type)
-	{
+	registerSelf: function (componentManager, fileSpec, location, type)	{
 		if (this. FIRST_TIME)
 			this. FIRST_TIME = false;
 		else
 			throw Components. results. NS_ERROR_FACTORY_REGISTER_AGAIN;
 		componentManager = componentManager. QueryInterface (Components. interfaces. nsIComponentRegistrar);
-		componentManager. registerFactoryLocation
-		(
+		componentManager. registerFactoryLocation (
 			this. CLSID, this. ComponentName,
 			this. ContractID, fileSpec,
 			location, type
 		);
 		var cm = Components. classes ["@mozilla.org/categorymanager;1"]. getService (Components. interfaces. nsICategoryManager);
 		cm. deleteCategoryEntry ("content-policy", Components. classes ["@xsms.nm.ru/custombuttons/cbcontentpolicy;1"], true);
-		cm. addCategoryEntry
-		(
+		cm. addCategoryEntry (
 			"content-policy", Components. classes ["@xsms.nm.ru/custombuttons/cbcontentpolicy;1"],
 			Components. classes ["@xsms.nm.ru/custombuttons/cbcontentpolicy;1"], true, true
 		);
 	},
 
-	unregisterSelf: function (componentManager, location, loaderStr)
-	{
+	unregisterSelf: function (componentManager, location, loaderStr) {
 		var cm = Components. classes ["@mozilla.org/categorymanager;1"]. getService (Components. interfaces. nsICategoryManager);
 		cm. deleteCategoryEntry ("content-policy", Components. classes ["@xsms.nm.ru/custombuttons/cbcontentpolicy;1"], true);
 	},
 
-	CLASS_FACTORY:
-	{
-		QueryInterface: function (iid)
-		{
+	CLASS_FACTORY: {
+		QueryInterface: function (iid) {
 			if (iid. equals (Components. interfaces. nsIFactory) ||
 				iid. equals (Components. interfaces. nsISupports))
 				return this;
 			throw Components. results. NS_ERROR_NO_INTERFACE;
 		},
-		createInstance: function (outer, iid)
-		{
+		createInstance: function (outer, iid) {
 			if (outer != null)
 				throw Components. results. NS_ERROR_NO_AGGREGATION;
 			return (new cbContentPolicyComponent ()). QueryInterface (iid);
