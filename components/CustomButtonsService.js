@@ -1208,7 +1208,7 @@ function LOG (msg) {
 		}
 		msgbody [j++] = msg. charAt (i);
 	}
-	var r = [head, body, msgbody. join (""), body, head]. join ("\n");
+	var r = [head, body, msgbody. join (""), body, head, ""]. join ("\n");
 	dump(r);
 }
 LOG ("before NSGetModule")
