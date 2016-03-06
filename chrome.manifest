@@ -146,3 +146,4 @@ contract @mozilla.org/network/protocol;1?name=custombutton 78D452B8-2CE8-4a7b-8A
 
 component 1c796f9e-9a22-4604-84e4-fa7c4b8d80a4 components/CustomButtonProtocol.js
 contract @mozilla.org/network/protocol;1?name=custombuttons 1c796f9e-9a22-4604-84e4-fa7c4b8d80a4
+category profile-after-change @mozilla.org/network/protocol;1?name=custombuttons @mozilla.org/network/protocol;1?name=custombuttons
