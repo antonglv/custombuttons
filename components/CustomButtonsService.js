@@ -1192,27 +1192,5 @@ var Module = {
 	}
 };
 
-function LOG (msg) {
-	msg = "" + msg;
-	var head = "----------------------------------------------------------------------";
-	var body = "-                                                                    -";
-	var msgbody = body. split ("");
-	var j = 3;
-	for (var i = 0; i < msg. length; i++) {
-		if (j == 67) {
-			msgbody [j] = "…";
-			break;
-		}
-		msgbody [j++] = msg. charAt (i);
-	}
-	var r = [head, body, msgbody. join (""), body, head, ""]. join ("\n");
-	dump(r);
-}
-
-LOG (this);
-LOG (typeof this);
-
-var T;
-
-function NSGetModule (componentManager, fileSpec) { LOG ("NSGetModule"); return Module; }
-function NSGetFactory (cid) { LOG ("NSGetFactory"); return Module. CLASS_FACTORY; }
+function NSGetModule (componentManager, fileSpec) { return Module; }
+function NSGetFactory (cid) { return Module. CLASS_FACTORY; }
