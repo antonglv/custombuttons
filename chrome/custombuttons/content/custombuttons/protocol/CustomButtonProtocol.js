@@ -40,6 +40,60 @@
 var	  kSIMPLEURI_CONTRACTID = "@mozilla.org/network/simple-uri;1";
 var	  nsIURI = Components. interfaces. nsIURI;
 
+function EmptyStream () {}
+EmptyStream. prototype = {
+	QueryInterface: function (iid) {
+		if (!iid. equals (Components. interfaces. nsIScriptableInputStream) &&
+			!iid. equals (Components. interfaces. nsISupports))
+			throw Components. results. NS_ERROR_NO_INTERFACE;
+		return this;
+	},
+
+	available: 0,
+
+	close: function () {},
+
+	init: function (aInputStream) {},
+
+	read: function (aCount) {
+		return "";
+	},
+
+	readBytes: function (aCount) {
+		return "";
+	}
+};
+
+function CBProtocolChannel (aURI) {
+	this. originalURI = aURI;
+	this. URI = aURI;
+	return this;
+}
+CBProtocolChannel. prototype = {
+	QueryInterface: function (iid) {
+		if (!iid. equals (Components. interfaces. nsIChannel) &&
+			!iid. equals (Components. interfaces. nsISupports))
+			throw Components. results. NS_ERROR_NO_INTERFACE;
+		return this;
+	},
+
+	contentCharset: "",
+	contentLength: 0,
+	contentType: "",
+	notificationCallbacks: null,
+	originalURI: null,
+	owner: null,
+	securityInfo: null,
+	URI: null,
+
+	asyncOpen: function (aListener, aContext) {},
+
+	open: function () {
+		var stream = new EmptyStream ();
+		return stream;
+	}
+};
+
 function CustombuttonProtocol (sProtocolName) {
 	this. scheme = sProtocolName;
 	this. protocolFlags = Components. interfaces. nsIProtocolHandler. URI_NORELATIVE |
@@ -187,16 +241,17 @@ CustombuttonProtocol. prototype = {
 			else
 				return this. getCustomButtonsFile (aURI, sFileName);
 		}
+		var chan = new CBProtocolChannel (aURI);
 		if (typeof protocol != "undefined") {
 			protocol. process. sendAsyncMessage (
 				"CustomButtons:protocol:installWebButton",
 				{ spec: aURI. spec }
 			);
-			return false;
+			return chan;
 		}
 		var cbs = Components. classes ["@xsms.nm.ru/custombuttons/cbservice;1"]. getService (Components. interfaces. cbICustomButtonsService);
 		cbs. installWebButton (null, aURI. spec, true);
-		return false;
+		return chan;
 	}
 };
 
