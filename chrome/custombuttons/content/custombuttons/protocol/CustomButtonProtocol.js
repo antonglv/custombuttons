@@ -174,8 +174,8 @@ CustombuttonProtocol. prototype = {
 	},
 
 	getXULTemplate: function ()	{
-		var ios = Components. classes ["@mozilla.org/network/io-service;1"]. getService (Components. interfaces. nsIIOService);
-		var xulchan = ios. newChannel ("chrome://custombuttons/content/tcbbutton.xul", null, null);
+		var cbs = Components. classes ["@xsms.nm.ru/custombuttons/cbservice;1"]. getService (Components. interfaces. cbICustomButtonsService);
+		var xulchan = cbs. getChannel ("chrome://custombuttons/content/tcbbutton.xul", null);
 		var instr = xulchan. open ();
 		var dp = Components. classes ["@mozilla.org/xmlextras/domparser;1"]. createInstance (Components. interfaces. nsIDOMParser);
 		var doc = dp. parseFromStream (instr, null, instr. available (), "application/xml");
@@ -225,9 +225,7 @@ CustombuttonProtocol. prototype = {
 			else
 				return this. fakeOverlayChannel ();
 		}
-		var ios = Components. classes ["@mozilla.org/network/io-service;1"]. getService (Components. interfaces. nsIIOService);
-		var uri = ios. newFileURI (file);
-		var channel = ios. newChannelFromURI (uri);
+		var channel = cbs. getChannel (file, null);
 		channel. originalURI = aURI;
 		channel. owner = this. getChromePrincipal ();
 		return channel;

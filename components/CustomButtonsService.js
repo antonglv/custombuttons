@@ -196,8 +196,8 @@ function ImageConverter (imageURL, id, topic) {
 		return;
 	}
 	this. imageURL = imageURL;
-	var ios = Components. classes ["@mozilla.org/network/io-service;1"]. getService (Components. interfaces. nsIIOService);
-	this. channel = ios. newChannel (imageURL, null, null);
+	var cbs = Components. classes ["@xsms.nm.ru/custombuttons/cbservice;1"]. getService (Components. interfaces. cbICustomButtonsService);
+	this. channel = cbs. getChannel (imageURL, Components. interfaces. nsIContentPolicy. TYPE_IMAGE);
 	this. channel. notificationCallbacks = this;
 	this. channel. asyncOpen (this, null);
 }
@@ -265,7 +265,8 @@ Overlay. prototype = {
 		if (!this. _overlayDocument) {
 			var ios = Components. classes ["@mozilla.org/network/io-service;1"]. getService (Components. interfaces. nsIIOService);
 			var uri = this. path + this. fileName;
-			var xulchan = ios. newChannel (uri, null, null);
+			var cbs = Components. classes ["@xsms.nm.ru/custombuttons/cbservice;1"]. getService (Components. interfaces. cbICustomButtonsService);
+			var xulchan = cbs. getChannel (uri, null);
 			var instr = xulchan. open ();
 			var dp = Components. classes ["@mozilla.org/xmlextras/domparser;1"]. createInstance (Components. interfaces. nsIDOMParser);
 			try	{
@@ -1141,6 +1142,25 @@ cbCustomButtonsService. prototype =	{
 
 	allowedSource: function (src) {
 		return allowedSource (src);
+	},
+
+	getChannel: function (aSpec, aContentPolicy) {
+		var ios = Components. classes ["@mozilla.org/network/io-service;1"]. getService (Components. interfaces. nsIIOService);
+		var chan;
+		var contentPolicy = aContentPolicy || Components. interfaces. nsIContentPolicy. TYPE_OTHER;
+		if ("newChannel" in ios)
+			chan = ios. newChannel (aSpec, null, null);
+		else
+			chan = ios. newChannel2 (
+				aSpec,
+				null,
+				null,
+				null,
+				Services. scriptSecurityManager. getSystemPrincipal (),
+				null,
+				Components. interfaces. nsILoadInfo. SEC_NORMAL,
+				contentPolicy);
+		return chan;
 	}
 };
 

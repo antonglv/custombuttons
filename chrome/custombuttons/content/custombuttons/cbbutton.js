@@ -202,8 +202,8 @@ var custombutton = {
 	},
 
 	xmlFormatURI: function (oBtn) {
-		var ios = Components. classes ["@mozilla.org/network/io-service;1"]. getService (Components. interfaces. nsIIOService);
-		var xmlchan = ios. newChannel ("chrome://custombuttons/content/nbftemplate.xml", null, null);
+		var cbs = Components. classes ["@xsms.nm.ru/custombuttons/cbservice;1"]. getService (Components. interfaces. cbICustomButtonsService);
+		var xmlchan = cbs. getChannel ("chrome://custombuttons/content/nbftemplate.xml", null);
 		var instr = xmlchan. open ();
 		var dp = Components. classes ["@mozilla.org/xmlextras/domparser;1"]. createInstance (Components. interfaces. nsIDOMParser);
 		var doc = dp. parseFromStream (instr, null, instr. available (), "application/xml");
