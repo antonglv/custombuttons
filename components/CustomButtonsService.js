@@ -955,7 +955,7 @@ cbCustomButtonsService. prototype =	{
 		return true;
 	},
 
-	readFromClipboard: function () {
+	readFromClipboard: function (aContext) {
 		var str = {};
 		var strLength = {};
 		var result = "";
@@ -964,7 +964,7 @@ cbCustomButtonsService. prototype =	{
 			var kGlobalClipboard = clip. kGlobalClipboard;
 			var trans = Components. classes ["@mozilla.org/widget/transferable;1"]. createInstance (Components. interfaces. nsITransferable);
 			if ("init" in trans)
-				trans. init (null);
+				trans. init (aContext);
 			trans. addDataFlavor ("text/unicode");
 			clip. getData (trans, kGlobalClipboard);
 			trans. getTransferData ("text/unicode", str, strLength);
@@ -986,7 +986,7 @@ cbCustomButtonsService. prototype =	{
 	},
 
 	canUpdate: function () {
-		var param = this. parseButtonURI (this. readFromClipboard ());
+		var param = this. parseButtonURI (this. readFromClipboard (null));
 		return param? true: false;
 	},
 

@@ -373,7 +373,11 @@ var custombuttons = {
 		var oButton = this. popupNode;
 		if (!oButton)
 			return;
-		var sURI = this. cbService. readFromClipboard ();
+		var loadContext = document. defaultView.
+			QueryInterface (Components. interfaces. nsIInterfaceRequestor).
+			getInterface (Components. interfaces. nsIWebNavigation).
+			QueryInterface (Components. interfaces. nsILoadContext);
+		var sURI = this. cbService. readFromClipboard (loadContext);
 		var link = this. makeButtonLink ("update", oButton. id);
 		this. cbService. updateButton (link, sURI);
 	},
@@ -964,7 +968,11 @@ var custombuttonsUtils = {
 
 		read: function ()
 		{
-			return this. _cbService. readFromClipboard ();
+			var loadContext = document. defaultView.
+				QueryInterface (Components. interfaces. nsIInterfaceRequestor).
+				getInterface (Components. interfaces. nsIWebNavigation).
+				QueryInterface (Components. interfaces. nsILoadContext);
+			return this. _cbService. readFromClipboard (loadContext);
 		}
 	},
 
