@@ -9,7 +9,7 @@
   
   <!-- set global properties for this build -->
   <property file="build.properties"/>
-  <property name="xpidlpath" location="${geckosdkpath}\bin"/>
+  <property name="xpidlpath" location="${geckosdkpath}\sdk\bin"/>
   <property name="idlpath" location="${geckosdkpath}\idl"/>
   
   <property name="appname" value="custombuttons"/>
@@ -49,15 +49,13 @@
   
   <target name="buildxpt" depends="init">
     <fail unless="geckosdkpath" message="The path to gecko sdk not defined. Define 'geckosdkpath' property in build.properties"/>
-    <apply executable="xpidl.exe" dir="${xpidlpath}"
+    <apply executable="typelib.py" dir="${xpidlpath}"
 	   resolveExecutable="true" dest="${basedir}/components"
-	   os="Windows"
-	   failonerror="true">
-      <arg value="-m"/>
-      <arg value="typelib"/>
+	   osfamily="windows"
+	   failonerror="true" vmlauncher="false">
       <arg value="-I"/>
       <arg value="${idlpath}"/>
-      <arg value="-e"/>
+      <arg value="-o"/>
       <targetfile/>
       <srcfile/>
       <fileset dir="${basedir}/components" includes="*.idl"/>
@@ -65,7 +63,7 @@
     </apply>
     <apply executable="xpidl" dir="${xpidlpath}"
 	   resolveExecutable="true" dest="${basedir}/components"
-	   os="Linux"
+	   osfamily="unix"
 	   failonerror="true">
       <arg value="-m"/>
       <arg value="typelib"/>
@@ -107,7 +105,7 @@
   <target name="noxpi" depends="buildxpiwithjar"
 	  description="Build add-on with no *.xpt compilation"/>
   
-  <target name="buildxpi" depends="buildxpiwithjar,buildxpt"
+  <target name="buildxpi" depends="buildxpt,buildxpiwithjar"
 	  description="Build add-on"/>
 
   <target name="release" depends="clean,init,buildjar"
