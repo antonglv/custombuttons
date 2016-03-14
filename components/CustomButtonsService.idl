@@ -1,6 +1,8 @@
 #include "nsISupports.idl"
 #include "nsIDOMWindow.idl"
 #include "nsILoadContext.idl"
+#include "nsIChannel.idl"
+#include "nsIContentPolicy.idl"
 
 [scriptable, uuid (64d03940-83bc-4ac6-afc5-3cbf6a7147c5)]
 interface cbICustomButtonsService: nsISupports
@@ -27,5 +29,6 @@ interface cbICustomButtonsService: nsISupports
   string makeButtonLink (in AUTF8String documentURI, in string action, in string buttonId);
   void alert (in string msgId);
   boolean allowedSource (in AUTF8String src);
+  nsIChannel getChannel (in AUTF8String aSpec, in nsIContentPolicy aContentPolicy);
   attribute long mode;
 };
