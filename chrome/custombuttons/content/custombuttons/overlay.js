@@ -665,7 +665,7 @@ var custombuttons = {
 	 UPDATED: 16.03.08 by Anton - uChelpButton should not use global clipboard
 	 UPDATED: 03.04.08 by Anton - now we have 'name' field in buttons
 **/
-custombuttons.uChelpButton = function ( oBtn ) //{{{
+custombuttons.uChelpButton = function ( oBtn ) //{{
 {
 	// UPDATED: 11/8/2007 to accept oBtn as an arg.
 	var Button = ( oBtn )? oBtn : this. popupNode;
@@ -703,7 +703,7 @@ var custombuttonsUtils = {
 		 changed by Anton 24.02.08
 		 TODO: refactor it
 	**/
-	createMsg: function (title) //{{{
+	createMsg: function (title) //{{
 	{
 		/**	 Object Msg
 			 Author:	George Dunham aka: SCClockDr
@@ -716,7 +716,7 @@ var custombuttonsUtils = {
 			 Methods:	aMsg - Displays the dialog box.
 			 Purpose:	1. Provide a better means to alert the operator.
 		**/
-		var Msg = { //{{{
+		var Msg = { //{{
 			// Properties:
 			prompts: Components. classes ["@mozilla.org/embedcomp/prompt-service;1"]. getService (Components. interfaces. nsIPromptService),
 			check:{value: false},
@@ -733,7 +733,7 @@ var custombuttonsUtils = {
 				 available
 				 Purpose:	1. Present a confirm dialog.
 			**/
-			aMsg:function ( str, title ) //{{{
+			aMsg:function ( str, title ) //{{
 			{
 				if (typeof title == "string"){this.sTitle = title;}
 				var flags = this.prompts.BUTTON_POS_0 * this.prompts.BUTTON_TITLE_IS_STRING;
@@ -769,7 +769,7 @@ var custombuttonsUtils = {
 		 1. Test for the presence of a specified pref.
 		 NOTE: Inserted with ver. 2.0.02a
 	**/
-	isPref: function ( sPrefId, aDefault ) //{{{
+	isPref: function ( sPrefId, aDefault ) //{{
 	{
 		try{
 			var lRet = (this.getPrefs( sPrefId ) !== null ); // UPDATED: 11/29/2007
@@ -797,7 +797,7 @@ var custombuttonsUtils = {
 		 1. Return the pref specified in sPrefId
 		 NOTE: Inserted with ver. 2.0.02a
 	**/
-	getPrefs: function ( sPrefId ) //{{{
+	getPrefs: function ( sPrefId ) //{{
 	{
 		var rRet = null;
 		var nsIPrefBranchObj = this.ps.getBranch( null );
@@ -829,7 +829,7 @@ var custombuttonsUtils = {
 		 1. Modify the specified pref to the passed value.
 		 NOTE: Inserted with ver. 2.0.02a
 	**/
-	setPrefs: function ( sPrefId, prefValue ) //{{{
+	setPrefs: function ( sPrefId, prefValue ) //{{
 	{
 		var nsIPrefBranchObj = this.ps.getBranch(null);
 		switch (typeof prefValue){
@@ -861,7 +861,7 @@ var custombuttonsUtils = {
 		 Purpose:	1. Clear specified User preference
 		 changed by Anton 09.04.2011
 	*/
-	clearPrefs: function(sPrefId) //{{{
+	clearPrefs: function(sPrefId) //{{
 	{
 		var nsIPrefBranchObj = this.ps.getBranch(null);
 		try
@@ -881,7 +881,7 @@ var custombuttonsUtils = {
 		 TODO:		1.
 		 changed by Anton 25.02.08
 	*/
-	readFile: function(fPath) //{{{
+	readFile: function(fPath) //{{
 	{
 		var sRet = null;
 		var file = null;
@@ -911,7 +911,7 @@ var custombuttonsUtils = {
 		 Purpose:	1.
 		 TODO:		1.
 	*/
-	writeFile: function(fPath, sData) //{{{
+	writeFile: function(fPath, sData) //{{
 	{
 		try{
 			fPath = (fPath.indexOf(':\\') > -1 )? fPath.replace(/\//g,'\\') : fPath;

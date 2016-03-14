@@ -1,6 +1,6 @@
 /* -*- mode: js; tab-width: 4; indent-tabs-mode: t; js-indent-level: 4; js-switch-indent-offset: 4 -*- */
 
-var CB2const = //{{{
+var CB2const = //{{
 {
     bFieldSepHack: "] [", // No Translation Please
     bFieldSepNew: "]▲[", // No Translation Please
@@ -100,7 +100,7 @@ var CB2const = //{{{
  Methods:     inc -
  Purpose:     1. Maintain a counter
  **/
-custombuttons.gCounter = function ( nC, nS ) //{{{
+custombuttons.gCounter = function ( nC, nS ) //{{
 {
     var oRet = {
 	// Properties:
@@ -147,7 +147,7 @@ custombuttons.gCounter = function ( nC, nS ) //{{{
  no setup required.
  3. View usage documentation within the object's comments
  **/
-custombuttons.getCbContextObj = function ( oBtn ) //{{{
+custombuttons.getCbContextObj = function ( oBtn ) //{{
 {
     /**  Object mObj
      Author:  SCClockDr
@@ -284,7 +284,7 @@ custombuttons.getCbContextObj = function ( oBtn ) //{{{
 	     Called:  1.
 	     Purpose: 1.
 	     **/
-	    init:function ( oBtn ) //{{{
+	    init:function ( oBtn ) //{{
 	    {
 		//oBtn. _ctxtObj = this;
 		this. oButton = oBtn;
@@ -307,7 +307,7 @@ custombuttons.getCbContextObj = function ( oBtn ) //{{{
 	     Called:  1.
 	     Purpose: 1.
 	     **/
-	    setSub:function ( ) //{{{
+	    setSub:function ( ) //{{
 	    {
 		this. oButton. _ctxtObj = true;
 		this. mCtxtSub = true;
@@ -320,7 +320,7 @@ custombuttons.getCbContextObj = function ( oBtn ) //{{{
 	     Called:  1.
 	     Purpose: 1.
 	     **/
-	    setPri:function ( ) //{{{
+	    setPri:function ( ) //{{
 	    {
 		this. oButton. _ctxtObj = false;
 		this. mCtxtSub = false;
@@ -333,7 +333,7 @@ custombuttons.getCbContextObj = function ( oBtn ) //{{{
 	     Called:  1.
 	     Purpose: 1.
 	     **/
-	    getItem:function ( ) //{{{
+	    getItem:function ( ) //{{
 	    {
 		if ( this.mCtxtSub ) {
 		    var oItem = {
@@ -385,7 +385,7 @@ custombuttons.getCbContextObj = function ( oBtn ) //{{{
 	     Called:  1.
 	     Purpose: 1.
 	     **/
-	    insertBefore:function ( oNew, oChildNode ) //{{{
+	    insertBefore:function ( oNew, oChildNode ) //{{
 	    {
 		var ct = this;
 		var sTemp = "";
@@ -408,7 +408,7 @@ custombuttons.getCbContextObj = function ( oBtn ) //{{{
 	     Called:  1.
 	     Purpose: 1.
 	     **/
-	    insertAfter:function ( oNew, oChildNode ) //{{{
+	    insertAfter:function ( oNew, oChildNode ) //{{
 	    {
 		var ct = this;
 		var sTemp = "";
@@ -429,7 +429,7 @@ custombuttons.getCbContextObj = function ( oBtn ) //{{{
 	     Called:  1.
 	     Purpose: 1.
 	     **/
-	    addItem:function ( oNew ) //{{{
+	    addItem:function ( oNew ) //{{
 	    {
 		var ct = this;
 		var sTemp = "";
@@ -451,7 +451,7 @@ custombuttons.getCbContextObj = function ( oBtn ) //{{{
 	     Called:  1.
 	     Purpose: 1.
 	     **/
-	    populate:function ( oData, mItem ) //{{{
+	    populate:function ( oData, mItem ) //{{
 	    {
 		var ct = this;
 		for (var i in ct.aItemIdx ) {
@@ -478,7 +478,7 @@ custombuttons.getCbContextObj = function ( oBtn ) //{{{
 	     Called:  1.
 	     Purpose: 1.
 	     **/
-	    getItemsById:function ( id ) //{{{
+	    getItemsById:function ( id ) //{{
 	    {
 		var aRet = [];
 		var ct = this
@@ -499,7 +499,7 @@ custombuttons.getCbContextObj = function ( oBtn ) //{{{
 	     Called:  1.
 	     Purpose: 1.
 	     **/
-	    remItem:function ( id ) //{{{
+	    remItem:function ( id ) //{{
 	    {
 		var ct = this;
 		var cId = this. constructId (id);
@@ -520,7 +520,7 @@ custombuttons.getCbContextObj = function ( oBtn ) //{{{
 	     Purpose:   1. De Initializes this object
 	     TODO:      1.
 	     */
-	    deInit:function () //{{{
+	    deInit:function () //{{
 	    {
 		this.setPri();
 		this.listener = function(){};
@@ -572,7 +572,7 @@ custombuttons.getCbContextObj = function ( oBtn ) //{{{
  UPDATED:    8/25/2007 Moved to custombuttons object
  UPDATED: 10.03.08 by Anton
  **/
-custombuttons.gQuot = { //{{{
+custombuttons.gQuot = { //{{
     // Properties:
     dcWaitFlag: false, // double click wait flag
     oTimer: null, // timer object
@@ -593,7 +593,7 @@ custombuttons.gQuot = { //{{{
      Purpose: 1. Call the appropriate click function based on
      the mouse button clicked and its modifiers.
      **/
-    mHandler:function ( evt ) //{{{
+    mHandler:function ( evt ) //{{
     {
 	if ((evt. button == 2) && evt. shiftKey)
 	    return;
@@ -729,7 +729,7 @@ custombuttons.gQuot = { //{{{
      UPDATED:    *  2/2/2008 - Modified to handle new popup method.
      UPDATED: 10.03.08 by Anton - added context menu items visibility test
      **/
-    gShowPopup:function ( node, menuId ) //{{{
+    gShowPopup:function ( node, menuId ) //{{
     {
 	if (node. id. indexOf ("custombuttons-button") == 0)
 	    custombutton. setContextMenuVisibility (node);
@@ -760,7 +760,7 @@ custombuttons.gQuot = { //{{{
  Called:  1. Any custombuttons-button.
  Purpose: 1. Handle mouse click events.
  **/
-var gQuot = function( evt, cButton ) //{{{
+var gQuot = function( evt, cButton ) //{{
 {
     custombuttons.gQuot.mHandler( evt, cButton );
 } //}}} End Function gQuot( evt, cButton )
@@ -775,7 +775,7 @@ var gQuot = function( evt, cButton ) //{{{
  Purpose: 1. Display the Custom Buttons² context menu.
  2. No button author intervention expected.
  **/
-var gShowPopup = function( node ) //{{{
+var gShowPopup = function( node ) //{{
 {
     custombuttons.gQuot.gShowPopup( node );
 }; //}}} End gShowPopup( node )
@@ -792,7 +792,7 @@ var gShowPopup = function( node ) //{{{
  Updated 8/23/2007 to format and document the function
  UPDATED: 10.03.08 by Anton
  **/
-custombuttons.getButtonParameters2 = function ( num ) //{{{
+custombuttons.getButtonParameters2 = function ( num ) //{{
 {
     var ret = null;
     var but1 = this. getButtonById (num);
