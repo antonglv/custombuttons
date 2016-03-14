@@ -202,10 +202,11 @@ var custombutton = {
 	},
 
 	xmlFormatURI: function (oBtn) {
-		var xr = new XMLHttpRequest ();
-		xr. open ("GET", "chrome://custombuttons/content/nbftemplate.xml", false);
-		xr. send (null);
-		var doc = xr. responseXML;
+		var ios = Components. classes ["@mozilla.org/network/io-service;1"]. getService (Components. interfaces. nsIIOService);
+		var xmlchan = ios. newChannel ("chrome://custombuttons/content/nbftemplate.xml", null, null);
+		var instr = xmlchan. open ();
+		var dp = Components. classes ["@mozilla.org/xmlextras/domparser;1"]. createInstance (Components. interfaces. nsIDOMParser);
+		var doc = dp. parseFromStream (instr, null, instr. available (), "application/xml");
 		oBtn. setText (doc, "name", oBtn. name, false);
 		oBtn. setText (doc, "mode", oBtn. cbMode, false);
 		oBtn. setText (doc, "image", oBtn. image || oBtn. cbStdIcon, true);
