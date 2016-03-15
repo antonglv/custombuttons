@@ -1,4 +1,7 @@
 Changelog
+0.0.5.8.7
+# Fixed: Custom Buttons broken on Firefox version 48
+# Fixed: buttons from bookmarks are installed twice
 0.0.5.8.6
 # Fixed: custombutton:// protocol doesn't work on electrolysis
 0.0.5.8.5
