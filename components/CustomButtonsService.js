@@ -1156,7 +1156,7 @@ cbCustomButtonsService. prototype =	{
 				null,
 				null,
 				null,
-				Services. scriptSecurityManager. getSystemPrincipal (),
+				Components. classes ["@mozilla.org/systemprincipal;1"]. createInstance (Components. interfaces. nsIPrincipal),
 				null,
 				Components. interfaces. nsILoadInfo. SEC_NORMAL,
 				contentPolicy);
