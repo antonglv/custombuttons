@@ -110,6 +110,7 @@ CustombuttonProtocol. prototype = {
 
 	QueryInterface: function (iid) {
 		if (!iid. equals (Components. interfaces. nsIProtocolHandler) &&
+			!iid. equals (Components. interfaces. nsIObserver) &&
 			!iid. equals (Components. interfaces. nsISupports))
 			throw Components. results. NS_ERROR_NO_INTERFACE;
 		return this;
@@ -250,7 +251,9 @@ CustombuttonProtocol. prototype = {
 		var cbs = Components. classes ["@xsms.nm.ru/custombuttons/cbservice;1"]. getService (Components. interfaces. cbICustomButtonsService);
 		cbs. installWebButton (null, aURI. spec, true);
 		return chan;
-	}
+	},
+
+	observe: function (aSubject, aTopic, aData) {}
 };
 
 function CustombuttonsProtocolClassFactory (sProtocolName) {
