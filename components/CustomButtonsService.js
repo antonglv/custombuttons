@@ -266,7 +266,7 @@ Overlay. prototype = {
 			var ios = Components. classes ["@mozilla.org/network/io-service;1"]. getService (Components. interfaces. nsIIOService);
 			var uri = this. path + this. fileName;
 			var cbs = Components. classes ["@xsms.nm.ru/custombuttons/cbservice;1"]. getService (Components. interfaces. cbICustomButtonsService);
-			var xulchan = cbs. getChannel (uri, null);
+			var xulchan = cbs. getChannel (uri);
 			var instr = xulchan. open ();
 			var dp = Components. classes ["@mozilla.org/xmlextras/domparser;1"]. createInstance (Components. interfaces. nsIDOMParser);
 			try	{

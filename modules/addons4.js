@@ -30,7 +30,7 @@ var AddonProvider = {
 		var ios = Cc [IO_SERVICE_CID]. getService (IO_SERVICE_IID);
 		var uri = "resource://custombuttons/" + overlayFileName;
 		var cbs = Components. classes [CB_SERVICE_CID]. getService (CB_SERVICE_IID);
-		var xulchan = cbs. getChannel (uri, null);
+		var xulchan = cbs. getChannel (uri);
 		var instr = xulchan. open ();
 		var dp = Cc [DOM_PARSER_CID]. createInstance (DOM_PARSER_IID);
 		try {
