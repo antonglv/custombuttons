@@ -24,7 +24,7 @@ interface cbICustomButtonsService: nsISupports
   void installButton (in nsISupports param);
   void makeOverlay ();
   boolean canUpdate ();
-  AUTF8String readFromClipboard (in nsILoadContext aContext);
+  AUTF8String readFromClipboard ([optional] in nsISupports aContext);
   void writeToClipboard (in AUTF8String str);
   string makeButtonLink (in AUTF8String documentURI, in string action, in string buttonId);
   void alert (in string msgId);
