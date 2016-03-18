@@ -1,4 +1,6 @@
 Changelog
+0.0.5.8.8
+# Fixed: custombuttons' page in addon manager doesn't work
 0.0.5.8.7
 # Fixed: Custom Buttons broken on Firefox version 48
 # Fixed: buttons from bookmarks are installed twice
