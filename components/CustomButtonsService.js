@@ -956,7 +956,11 @@ cbCustomButtonsService. prototype =	{
 		return true;
 	},
 
-	readFromClipboard: function (aContext) {
+	readFromClipboard: function () {
+		return this. readFromClipboardWithContext (null);
+	},
+
+	readFromClipboardWithContext: function (aContext) {
 		var str = {};
 		var strLength = {};
 		var result = "";

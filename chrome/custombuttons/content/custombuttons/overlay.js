@@ -377,7 +377,7 @@ var custombuttons = {
 			QueryInterface (Components. interfaces. nsIInterfaceRequestor).
 			getInterface (Components. interfaces. nsIWebNavigation).
 			QueryInterface (Components. interfaces. nsILoadContext);
-		var sURI = this. cbService. readFromClipboard (loadContext);
+		var sURI = this. cbService. readFromClipboardWithContext (loadContext);
 		var link = this. makeButtonLink ("update", oButton. id);
 		this. cbService. updateButton (link, sURI);
 	},
@@ -972,7 +972,7 @@ var custombuttonsUtils = {
 				QueryInterface (Components. interfaces. nsIInterfaceRequestor).
 				getInterface (Components. interfaces. nsIWebNavigation).
 				QueryInterface (Components. interfaces. nsILoadContext);
-			return this. _cbService. readFromClipboard (loadContext);
+			return this. _cbService. readFromClipboardWithContext (loadContext);
 		}
 	},
 
